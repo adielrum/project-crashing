@@ -1,0 +1,159 @@
+Task Name,Resource Name,% Work Complete,Work,Units
+Receive notice to proceed and sign contract,G.C. General Management,0,24h,100%
+Submit bond and insurance documents,G.C. Project Management,0,16h,100%
+Submit bond and insurance documents,G.C. General Management,0,4h,25%
+Prepare and submit project schedule,G.C. Project Management,0,4h,25%
+Prepare and submit project schedule,G.C. Scheduler,0,16h,100%
+Prepare and submit schedule of values,G.C. General Management,0,1.6h,10%
+Prepare and submit schedule of values,G.C. Project Management,0,16h,100%
+Obtain building permits,G.C. Project Management,0,16h,50%
+Obtain building permits,G.C. Procurement,0,16h,50%
+Submit preliminary shop drawings,G.C. Project Management,0,40h,50%
+Submit preliminary shop drawings,G.C. Procurement,0,40h,50%
+Submit shop drawings and order long lead items - steel,Steel Erection Contractor Management,0,80h,100%
+Submit shop drawings and order long lead items - roofing,Roofing Contractor Management,0,80h,100%
+Submit shop drawings and order long lead items - elevator,Elevator Contractor Management,0,80h,100%
+Submit shop drawings and order long lead items - plumbing,Plumbing Contractor Management,0,80h,100%
+Submit shop drawings and order long lead items - electric,Electric Contractor Management,0,80h,100%
+Submit shop drawings and order long lead items - HVAC,HVAC Contractor Management,0,80h,100%
+"Detail, fabricate and deliver steel",Steel Erection Contractor Management,0,240h,50%
+"Detail, fabricate and deliver steel",Steel Erection Contractor,0,240h,50%
+Install temporary power,Electric Contractor,0,16h,100%
+Install temporary water service,Plumbing Contractor,0,16h,100%
+Set up site office,G.C. Superintendent,0,24h,100%
+Set up site office,G.C. Labor Crew,0,2.4h,10%
+Set line and grade benchmarks,G.C. Survey Crew,0,24h,100%
+Prepare site - lay down yard and temporary fencing,Site Grading Contractor,0,16h,100%
+Prepare site - lay down yard and temporary fencing,G.C. Labor Crew,0,1.6h,10%
+Clear and grub site,Site Grading Contractor,0,24h,100%
+Stone site access and temporary parking area,Site Grading Contractor,0,16h,100%
+Rough grade site (cut and fill),Site Grading Contractor,0,40h,100%
+Install storm drainage,Site Grading Contractor,0,80h,100%
+Install exterior fire line and building fire riser,Plumbing Contractor,0,80h,100%
+Perform final site grading,Site Grading Contractor,0,80h,100%
+Erect building batter boards and layout building,G.C. Survey Crew,0,40h,100%
+Excavate foundations,Site Grading Contractor,0,40h,50%
+Excavate elevator pit,Site Grading Contractor,0,16h,100%
+Form column piers and spread foundations,G.C. Rough Carpenter Crew,0,32h,100%
+Rough-in electric and plumbing in elevator,Plumbing Contractor,0,32h,100%
+Rough-in electric and plumbing in elevator,Electric Contractor,0,32h,100%
+Form elevator pit walls,G.C. Rough Carpenter Crew,0,32h,100%
+Set reinforcing and anchor bolts,G.C. Rough Carpenter Crew,0,32h,100%
+Pour column piers and foundations,G.C. Concrete Crew,0,40h,100%
+Pour concrete elevator walls,G.C. Concrete Crew,0,8h,100%
+Cure elevator wall concrete,G.C. Labor Crew,0,5.6h,10%
+Cure piers and foundations,G.C. Labor Crew,0,5.6h,10%
+Strip wall forms,G.C. Labor Crew,0,0.8h,10%
+Strip column piers and foundation forms,G.C. Labor Crew,0,24h,100%
+Install pneumatic tube in elevator pit,Elevator Contractor,0,24h,100%
+Prepare and pour concrete floor in elevator pit,G.C. Concrete Crew,0,8h,100%
+"Erect steel columns, beams and joist - 1st and 2nd floors",Steel Erection Contractor,0,80h,100%
+"Erect steel columns, beams and joist - 3rd floor and roof",Steel Erection Contractor,0,80h,100%
+Install miscellaneous iron and bracing - 1st and 2nd floors,Steel Erection Contractor,0,60h,75%
+Install miscellaneous iron and bracing - 3rd floor and roof,Steel Erection Contractor,0,60h,75%
+Install stairs and miscellaneous iron railing,Steel Erection Contractor,0,40h,50%
+Touch-up paint on steel,Steel Erection Contractor,0,8h,20%
+Form 2nd floor including all floor openings,G.C. Rough Carpenter Crew,0,40h,100%
+Form 2nd floor including all floor openings,G.C. Labor Crew,0,8h,20%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",G.C. Labor Crew,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Plumbing Contractor,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Electric Contractor,0,13.2h,33%
+Pour 2nd floor slab,G.C. Concrete Crew,0,32h,100%
+Cure 2nd floor slab,G.C. Labor Crew,0,5.6h,10%
+Strip forms from 2nd floor slab,G.C. Labor Crew,0,16h,100%
+Form 3rd floor including all floor openings,G.C. Rough Carpenter Crew,0,20h,50%
+Form 3rd floor including all floor openings,G.C. Labor Crew,0,8h,20%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",G.C. Labor Crew,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Plumbing Contractor,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Electric Contractor,0,13.2h,33%
+Pour 3rd floor slab,G.C. Concrete Crew,0,32h,100%
+Cure 3rd floor slab,G.C. Labor Crew,0,5.6h,10%
+Strip forms from 3rd floor slab,G.C. Labor Crew,0,16h,100%
+Form roof slab including all floor openings,G.C. Rough Carpenter Crew,0,40h,100%
+Form roof slab including all floor openings,G.C. Labor Crew,0,8h,20%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",G.C. Labor Crew,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Plumbing Contractor,0,13.2h,33%
+"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",Electric Contractor,0,13.2h,33%
+Pour roof slab,G.C. Concrete Crew,0,32h,100%
+Cure roof slab,G.C. Labor Crew,0,5.6h,10%
+Strip forms from roof slab,G.C. Labor Crew,0,16h,100%
+Form 1st floor,G.C. Rough Carpenter Crew,0,32h,100%
+Install electrical underground,Electric Contractor,0,40h,100%
+Install plumbing underground,Plumbing Contractor,0,40h,100%
+Install rebar and in-floor utilities,G.C. Labor Crew,0,10.56h,33%
+Install rebar and in-floor utilities,Plumbing Contractor,0,10.56h,33%
+Install rebar and in-floor utilities,Electric Contractor,0,10.56h,33%
+Pour 1st floor slab,G.C. Concrete Crew,0,32h,100%
+Cure 1st floor slab,G.C. Labor Crew,0,5.6h,10%
+Strip forms from 1st floor slab,G.C. Labor Crew,0,16h,100%
+Install exterior sheathing and metal studs,Drywall Contractor,0,120h,100%
+Rough-in plumbing at toilets and masonry walls,Plumbing Contractor,0,160h,100%
+"Lay masonry at core, mechanical, and toilets",Masonry Contractor,0,160h,100%
+Install exterior masonry work,Masonry Contractor,0,200h,100%
+Install roof drains,Roofing Contractor,0,16h,100%
+Install tile in toilet rooms,Tile Contractor,0,80h,100%
+Clean masonry,Masonry Contractor,0,20h,50%
+Clean toilet room tile,Tile Contractor,0,20h,50%
+Install flashing at parapet walls,Roofing Contractor,0,32h,100%
+Pour lightweight concrete roof fill,Roofing Contractor,0,16h,100%
+Install seamless roofing material,Roofing Contractor,0,40h,100%
+Spread stone ballast on seamless roof,Roofing Contractor,0,40h,100%
+Set rooftop equipment,HVAC Contractor,0,80h,100%
+Install window wall aluminum and glass,Window Contractor,0,200h,100%
+Install interior stud walls and drywall,Drywall Contractor,0,200h,100%
+Install interior doors and hardware,G.C. Finish Carpenter Crew,0,80h,100%
+Install store front doors and hardware,Window Contractor,0,120h,100%
+Install millwork and wood trim,G.C. Finish Carpenter Crew,0,120h,100%
+Paint walls and woodwork,Painting Contractor,0,160h,100%
+Install conduit at ceiling plenum space,Electric Contractor,0,120h,100%
+Install duct in ceiling plenum space,HVAC Contractor,0,120h,100%
+Install ceiling grid,Drywall Contractor,0,80h,100%
+Install ceiling tile,Drywall Contractor,0,80h,100%
+Hang wallpaper,Painting Contractor,0,80h,100%
+Install building carpet,Carpet Contractor,0,160h,100%
+Install hardware and accessories,G.C. Finish Carpenter Crew,0,120h,100%
+Complete interior and exterior sod and plantings,Landscape Contractor,0,80h,100%
+"Pave, curb, and stripe parking lot",Paving Contractor,0,80h,100%
+Set elevator equipment in shafts,Elevator Contractor,0,160h,100%
+Set equipment in mechanical room,Elevator Contractor,0,80h,100%
+Test and align doors and equipment,Elevator Contractor,0,80h,100%
+Rough-in plumbing in drywall walls,Plumbing Contractor,0,160h,100%
+Tie-in fire line riser and set valves,Plumbing Contractor,0,80h,100%
+Set plumbing fixtures and trim,Plumbing Contractor,0,120h,100%
+"Flush, test, and clean piping and fixtures",Plumbing Contractor,0,80h,100%
+Rough-in electrical in masonry walls,Electric Contractor,0,160h,100%
+Rough-in electrical in drywall walls,Electric Contractor,0,160h,100%
+Pull wire in conduit and set area transformers,Electric Contractor,0,120h,100%
+Install and terminate electrical devices,Electric Contractor,0,120h,100%
+Make electrical terminations for HVAC equipment,Electric Contractor,0,16h,100%
+Install light fixtures - test and clean,Electric Contractor,0,80h,100%
+Set equipment in mechanical room,HVAC Contractor,0,80h,100%
+Rough-in mechanical in masonry walls,HVAC Contractor,0,160h,100%
+Rough-in mechanical in drywall walls,HVAC Contractor,0,80h,100%
+Install duct in building chase,HVAC Contractor,0,120h,100%
+Set HVAC trim and test and balance system,HVAC Contractor,0,160h,100%
+Install hard tile flooring in common areas,Tile Contractor,0,40h,100%
+Clean hard tile floors,Tile Contractor,0,16h,50%
+Remove debris from building and do final clean-up,G.C. Labor Crew,0,32h,100%
+Substantial completion date,G.C. Superintendent,0,8h,100%
+Complete elevator inspection and certification,Elevator Contractor,0,24h,100%
+Perform architect's inspection,G.C. Superintendent,0,4h,50%
+Perform architect's inspection,G.C. Project Management,0,4h,50%
+Perform local building agency inspection,G.C. Project Management,0,4h,50%
+Perform local building agency inspection,G.C. Superintendent,0,4h,50%
+Perform Fire Marshal's inspection,G.C. Superintendent,0,4h,50%
+Perform Fire Marshal's inspection,G.C. Project Management,0,4h,50%
+Complete punch list items from all inspections,G.C. Superintendent,0,8.8h,11%
+Complete punch list items from all inspections,G.C. Labor Crew,0,8.8h,11%
+Complete punch list items from all inspections,Plumbing Contractor,0,8.8h,11%
+Complete punch list items from all inspections,Electric Contractor,0,8.8h,11%
+Complete punch list items from all inspections,HVAC Contractor,0,8.8h,11%
+Complete punch list items from all inspections,Drywall Contractor,0,8.8h,11%
+Complete punch list items from all inspections,Carpet Contractor,0,8.8h,11%
+Complete punch list items from all inspections,Paving Contractor,0,8.8h,11%
+Complete punch list items from all inspections,Painting Contractor,0,8.8h,11%
+Obtain certificate of occupancy,G.C. Project Management,0,16h,100%
+Issue final completion documents including warranties,G.C. Project Management,0,8h,100%
+Issue final request for payment,G.C. Project Management,0,2.64h,33%
+Issue final request for payment,G.C. Accounting,0,2.64h,33%
+Issue final request for payment,G.C. General Management,0,2.64h,33%

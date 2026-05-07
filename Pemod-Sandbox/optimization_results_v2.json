@@ -1,0 +1,655 @@
+{
+  "config": {
+    "alpha": 0.7,
+    "beta": 0.7,
+    "ot_mult": 1.5,
+    "c_late": 5000.0,
+    "c_early": 2000.0,
+    "x_grid": [
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0
+    ],
+    "tau_grid": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "current_day": 300,
+    "target_day": 400,
+    "capacity": false
+  },
+  "milp": {
+    "success": true,
+    "solver": "MILP-v2",
+    "status": "Optimal",
+    "objective": 179417.71297003876,
+    "baseline_cost": 184200.0,
+    "crash_cost": 38050.29,
+    "I_late": 0.0,
+    "I_early": 21.41629,
+    "deadline_term": -42832.58,
+    "makespan": 378.58371,
+    "target_day": 400,
+    "crash_plan": {
+      "Install exterior masonry work": [
+        {
+          "resource": "Masonry Contractor",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 6221.21,
+          "duration_saved": 13.41
+        }
+      ],
+      "Install window wall aluminum and glass": [
+        {
+          "resource": "Window Contractor",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 6221.21,
+          "duration_saved": 13.41
+        }
+      ],
+      "Install interior stud walls and drywall": [
+        {
+          "resource": "Drywall Contractor",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 6221.21,
+          "duration_saved": 13.41
+        }
+      ],
+      "Install interior doors and hardware": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 1.25,
+          "tau": 0,
+          "cost_delta": 276.94,
+          "duration_saved": 1.45
+        }
+      ],
+      "Install millwork and wood trim": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 2.0,
+          "tau": 1,
+          "cost_delta": 2077.69,
+          "duration_saved": 6.5
+        }
+      ],
+      "Paint walls and woodwork": [
+        {
+          "resource": "Painting Contractor",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 4976.97,
+          "duration_saved": 10.73
+        }
+      ],
+      "Install conduit at ceiling plenum space": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 776.08,
+          "duration_saved": 3.71
+        }
+      ],
+      "Install duct in ceiling plenum space": [
+        {
+          "resource": "HVAC Contractor",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 776.08,
+          "duration_saved": 3.71
+        }
+      ],
+      "Install ceiling grid": [
+        {
+          "resource": "Drywall Contractor",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 517.39,
+          "duration_saved": 2.47
+        }
+      ],
+      "Install building carpet": [
+        {
+          "resource": "Carpet Contractor",
+          "x": 2.0,
+          "tau": 1,
+          "cost_delta": 2770.25,
+          "duration_saved": 8.66
+        }
+      ],
+      "Install hardware and accessories": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 776.08,
+          "duration_saved": 3.71
+        }
+      ],
+      "Complete interior and exterior sod and plantings": [
+        {
+          "resource": "Landscape Contractor",
+          "x": 1.25,
+          "tau": 0,
+          "cost_delta": 276.94,
+          "duration_saved": 1.45
+        }
+      ],
+      "Pave, curb, and stripe parking lot": [
+        {
+          "resource": "Paving Contractor",
+          "x": 1.75,
+          "tau": 0,
+          "cost_delta": 731.2,
+          "duration_saved": 3.24
+        }
+      ],
+      "Set plumbing fixtures and trim": [
+        {
+          "resource": "Plumbing Contractor",
+          "x": 1.25,
+          "tau": 0,
+          "cost_delta": 415.41,
+          "duration_saved": 2.17
+        }
+      ],
+      "Flush, test, and clean piping and fixtures": [
+        {
+          "resource": "Plumbing Contractor",
+          "x": 1.25,
+          "tau": 0,
+          "cost_delta": 276.94,
+          "duration_saved": 1.45
+        }
+      ],
+      "Pull wire in conduit and set area transformers": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 776.08,
+          "duration_saved": 3.71
+        }
+      ],
+      "Install and terminate electrical devices": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.5,
+          "tau": 0,
+          "cost_delta": 776.08,
+          "duration_saved": 3.71
+        }
+      ],
+      "Install light fixtures - test and clean": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.75,
+          "tau": 0,
+          "cost_delta": 731.2,
+          "duration_saved": 3.24
+        }
+      ],
+      "Remove debris from building and do final clean-up": [
+        {
+          "resource": "G.C. Labor Crew",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 995.39,
+          "duration_saved": 2.15
+        }
+      ],
+      "Complete elevator inspection and certification": [
+        {
+          "resource": "Elevator Contractor",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 746.54,
+          "duration_saved": 1.61
+        }
+      ],
+      "Perform architect's inspection": [
+        {
+          "resource": "G.C. Superintendent",
+          "x": 2.0,
+          "tau": 3,
+          "cost_delta": 107.86,
+          "duration_saved": 0.51
+        },
+        {
+          "resource": "G.C. Project Management",
+          "x": 2.0,
+          "tau": 3,
+          "cost_delta": 107.86,
+          "duration_saved": 0.51
+        }
+      ],
+      "Perform local building agency inspection": [
+        {
+          "resource": "G.C. Project Management",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 124.42,
+          "duration_saved": 0.54
+        },
+        {
+          "resource": "G.C. Superintendent",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 124.42,
+          "duration_saved": 0.54
+        }
+      ],
+      "Perform Fire Marshal's inspection": [
+        {
+          "resource": "G.C. Superintendent",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 124.42,
+          "duration_saved": 0.54
+        },
+        {
+          "resource": "G.C. Project Management",
+          "x": 2.0,
+          "tau": 4,
+          "cost_delta": 124.42,
+          "duration_saved": 0.54
+        }
+      ]
+    }
+  },
+  "ga": {
+    "success": true,
+    "solver": "GA/pymoo",
+    "objective": 192735.29702096933,
+    "baseline_cost": 184200.0,
+    "crash_cost": 40532.34,
+    "makespan": 384.0251555698989,
+    "target_day": 400,
+    "crash_plan": {
+      "Install exterior masonry work": [
+        {
+          "resource": "Masonry Contractor",
+          "x": 1.997,
+          "tau": 4,
+          "cost_delta": 6213.37,
+          "duration_saved": 13.4
+        }
+      ],
+      "Install roof drains": [
+        {
+          "resource": "Roofing Contractor",
+          "x": 1.401,
+          "tau": 2,
+          "cost_delta": 241.18,
+          "duration_saved": 0.65
+        }
+      ],
+      "Clean masonry": [
+        {
+          "resource": "Masonry Contractor",
+          "x": 1.304,
+          "tau": 3,
+          "cost_delta": 353.94,
+          "duration_saved": 1.68
+        }
+      ],
+      "Pour lightweight concrete roof fill": [
+        {
+          "resource": "Roofing Contractor",
+          "x": 1.288,
+          "tau": 0,
+          "cost_delta": 63.02,
+          "duration_saved": 0.32
+        }
+      ],
+      "Install seamless roofing material": [
+        {
+          "resource": "Roofing Contractor",
+          "x": 1.401,
+          "tau": 0,
+          "cost_delta": 213.04,
+          "duration_saved": 1.05
+        }
+      ],
+      "Spread stone ballast on seamless roof": [
+        {
+          "resource": "Roofing Contractor",
+          "x": 1.339,
+          "tau": 0,
+          "cost_delta": 183.28,
+          "duration_saved": 0.93
+        }
+      ],
+      "Install window wall aluminum and glass": [
+        {
+          "resource": "Window Contractor",
+          "x": 1.998,
+          "tau": 4,
+          "cost_delta": 6217.04,
+          "duration_saved": 13.41
+        }
+      ],
+      "Install interior stud walls and drywall": [
+        {
+          "resource": "Drywall Contractor",
+          "x": 1.998,
+          "tau": 4,
+          "cost_delta": 6217.36,
+          "duration_saved": 13.41
+        }
+      ],
+      "Install interior doors and hardware": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 1.39,
+          "tau": 1,
+          "cost_delta": 827.77,
+          "duration_saved": 2.69
+        }
+      ],
+      "Install millwork and wood trim": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 1.953,
+          "tau": 3,
+          "cost_delta": 3169.86,
+          "duration_saved": 7.49
+        }
+      ],
+      "Paint walls and woodwork": [
+        {
+          "resource": "Painting Contractor",
+          "x": 1.984,
+          "tau": 3,
+          "cost_delta": 4285.48,
+          "duration_saved": 10.09
+        }
+      ],
+      "Install conduit at ceiling plenum space": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.322,
+          "tau": 0,
+          "cost_delta": 524.55,
+          "duration_saved": 2.66
+        }
+      ],
+      "Install duct in ceiling plenum space": [
+        {
+          "resource": "HVAC Contractor",
+          "x": 1.321,
+          "tau": 0,
+          "cost_delta": 522.39,
+          "duration_saved": 2.65
+        }
+      ],
+      "Install ceiling grid": [
+        {
+          "resource": "Drywall Contractor",
+          "x": 1.219,
+          "tau": 3,
+          "cost_delta": 1306.96,
+          "duration_saved": 3.03
+        }
+      ],
+      "Install ceiling tile": [
+        {
+          "resource": "Drywall Contractor",
+          "x": 1.149,
+          "tau": 0,
+          "cost_delta": 170.03,
+          "duration_saved": 0.93
+        }
+      ],
+      "Hang wallpaper": [
+        {
+          "resource": "Painting Contractor",
+          "x": 1.098,
+          "tau": 0,
+          "cost_delta": 113.23,
+          "duration_saved": 0.63
+        }
+      ],
+      "Install building carpet": [
+        {
+          "resource": "Carpet Contractor",
+          "x": 1.996,
+          "tau": 1,
+          "cost_delta": 2763.27,
+          "duration_saved": 8.65
+        }
+      ],
+      "Install hardware and accessories": [
+        {
+          "resource": "G.C. Finish Carpenter Crew",
+          "x": 1.485,
+          "tau": 0,
+          "cost_delta": 755.72,
+          "duration_saved": 3.63
+        }
+      ],
+      "Complete interior and exterior sod and plantings": [
+        {
+          "resource": "Landscape Contractor",
+          "x": 1.393,
+          "tau": 0,
+          "cost_delta": 418.13,
+          "duration_saved": 2.07
+        }
+      ],
+      "Pave, curb, and stripe parking lot": [
+        {
+          "resource": "Paving Contractor",
+          "x": 1.406,
+          "tau": 0,
+          "cost_delta": 430.17,
+          "duration_saved": 2.12
+        }
+      ],
+      "Rough-in plumbing in drywall walls": [
+        {
+          "resource": "Plumbing Contractor",
+          "x": 1.174,
+          "tau": 0,
+          "cost_delta": 395.19,
+          "duration_saved": 2.13
+        }
+      ],
+      "Flush, test, and clean piping and fixtures": [
+        {
+          "resource": "Plumbing Contractor",
+          "x": 1.146,
+          "tau": 0,
+          "cost_delta": 166.41,
+          "duration_saved": 0.91
+        }
+      ],
+      "Pull wire in conduit and set area transformers": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.814,
+          "tau": 0,
+          "cost_delta": 1173.78,
+          "duration_saved": 5.11
+        }
+      ],
+      "Install and terminate electrical devices": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.267,
+          "tau": 1,
+          "cost_delta": 1044.41,
+          "duration_saved": 3.3
+        }
+      ],
+      "Make electrical terminations for HVAC equipment": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.353,
+          "tau": 0,
+          "cost_delta": 75.95,
+          "duration_saved": 0.38
+        }
+      ],
+      "Install light fixtures - test and clean": [
+        {
+          "resource": "Electric Contractor",
+          "x": 1.535,
+          "tau": 0,
+          "cost_delta": 549.13,
+          "duration_saved": 2.59
+        }
+      ],
+      "Clean hard tile floors": [
+        {
+          "resource": "Tile Contractor",
+          "x": 1.067,
+          "tau": 1,
+          "cost_delta": 91.91,
+          "duration_saved": 0.48
+        }
+      ],
+      "Remove debris from building and do final clean-up": [
+        {
+          "resource": "G.C. Labor Crew",
+          "x": 1.94,
+          "tau": 4,
+          "cost_delta": 971.8,
+          "duration_saved": 2.11
+        }
+      ],
+      "Substantial completion date": [
+        {
+          "resource": "G.C. Superintendent",
+          "x": 1.294,
+          "tau": 3,
+          "cost_delta": 140.34,
+          "duration_saved": 0.33
+        }
+      ],
+      "Complete elevator inspection and certification": [
+        {
+          "resource": "Elevator Contractor",
+          "x": 1.951,
+          "tau": 2,
+          "cost_delta": 524.75,
+          "duration_saved": 1.39
+        }
+      ],
+      "Perform architect's inspection": [
+        {
+          "resource": "G.C. Superintendent",
+          "x": 1.326,
+          "tau": 2,
+          "cost_delta": 56.02,
+          "duration_saved": 0.3
+        },
+        {
+          "resource": "G.C. Project Management",
+          "x": 1.074,
+          "tau": 2,
+          "cost_delta": 40.32,
+          "duration_saved": 0.19
+        }
+      ],
+      "Perform local building agency inspection": [
+        {
+          "resource": "G.C. Project Management",
+          "x": 1.066,
+          "tau": 0,
+          "cost_delta": 3.87,
+          "duration_saved": 0.04
+        },
+        {
+          "resource": "G.C. Superintendent",
+          "x": 1.985,
+          "tau": 0,
+          "cost_delta": 45.68,
+          "duration_saved": 0.38
+        }
+      ],
+      "Perform Fire Marshal's inspection": [
+        {
+          "resource": "G.C. Superintendent",
+          "x": 1.18,
+          "tau": 2,
+          "cost_delta": 47.2,
+          "duration_saved": 0.24
+        },
+        {
+          "resource": "G.C. Project Management",
+          "x": 1.578,
+          "tau": 3,
+          "cost_delta": 86.71,
+          "duration_saved": 0.42
+        }
+      ]
+    }
+  },
+  "tradeoff_curve": [
+    {
+      "target_day": 379,
+      "crash_cost": 37517.01,
+      "makespan": 379.0
+    },
+    {
+      "target_day": 384,
+      "crash_cost": 29274.67,
+      "makespan": 384.0
+    },
+    {
+      "target_day": 389,
+      "crash_cost": 23053.17,
+      "makespan": 389.0
+    },
+    {
+      "target_day": 394,
+      "crash_cost": 17779.54,
+      "makespan": 394.0
+    },
+    {
+      "target_day": 399,
+      "crash_cost": 13079.65,
+      "makespan": 399.0
+    },
+    {
+      "target_day": 404,
+      "crash_cost": 10554.27,
+      "makespan": 404.0
+    },
+    {
+      "target_day": 409,
+      "crash_cost": 9033.33,
+      "makespan": 409.0
+    },
+    {
+      "target_day": 414,
+      "crash_cost": 7644.35,
+      "makespan": 414.0
+    },
+    {
+      "target_day": 419,
+      "crash_cost": 6401.86,
+      "makespan": 419.0
+    },
+    {
+      "target_day": 424,
+      "crash_cost": 5239.71,
+      "makespan": 424.0
+    },
+    {
+      "target_day": 429,
+      "crash_cost": 4064.17,
+      "makespan": 429.0
+    }
+  ]
+}

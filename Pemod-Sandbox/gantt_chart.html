@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Construction Project Gantt Chart</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background: #333;
+            color: white;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 15px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        #chart {
+            width: 100vw;
+            height: calc(100vh - 100px);
+            overflow: auto;
+        }
+        .bar {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .bar:hover {
+            opacity: 0.7;
+        }
+        .tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+            pointer-events: none;
+            z-index: 1000;
+            max-width: 450px;
+            display: none;
+            line-height: 1.6;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .tooltip-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #555;
+            padding-bottom: 8px;
+        }
+        .tooltip-section {
+            margin-top: 10px;
+        }
+        .tooltip-section-title {
+            color: #aaa;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .tooltip-label {
+            color: #ccc;
+        }
+        .tooltip-value {
+            font-weight: 500;
+        }
+        .tooltip-resources {
+            background: rgba(255,255,255,0.1);
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+        .tooltip-resource {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+        .controls {
+            padding: 10px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .controls label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Construction Project Gantt Chart</h1>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: #1f77b4;"></div>
+            <span>Outline Level 0</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #2ca02c;"></div>
+            <span>Outline Level 1</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: #ff7f0e;"></div>
+            <span>Outline Level 2</span>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <label>
+            <input type="checkbox" id="showLevel0" checked> Show Level 0
+        </label>
+        <label>
+            <input type="checkbox" id="showLevel1" checked> Show Level 1
+        </label>
+        <label>
+            <input type="checkbox" id="showLevel2" checked> Show Level 2
+        </label>
+        <label>
+            <input type="checkbox" id="showDates" checked> Show Date Range
+        </label>
+        <label>
+            Start: <input type="date" id="filterStart">
+        </label>
+        <label>
+            End: <input type="date" id="filterEnd">
+        </label>
+    </div>
+    
+    <div id="chart"></div>
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const levelColors = {
+            0: '#1f77b4',
+            1: '#2ca02c',
+            2: '#ff7f0e'
+        };
+
+        const taskMap = {
+            "Commercial Construction": { predecessors: "", resources: [], duration: "344 days" },
+            "General Conditions": { predecessors: "", resources: [], duration: "17 days" },
+            "Receive notice to proceed and sign contract": { predecessors: "", resources: [{name: "G.C. General Management", work: "24h", units: "100%"}], duration: "3 days" },
+            "Submit bond and insurance documents": { predecessors: "Receive notice to proceed and sign contract", resources: [{name: "G.C. Project Management", work: "16h", units: "100%"}, {name: "G.C. General Management", work: "4h", units: "25%"}], duration: "2 days" },
+            "Prepare and submit project schedule": { predecessors: "Submit bond and insurance documents", resources: [{name: "G.C. Project Management", work: "4h", units: "25%"}, {name: "G.C. Scheduler", work: "16h", units: "100%"}], duration: "2 days" },
+            "Prepare and submit schedule of values": { predecessors: "Prepare and submit project schedule", resources: [{name: "G.C. General Management", work: "1.6h", units: "10%"}, {name: "G.C. Project Management", work: "16h", units: "100%"}], duration: "2 days" },
+            "Obtain building permits": { predecessors: "Receive notice to proceed and sign contract", resources: [{name: "G.C. Project Management", work: "16h", units: "50%"}, {name: "G.C. Procurement", work: "16h", units: "50%"}], duration: "4 days" },
+            "Submit preliminary shop drawings": { predecessors: "Obtain building permits", resources: [{name: "G.C. Project Management", work: "40h", units: "50%"}, {name: "G.C. Procurement", work: "40h", units: "50%"}], duration: "2 wks" },
+            "Submit monthly requests for payment": { predecessors: "Receive notice to proceed and sign contract", resources: [], duration: "1 day" },
+            "Long Lead Procurement": { predecessors: "", resources: [], duration: "70 days" },
+            "Submit shop drawings and order long lead items - steel": { predecessors: "Submit monthly requests for payment", resources: [{name: "Steel Erection Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Submit shop drawings and order long lead items - roofing": { predecessors: "Submit preliminary shop drawings", resources: [{name: "Roofing Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Submit shop drawings and order long lead items - elevator": { predecessors: "Submit preliminary shop drawings", resources: [{name: "Elevator Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Submit shop drawings and order long lead items - plumbing": { predecessors: "Submit preliminary shop drawings", resources: [{name: "Plumbing Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Submit shop drawings and order long lead items - electric": { predecessors: "Submit preliminary shop drawings", resources: [{name: "Electric Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Submit shop drawings and order long lead items - HVAC": { predecessors: "Submit preliminary shop drawings", resources: [{name: "HVAC Contractor Management", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Detail, fabricate and deliver steel": { predecessors: "Submit shop drawings and order long lead items - steel", resources: [{name: "Steel Erection Contractor Management", work: "240h", units: "50%"}, {name: "Steel Erection Contractor", work: "240h", units: "50%"}], duration: "12 wks" },
+            "Mobilize on Site": { predecessors: "", resources: [], duration: "10 days" },
+            "Install temporary power": { predecessors: "Receive notice to proceed and sign contract", resources: [{name: "Electric Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Install temporary water service": { predecessors: "Receive notice to proceed and sign contract", resources: [{name: "Plumbing Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Set up site office": { predecessors: "Install temporary power, Install temporary water service", resources: [{name: "G.C. Superintendent", work: "24h", units: "100%"}, {name: "G.C. Labor Crew", work: "2.4h", units: "10%"}], duration: "3 days" },
+            "Set line and grade benchmarks": { predecessors: "Set up site office", resources: [{name: "G.C. Survey Crew", work: "24h", units: "100%"}], duration: "3 days" },
+            "Prepare site - lay down yard and temporary fencing": { predecessors: "Set line and grade benchmarks", resources: [{name: "Site Grading Contractor", work: "16h", units: "100%"}, {name: "G.C. Labor Crew", work: "1.6h", units: "10%"}], duration: "2 days" },
+            "Site Grading and Utilities": { predecessors: "", resources: [], duration: "35 days" },
+            "Clear and grub site": { predecessors: "Set up site office, Prepare site - lay down yard and temporary fencing", resources: [{name: "Site Grading Contractor", work: "24h", units: "100%"}], duration: "3 days" },
+            "Stone site access and temporary parking area": { predecessors: "Clear and grub site, Prepare site - lay down yard and temporary fencing", resources: [{name: "Site Grading Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Rough grade site (cut and fill)": { predecessors: "Stone site access and temporary parking area", resources: [{name: "Site Grading Contractor", work: "40h", units: "100%"}], duration: "1 wk" },
+            "Install storm drainage": { predecessors: "Rough grade site (cut and fill)", resources: [{name: "Site Grading Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install exterior fire line and building fire riser": { predecessors: "Rough grade site (cut and fill)", resources: [{name: "Plumbing Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Perform final site grading": { predecessors: "Install storm drainage, Install exterior fire line and building fire riser", resources: [{name: "Site Grading Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Erect building batter boards and layout building": { predecessors: "Perform final site grading", resources: [{name: "G.C. Survey Crew", work: "40h", units: "100%"}], duration: "1 wk" },
+            "Foundations": { predecessors: "", resources: [], duration: "33 days" },
+            "Excavate foundations": { predecessors: "Erect building batter boards and layout building", resources: [{name: "Site Grading Contractor", work: "40h", units: "50%"}], duration: "2 wks" },
+            "Excavate elevator pit": { predecessors: "Erect building batter boards and layout building", resources: [{name: "Site Grading Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Form column piers and spread foundations": { predecessors: "Excavate foundations", resources: [{name: "G.C. Rough Carpenter Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Rough-in electric and plumbing in elevator": { predecessors: "Excavate elevator pit", resources: [{name: "Plumbing Contractor", work: "32h", units: "100%"}, {name: "Electric Contractor", work: "32h", units: "100%"}], duration: "4 days" },
+            "Form elevator pit walls": { predecessors: "Rough-in electric and plumbing in elevator", resources: [{name: "G.C. Rough Carpenter Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Set reinforcing and anchor bolts": { predecessors: "Form column piers and spread foundations", resources: [{name: "G.C. Rough Carpenter Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Pour column piers and foundations": { predecessors: "Set reinforcing and anchor bolts", resources: [{name: "G.C. Concrete Crew", work: "40h", units: "100%"}], duration: "5 days" },
+            "Pour concrete elevator walls": { predecessors: "Form elevator pit walls", resources: [{name: "G.C. Concrete Crew", work: "8h", units: "100%"}], duration: "1 day" },
+            "Cure elevator wall concrete": { predecessors: "Pour concrete elevator walls", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Cure piers and foundations": { predecessors: "Pour column piers and foundations", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Strip wall forms": { predecessors: "Pour column piers and foundations", resources: [{name: "G.C. Labor Crew", work: "0.8h", units: "10%"}], duration: "1 day" },
+            "Strip column piers and foundation forms": { predecessors: "Cure piers and foundations", resources: [{name: "G.C. Labor Crew", work: "24h", units: "100%"}], duration: "3 days" },
+            "Install pneumatic tube in elevator pit": { predecessors: "Strip wall forms", resources: [{name: "Elevator Contractor", work: "24h", units: "100%"}], duration: "3 days" },
+            "Prepare and pour concrete floor in elevator pit": { predecessors: "Install pneumatic tube in elevator pit", resources: [{name: "G.C. Concrete Crew", work: "8h", units: "100%"}], duration: "1 day" },
+            "Steel Erection": { predecessors: "", resources: [], duration: "45 days" },
+            "Erect steel columns, beams and joist - 1st and 2nd floors": { predecessors: "Strip column piers and foundation forms, Detail, fabricate and deliver steel", resources: [{name: "Steel Erection Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Erect steel columns, beams and joist - 3rd floor and roof": { predecessors: "Erect steel columns, beams and joist - 1st and 2nd floors", resources: [{name: "Steel Erection Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install miscellaneous iron and bracing - 1st and 2nd floors": { predecessors: "Erect steel columns, beams and joist - 1st and 2nd floors", resources: [{name: "Steel Erection Contractor", work: "60h", units: "75%"}], duration: "2 wks" },
+            "Install miscellaneous iron and bracing - 3rd floor and roof": { predecessors: "Erect steel columns, beams and joist - 3rd floor and roof", resources: [{name: "Steel Erection Contractor", work: "60h", units: "75%"}], duration: "2 wks" },
+            "Install stairs and miscellaneous iron railing": { predecessors: "Install miscellaneous iron and bracing - 3rd floor and roof", resources: [{name: "Steel Erection Contractor", work: "40h", units: "50%"}], duration: "2 wks" },
+            "Touch-up paint on steel": { predecessors: "Install stairs and miscellaneous iron railing", resources: [{name: "Steel Erection Contractor", work: "8h", units: "20%"}], duration: "1 wk" },
+            "Form and Pour Concrete - Floors and Roof": { predecessors: "", resources: [], duration: "85 days" },
+            "Form 2nd floor including all floor openings": { predecessors: "Touch-up paint on steel, Submit shop drawings and order long lead items - plumbing, Submit shop drawings and order long lead items - electric, Erect steel columns, beams and joist - 1st and 2nd floors", resources: [{name: "G.C. Rough Carpenter Crew", work: "40h", units: "100%"}, {name: "G.C. Labor Crew", work: "8h", units: "20%"}], duration: "5 days" },
+            "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)": { predecessors: "Erect steel columns, beams and joist - 1st and 2nd floors", resources: [{name: "G.C. Labor Crew", work: "13.2h", units: "33%"}, {name: "Plumbing Contractor", work: "13.2h", units: "33%"}, {name: "Electric Contractor", work: "13.2h", units: "33%"}], duration: "5 days" },
+            "Pour 2nd floor slab": { predecessors: "Install rebar and in-floor utilities (including mechanical, electrical, plumbing), Form 2nd floor including all floor openings", resources: [{name: "G.C. Concrete Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Cure 2nd floor slab": { predecessors: "Pour 2nd floor slab", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Strip forms from 2nd floor slab": { predecessors: "Cure 2nd floor slab", resources: [{name: "G.C. Labor Crew", work: "16h", units: "100%"}], duration: "2 days" },
+            "Form 3rd floor including all floor openings": { predecessors: "Cure 2nd floor slab", resources: [{name: "G.C. Rough Carpenter Crew", work: "20h", units: "50%"}, {name: "G.C. Labor Crew", work: "8h", units: "20%"}], duration: "5 days" },
+            "Pour 3rd floor slab": { predecessors: "Install rebar and in-floor utilities (including mechanical, electrical, plumbing), Form 3rd floor including all floor openings", resources: [{name: "G.C. Concrete Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Cure 3rd floor slab": { predecessors: "Pour 3rd floor slab", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Strip forms from 3rd floor slab": { predecessors: "Cure 3rd floor slab", resources: [{name: "G.C. Labor Crew", work: "16h", units: "100%"}], duration: "2 days" },
+            "Form roof slab including all floor openings": { predecessors: "Cure 3rd floor slab", resources: [{name: "G.C. Rough Carpenter Crew", work: "40h", units: "100%"}, {name: "G.C. Labor Crew", work: "8h", units: "20%"}], duration: "5 days" },
+            "Pour roof slab": { predecessors: "Install rebar and in-floor utilities (including mechanical, electrical, plumbing), Form roof slab including all floor openings", resources: [{name: "G.C. Concrete Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Cure roof slab": { predecessors: "Pour roof slab", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Strip forms from roof slab": { predecessors: "Cure roof slab", resources: [{name: "G.C. Labor Crew", work: "16h", units: "100%"}], duration: "2 days" },
+            "Form 1st floor": { predecessors: "Strip forms from 2nd floor slab", resources: [{name: "G.C. Rough Carpenter Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Install electrical underground": { predecessors: "Strip forms from 2nd floor slab", resources: [{name: "Electric Contractor", work: "40h", units: "100%"}], duration: "1 wk" },
+            "Install plumbing underground": { predecessors: "Strip forms from 2nd floor slab", resources: [{name: "Plumbing Contractor", work: "40h", units: "100%"}], duration: "1 wk" },
+            "Install rebar and in-floor utilities": { predecessors: "Strip forms from 2nd floor slab", resources: [{name: "G.C. Labor Crew", work: "10.56h", units: "33%"}, {name: "Plumbing Contractor", work: "10.56h", units: "33%"}, {name: "Electric Contractor", work: "10.56h", units: "33%"}], duration: "4 days" },
+            "Pour 1st floor slab": { predecessors: "Form 1st floor, Install rebar and in-floor utilities, Install electrical underground, Install plumbing underground", resources: [{name: "G.C. Concrete Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Cure 1st floor slab": { predecessors: "Pour 1st floor slab", resources: [{name: "G.C. Labor Crew", work: "5.6h", units: "10%"}], duration: "7 days" },
+            "Strip forms from 1st floor slab": { predecessors: "Cure 1st floor slab", resources: [{name: "G.C. Labor Crew", work: "16h", units: "100%"}], duration: "2 days" },
+            "Carpentry Work": { predecessors: "", resources: [], duration: "15 days" },
+            "Install exterior sheathing and metal studs": { predecessors: "Pour 3rd floor slab, Pour roof slab", resources: [{name: "Drywall Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Masonry Work": { predecessors: "", resources: [], duration: "110 days" },
+            "Rough-in plumbing at toilets and masonry walls": { predecessors: "Pour 1st floor slab, Submit shop drawings and order long lead items - plumbing", resources: [{name: "Plumbing Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Lay masonry at core, mechanical, and toilets": { predecessors: "Install miscellaneous iron and bracing - 1st and 2nd floors, Install miscellaneous iron and bracing - 3rd floor and roof", resources: [{name: "Masonry Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Install exterior masonry work": { predecessors: "Install exterior sheathing and metal studs", resources: [{name: "Masonry Contractor", work: "200h", units: "100%"}], duration: "5 wks" },
+            "Install roof drains": { predecessors: "Install exterior masonry work", resources: [{name: "Roofing Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Install tile in toilet rooms": { predecessors: "Rough-in plumbing at toilets and masonry walls", resources: [{name: "Tile Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Clean masonry": { predecessors: "Install exterior masonry work", resources: [{name: "Masonry Contractor", work: "20h", units: "50%"}], duration: "1 wk" },
+            "Clean toilet room tile": { predecessors: "Install tile in toilet rooms", resources: [{name: "Tile Contractor", work: "20h", units: "50%"}], duration: "1 wk" },
+            "Roofing": { predecessors: "", resources: [], duration: "31 days" },
+            "Install flashing at parapet walls": { predecessors: "Install exterior masonry work", resources: [{name: "Roofing Contractor", work: "32h", units: "100%"}], duration: "4 days" },
+            "Pour lightweight concrete roof fill": { predecessors: "Submit shop drawings and order long lead items - roofing, Install roof drains, Install flashing at parapet walls", resources: [{name: "Roofing Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Install seamless roofing material": { predecessors: "Pour lightweight concrete roof fill", resources: [{name: "Roofing Contractor", work: "40h", units: "100%"}], duration: "5 days" },
+            "Spread stone ballast on seamless roof": { predecessors: "Install seamless roofing material", resources: [{name: "Roofing Contractor", work: "40h", units: "100%"}], duration: "5 days" },
+            "Set rooftop equipment": { predecessors: "Spread stone ballast on seamless roof", resources: [{name: "HVAC Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Window wall and store front closures": { predecessors: "", resources: [], duration: "60 days" },
+            "Install window wall aluminum and glass": { predecessors: "Install exterior masonry work", resources: [{name: "Window Contractor", work: "200h", units: "100%"}], duration: "5 wks" },
+            "Install interior stud walls and drywall": { predecessors: "Install window wall aluminum and glass", resources: [{name: "Drywall Contractor", work: "200h", units: "100%"}], duration: "5 wks" },
+            "Install interior doors and hardware": { predecessors: "Install interior stud walls and drywall", resources: [{name: "G.C. Finish Carpenter Crew", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install store front doors and hardware": { predecessors: "Install exterior masonry work", resources: [{name: "Window Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Building Finishes": { predecessors: "", resources: [], duration: "80 days" },
+            "Install millwork and wood trim": { predecessors: "Install interior stud walls and drywall, Install interior doors and hardware", resources: [{name: "G.C. Finish Carpenter Crew", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Paint walls and woodwork": { predecessors: "Install millwork and wood trim, Install interior doors and hardware", resources: [{name: "Painting Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Install conduit at ceiling plenum space": { predecessors: "Install window wall aluminum and glass", resources: [{name: "Electric Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Install duct in ceiling plenum space": { predecessors: "Install interior doors and hardware, Install millwork and wood trim", resources: [{name: "HVAC Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Install ceiling grid": { predecessors: "Install interior doors and hardware, Install duct in ceiling plenum space", resources: [{name: "Drywall Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install ceiling tile": { predecessors: "Install ceiling grid", resources: [{name: "Drywall Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Hang wallpaper": { predecessors: "Install ceiling grid", resources: [{name: "Painting Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install building carpet": { predecessors: "Paint walls and woodwork", resources: [{name: "Carpet Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Install hardware and accessories": { predecessors: "Paint walls and woodwork", resources: [{name: "G.C. Finish Carpenter Crew", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Complete interior and exterior sod and plantings": { predecessors: "Paint walls and woodwork", resources: [{name: "Landscape Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Pave, curb, and stripe parking lot": { predecessors: "Complete interior and exterior sod and plantings", resources: [{name: "Paving Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Elevators": { predecessors: "", resources: [], duration: "40 days" },
+            "Set elevator equipment in shafts": { predecessors: "Lay masonry at core, mechanical, and toilets, Prepare and pour concrete floor in elevator pit, Submit shop drawings and order long lead items - elevator", resources: [{name: "Elevator Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Set equipment in mechanical room": { predecessors: "Set elevator equipment in shafts", resources: [{name: "Elevator Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Test and align doors and equipment": { predecessors: "Set equipment in mechanical room", resources: [{name: "Elevator Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Plumbing": { predecessors: "", resources: [], duration: "90 days" },
+            "Rough-in plumbing in drywall walls": { predecessors: "Install window wall aluminum and glass", resources: [{name: "Plumbing Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Tie-in fire line riser and set valves": { predecessors: "Install roof drains", resources: [{name: "Plumbing Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Set plumbing fixtures and trim": { predecessors: "Install tile in toilet rooms, Rough-in plumbing in drywall walls, Rough-in plumbing at toilets and masonry walls", resources: [{name: "Plumbing Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Flush, test, and clean piping and fixtures": { predecessors: "Paint walls and woodwork, Tie-in fire line riser and set valves, Set plumbing fixtures and trim", resources: [{name: "Plumbing Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Electrical": { predecessors: "", resources: [], duration: "139 days" },
+            "Rough-in electrical in masonry walls": { predecessors: "Pour 1st floor slab, Submit shop drawings and order long lead items - electric", resources: [{name: "Electric Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Rough-in electrical in drywall walls": { predecessors: "Install window wall aluminum and glass", resources: [{name: "Electric Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Pull wire in conduit and set area transformers": { predecessors: "Rough-in electrical in masonry walls, Install conduit at ceiling plenum space", resources: [{name: "Electric Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Install and terminate electrical devices": { predecessors: "Pull wire in conduit and set area transformers, Rough-in electrical in drywall walls", resources: [{name: "Electric Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Make electrical terminations for HVAC equipment": { predecessors: "Pull wire in conduit and set area transformers, Set rooftop equipment", resources: [{name: "Electric Contractor", work: "16h", units: "100%"}], duration: "2 days" },
+            "Install light fixtures - test and clean": { predecessors: "Install ceiling grid, Install and terminate electrical devices", resources: [{name: "Electric Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Heating and Ventilating - AC": { predecessors: "", resources: [], duration: "180 days" },
+            "Set equipment in mechanical room": { predecessors: "Lay masonry at core, mechanical, and toilets, Submit shop drawings and order long lead items - HVAC", resources: [{name: "HVAC Contractor", work: "80h", units: "100%"}, {name: "Set equipment in mechanical room", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Rough-in mechanical in masonry walls": { predecessors: "Pour 1st floor slab", resources: [{name: "HVAC Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Rough-in mechanical in drywall walls": { predecessors: "Install window wall aluminum and glass", resources: [{name: "HVAC Contractor", work: "80h", units: "100%"}], duration: "2 wks" },
+            "Install duct in building chase": { predecessors: "Set equipment in mechanical room, Rough-in mechanical in masonry walls, Install window wall aluminum and glass", resources: [{name: "HVAC Contractor", work: "120h", units: "100%"}], duration: "3 wks" },
+            "Set HVAC trim and test and balance system": { predecessors: "Install ceiling grid, Install duct in building chase, Pull wire in conduit and set area transformers", resources: [{name: "HVAC Contractor", work: "160h", units: "100%"}], duration: "4 wks" },
+            "Final Clean-up and Occupancy": { predecessors: "", resources: [], duration: "60 days" },
+            "Install hard tile flooring in common areas": { predecessors: "Install interior doors and hardware", resources: [{name: "Tile Contractor", work: "40h", units: "100%"}], duration: "1 wk" },
+            "Clean hard tile floors": { predecessors: "Install hard tile flooring in common areas", resources: [{name: "Tile Contractor", work: "16h", units: "50%"}], duration: "4 days" },
+            "Remove debris from building and do final clean-up": { predecessors: "Install ceiling tile, Install ceiling grid, Hang wallpaper, Complete interior and exterior sod and plantings, Flush, test, and clean piping and fixtures, Install light fixtures - test and clean, Clean hard tile floors", resources: [{name: "G.C. Labor Crew", work: "32h", units: "100%"}], duration: "4 days" },
+            "Substantial completion date": { predecessors: "Remove debris from building and do final clean-up", resources: [{name: "G.C. Superintendent", work: "8h", units: "100%"}], duration: "1 day" },
+            "Complete Final Inspections": { predecessors: "", resources: [], duration: "6 days" },
+            "Complete elevator inspection and certification": { predecessors: "Remove debris from building and do final clean-up, Test and align doors and equipment", resources: [{name: "Elevator Contractor", work: "24h", units: "100%"}], duration: "3 days" },
+            "Perform architect's inspection": { predecessors: "Remove debris from building and do final clean-up, Pave, curb, and stripe parking lot, Complete elevator inspection and certification", resources: [{name: "G.C. Superintendent", work: "4h", units: "50%"}, {name: "G.C. Project Management", work: "4h", units: "50%"}], duration: "1 day" },
+            "Perform local building agency inspection": { predecessors: "Perform architect's inspection", resources: [{name: "G.C. Project Management", work: "4h", units: "50%"}, {name: "G.C. Superintendent", work: "4h", units: "50%"}], duration: "1 day" },
+            "Perform Fire Marshal's inspection": { predecessors: "Perform local building agency inspection", resources: [{name: "G.C. Superintendent", work: "4h", units: "50%"}, {name: "G.C. Project Management", work: "4h", units: "50%"}], duration: "1 day" },
+            "Complete punch list items from all inspections": { predecessors: "Perform Fire Marshal's inspection", resources: [{name: "G.C. Superintendent", work: "8.8h", units: "11%"}, {name: "G.C. Labor Crew", work: "8.8h", units: "11%"}, {name: "Plumbing Contractor", work: "8.8h", units: "11%"}, {name: "Electric Contractor", work: "8.8h", units: "11%"}, {name: "HVAC Contractor", work: "8.8h", units: "11%"}, {name: "Drywall Contractor", work: "8.8h", units: "11%"}, {name: "Carpet Contractor", work: "8.8h", units: "11%"}, {name: "Paving Contractor", work: "8.8h", units: "11%"}, {name: "Painting Contractor", work: "8.8h", units: "11%"}], duration: "2 wks" },
+            "Obtain certificate of occupancy": { predecessors: "Complete punch list items from all inspections", resources: [{name: "G.C. Project Management", work: "16h", units: "100%"}], duration: "2 days" },
+            "Issue final completion documents including warranties": { predecessors: "Complete punch list items from all inspections", resources: [{name: "G.C. Project Management", work: "8h", units: "100%"}], duration: "1 day" },
+            "Issue final request for payment": { predecessors: "Obtain certificate of occupancy, Issue final completion documents including warranties", resources: [{name: "G.C. Project Management", work: "2.64h", units: "33%"}, {name: "G.C. Accounting", work: "2.64h", units: "33%"}, {name: "G.C. General Management", work: "2.64h", units: "33%"}], duration: "1 day" }
+        };
+
+        const tasks = [
+            {id: 0, name: "Commercial Construction", start: "2023-05-01", finish: "2024-08-22", level: 0},
+            {id: 1, name: "General Conditions", start: "2023-05-01", finish: "2023-05-23", level: 1},
+            {id: 2, name: "Receive notice to proceed and sign contract", start: "2023-05-01", finish: "2023-05-03", level: 2},
+            {id: 3, name: "Submit bond and insurance documents", start: "2023-05-04", finish: "2023-05-05", level: 2},
+            {id: 4, name: "Prepare and submit project schedule", start: "2023-05-08", finish: "2023-05-09", level: 2},
+            {id: 5, name: "Prepare and submit schedule of values", start: "2023-05-10", finish: "2023-05-11", level: 2},
+            {id: 6, name: "Obtain building permits", start: "2023-05-04", finish: "2023-05-09", level: 2},
+            {id: 7, name: "Submit preliminary shop drawings", start: "2023-05-10", finish: "2023-05-23", level: 2},
+            {id: 8, name: "Submit monthly requests for payment", start: "2023-05-04", finish: "2023-05-04", level: 2},
+            {id: 9, name: "Long Lead Procurement", start: "2023-05-05", finish: "2023-08-10", level: 1},
+            {id: 10, name: "Submit shop drawings and order long lead items - steel", start: "2023-05-05", finish: "2023-05-18", level: 2},
+            {id: 11, name: "Submit shop drawings and order long lead items - roofing", start: "2023-05-24", finish: "2023-06-06", level: 2},
+            {id: 12, name: "Submit shop drawings and order long lead items - elevator", start: "2023-05-24", finish: "2023-06-06", level: 2},
+            {id: 13, name: "Submit shop drawings and order long lead items - plumbing", start: "2023-05-24", finish: "2023-06-06", level: 2},
+            {id: 14, name: "Submit shop drawings and order long lead items - electric", start: "2023-05-24", finish: "2023-06-06", level: 2},
+            {id: 15, name: "Submit shop drawings and order long lead items - HVAC", start: "2023-05-24", finish: "2023-06-06", level: 2},
+            {id: 16, name: "Detail, fabricate and deliver steel", start: "2023-05-19", finish: "2023-08-10", level: 2},
+            {id: 17, name: "Mobilize on Site", start: "2023-05-04", finish: "2023-05-17", level: 1},
+            {id: 18, name: "Install temporary power", start: "2023-05-04", finish: "2023-05-05", level: 2},
+            {id: 19, name: "Install temporary water service", start: "2023-05-04", finish: "2023-05-05", level: 2},
+            {id: 20, name: "Set up site office", start: "2023-05-08", finish: "2023-05-10", level: 2},
+            {id: 21, name: "Set line and grade benchmarks", start: "2023-05-11", finish: "2023-05-15", level: 2},
+            {id: 22, name: "Prepare site - lay down yard and temporary fencing", start: "2023-05-16", finish: "2023-05-17", level: 2},
+            {id: 23, name: "Site Grading and Utilities", start: "2023-05-18", finish: "2023-07-05", level: 1},
+            {id: 24, name: "Clear and grub site", start: "2023-05-18", finish: "2023-05-22", level: 2},
+            {id: 25, name: "Stone site access and temporary parking area", start: "2023-05-23", finish: "2023-05-24", level: 2},
+            {id: 26, name: "Rough grade site (cut and fill)", start: "2023-05-25", finish: "2023-05-31", level: 2},
+            {id: 27, name: "Install storm drainage", start: "2023-06-01", finish: "2023-06-14", level: 2},
+            {id: 28, name: "Install exterior fire line and building fire riser", start: "2023-06-01", finish: "2023-06-14", level: 2},
+            {id: 29, name: "Perform final site grading", start: "2023-06-15", finish: "2023-06-28", level: 2},
+            {id: 30, name: "Erect building batter boards and layout building", start: "2023-06-29", finish: "2023-07-05", level: 2},
+            {id: 31, name: "Foundations", start: "2023-07-06", finish: "2023-08-21", level: 1},
+            {id: 32, name: "Excavate foundations", start: "2023-07-06", finish: "2023-07-19", level: 2},
+            {id: 33, name: "Excavate elevator pit", start: "2023-07-06", finish: "2023-07-07", level: 2},
+            {id: 34, name: "Form column piers and spread foundations", start: "2023-07-20", finish: "2023-07-25", level: 2},
+            {id: 35, name: "Rough-in electric and plumbing in elevator", start: "2023-07-10", finish: "2023-07-13", level: 2},
+            {id: 36, name: "Form elevator pit walls", start: "2023-07-14", finish: "2023-07-19", level: 2},
+            {id: 37, name: "Set reinforcing and anchor bolts", start: "2023-07-26", finish: "2023-07-31", level: 2},
+            {id: 38, name: "Pour column piers and foundations", start: "2023-08-01", finish: "2023-08-07", level: 2},
+            {id: 39, name: "Pour concrete elevator walls", start: "2023-07-20", finish: "2023-07-20", level: 2},
+            {id: 40, name: "Cure elevator wall concrete", start: "2023-07-21", finish: "2023-07-31", level: 2},
+            {id: 41, name: "Cure piers and foundations", start: "2023-08-08", finish: "2023-08-16", level: 2},
+            {id: 42, name: "Strip wall forms", start: "2023-08-01", finish: "2023-08-01", level: 2},
+            {id: 43, name: "Strip column piers and foundation forms", start: "2023-08-17", finish: "2023-08-21", level: 2},
+            {id: 44, name: "Install pneumatic tube in elevator pit", start: "2023-08-02", finish: "2023-08-04", level: 2},
+            {id: 45, name: "Prepare and pour concrete floor in elevator pit", start: "2023-08-07", finish: "2023-08-07", level: 2},
+            {id: 46, name: "Steel Erection", start: "2023-08-22", finish: "2023-10-23", level: 1},
+            {id: 47, name: "Erect steel columns, beams and joist - 1st and 2nd floors", start: "2023-08-22", finish: "2023-09-04", level: 2},
+            {id: 48, name: "Erect steel columns, beams and joist - 3rd floor and roof", start: "2023-09-05", finish: "2023-09-18", level: 2},
+            {id: 49, name: "Install miscellaneous iron and bracing - 1st and 2nd floors", start: "2023-09-05", finish: "2023-09-18", level: 2},
+            {id: 50, name: "Install miscellaneous iron and bracing - 3rd floor and roof", start: "2023-09-19", finish: "2023-10-02", level: 2},
+            {id: 51, name: "Install stairs and miscellaneous iron railing", start: "2023-10-03", finish: "2023-10-16", level: 2},
+            {id: 52, name: "Touch-up paint on steel", start: "2023-10-17", finish: "2023-10-23", level: 2},
+            {id: 53, name: "Form and Pour Concrete - Floors and Roof", start: "2023-09-05", finish: "2024-01-01", level: 1},
+            {id: 54, name: "Form 2nd floor including all floor openings", start: "2023-10-24", finish: "2023-10-30", level: 2},
+            {id: 55, name: "Install rebar and in-floor utilities", start: "2023-09-05", finish: "2023-09-11", level: 2},
+            {id: 56, name: "Pour 2nd floor slab", start: "2023-10-31", finish: "2023-11-03", level: 2},
+            {id: 57, name: "Cure 2nd floor slab", start: "2023-11-06", finish: "2023-11-14", level: 2},
+            {id: 58, name: "Strip forms from 2nd floor slab", start: "2023-11-15", finish: "2023-11-16", level: 2},
+            {id: 59, name: "Form 3rd floor including all floor openings", start: "2023-11-15", finish: "2023-11-21", level: 2},
+            {id: 60, name: "Install rebar and in-floor utilities", start: "2023-11-15", finish: "2023-11-21", level: 2},
+            {id: 61, name: "Pour 3rd floor slab", start: "2023-11-22", finish: "2023-11-27", level: 2},
+            {id: 62, name: "Cure 3rd floor slab", start: "2023-11-28", finish: "2023-12-06", level: 2},
+            {id: 63, name: "Strip forms from 3rd floor slab", start: "2023-12-07", finish: "2023-12-08", level: 2},
+            {id: 64, name: "Form roof slab including all floor openings", start: "2023-12-07", finish: "2023-12-13", level: 2},
+            {id: 65, name: "Install rebar and in-floor utilities", start: "2023-12-07", finish: "2023-12-13", level: 2},
+            {id: 66, name: "Pour roof slab", start: "2023-12-14", finish: "2023-12-19", level: 2},
+            {id: 67, name: "Cure roof slab", start: "2023-12-20", finish: "2023-12-28", level: 2},
+            {id: 68, name: "Strip forms from roof slab", start: "2023-12-29", finish: "2024-01-01", level: 2},
+            {id: 69, name: "Form 1st floor", start: "2023-11-17", finish: "2023-11-22", level: 2},
+            {id: 70, name: "Install electrical underground", start: "2023-11-17", finish: "2023-11-23", level: 2},
+            {id: 71, name: "Install plumbing underground", start: "2023-11-17", finish: "2023-11-23", level: 2},
+            {id: 72, name: "Install rebar and in-floor utilities", start: "2023-11-17", finish: "2023-11-22", level: 2},
+            {id: 73, name: "Pour 1st floor slab", start: "2023-11-24", finish: "2023-11-29", level: 2},
+            {id: 74, name: "Cure 1st floor slab", start: "2023-11-30", finish: "2023-12-08", level: 2},
+            {id: 75, name: "Strip forms from 1st floor slab", start: "2023-12-11", finish: "2023-12-12", level: 2},
+            {id: 76, name: "Carpentry Work", start: "2024-01-02", finish: "2024-01-22", level: 1},
+            {id: 77, name: "Install exterior sheathing and metal studs", start: "2024-01-02", finish: "2024-01-22", level: 2},
+            {id: 78, name: "Masonry Work", start: "2023-10-03", finish: "2024-03-04", level: 1},
+            {id: 79, name: "Rough-in plumbing at toilets and masonry walls", start: "2023-12-13", finish: "2024-01-09", level: 2},
+            {id: 80, name: "Lay masonry at core, mechanical, and toilets", start: "2023-10-03", finish: "2023-10-30", level: 2},
+            {id: 81, name: "Install exterior masonry work", start: "2024-01-23", finish: "2024-02-26", level: 2},
+            {id: 82, name: "Install roof drains", start: "2024-02-27", finish: "2024-02-28", level: 2},
+            {id: 83, name: "Install tile in toilet rooms", start: "2024-01-10", finish: "2024-01-23", level: 2},
+            {id: 84, name: "Clean masonry", start: "2024-02-27", finish: "2024-03-04", level: 2},
+            {id: 85, name: "Clean toilet room tile", start: "2024-01-24", finish: "2024-01-30", level: 2},
+            {id: 86, name: "Roofing", start: "2024-02-27", finish: "2024-04-09", level: 1},
+            {id: 87, name: "Install flashing at parapet walls", start: "2024-02-27", finish: "2024-03-01", level: 2},
+            {id: 88, name: "Pour lightweight concrete roof fill", start: "2024-03-04", finish: "2024-03-05", level: 2},
+            {id: 89, name: "Install seamless roofing material", start: "2024-03-13", finish: "2024-03-19", level: 2},
+            {id: 90, name: "Spread stone ballast on seamless roof", start: "2024-03-20", finish: "2024-03-26", level: 2},
+            {id: 91, name: "Set rooftop equipment", start: "2024-03-27", finish: "2024-04-09", level: 2},
+            {id: 92, name: "Window wall and store front closures", start: "2024-02-27", finish: "2024-05-20", level: 1},
+            {id: 93, name: "Install window wall aluminum and glass", start: "2024-02-27", finish: "2024-04-01", level: 2},
+            {id: 94, name: "Install interior stud walls and drywall", start: "2024-04-02", finish: "2024-05-06", level: 2},
+            {id: 95, name: "Install interior doors and hardware", start: "2024-05-07", finish: "2024-05-20", level: 2},
+            {id: 96, name: "Install store front doors and hardware", start: "2024-02-27", finish: "2024-03-18", level: 2},
+            {id: 97, name: "Building Finishes", start: "2024-04-02", finish: "2024-07-22", level: 1},
+            {id: 98, name: "Install millwork and wood trim", start: "2024-05-07", finish: "2024-05-27", level: 2},
+            {id: 99, name: "Paint walls and woodwork", start: "2024-05-28", finish: "2024-06-24", level: 2},
+            {id: 100, name: "Install conduit at ceiling plenum space", start: "2024-04-02", finish: "2024-04-22", level: 2},
+            {id: 101, name: "Install duct in ceiling plenum space", start: "2024-05-07", finish: "2024-05-27", level: 2},
+            {id: 102, name: "Install ceiling grid", start: "2024-05-28", finish: "2024-06-10", level: 2},
+            {id: 103, name: "Install ceiling tile", start: "2024-06-11", finish: "2024-06-24", level: 2},
+            {id: 104, name: "Hang wallpaper", start: "2024-06-11", finish: "2024-06-24", level: 2},
+            {id: 105, name: "Install building carpet", start: "2024-06-25", finish: "2024-07-22", level: 2},
+            {id: 106, name: "Install hardware and accessories", start: "2024-06-25", finish: "2024-07-15", level: 2},
+            {id: 107, name: "Complete interior and exterior sod and plantings", start: "2024-06-25", finish: "2024-07-08", level: 2},
+            {id: 108, name: "Pave, curb, and stripe parking lot", start: "2024-07-09", finish: "2024-07-22", level: 2},
+            {id: 109, name: "Elevators", start: "2023-10-31", finish: "2023-12-25", level: 1},
+            {id: 110, name: "Set elevator equipment in shafts", start: "2023-10-31", finish: "2023-11-27", level: 2},
+            {id: 111, name: "Set equipment in mechanical room", start: "2023-11-28", finish: "2023-12-11", level: 2},
+            {id: 112, name: "Test and align doors and equipment", start: "2023-12-12", finish: "2023-12-25", level: 2},
+            {id: 113, name: "Plumbing", start: "2024-03-05", finish: "2024-07-08", level: 1},
+            {id: 114, name: "Rough-in plumbing in drywall walls", start: "2024-04-02", finish: "2024-04-29", level: 2},
+            {id: 115, name: "Tie-in fire line riser and set valves", start: "2024-03-05", finish: "2024-03-18", level: 2},
+            {id: 116, name: "Set plumbing fixtures and trim", start: "2024-04-30", finish: "2024-05-20", level: 2},
+            {id: 117, name: "Flush, test, and clean piping and fixtures", start: "2024-06-25", finish: "2024-07-08", level: 2},
+            {id: 118, name: "Electrical", start: "2023-12-13", finish: "2024-06-24", level: 1},
+            {id: 119, name: "Rough-in electrical in masonry walls", start: "2023-12-13", finish: "2024-01-09", level: 2},
+            {id: 120, name: "Rough-in electrical in drywall walls", start: "2024-04-02", finish: "2024-04-29", level: 2},
+            {id: 121, name: "Pull wire in conduit and set area transformers", start: "2024-04-23", finish: "2024-05-13", level: 2},
+            {id: 122, name: "Install and terminate electrical devices", start: "2024-05-14", finish: "2024-06-03", level: 2},
+            {id: 123, name: "Make electrical terminations for HVAC equipment", start: "2024-05-14", finish: "2024-05-15", level: 2},
+            {id: 124, name: "Install light fixtures - test and clean", start: "2024-06-11", finish: "2024-06-24", level: 2},
+            {id: 125, name: "Heating and Ventilating - AC", start: "2023-10-31", finish: "2024-07-08", level: 1},
+            {id: 126, name: "Set equipment in mechanical room", start: "2023-10-31", finish: "2023-11-13", level: 2},
+            {id: 127, name: "Rough-in mechanical in masonry walls", start: "2023-12-13", finish: "2024-01-09", level: 2},
+            {id: 128, name: "Rough-in mechanical in drywall walls", start: "2024-04-02", finish: "2024-04-15", level: 2},
+            {id: 129, name: "Install duct in building chase", start: "2024-04-02", finish: "2024-04-22", level: 2},
+            {id: 130, name: "Set HVAC trim and test and balance system", start: "2024-06-11", finish: "2024-07-08", level: 2},
+            {id: 131, name: "Final Clean-up and Occupancy", start: "2024-05-07", finish: "2024-07-29", level: 1},
+            {id: 132, name: "Install hard tile flooring in common areas", start: "2024-05-07", finish: "2024-05-13", level: 2},
+            {id: 133, name: "Clean hard tile floors", start: "2024-05-14", finish: "2024-05-17", level: 2},
+            {id: 134, name: "Remove debris from building and do final clean-up", start: "2024-07-23", finish: "2024-07-26", level: 2},
+            {id: 135, name: "Substantial completion date", start: "2024-07-29", finish: "2024-07-29", level: 2},
+            {id: 136, name: "Complete Final Inspections", start: "2024-07-29", finish: "2024-08-05", level: 1},
+            {id: 137, name: "Complete elevator inspection and certification", start: "2024-07-29", finish: "2024-07-31", level: 2},
+            {id: 138, name: "Perform architect's inspection", start: "2024-08-01", finish: "2024-08-01", level: 2},
+            {id: 139, name: "Perform local building agency inspection", start: "2024-08-02", finish: "2024-08-02", level: 2},
+            {id: 140, name: "Perform Fire Marshal's inspection", start: "2024-08-05", finish: "2024-08-05", level: 2},
+            {id: 141, name: "Complete punch list items from all inspections", start: "2024-08-06", finish: "2024-08-19", level: 1},
+            {id: 142, name: "Obtain certificate of occupancy", start: "2024-08-20", finish: "2024-08-21", level: 1},
+            {id: 143, name: "Issue final completion documents including warranties", start: "2024-08-20", finish: "2024-08-20", level: 1},
+            {id: 144, name: "Issue final request for payment", start: "2024-08-22", finish: "2024-08-22", level: 1}
+        ];
+
+        const margin = { top: 40, right: 30, bottom: 30, left: 350 };
+        const barHeight = 22;
+        const rowHeight = 28;
+        
+        let filteredTasks = [...tasks];
+        
+        function updateChart() {
+            const showLevel0 = document.getElementById('showLevel0').checked;
+            const showLevel1 = document.getElementById('showLevel1').checked;
+            const showLevel2 = document.getElementById('showLevel2').checked;
+            const filterStart = document.getElementById('filterStart').value;
+            const filterEnd = document.getElementById('filterEnd').value;
+            
+            filteredTasks = tasks.filter(t => {
+                if (t.level === 0 && !showLevel0) return false;
+                if (t.level === 1 && !showLevel1) return false;
+                if (t.level === 2 && !showLevel2) return false;
+                if (filterStart && t.finish < filterStart) return false;
+                if (filterEnd && t.start > filterEnd) return false;
+                return true;
+            });
+            
+            const showDates = document.getElementById('showDates').checked;
+            const leftMargin = showDates ? margin.left : 150;
+            
+            const width = document.getElementById('chart').clientWidth;
+            const height = Math.max(600, filteredTasks.length * rowHeight + margin.top + margin.bottom);
+            
+            d3.select('#chart').select('svg').remove();
+            
+            const svg = d3.select('#chart')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+            
+            const g = svg.append('g')
+                .attr('transform', `translate(${leftMargin}, ${margin.top})`);
+            
+            const minDate = d3.min(filteredTasks, d => new Date(d.start));
+            const maxDate = d3.max(filteredTasks, d => new Date(d.finish));
+            
+            const xScale = d3.scaleTime()
+                .domain([minDate, d3.timeDay.offset(maxDate, 7)])
+                .range([0, width - leftMargin - margin.right]);
+            
+            const yScale = d3.scaleBand()
+                .domain(filteredTasks.map((d, i) => i))
+                .range([0, filteredTasks.length * rowHeight])
+                .padding(0.1);
+            
+            const xAxis = d3.axisTop(xScale)
+                .ticks(d3.timeMonth.every(2))
+                .tickFormat(d3.timeFormat('%b %Y'));
+            
+            g.append('g')
+                .attr('class', 'x-axis')
+                .call(xAxis)
+                .selectAll('text')
+                .style('font-size', '12px');
+            
+            g.selectAll('.grid-line')
+                .data(xScale.ticks(d3.timeMonth.every(2)))
+                .enter()
+                .append('line')
+                .attr('class', 'grid-line')
+                .attr('x1', d => xScale(d))
+                .attr('x2', d => xScale(d))
+                .attr('y1', 0)
+                .attr('y2', filteredTasks.length * rowHeight)
+                .attr('stroke', '#e0e0e0')
+                .attr('stroke-dasharray', '3,3');
+            
+            const tooltip = d3.select('#tooltip');
+            
+            g.selectAll('.bar')
+                .data(filteredTasks)
+                .enter()
+                .append('rect')
+                .attr('class', 'bar')
+                .attr('x', d => xScale(new Date(d.start)))
+                .attr('y', (d, i) => yScale(i) + (yScale.bandwidth() - barHeight) / 2)
+                .attr('width', d => Math.max(4, xScale(new Date(d.finish)) - xScale(new Date(d.start))))
+                .attr('height', barHeight)
+                .attr('rx', 3)
+                .attr('fill', d => levelColors[d.level])
+                .attr('stroke', d => d.level === 0 ? '#000' : 'none')
+                .attr('stroke-width', d => d.level === 0 ? 2 : 0)
+                .on('mouseover', (event, d) => {
+                    const startDate = new Date(d.start).toLocaleDateString();
+                    const endDate = new Date(d.finish).toLocaleDateString();
+                    const taskInfo = taskMap[d.name] || { predecessors: "", resources: [], duration: "" };
+                    
+                    let tooltipContent = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-section">
+                            <div class="tooltip-row">
+                                <span class="tooltip-label">Start:</span>
+                                <span class="tooltip-value">${startDate}</span>
+                            </div>
+                            <div class="tooltip-row">
+                                <span class="tooltip-label">Finish:</span>
+                                <span class="tooltip-value">${endDate}</span>
+                            </div>
+                            <div class="tooltip-row">
+                                <span class="tooltip-label">Duration:</span>
+                                <span class="tooltip-value">${taskInfo.duration}</span>
+                            </div>
+                            <div class="tooltip-row">
+                                <span class="tooltip-label">Level:</span>
+                                <span class="tooltip-value">${d.level}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (taskInfo.predecessors) {
+                        tooltipContent += `
+                            <div class="tooltip-section">
+                                <div class="tooltip-section-title">Predecessors</div>
+                                <div class="tooltip-value" style="font-size: 12px;">${taskInfo.predecessors}</div>
+                            </div>
+                        `;
+                    }
+                    
+                    if (taskInfo.resources && taskInfo.resources.length > 0) {
+                        tooltipContent += `<div class="tooltip-section"><div class="tooltip-section-title">Resources / Units</div>`;
+                        taskInfo.resources.forEach(r => {
+                            tooltipContent += `
+                                <div class="tooltip-resources">
+                                    <div class="tooltip-resource">
+                                        <span>${r.name}</span>
+                                        <span>${r.work} / ${r.units}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        tooltipContent += `</div>`;
+                    }
+                    
+                    tooltip.style('display', 'block').html(tooltipContent);
+                })
+                .on('mousemove', (event) => {
+                    const tooltipNode = tooltip.node();
+                    const tooltipWidth = tooltipNode.offsetWidth || 450;
+                    const tooltipHeight = tooltipNode.offsetHeight || 200;
+                    const padding = 15;
+                    
+                    let left = event.pageX + padding;
+                    let top = event.pageY - tooltipHeight / 2;
+                    
+                    if (left + tooltipWidth > window.innerWidth - padding) {
+                        left = event.pageX - tooltipWidth - padding;
+                    }
+                    if (left < padding) {
+                        left = padding;
+                    }
+                    if (top < padding) {
+                        top = padding;
+                    }
+                    if (top + tooltipHeight > window.innerHeight - padding) {
+                        top = window.innerHeight - tooltipHeight - padding;
+                    }
+                    
+                    tooltip.style('left', left + 'px')
+                        .style('top', top + 'px');
+                })
+                .on('mouseout', () => {
+                    tooltip.style('display', 'none');
+                });
+            
+            const nameLabels = svg.append('g')
+                .attr('transform', `translate(0, ${margin.top})`);
+            
+            nameLabels.selectAll('.task-label')
+                .data(filteredTasks)
+                .enter()
+                .append('text')
+                .attr('class', 'task-label')
+                .attr('x', 5)
+                .attr('y', (d, i) => yScale(i) + yScale.bandwidth() / 2 + 4)
+                .attr('font-size', '11px')
+                .attr('fill', d => d.level === 0 ? '#000' : '#333')
+                .attr('font-weight', d => d.level === 0 ? 'bold' : 'normal')
+                .text(d => {
+                    const name = d.name.length > 45 ? d.name.substring(0, 42) + '...' : d.name;
+                    return name;
+                });
+            
+            nameLabels.selectAll('.date-label')
+                .data(filteredTasks)
+                .enter()
+                .append('text')
+                .attr('class', 'date-label')
+                .attr('x', showDates ? leftMargin - 10 : leftMargin - 5)
+                .attr('y', (d, i) => yScale(i) + yScale.bandwidth() / 2 + 4)
+                .attr('text-anchor', 'end')
+                .attr('font-size', '10px')
+                .attr('fill', '#666')
+                .style('display', showDates ? 'block' : 'none')
+                .text(d => {
+                    const start = new Date(d.start).toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+                    const end = new Date(d.finish).toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+                    return `${start} - ${end}`;
+                });
+        }
+        
+        document.getElementById('showLevel0').addEventListener('change', updateChart);
+        document.getElementById('showLevel1').addEventListener('change', updateChart);
+        document.getElementById('showLevel2').addEventListener('change', updateChart);
+        document.getElementById('showDates').addEventListener('change', updateChart);
+        document.getElementById('filterStart').addEventListener('change', updateChart);
+        document.getElementById('filterEnd').addEventListener('change', updateChart);
+        
+        window.addEventListener('resize', updateChart);
+        
+        updateChart();
+    </script>
+</body>
+</html>
