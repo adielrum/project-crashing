@@ -22,7 +22,7 @@ from solver_milp import solve_milp
 
 
 app = Flask(__name__)
-DATA_FOLDER = "/Users/macintoshhd/Documents/Adiel/pemod/Pemod-Sandbox/Schedules_CSV"
+DATA_FOLDER = "Schedules_CSV"
 BASE_DATE = datetime(2023, 5, 1)
 
 # Cache loaded data (small)
@@ -357,7 +357,7 @@ form.addEventListener('submit', async (e) => {
 # ---------------------- Plotly figure builders ----------------------
 
 def _build_gantt_fig(tasks, result, current_day):
-    from optimizer_core import day_to_date
+    from optimizer_core import day_to_date, build_active_set
     schedule = result["schedule"]
     crash_plan = result["crash_plan"]
     level2 = [(tid, t) for tid, t in tasks.items() if t.outline_level == 2]
@@ -365,16 +365,20 @@ def _build_gantt_fig(tasks, result, current_day):
     sorted_tasks = sorted(level2, key=lambda x: x[1].start_day)
     task_names = [t.name for _, t in sorted_tasks]
 
+    # Determine which tasks are currently in-progress (started but not yet finished)
+    _, active_set = build_active_set(tasks, current_day)
+
     data = []
     legend_shown = set()
+    cur_dt = day_to_date(current_day, BASE_DATE).isoformat()
 
     for tid, t in sorted_tasks:
         sv, fv = schedule.get(tid, (t.start_day, t.finish_day))
         sv, fv = float(sv), float(fv)
-        start_dt = day_to_date(int(round(sv)), BASE_DATE).isoformat()
         end_dt = day_to_date(int(round(fv)), BASE_DATE).isoformat()
         is_crashed = t.name in crash_plan
         is_done = fv < current_day
+        is_active = tid in active_set
 
         if is_done:
             group, color = "Completed", "#cccccc"
@@ -383,8 +387,15 @@ def _build_gantt_fig(tasks, result, current_day):
         else:
             group, color = "Active (normal)", "#3b82f6"
 
+        # For active tasks the MILP pins s[tid]=current_day (remaining-work anchor),
+        # but visually the bar must start from the original baseline start date.
+        visual_start_day = t.start_day if is_active else int(round(sv))
+        start_dt = day_to_date(visual_start_day, BASE_DATE).isoformat()
+
         info = [f"<b>{t.name}</b>",
-                f"Day {int(sv)} → Day {int(fv)} ({fv - sv:.1f}d)"]
+                (f"Started Day {visual_start_day} → Finishes Day {int(fv)} "
+                 f"(remaining: {fv - current_day:.1f}d)") if is_active
+                else f"Day {visual_start_day} → Day {int(fv)} ({fv - visual_start_day:.1f}d)"]
         if is_crashed:
             info.append("<br><b>CRASHED:</b>")
             for entry in crash_plan[t.name]:
@@ -395,20 +406,44 @@ def _build_gantt_fig(tasks, result, current_day):
                 )
         text = "<br>".join(info)
 
-        data.append(dict(
-            type='scatter',
-            x=[start_dt, end_dt],
-            y=[t.name, t.name],
-            mode='lines',
-            line=dict(color=color, width=14),
-            name=group,
-            legendgroup=group,
-            showlegend=(group not in legend_shown),
-            hovertemplate=text + "<extra></extra>",
-        ))
-        legend_shown.add(group)
+        if is_active and not is_done:
+            # Completed portion: original start → current_day (grey)
+            data.append(dict(
+                type='scatter',
+                x=[start_dt, cur_dt],
+                y=[t.name, t.name],
+                mode='lines',
+                line=dict(color="#cccccc", width=14),
+                name="Completed", legendgroup="Completed",
+                showlegend=("Completed" not in legend_shown),
+                hovertemplate=f"<b>{t.name}</b><br>Completed portion<extra></extra>",
+            ))
+            legend_shown.add("Completed")
+            # Remaining / optimized portion: current_day → optimized finish (colored)
+            data.append(dict(
+                type='scatter',
+                x=[cur_dt, end_dt],
+                y=[t.name, t.name],
+                mode='lines',
+                line=dict(color=color, width=14),
+                name=group, legendgroup=group,
+                showlegend=(group not in legend_shown),
+                hovertemplate=text + "<extra></extra>",
+            ))
+            legend_shown.add(group)
+        else:
+            data.append(dict(
+                type='scatter',
+                x=[start_dt, end_dt],
+                y=[t.name, t.name],
+                mode='lines',
+                line=dict(color=color, width=14),
+                name=group, legendgroup=group,
+                showlegend=(group not in legend_shown),
+                hovertemplate=text + "<extra></extra>",
+            ))
+            legend_shown.add(group)
 
-    cur_dt = day_to_date(current_day, BASE_DATE).isoformat()
     target_dt = day_to_date(result["target_day"], BASE_DATE).isoformat()
     layout = dict(
         title=f"{result['solver']} | makespan={result['makespan']:.1f}d, "

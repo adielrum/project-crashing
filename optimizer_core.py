@@ -172,9 +172,27 @@ def compute_baseline_duration_per_assignment(a, tasks):
     return max(1.0, a.work_hours / (8.0 * a.units_percent))
 
 
-def effective_W(a, in_active):
+def infer_remaining_fraction(a, tasks, current_day):
+    """
+    Fraction of work remaining for an active task.
+    Uses percent_complete from data if it is explicitly set (> 0).
+    Falls back to elapsed-calendar-time proportion when percent_complete == 0,
+    because MS Project often exports 0 for all tasks even when work is in progress.
+    """
+    if a.percent_complete > 0:
+        return max(0.05, 1.0 - a.percent_complete)
+    t = tasks[a.task_id]
+    span = max(1, t.finish_day - t.start_day)
+    elapsed = max(0, current_day - t.start_day)
+    return max(0.05, 1.0 - elapsed / span)
+
+
+def effective_W(a, in_active, remaining_frac=None):
     """Remaining work hours for active task; baseline otherwise."""
-    return a.work_hours * (max(0.05, 1.0 - a.percent_complete) if in_active else 1.0)
+    if not in_active:
+        return a.work_hours
+    frac = remaining_frac if remaining_frac is not None else max(0.05, 1.0 - a.percent_complete)
+    return a.work_hours * frac
 
 
 # ============== GA Solver ==============
@@ -206,11 +224,15 @@ class CrashingProblem(ElementwiseProblem):
         for i, a in enumerate(self.crash_assignments):
             x_i, t_i = xs[i], taus[i]
             d_base = compute_baseline_duration_per_assignment(a, self.tasks)
-            if a.task_id in self.active:
-                d_base *= max(0.05, 1.0 - a.percent_complete)
+            in_active = a.task_id in self.active
+            if in_active:
+                rem = infer_remaining_fraction(a, self.tasks, self.current_day)
+                d_base *= rem
+            else:
+                rem = None
             per_assign[a.task_id].append(d_base * mode_dur_factor(x_i, t_i, p['alpha'], p['beta']))
             r_k = self.resources[a.resource_id].rate
-            W = effective_W(a, a.task_id in self.active)
+            W = effective_W(a, in_active, rem)
             cost_total += mode_cost_per_assignment(W, r_k, x_i, t_i,
                                                     p['alpha'], p['beta'], p['ot_mult'])
 
@@ -271,11 +293,15 @@ def solve_ga(tasks, resources, assignments, current_day, target_day,
         x_i = float(xs[i])
         t_i = int(taus[i])
         d_base = compute_baseline_duration_per_assignment(a, tasks)
-        if a.task_id in active:
-            d_base *= max(0.05, 1.0 - a.percent_complete)
+        in_active = a.task_id in active
+        if in_active:
+            rem = infer_remaining_fraction(a, tasks, current_day)
+            d_base *= rem
+        else:
+            rem = None
         per_assign_dur[a.task_id].append(d_base * mode_dur_factor(x_i, t_i, p['alpha'], p['beta']))
         r_k = resources[a.resource_id].rate
-        W = effective_W(a, a.task_id in active)
+        W = effective_W(a, in_active, rem)
         c_chosen = mode_cost_per_assignment(W, r_k, x_i, t_i, p['alpha'], p['beta'], p['ot_mult'])
         c_base = mode_cost_per_assignment(W, r_k, 1.0, 0, p['alpha'], p['beta'], p['ot_mult'])
         total_baseline += c_base
@@ -337,13 +363,16 @@ def render_gantt_html(tasks, result, base_date, current_day, output_file=None,
     fig = go.Figure()
     legend_shown = set()
 
+    # Determine which tasks are active (in-progress at current_day)
+    _, active_set = build_active_set(tasks, current_day)
+
     for tid, t in sorted_tasks:
         sv, fv = schedule.get(tid, (t.start_day, t.finish_day))
         sv, fv = float(sv), float(fv)
-        start_dt = day_to_date(int(round(sv)), base_date)
         end_dt = day_to_date(int(round(fv)), base_date)
         is_crashed = t.name in crash_plan
         is_done = fv < current_day
+        is_active = tid in active_set
 
         if is_done:
             group, color = "Completed", "#cccccc"
@@ -352,8 +381,15 @@ def render_gantt_html(tasks, result, base_date, current_day, output_file=None,
         else:
             group, color = "Active (normal)", "#3b82f6"
 
+        # For active tasks the MILP pins s[tid]=current_day (remaining-work anchor),
+        # but visually we must show the bar from the original baseline start date.
+        visual_start_day = t.start_day if is_active else int(round(sv))
+        start_dt = day_to_date(visual_start_day, base_date)
+
         info = [f"<b>{t.name}</b>",
-                f"Day {int(sv)} → Day {int(fv)} ({fv - sv:.1f}d)"]
+                f"Started Day {visual_start_day} → Finishes Day {int(fv)} "
+                f"(remaining: {fv - current_day:.1f}d)" if is_active
+                else f"Day {visual_start_day} → Day {int(fv)} ({fv - visual_start_day:.1f}d)"]
         if is_crashed:
             info.append("<br><b>CRASHED:</b>")
             for entry in crash_plan[t.name]:
@@ -365,14 +401,37 @@ def render_gantt_html(tasks, result, base_date, current_day, output_file=None,
                 )
         text = "<br>".join(info)
 
-        fig.add_trace(go.Scatter(
-            x=[start_dt, end_dt], y=[t.name, t.name],
-            mode='lines', line=dict(color=color, width=14),
-            name=group, legendgroup=group,
-            showlegend=(group not in legend_shown),
-            hovertemplate=text + "<extra></extra>",
-        ))
-        legend_shown.add(group)
+        # For active tasks: draw completed portion (original start → current_day) in grey,
+        # then the remaining/optimized portion (current_day → fv) in the task color.
+        if is_active and not is_done:
+            cur_dt = day_to_date(current_day, base_date)
+            # Completed segment
+            fig.add_trace(go.Scatter(
+                x=[start_dt, cur_dt], y=[t.name, t.name],
+                mode='lines', line=dict(color="#cccccc", width=14),
+                name="Completed", legendgroup="Completed",
+                showlegend=("Completed" not in legend_shown),
+                hovertemplate=f"<b>{t.name}</b><br>Completed portion<extra></extra>",
+            ))
+            legend_shown.add("Completed")
+            # Remaining segment
+            fig.add_trace(go.Scatter(
+                x=[cur_dt, end_dt], y=[t.name, t.name],
+                mode='lines', line=dict(color=color, width=14),
+                name=group, legendgroup=group,
+                showlegend=(group not in legend_shown),
+                hovertemplate=text + "<extra></extra>",
+            ))
+            legend_shown.add(group)
+        else:
+            fig.add_trace(go.Scatter(
+                x=[start_dt, end_dt], y=[t.name, t.name],
+                mode='lines', line=dict(color=color, width=14),
+                name=group, legendgroup=group,
+                showlegend=(group not in legend_shown),
+                hovertemplate=text + "<extra></extra>",
+            ))
+            legend_shown.add(group)
 
     cur_dt = day_to_date(current_day, base_date)
     target_dt = day_to_date(result["target_day"], base_date)

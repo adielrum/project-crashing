@@ -16,6 +16,7 @@ import pulp
 from optimizer_core import (
     DEFAULTS, mode_dur_factor, mode_cost_per_assignment,
     build_active_set, compute_baseline_duration_per_assignment, effective_W,
+    infer_remaining_fraction,
 )
 
 
@@ -81,7 +82,7 @@ def solve_milp(tasks, resources, assignments, current_day, target_day,
         for idx, a in lst:
             d_base = compute_baseline_duration_per_assignment(a, tasks)
             if tid in active:
-                d_base *= max(0.05, 1.0 - a.percent_complete)
+                d_base *= infer_remaining_fraction(a, tasks, current_day)
             rhs = pulp.lpSum(
                 xi[(idx, m, n)] * d_base * mode_dur_factor(x, tau, p['alpha'], p['beta'])
                 for m, x in enumerate(p['x_grid'])
@@ -156,7 +157,9 @@ def solve_milp(tasks, resources, assignments, current_day, target_day,
     crash_cost_terms = []
     for idx, a in enumerate(crash_assignments):
         r_k = resources[a.resource_id].rate
-        W = effective_W(a, a.task_id in active)
+        in_active = a.task_id in active
+        rem = infer_remaining_fraction(a, tasks, current_day) if in_active else None
+        W = effective_W(a, in_active, rem)
         for m, x in enumerate(p['x_grid']):
             for n, tau in enumerate(p['tau_grid']):
                 c = mode_cost_per_assignment(W, r_k, x, tau,
