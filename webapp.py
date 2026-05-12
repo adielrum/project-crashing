@@ -15,7 +15,7 @@ import time
 import traceback
 from datetime import datetime
 
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, render_template, request, jsonify
 
 from optimizer_core import DEFAULTS, load_data, solve_ga
 from solver_milp import solve_milp
@@ -36,325 +36,46 @@ def get_data():
     return _DATA_CACHE
 
 
-# ---------------------- HTML template ----------------------
-
-PAGE = """<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Project Crashing Optimizer</title>
-<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
-<style>
-* { box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  margin: 0; background: #f5f7fa; color: #222;
-}
-header {
-  background: #2c3e50; color: white; padding: 14px 24px;
-}
-header h1 { margin: 0; font-size: 20px; }
-.layout {
-  display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 50px);
-}
-.sidebar {
-  background: white; padding: 20px; border-right: 1px solid #ddd;
-  overflow-y: auto; max-height: calc(100vh - 50px);
-}
-.main { padding: 20px; overflow-y: auto; max-height: calc(100vh - 50px); }
-fieldset { border: 1px solid #ddd; border-radius: 6px; margin: 0 0 14px; padding: 12px; }
-legend { font-weight: 600; padding: 0 6px; color: #555; font-size: 13px; }
-label { display: block; font-size: 12px; color: #555; margin: 8px 0 3px; }
-input[type=number], input[type=text], select {
-  width: 100%; padding: 6px 8px; font-size: 13px; border: 1px solid #ccc;
-  border-radius: 4px; background: white;
-}
-input[type=checkbox] { margin-right: 6px; }
-button {
-  width: 100%; padding: 10px; font-size: 14px; font-weight: 600;
-  background: #3498db; color: white; border: none; border-radius: 6px;
-  cursor: pointer; margin-top: 8px;
-}
-button:hover { background: #2980b9; }
-button:disabled { background: #95a5a6; cursor: wait; }
-.status { padding: 12px; background: #ecf0f1; border-radius: 4px;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px;
-  white-space: pre-wrap; min-height: 80px; }
-.tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 2px solid #ddd; }
-.tab {
-  padding: 8px 16px; cursor: pointer; background: none; border: none;
-  font-size: 14px; color: #555; border-bottom: 3px solid transparent;
-  margin-bottom: -2px; width: auto;
-}
-.tab.active { color: #3498db; border-bottom-color: #3498db; font-weight: 600; }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px; margin-bottom: 14px; }
-.metric { background: white; padding: 10px 12px; border-radius: 6px;
-  border: 1px solid #e0e0e0; }
-.metric .label { font-size: 11px; color: #888; text-transform: uppercase; }
-.metric .value { font-size: 17px; font-weight: 600; color: #2c3e50; margin-top: 2px; }
-.crash-table { width: 100%; border-collapse: collapse; font-size: 12px;
-  background: white; }
-.crash-table th, .crash-table td { padding: 6px 8px; text-align: left;
-  border-bottom: 1px solid #eee; }
-.crash-table th { background: #f8f9fa; font-weight: 600; color: #555; }
-.row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.help { color: #888; font-size: 11px; margin-top: 2px; }
-</style>
-</head>
-<body>
-<header><h1>Resource-Constrained Project Crashing Optimizer</h1></header>
-<div class="layout">
-  <div class="sidebar">
-    <form id="opt-form">
-      <fieldset>
-        <legend>Schedule</legend>
-        <div class="row-grid">
-          <div>
-            <label>Current day</label>
-            <input type="number" name="current_day" value="100" min="1" max="480">
-          </div>
-          <div>
-            <label>Target end day</label>
-            <input type="number" name="target_day" value="300" min="1" max="480">
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Cobb-Douglas</legend>
-        <div class="row-grid">
-          <div>
-            <label>α (overcrowding)</label>
-            <input type="number" name="alpha" value="0.7" step="0.05" min="0.1" max="0.95">
-          </div>
-          <div>
-            <label>β (overtime)</label>
-            <input type="number" name="beta" value="0.7" step="0.05" min="0.1" max="0.95">
-          </div>
-        </div>
-        <div class="help">Lower → faster diminishing returns</div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Costs</legend>
-        <label>Overtime multiplier (r' / r)</label>
-        <input type="number" name="ot_mult" value="1.5" step="0.1" min="1.0" max="3.0">
-        <div class="row-grid">
-          <div>
-            <label>Late penalty $/d</label>
-            <input type="number" name="c_late" value="5000" step="500" min="0">
-          </div>
-          <div>
-            <label>Early bonus $/d</label>
-            <input type="number" name="c_early" value="2000" step="500" min="0">
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Solver</legend>
-        <label>Method</label>
-        <select name="method">
-          <option value="milp_v2">MILP v2 (no capacity)</option>
-          <option value="milp_v3">MILP v3 (pairwise capacity)</option>
-          <option value="ga">GA (pymoo)</option>
-        </select>
-        <label>
-          <input type="checkbox" name="hard_deadline">
-          Hard deadline (makespan ≤ target)
-        </label>
-        <label>
-          <input type="checkbox" name="tradeoff">
-          Build trade-off curve (slow)
-        </label>
-      </fieldset>
-
-      <button type="submit" id="run-btn">▶ Run optimizer</button>
-    </form>
-
-    <div style="margin-top: 16px;">
-      <div class="status" id="status">Ready.</div>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="tabs">
-      <button class="tab active" data-tab="summary">Summary</button>
-      <button class="tab" data-tab="gantt">Gantt</button>
-      <button class="tab" data-tab="tradeoff">Trade-off</button>
-      <button class="tab" data-tab="crashlist">Crash plan</button>
-      <button class="tab" data-tab="resload">Resource load</button>
-    </div>
-
-    <div id="summary" class="tab-panel active">
-      <div class="summary" id="metrics"></div>
-      <p style="color:#888; font-size:13px;">Run the optimizer to see results.</p>
-    </div>
-    <div id="gantt" class="tab-panel"><div id="gantt-chart"></div></div>
-    <div id="tradeoff" class="tab-panel"><div id="tradeoff-chart"></div></div>
-    <div id="crashlist" class="tab-panel"><div id="crash-content"></div></div>
-    <div id="resload" class="tab-panel"><div id="resload-chart"></div></div>
-  </div>
-</div>
-
-<script>
-// Pre-computed trade-off curve (from optimization_results_v2.json)
-window._staticTradeoff = {
-  data: [{
-    type: 'scatter', mode: 'lines+markers',
-    name: 'Crash extra cost (pre-computed)',
-    x: [379,384,389,394,399,404,409,414,419,424,429],
-    y: [37517,29275,23053,17780,13080,10554,9033,7644,6402,5240,4064],
-    hovertemplate: 'T=%{x}, cost=$%{y:,.0f}<extra></extra>',
-    line: {color: '#636efa'},
-    marker: {size: 8}
-  }],
-  layout: {
-    title: 'Time-Cost Trade-off Curve (pre-computed, α=0.7, β=0.7)',
-    xaxis: {title: 'Target Project End Day'},
-    yaxis: {title: 'Crash Extra Cost ($)'},
-    height: 500,
-    annotations: [{
-      text: 'Pre-computed with default parameters. Enable "Build trade-off curve" for live data.',
-      xref: 'paper', yref: 'paper', x: 0.5, y: -0.15,
-      showarrow: false, font: {size: 11, color: '#888'}
-    }]
-  }
-};
-
-// Tabs
-document.querySelectorAll('.tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    // Re-trigger plotly resize
-    window.dispatchEvent(new Event('resize'));
-  });
-});
-
-// Render static tradeoff on page load
-if (window._staticTradeoff) {
-  Plotly.newPlot('tradeoff-chart', window._staticTradeoff.data,
-                 window._staticTradeoff.layout, {responsive: true});
-}
-
-const form = document.getElementById('opt-form');
-const status = document.getElementById('status');
-const runBtn = document.getElementById('run-btn');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const fd = new FormData(form);
-  const payload = {};
-  for (const [k, v] of fd.entries()) payload[k] = v;
-  payload.hard_deadline = fd.has('hard_deadline');
-  payload.tradeoff = fd.has('tradeoff');
-
-  runBtn.disabled = true;
-  runBtn.textContent = 'Running...';
-  status.textContent = 'Solving...';
-  const t0 = performance.now();
-
-  try {
-    const res = await fetch('/run', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    const elapsed = ((performance.now() - t0) / 1000).toFixed(1);
-
-    if (!data.success) {
-      status.textContent = `FAILED (${elapsed}s)\n${data.error || data.status || ''}`;
-      return;
-    }
-
-    status.textContent = `OK (${elapsed}s)\nSolver: ${data.solver}\nMakespan: ${data.makespan.toFixed(1)}d`;
-
-    // Metrics
-    const metrics = document.getElementById('metrics');
-    metrics.innerHTML = '';
-    const fmtMoney = v => '$' + (v||0).toLocaleString('en-US', {maximumFractionDigits: 0});
-    const cards = [
-      ['Solver', data.solver],
-      ['Makespan', `${data.makespan.toFixed(1)} d`],
-      ['Baseline cost', fmtMoney(data.baseline_cost)],
-      ['Crash extra', fmtMoney(data.crash_cost)],
-      ['Late', `${(data.I_late||0).toFixed(1)} d`],
-      ['Early', `${(data.I_early||0).toFixed(1)} d`],
-      ['Deadline term', fmtMoney(data.deadline_term||0)],
-      ['Crashed tasks', Object.keys(data.crash_plan||{}).length],
-    ];
-    for (const [l, v] of cards) {
-      const div = document.createElement('div');
-      div.className = 'metric';
-      div.innerHTML = `<div class="label">${l}</div><div class="value">${v}</div>`;
-      metrics.appendChild(div);
-    }
-
-    // Gantt
-    if (data.gantt_fig) {
-      Plotly.newPlot('gantt-chart', data.gantt_fig.data, data.gantt_fig.layout,
-                     {responsive: true});
-    }
-
-    // Tradeoff
-    if (data.tradeoff_fig) {
-      Plotly.newPlot('tradeoff-chart', data.tradeoff_fig.data, data.tradeoff_fig.layout,
-                     {responsive: true});
-    } else if (window._staticTradeoff) {
-      Plotly.newPlot('tradeoff-chart', window._staticTradeoff.data,
-                     window._staticTradeoff.layout, {responsive: true});
-    } else {
-      document.getElementById('tradeoff-chart').innerHTML =
-        '<p style="color:#888;">Trade-off curve not computed. Enable the option or see the pre-computed curve above.</p>';
-    }
-
-    // Crash plan table
-    const cc = document.getElementById('crash-content');
-    if (data.crash_plan && Object.keys(data.crash_plan).length) {
-      let html = '<table class="crash-table"><thead><tr>'
-        + '<th>Task</th><th>Resource</th><th>x</th><th>τ (h)</th>'
-        + '<th>+Cost</th><th>Days saved</th></tr></thead><tbody>';
-      for (const [task, entries] of Object.entries(data.crash_plan)) {
-        for (const e of entries) {
-          html += `<tr><td>${task}</td><td>${e.resource}</td>`
-            + `<td>${e.x}</td><td>${e.tau}</td>`
-            + `<td>${fmtMoney(e.cost_delta)}</td>`
-            + `<td>${e.duration_saved.toFixed(1)}</td></tr>`;
-        }
-      }
-      html += '</tbody></table>';
-      cc.innerHTML = html;
-    } else {
-      cc.innerHTML = '<p style="color:#888;">No crashing applied.</p>';
-    }
-
-    // Resource load
-    if (data.resload_fig) {
-      Plotly.newPlot('resload-chart', data.resload_fig.data, data.resload_fig.layout,
-                     {responsive: true});
-    }
-
-  } catch (err) {
-    status.textContent = `ERROR\n${err.message}`;
-  } finally {
-    runBtn.disabled = false;
-    runBtn.textContent = '▶ Run optimizer';
-  }
-});
-</script>
-</body>
-</html>
-"""
-
-
 # ---------------------- Plotly figure builders ----------------------
+
+def _build_original_gantt_fig(tasks):
+    from optimizer_core import day_to_date
+    level2 = [(tid, t) for tid, t in tasks.items() if t.outline_level == 2]
+    # Sort by BASELINE start day to preserve original schedule ordering
+    sorted_tasks = sorted(level2, key=lambda x: x[1].start_day)
+    task_names = [t.name for _, t in sorted_tasks]
+
+    data = []
+
+    for tid, t in sorted_tasks:
+        start_dt = day_to_date(t.start_day, BASE_DATE).isoformat()
+        end_dt = day_to_date(t.finish_day, BASE_DATE).isoformat()
+        
+        info = f"<b>{t.name}</b><br>Day {t.start_day} → Day {t.finish_day} ({t.finish_day - t.start_day:.1f}d)"
+
+        data.append(dict(
+            type='scatter',
+            x=[start_dt, end_dt],
+            y=[t.name, t.name],
+            mode='lines',
+            line=dict(color="#3b82f6", width=14), # standard blue
+            name="Original Schedule",
+            showlegend=False,
+            hovertemplate=info + "<extra></extra>",
+        ))
+
+    layout = dict(
+        title="Original Baseline Schedule",
+        xaxis=dict(title="Date", type="date"),
+        yaxis=dict(
+            title="Task", autorange="reversed", tickfont=dict(size=9),
+            categoryorder="array", categoryarray=task_names,
+        ),
+        height=max(600, 18 * len(sorted_tasks)),
+        hovermode="closest",
+        margin=dict(l=300, r=40, t=80, b=60),
+    )
+    return dict(data=data, layout=layout)
 
 def _build_gantt_fig(tasks, result, current_day):
     from optimizer_core import day_to_date, build_active_set
@@ -547,7 +268,19 @@ def _build_resload_fig(tasks, resources, assignments, result):
 
 @app.route('/')
 def index():
-    return render_template_string(PAGE)
+    return render_template('index.html')
+
+
+@app.route('/original_gantt')
+def original_gantt():
+    try:
+        tasks, _, _ = get_data()
+        fig = _build_original_gantt_fig(tasks)
+        return jsonify(success=True, original_gantt_fig=fig)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify(success=False, error=str(e))
 
 
 @app.route('/run', methods=['POST'])
