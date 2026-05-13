@@ -43,7 +43,7 @@ def _build_original_gantt_fig(tasks):
     level2 = [(tid, t) for tid, t in tasks.items() if t.outline_level == 2]
     # Sort by BASELINE start day to preserve original schedule ordering
     sorted_tasks = sorted(level2, key=lambda x: x[1].start_day)
-    task_names = [t.name for _, t in sorted_tasks]
+    task_labels = [f"{tid}: {t.name}" for tid, t in sorted_tasks]
 
     data = []
 
@@ -51,12 +51,12 @@ def _build_original_gantt_fig(tasks):
         start_dt = day_to_date(t.start_day, BASE_DATE).isoformat()
         end_dt = day_to_date(t.finish_day, BASE_DATE).isoformat()
         
-        info = f"<b>{t.name}</b><br>Day {t.start_day} → Day {t.finish_day} ({t.finish_day - t.start_day:.1f}d)"
+        info = f"<b>{tid}: {t.name}</b><br>Day {t.start_day} → Day {t.finish_day} ({t.finish_day - t.start_day:.1f}d)"
 
         data.append(dict(
             type='scatter',
             x=[start_dt, end_dt],
-            y=[t.name, t.name],
+            y=[f"{tid}: {t.name}", f"{tid}: {t.name}"],
             mode='lines',
             line=dict(color="#3b82f6", width=14), # standard blue
             name="Original Schedule",
@@ -69,7 +69,7 @@ def _build_original_gantt_fig(tasks):
         xaxis=dict(title="Date", type="date"),
         yaxis=dict(
             title="Task", autorange="reversed", tickfont=dict(size=9),
-            categoryorder="array", categoryarray=task_names,
+            categoryorder="array", categoryarray=task_labels,
         ),
         height=max(600, 18 * len(sorted_tasks)),
         hovermode="closest",
@@ -84,7 +84,7 @@ def _build_gantt_fig(tasks, result, current_day):
     level2 = [(tid, t) for tid, t in tasks.items() if t.outline_level == 2]
     # Sort by BASELINE start day to preserve original schedule ordering
     sorted_tasks = sorted(level2, key=lambda x: x[1].start_day)
-    task_names = [t.name for _, t in sorted_tasks]
+    task_labels = [f"{tid}: {t.name}" for tid, t in sorted_tasks]
 
     # Determine which tasks are currently in-progress (started but not yet finished)
     _, active_set = build_active_set(tasks, current_day)
@@ -113,7 +113,7 @@ def _build_gantt_fig(tasks, result, current_day):
         visual_start_day = t.start_day if is_active else int(round(sv))
         start_dt = day_to_date(visual_start_day, BASE_DATE).isoformat()
 
-        info = [f"<b>{t.name}</b>",
+        info = [f"<b>{tid}: {t.name}</b>",
                 (f"Started Day {visual_start_day} → Finishes Day {int(fv)} "
                  f"(remaining: {fv - current_day:.1f}d)") if is_active
                 else f"Day {visual_start_day} → Day {int(fv)} ({fv - visual_start_day:.1f}d)"]
@@ -132,19 +132,19 @@ def _build_gantt_fig(tasks, result, current_day):
             data.append(dict(
                 type='scatter',
                 x=[start_dt, cur_dt],
-                y=[t.name, t.name],
+                y=[f"{tid}: {t.name}", f"{tid}: {t.name}"],
                 mode='lines',
                 line=dict(color="#cccccc", width=14),
                 name="Completed", legendgroup="Completed",
                 showlegend=("Completed" not in legend_shown),
-                hovertemplate=f"<b>{t.name}</b><br>Completed portion<extra></extra>",
+                hovertemplate=f"<b>{tid}: {t.name}</b><br>Completed portion<extra></extra>",
             ))
             legend_shown.add("Completed")
             # Remaining / optimized portion: current_day → optimized finish (colored)
             data.append(dict(
                 type='scatter',
                 x=[cur_dt, end_dt],
-                y=[t.name, t.name],
+                y=[f"{tid}: {t.name}", f"{tid}: {t.name}"],
                 mode='lines',
                 line=dict(color=color, width=14),
                 name=group, legendgroup=group,
@@ -156,7 +156,7 @@ def _build_gantt_fig(tasks, result, current_day):
             data.append(dict(
                 type='scatter',
                 x=[start_dt, end_dt],
-                y=[t.name, t.name],
+                y=[f"{tid}: {t.name}", f"{tid}: {t.name}"],
                 mode='lines',
                 line=dict(color=color, width=14),
                 name=group, legendgroup=group,
@@ -172,7 +172,7 @@ def _build_gantt_fig(tasks, result, current_day):
         xaxis=dict(title="Date", type="date"),
         yaxis=dict(
             title="Task", autorange="reversed", tickfont=dict(size=9),
-            categoryorder="array", categoryarray=task_names,
+            categoryorder="array", categoryarray=task_labels,
         ),
         height=max(600, 18 * len(sorted_tasks)),
         hovermode="closest",
