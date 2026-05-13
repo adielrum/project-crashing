@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import logging
 import os
 from dataclasses import dataclass
 from decimal import Decimal
@@ -222,6 +223,7 @@ def build_model_and_solve(
     else:
         raise ValueError(f"Unknown mode: {mode}")
 
+    logging.info(f"Building CP-SAT model (mode: {mode})...")
     model = cp_model.CpModel()
 
     s: Dict[str, cp_model.IntVar] = {}
@@ -247,6 +249,7 @@ def build_model_and_solve(
         model.Add(d[a] + c[a] == nt)
         intervals[a] = model.NewIntervalVar(s[a], d[a], e[a], f"iv[{a}]")
 
+    logging.info("Adding precedence constraints...")
     # Precedence
     for a in activities:
         for p in predecessors[a]:
@@ -254,6 +257,7 @@ def build_model_and_solve(
                 raise ValueError(f"Activity '{a}' has unknown predecessor '{p}'.")
             model.Add(s[a] >= e[p])
 
+    logging.info("Adding resource capacity constraints...")
     # Resource capacities via cumulative constraints
     for r, cap in resource_capacity.items():
         ivs = []
@@ -265,6 +269,7 @@ def build_model_and_solve(
                 demands.append(dem)
         model.AddCumulative(ivs, demands, int(cap))
 
+    logging.info("Adding dynamic state constraints...")
     # Dynamic state/current_day constraints
     for a in activities:
         st = states[a]
@@ -345,8 +350,10 @@ def build_model_and_solve(
     solver.parameters.max_time_in_seconds = cfg.time_limit
     solver.parameters.num_search_workers = cfg.num_workers
 
+    logging.info(f"Invoking CP-SAT solver (time_limit={cfg.time_limit}s, workers={cfg.num_workers})...")
     status = solver.Solve(model)
     status_name = solver.StatusName(status)
+    logging.info(f"Solver finished with status: {status_name}")
 
     result: Dict[str, Any] = {
         "status": status_name,
@@ -509,18 +516,36 @@ def parse_args() -> argparse.Namespace:
         default=25,
         help="How many schedule rows to print to console",
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose debug logging",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
 
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s] %(message)s')
+    else:
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+
+    logging.info("Starting RCPSP-TCT solve process...")
+
+    logging.info(f"Reading activity data from {args.activity_data}")
     activity_data = read_json(args.activity_data)
+    
+    logging.info(f"Reading resource capacity from {args.resource_capacity}")
     resource_capacity = read_json(args.resource_capacity)
+    
+    logging.info(f"Reading resource requirements from {args.resource_requirements}")
     resource_requirements = read_json(args.resource_requirements)
 
     activities = list(activity_data.keys())
 
+    logging.info("Validating inputs...")
     # Basic consistency checks
     missing_req = [a for a in activities if a not in resource_requirements]
     if missing_req:
@@ -532,13 +557,18 @@ def main() -> None:
                 raise ValueError(f"Activity '{a}' has unknown predecessor '{p}'.")
 
     remove_edges = parse_remove_edges(args.remove_edge)
+    
+    logging.info("Building predecessors and detecting cycles...")
     predecessors, cycle_logs = build_predecessors(
         activity_data=activity_data,
         remove_edges=remove_edges,
         auto_fix_paint_trim_cycle=not args.disable_auto_paint_trim_fix,
     )
 
+    logging.info(f"Loading state file: {args.state_file}")
     raw_states = load_state_file(args.state_file)
+    
+    logging.info(f"Normalizing activity states for {len(activities)} activities...")
     states = normalize_activity_states(activities, raw_states)
 
     cfg = SolveConfig(
@@ -551,6 +581,7 @@ def main() -> None:
     )
 
     if args.target_end_date is not None:
+        logging.info(f"Starting primary solve with target_end_date={args.target_end_date} (mode: cost_with_deadline)...")
         primary = build_model_and_solve(
             activity_data,
             resource_requirements,
@@ -575,6 +606,7 @@ def main() -> None:
         }
 
         if primary["status"] in {"INFEASIBLE", "MODEL_INVALID", "UNKNOWN"}:
+            logging.info("Primary solve failed/infeasible. Starting fallback min-makespan solve...")
             fallback = build_model_and_solve(
                 activity_data,
                 resource_requirements,
@@ -589,6 +621,7 @@ def main() -> None:
             result["fallback_min_makespan"] = None
 
     else:
+        logging.info("No target_end_date provided. Starting primary solve (mode: min_makespan)...")
         min_ms = build_model_and_solve(
             activity_data,
             resource_requirements,
@@ -612,6 +645,7 @@ def main() -> None:
             "fallback_min_makespan": None,
         }
 
+    logging.info("Saving results...")
     write_json(args.output_json, result)
 
     primary = result["primary"]
