@@ -11,11 +11,11 @@ Features
 - Exports solution summary and activity schedule to JSON/CSV.
 
 Example
-  python solve_project_crashing.py \
-      --target-end-date 243 \
-      --current-day 20 \
-      --output-json outputs/solution_243.json \
-      --output-csv outputs/schedule_243.csv
+  python scripts/solve_project_crashing.py \
+      --target-end-date 220 \
+      --current-day 0 \
+      --output-json outputs/solution_220.json \
+      --output-csv outputs/schedule_220.csv
 """
 
 from __future__ import annotations
@@ -23,7 +23,6 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import logging
 import os
 from dataclasses import dataclass
 from decimal import Decimal
@@ -191,6 +190,148 @@ def _must_int(x: Any, field_name: str, activity: str) -> int:
     return x
 
 
+def build_reference_no_crash_schedule(
+    activity_data: Dict[str, Dict[str, Any]],
+    resource_requirements: Dict[str, Dict[str, int]],
+    resource_capacity: Dict[str, int],
+    predecessors: Dict[str, List[str]],
+    current_day: int,
+    time_limit: float,
+    num_workers: int,
+) -> Dict[str, Dict[str, int]]:
+    """Build a baseline schedule with normal durations (no crashing).
+
+    This is used only for state inference when --state-file is omitted.
+    """
+    activities = list(activity_data.keys())
+    sum_nt = sum(int(activity_data[a]["activity_normal_time"]) for a in activities)
+    horizon = max(sum_nt + 5, current_day + 5)
+
+    model = cp_model.CpModel()
+
+    s: Dict[str, cp_model.IntVar] = {}
+    e: Dict[str, cp_model.IntVar] = {}
+    intervals: Dict[str, cp_model.IntervalVar] = {}
+    nt_map: Dict[str, int] = {}
+
+    for a in activities:
+        nt = int(activity_data[a]["activity_normal_time"])
+        nt_map[a] = nt
+        s[a] = model.NewIntVar(0, horizon, f"s_ref[{a}]")
+        e[a] = model.NewIntVar(0, horizon, f"e_ref[{a}]")
+        model.Add(e[a] == s[a] + nt)
+        intervals[a] = model.NewIntervalVar(s[a], nt, e[a], f"iv_ref[{a}]")
+
+    for a in activities:
+        for p in predecessors[a]:
+            model.Add(s[a] >= e[p])
+
+    for r, cap in resource_capacity.items():
+        ivs = []
+        demands = []
+        for a in activities:
+            dem = int(resource_requirements.get(a, {}).get(r, 0))
+            if dem > 0:
+                ivs.append(intervals[a])
+                demands.append(dem)
+        model.AddCumulative(ivs, demands, int(cap))
+
+    Cmax = model.NewIntVar(0, horizon, "Cmax_ref")
+    for a in activities:
+        model.Add(Cmax >= e[a])
+    model.Minimize(Cmax)
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = time_limit
+    solver.parameters.num_search_workers = num_workers
+
+    status = solver.Solve(model)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        raise ValueError(
+            "Could not infer project state because baseline no-crash schedule is infeasible. "
+            "Provide --state-file explicitly."
+        )
+
+    schedule: Dict[str, Dict[str, int]] = {}
+    for a in activities:
+        start = int(solver.Value(s[a]))
+        end = int(solver.Value(e[a]))
+        schedule[a] = {
+            "start": start,
+            "end": end,
+            "duration": nt_map[a],
+        }
+    return schedule
+
+
+def infer_activity_states_without_state_file(
+    activity_data: Dict[str, Dict[str, Any]],
+    resource_requirements: Dict[str, Dict[str, int]],
+    resource_capacity: Dict[str, int],
+    predecessors: Dict[str, List[str]],
+    current_day: int,
+    time_limit: float,
+    num_workers: int,
+) -> Tuple[Dict[str, Dict[str, Any]], List[str]]:
+    """Infer activity states at current_day if no state file is supplied.
+
+    Assumption: historical execution followed a feasible no-crash baseline schedule.
+    """
+    baseline = build_reference_no_crash_schedule(
+        activity_data=activity_data,
+        resource_requirements=resource_requirements,
+        resource_capacity=resource_capacity,
+        predecessors=predecessors,
+        current_day=current_day,
+        time_limit=time_limit,
+        num_workers=num_workers,
+    )
+
+    inferred: Dict[str, Dict[str, Any]] = {}
+    n_completed = 0
+    n_in_progress = 0
+    n_not_started = 0
+
+    for a, row in baseline.items():
+        start = int(row["start"])
+        end = int(row["end"])
+        dur = int(row["duration"])
+
+        if end <= current_day:
+            inferred[a] = {
+                "status": "completed",
+                "actual_start": start,
+                "actual_duration": dur,
+                "actual_end": end,
+            }
+            n_completed += 1
+        elif start < current_day < end:
+            inferred[a] = {
+                "status": "in_progress",
+                "actual_start": start,
+                "actual_duration": None,
+                "actual_end": None,
+            }
+            n_in_progress += 1
+        else:
+            inferred[a] = {
+                "status": "not_started",
+                "actual_start": None,
+                "actual_duration": None,
+                "actual_end": None,
+            }
+            n_not_started += 1
+
+    logs = [
+        (
+            "No --state-file provided. Inferred activity states from baseline "
+            f"no-crash schedule at current_day={current_day}: "
+            f"completed={n_completed}, in_progress={n_in_progress}, not_started={n_not_started}."
+        )
+    ]
+    return inferred, logs
+
+
 def build_model_and_solve(
     activity_data: Dict[str, Dict[str, Any]],
     resource_requirements: Dict[str, Dict[str, int]],
@@ -223,7 +364,6 @@ def build_model_and_solve(
     else:
         raise ValueError(f"Unknown mode: {mode}")
 
-    logging.info(f"Building CP-SAT model (mode: {mode})...")
     model = cp_model.CpModel()
 
     s: Dict[str, cp_model.IntVar] = {}
@@ -249,7 +389,6 @@ def build_model_and_solve(
         model.Add(d[a] + c[a] == nt)
         intervals[a] = model.NewIntervalVar(s[a], d[a], e[a], f"iv[{a}]")
 
-    logging.info("Adding precedence constraints...")
     # Precedence
     for a in activities:
         for p in predecessors[a]:
@@ -257,7 +396,6 @@ def build_model_and_solve(
                 raise ValueError(f"Activity '{a}' has unknown predecessor '{p}'.")
             model.Add(s[a] >= e[p])
 
-    logging.info("Adding resource capacity constraints...")
     # Resource capacities via cumulative constraints
     for r, cap in resource_capacity.items():
         ivs = []
@@ -269,7 +407,6 @@ def build_model_and_solve(
                 demands.append(dem)
         model.AddCumulative(ivs, demands, int(cap))
 
-    logging.info("Adding dynamic state constraints...")
     # Dynamic state/current_day constraints
     for a in activities:
         st = states[a]
@@ -350,10 +487,8 @@ def build_model_and_solve(
     solver.parameters.max_time_in_seconds = cfg.time_limit
     solver.parameters.num_search_workers = cfg.num_workers
 
-    logging.info(f"Invoking CP-SAT solver (time_limit={cfg.time_limit}s, workers={cfg.num_workers})...")
     status = solver.Solve(model)
     status_name = solver.StatusName(status)
-    logging.info(f"Solver finished with status: {status_name}")
 
     result: Dict[str, Any] = {
         "status": status_name,
@@ -516,36 +651,18 @@ def parse_args() -> argparse.Namespace:
         default=25,
         help="How many schedule rows to print to console",
     )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Enable verbose debug logging",
-    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
 
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s [%(levelname)s] %(message)s')
-    else:
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
-
-    logging.info("Starting RCPSP-TCT solve process...")
-
-    logging.info(f"Reading activity data from {args.activity_data}")
     activity_data = read_json(args.activity_data)
-    
-    logging.info(f"Reading resource capacity from {args.resource_capacity}")
     resource_capacity = read_json(args.resource_capacity)
-    
-    logging.info(f"Reading resource requirements from {args.resource_requirements}")
     resource_requirements = read_json(args.resource_requirements)
 
     activities = list(activity_data.keys())
 
-    logging.info("Validating inputs...")
     # Basic consistency checks
     missing_req = [a for a in activities if a not in resource_requirements]
     if missing_req:
@@ -557,19 +674,28 @@ def main() -> None:
                 raise ValueError(f"Activity '{a}' has unknown predecessor '{p}'.")
 
     remove_edges = parse_remove_edges(args.remove_edge)
-    
-    logging.info("Building predecessors and detecting cycles...")
     predecessors, cycle_logs = build_predecessors(
         activity_data=activity_data,
         remove_edges=remove_edges,
         auto_fix_paint_trim_cycle=not args.disable_auto_paint_trim_fix,
     )
 
-    logging.info(f"Loading state file: {args.state_file}")
     raw_states = load_state_file(args.state_file)
-    
-    logging.info(f"Normalizing activity states for {len(activities)} activities...")
-    states = normalize_activity_states(activities, raw_states)
+    if args.state_file:
+        states = normalize_activity_states(activities, raw_states)
+        state_logs: List[str] = []
+    else:
+        states, state_logs = infer_activity_states_without_state_file(
+            activity_data=activity_data,
+            resource_requirements=resource_requirements,
+            resource_capacity=resource_capacity,
+            predecessors=predecessors,
+            current_day=args.current_day,
+            time_limit=args.time_limit,
+            num_workers=args.num_workers,
+        )
+
+    preprocessing_logs = cycle_logs + state_logs
 
     cfg = SolveConfig(
         target_end_date=args.target_end_date,
@@ -581,7 +707,6 @@ def main() -> None:
     )
 
     if args.target_end_date is not None:
-        logging.info(f"Starting primary solve with target_end_date={args.target_end_date} (mode: cost_with_deadline)...")
         primary = build_model_and_solve(
             activity_data,
             resource_requirements,
@@ -601,12 +726,11 @@ def main() -> None:
                 "resource_requirements": args.resource_requirements,
                 "state_file": args.state_file,
             },
-            "preprocessing_logs": cycle_logs,
+            "preprocessing_logs": preprocessing_logs,
             "primary": primary,
         }
 
         if primary["status"] in {"INFEASIBLE", "MODEL_INVALID", "UNKNOWN"}:
-            logging.info("Primary solve failed/infeasible. Starting fallback min-makespan solve...")
             fallback = build_model_and_solve(
                 activity_data,
                 resource_requirements,
@@ -621,7 +745,6 @@ def main() -> None:
             result["fallback_min_makespan"] = None
 
     else:
-        logging.info("No target_end_date provided. Starting primary solve (mode: min_makespan)...")
         min_ms = build_model_and_solve(
             activity_data,
             resource_requirements,
@@ -640,12 +763,11 @@ def main() -> None:
                 "resource_requirements": args.resource_requirements,
                 "state_file": args.state_file,
             },
-            "preprocessing_logs": cycle_logs,
+            "preprocessing_logs": preprocessing_logs,
             "primary": min_ms,
             "fallback_min_makespan": None,
         }
 
-    logging.info("Saving results...")
     write_json(args.output_json, result)
 
     primary = result["primary"]
@@ -655,7 +777,7 @@ def main() -> None:
     # Console summary
     print("=== RCPSP-TCT Solve Summary ===")
     print("Primary status:", primary["status"])
-    for log in cycle_logs:
+    for log in result.get("preprocessing_logs", []):
         print("[preprocess]", log)
 
     if "makespan" in primary:
