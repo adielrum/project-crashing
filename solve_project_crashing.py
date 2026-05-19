@@ -11,11 +11,7 @@ Features
 - Exports solution summary and activity schedule to JSON/CSV.
 
 Example
-  python scripts/solve_project_crashing.py \
-      --target-end-date 220 \
-      --current-day 0 \
-      --output-json outputs/solution_220.json \
-      --output-csv outputs/schedule_220.csv
+  python solve_project_crashing.py --target-end-date 243 --current-day 20 --output-json outputs/solution_20_243.json --output-csv outputs/schedule_20_243.csv
 """
 
 from __future__ import annotations
@@ -623,7 +619,7 @@ def parse_args() -> argparse.Namespace:
         help="Current execution day",
     )
     parser.add_argument("--time-limit", type=float, default=60.0, help="Solver time limit in seconds")
-    parser.add_argument("--num-workers", type=int, default=8, help="CP-SAT workers")
+    parser.add_argument("--num-workers", type=int, default=1, help="CP-SAT workers")
     parser.add_argument(
         "--remove-edge",
         action="append",
