@@ -552,6 +552,221 @@ def build_model_and_solve(
     return result
 
 
+def generate_gantt_comparison_plot(
+    baseline_schedule: Dict[str, Dict[str, int]],
+    optimized_schedule: List[Dict[str, Any]],
+    current_day: int,
+    output_path: str,
+) -> None:
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
+
+    # Sort baseline activities by baseline start time
+    baseline_order = sorted(
+        baseline_schedule.keys(),
+        key=lambda a: (baseline_schedule[a]["start"], baseline_schedule[a]["end"], a)
+    )
+
+    # Sort optimized activities by optimized start time
+    opt_map = {row["activity"]: row for row in optimized_schedule}
+    optimized_order = sorted(
+        baseline_schedule.keys(),
+        key=lambda a: (
+            opt_map[a]["start"] if a in opt_map else 0,
+            opt_map[a]["end"] if a in opt_map else 0,
+            a
+        )
+    )
+
+    def get_color(a: str, end_day: int) -> str:
+        if end_day <= current_day:
+            return "#95a5a6"  # Gray for completed tasks (finished <= current_day)
+            
+        baseline_idx = baseline_order.index(a)
+        optimized_idx = optimized_order.index(a)
+        order_changed = baseline_idx != optimized_idx
+        
+        opt_info = opt_map.get(a)
+        crashed = (opt_info["crash_days"] > 0) if opt_info else False
+        
+        if order_changed and crashed:
+            return "#e67e22"  # Orange
+        elif order_changed and not crashed:
+            return "#2ecc71"  # Green
+        elif not order_changed and crashed:
+            return "#e74c3c"  # Red
+        else:
+            return "#3498db"  # Blue
+
+    num_activities = len(baseline_order)
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=(18, max(8, 0.45 * num_activities)))
+
+    # Plot baseline on ax1
+    y_pos_baseline = list(range(num_activities))
+    for idx, a in enumerate(baseline_order):
+        b_info = baseline_schedule[a]
+        start = b_info["start"]
+        duration = b_info["duration"]
+        end = b_info["end"]
+        color = "#95a5a6" if end <= current_day else "#3498db"
+        ax1.barh(idx, duration, left=start, height=0.6, color=color, edgecolor="black", linewidth=0.5)
+        # Add labels
+        if duration > 2:
+            ax1.text(start + duration / 2, idx, str(duration), va="center", ha="center", color="white", fontsize=8, weight="bold")
+        else:
+            ax1.text(start + duration + 0.5, idx, str(duration), va="center", ha="left", color="black", fontsize=8)
+
+    ax1.set_title("Original Schedule (Baseline)", fontsize=14, pad=15)
+    ax1.set_xlabel("Project Day", fontsize=12)
+    ax1.set_yticks(y_pos_baseline)
+    ax1.set_yticklabels(baseline_order, fontsize=9)
+    ax1.invert_yaxis()  # top-down
+    ax1.grid(axis="x", linestyle="--", alpha=0.5)
+    
+    # Add vertical dashed line for current_day
+    ax1.axvline(x=current_day, color="#2c3e50", linestyle="--", linewidth=1.5)
+
+    # Plot optimized on ax2
+    y_pos_optimized = list(range(num_activities))
+    for idx, a in enumerate(optimized_order):
+        opt_info = opt_map.get(a)
+        if opt_info:
+            start = opt_info["start"]
+            duration = opt_info["duration"]
+            end = opt_info["end"]
+            crash_days = opt_info["crash_days"]
+            color = get_color(a, end)
+            ax2.barh(idx, duration, left=start, height=0.6, color=color, edgecolor="black", linewidth=0.5)
+            # Add labels
+            label_text = f"{duration}"
+            
+            if duration > 4:
+                ax2.text(start + duration / 2, idx, label_text, va="center", ha="center", color="white", fontsize=8, weight="bold")
+            else:
+                ax2.text(start + duration + 0.5, idx, label_text, va="center", ha="left", color="black", fontsize=8)
+
+    ax2.set_title("Crashed/Optimized Schedule", fontsize=14, pad=15)
+    ax2.set_xlabel("Project Day", fontsize=12)
+    ax2.set_yticks(y_pos_optimized)
+    ax2.set_yticklabels(optimized_order, fontsize=9)
+    ax2.invert_yaxis()  # top-down
+    ax2.grid(axis="x", linestyle="--", alpha=0.5)
+    
+    # Add vertical dashed line for current_day
+    ax2.axvline(x=current_day, color="#2c3e50", linestyle="--", linewidth=1.5)
+
+    # Add custom legend
+    legend_elements = [
+        Patch(facecolor="#95a5a6", edgecolor="black", label="Completed (Finished <= Current Day)"),
+        Patch(facecolor="#3498db", edgecolor="black", label="Normal (No Crash, Order Unchanged)"),
+        Patch(facecolor="#e74c3c", edgecolor="black", label="Crashed (Order Unchanged)"),
+        Patch(facecolor="#2ecc71", edgecolor="black", label="Normal (No Crash, Order Changed)"),
+        Patch(facecolor="#e67e22", edgecolor="black", label="Crashed & Order Changed"),
+        Line2D([0], [0], color="#2c3e50", linestyle="--", linewidth=1.5, label=f"Current Day (Day {current_day})"),
+    ]
+    fig.legend(handles=legend_elements, loc="lower center", bbox_to_anchor=(0.5, -0.07), ncol=3, fontsize=9)
+
+    plt.tight_layout()
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+
+
+def generate_resource_usage_plot(
+    baseline_schedule: Dict[str, Dict[str, int]],
+    optimized_schedule: List[Dict[str, Any]],
+    resource_requirements: Dict[str, Dict[str, int]],
+    resource_capacity: Dict[str, int],
+    output_path: str,
+) -> None:
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    b_makespan = max(b["end"] for b in baseline_schedule.values()) if baseline_schedule else 0
+    opt_makespan = max(row["end"] for row in optimized_schedule) if optimized_schedule else 0
+    horizon = max(b_makespan, opt_makespan, 1)
+
+    resources = sorted(resource_capacity.keys())
+    num_resources = len(resources)
+
+    # Grid size: 4 columns
+    cols = 4
+    rows = (num_resources + cols - 1) // cols
+
+    fig, axes = plt.subplots(rows, cols, figsize=(cols * 4.5, rows * 3.5), sharex=True)
+    axes_flat = axes.flatten() if hasattr(axes, "flatten") else [axes]
+
+    for idx, r in enumerate(resources):
+        ax = axes_flat[idx]
+        cap = resource_capacity[r]
+
+        # Calculate baseline usage
+        b_usage = np.zeros(horizon)
+        for a, b_info in baseline_schedule.items():
+            dem = resource_requirements.get(a, {}).get(r, 0)
+            if dem > 0:
+                start = b_info["start"]
+                end = b_info["end"]
+                for t in range(start, end):
+                    if 0 <= t < horizon:
+                        b_usage[t] += dem
+
+        # Calculate optimized usage
+        opt_usage = np.zeros(horizon)
+        for row in optimized_schedule:
+            a = row["activity"]
+            dem = resource_requirements.get(a, {}).get(r, 0)
+            if dem > 0:
+                start = row["start"]
+                end = row["end"]
+                for t in range(start, end):
+                    if 0 <= t < horizon:
+                        opt_usage[t] += dem
+
+        # Support step plot properly by extending arrays
+        days_ext = np.arange(horizon + 1)
+        b_usage_ext = np.append(b_usage, b_usage[-1] if len(b_usage) > 0 else 0)
+        opt_usage_ext = np.append(opt_usage, opt_usage[-1] if len(opt_usage) > 0 else 0)
+
+        # Plot capacity line
+        ax.axhline(y=cap, color="#e74c3c", linestyle="--", alpha=0.8, label="Capacity", linewidth=1.2)
+
+        # Plot baseline usage
+        ax.step(days_ext, b_usage_ext, where="post", color="#3498db", linestyle=":", alpha=0.8, label="Baseline", linewidth=1.5)
+
+        # Plot optimized usage
+        ax.step(days_ext, opt_usage_ext, where="post", color="#2ecc71", alpha=0.9, label="Optimized", linewidth=1.8)
+        ax.fill_between(days_ext, opt_usage_ext, step="post", color="#2ecc71", alpha=0.15)
+
+        # Title and styling
+        ax.set_title(r, fontsize=10, weight="bold", pad=8)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        
+        # Set y limits nicely
+        max_val = max(cap, np.max(b_usage), np.max(opt_usage))
+        ax.set_ylim(0, max_val + 0.5)
+        ax.grid(axis="y", linestyle=":", alpha=0.5)
+        
+        if idx == 0:
+            ax.legend(loc="upper right", fontsize=8)
+
+    # Hide unused subplots
+    for idx in range(num_resources, len(axes_flat)):
+        fig.delaxes(axes_flat[idx])
+
+    # Shared labels
+    fig.text(0.5, 0.01, "Project Day", ha="center", fontsize=12)
+    fig.text(0.01, 0.5, "Resource Allocation Count", va="center", rotation="vertical", fontsize=12)
+
+    plt.suptitle("Resource Allocation Over Time (Baseline vs. Optimized)", fontsize=16, weight="bold", y=0.99)
+    plt.tight_layout(rect=[0.02, 0.02, 0.98, 0.96])
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+
+
 def write_json(path: Optional[str], data: Dict[str, Any]) -> None:
     if not path:
         return
@@ -640,6 +855,16 @@ def parse_args() -> argparse.Namespace:
         "--output-csv",
         default="outputs/schedule.csv",
         help="Path to output schedule CSV",
+    )
+    parser.add_argument(
+        "--output-gantt",
+        default="outputs/gantt_comparison.png",
+        help="Path to output Gantt chart comparison plot (original vs crashed)",
+    )
+    parser.add_argument(
+        "--output-resources",
+        default="outputs/resource_usage.png",
+        help="Path to output resource usage plot across time",
     )
     parser.add_argument(
         "--print-top",
@@ -769,6 +994,38 @@ def main() -> None:
     primary = result["primary"]
     if "schedule" in primary:
         write_schedule_csv(args.output_csv, primary["schedule"])
+        
+        if primary["status"] in {"OPTIMAL", "FEASIBLE"}:
+            try:
+                print("Generating comparison Gantt chart and resource usage plots...")
+                baseline_schedule = build_reference_no_crash_schedule(
+                    activity_data=activity_data,
+                    resource_requirements=resource_requirements,
+                    resource_capacity=resource_capacity,
+                    predecessors=predecessors,
+                    current_day=args.current_day,
+                    time_limit=args.time_limit,
+                    num_workers=args.num_workers,
+                )
+                
+                if args.output_gantt:
+                    generate_gantt_comparison_plot(
+                        baseline_schedule=baseline_schedule,
+                        optimized_schedule=primary["schedule"],
+                        current_day=args.current_day,
+                        output_path=args.output_gantt,
+                    )
+                
+                if args.output_resources:
+                    generate_resource_usage_plot(
+                        baseline_schedule=baseline_schedule,
+                        optimized_schedule=primary["schedule"],
+                        resource_requirements=resource_requirements,
+                        resource_capacity=resource_capacity,
+                        output_path=args.output_resources,
+                    )
+            except Exception as e:
+                print(f"[warning] Failed to generate plots: {e}")
 
     # Console summary
     print("=== RCPSP-TCT Solve Summary ===")
@@ -800,6 +1057,10 @@ def main() -> None:
         print("\nWrote JSON:", args.output_json)
     if args.output_csv and "schedule" in primary:
         print("Wrote CSV:", args.output_csv)
+    if args.output_gantt and "schedule" in primary and primary["status"] in {"OPTIMAL", "FEASIBLE"}:
+        print("Wrote Gantt Plot:", args.output_gantt)
+    if args.output_resources and "schedule" in primary and primary["status"] in {"OPTIMAL", "FEASIBLE"}:
+        print("Wrote Resource Plot:", args.output_resources)
 
 
 if __name__ == "__main__":
