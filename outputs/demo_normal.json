@@ -1,0 +1,136 @@
+{
+  "input": {
+    "target_end_date": 29,
+    "current_day": 0,
+    "activity_data": "data/resource_ordering_demo/activity_data.json",
+    "resource_capacity": "data/resource_ordering_demo/resource_capacity.json",
+    "resource_requirements": "data/resource_ordering_demo/resource_requirements.json",
+    "state_file": null
+  },
+  "preprocessing_logs": [
+    "No --state-file provided. Inferred activity states from baseline no-crash schedule at current_day=0: completed=0, in_progress=0, not_started=9."
+  ],
+  "primary": {
+    "status": "OPTIMAL",
+    "mode": "cost_with_deadline",
+    "horizon": 29,
+    "scale": 10,
+    "objective_value": 0.0,
+    "makespan": 29,
+    "total_crash_cost": 0.0,
+    "total_crash_days": 0,
+    "num_crashed_activities": 0,
+    "crashed_activities": [],
+    "schedule": [
+      {
+        "activity": "Excavation",
+        "status": "not_started",
+        "start": 0,
+        "end": 6,
+        "duration": 6,
+        "normal_duration": 6,
+        "min_duration": 6,
+        "crash_days": 0,
+        "crash_cost_per_day": 999.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path A-1",
+        "status": "not_started",
+        "start": 6,
+        "end": 11,
+        "duration": 5,
+        "normal_duration": 5,
+        "min_duration": 4,
+        "crash_days": 0,
+        "crash_cost_per_day": 30.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path C-1",
+        "status": "not_started",
+        "start": 11,
+        "end": 15,
+        "duration": 4,
+        "normal_duration": 4,
+        "min_duration": 3,
+        "crash_days": 0,
+        "crash_cost_per_day": 60.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path A-2",
+        "status": "not_started",
+        "start": 11,
+        "end": 26,
+        "duration": 15,
+        "normal_duration": 15,
+        "min_duration": 4,
+        "crash_days": 0,
+        "crash_cost_per_day": 20.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path B-1",
+        "status": "not_started",
+        "start": 15,
+        "end": 20,
+        "duration": 5,
+        "normal_duration": 5,
+        "min_duration": 4,
+        "crash_days": 0,
+        "crash_cost_per_day": 50.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path C-2",
+        "status": "not_started",
+        "start": 15,
+        "end": 27,
+        "duration": 12,
+        "normal_duration": 12,
+        "min_duration": 8,
+        "crash_days": 0,
+        "crash_cost_per_day": 10.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Path B-2",
+        "status": "not_started",
+        "start": 20,
+        "end": 22,
+        "duration": 2,
+        "normal_duration": 2,
+        "min_duration": 1,
+        "crash_days": 0,
+        "crash_cost_per_day": 10.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Merge",
+        "status": "not_started",
+        "start": 27,
+        "end": 28,
+        "duration": 1,
+        "normal_duration": 1,
+        "min_duration": 1,
+        "crash_days": 0,
+        "crash_cost_per_day": 0.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Final",
+        "status": "not_started",
+        "start": 28,
+        "end": 29,
+        "duration": 1,
+        "normal_duration": 1,
+        "min_duration": 1,
+        "crash_days": 0,
+        "crash_cost_per_day": 0.0,
+        "crash_cost": 0.0
+      }
+    ]
+  },
+  "fallback_min_makespan": null
+}
