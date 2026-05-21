@@ -655,6 +655,10 @@ def generate_gantt_comparison_plot(
     
     # Add vertical dashed line for current_day
     ax2.axvline(x=current_day, color="#2c3e50", linestyle="--", linewidth=1.5)
+    
+    # Add vertical dashed line for project end date (color red)
+    opt_end_date = max(row["end"] for row in optimized_schedule) if optimized_schedule else 0
+    ax2.axvline(x=opt_end_date, color="red", linestyle="--", linewidth=1.5)
 
     # Add custom legend
     legend_elements = [
@@ -664,8 +668,9 @@ def generate_gantt_comparison_plot(
         Patch(facecolor="#2ecc71", edgecolor="black", label="Normal (No Crash, Order Changed)"),
         Patch(facecolor="#e67e22", edgecolor="black", label="Crashed & Order Changed"),
         Line2D([0], [0], color="#2c3e50", linestyle="--", linewidth=1.5, label=f"Current Day (Day {current_day})"),
+        Line2D([0], [0], color="red", linestyle="--", linewidth=1.5, label=f"Project End Date (Day {opt_end_date})"),
     ]
-    fig.legend(handles=legend_elements, loc="lower center", bbox_to_anchor=(0.5, -0.07), ncol=3, fontsize=9)
+    fig.legend(handles=legend_elements, loc="lower center", bbox_to_anchor=(0.5, -0.09), ncol=4, fontsize=9)
 
     plt.tight_layout()
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
