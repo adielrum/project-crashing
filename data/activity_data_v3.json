@@ -112,7 +112,7 @@
         "crash_cost": 50.0
     },
     "Plumbing Trim": {
-        "required_activities": ["Floor Finishes", "Paint", "Interior Trim"],
+        "required_activities": ["Plumbing Rough-in", "Floor Finishes", "Paint", "Interior Trim"],
         "activity_min_time": 3,
         "activity_normal_time": 5,
         "normal_cost": 400,

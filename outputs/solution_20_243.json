@@ -145,6 +145,18 @@
         "crash_cost": 0.0
       },
       {
+        "activity": "Concrete Slabs",
+        "status": "not_started",
+        "start": 77,
+        "end": 85,
+        "duration": 8,
+        "normal_duration": 8,
+        "min_duration": 6,
+        "crash_days": 0,
+        "crash_cost_per_day": 40.0,
+        "crash_cost": 0.0
+      },
+      {
         "activity": "Electric Rough-in",
         "status": "not_started",
         "start": 77,
@@ -169,6 +181,18 @@
         "crash_cost": 0.0
       },
       {
+        "activity": "H.V.A.C.",
+        "status": "not_started",
+        "start": 107,
+        "end": 124,
+        "duration": 17,
+        "normal_duration": 17,
+        "min_duration": 12,
+        "crash_days": 0,
+        "crash_cost_per_day": 55.0,
+        "crash_cost": 0.0
+      },
+      {
         "activity": "Roofing",
         "status": "not_started",
         "start": 107,
@@ -178,6 +202,18 @@
         "min_duration": 25,
         "crash_days": 0,
         "crash_cost_per_day": 200.0,
+        "crash_cost": 0.0
+      },
+      {
+        "activity": "Plumbing Rough-in",
+        "status": "not_started",
+        "start": 124,
+        "end": 154,
+        "duration": 30,
+        "normal_duration": 30,
+        "min_duration": 25,
+        "crash_days": 0,
+        "crash_cost_per_day": 65.0,
         "crash_cost": 0.0
       },
       {
@@ -217,18 +253,6 @@
         "crash_cost": 0.0
       },
       {
-        "activity": "Concrete Slabs",
-        "status": "not_started",
-        "start": 188,
-        "end": 196,
-        "duration": 8,
-        "normal_duration": 8,
-        "min_duration": 6,
-        "crash_days": 0,
-        "crash_cost_per_day": 40.0,
-        "crash_cost": 0.0
-      },
-      {
         "activity": "Plumbing Trim",
         "status": "not_started",
         "start": 191,
@@ -253,18 +277,6 @@
         "crash_cost": 0.0
       },
       {
-        "activity": "H.V.A.C.",
-        "status": "not_started",
-        "start": 196,
-        "end": 213,
-        "duration": 17,
-        "normal_duration": 17,
-        "min_duration": 12,
-        "crash_days": 0,
-        "crash_cost_per_day": 55.0,
-        "crash_cost": 0.0
-      },
-      {
         "activity": "Electrical Final Trim",
         "status": "not_started",
         "start": 196,
@@ -274,18 +286,6 @@
         "min_duration": 18,
         "crash_days": 0,
         "crash_cost_per_day": 250.0,
-        "crash_cost": 0.0
-      },
-      {
-        "activity": "Plumbing Rough-in",
-        "status": "not_started",
-        "start": 213,
-        "end": 243,
-        "duration": 30,
-        "normal_duration": 30,
-        "min_duration": 25,
-        "crash_days": 0,
-        "crash_cost_per_day": 65.0,
         "crash_cost": 0.0
       },
       {

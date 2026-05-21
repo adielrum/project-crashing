@@ -492,7 +492,7 @@ def build_model_and_solve(
         "horizon": horizon,
         "scale": scale,
     }
-
+    
     if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
         return result
 
