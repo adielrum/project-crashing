@@ -1,0 +1,160 @@
+assign_idx,task_id,task_name,resource_id,resource_name,W_ik,U_ik,D_base,r_k_usd
+0,2,Receive notice to proceed and sign contract,1,G.C. General Management,24.0,1.0,3.0,120.0
+1,3,Submit bond and insurance documents,2,G.C. Project Management,16.0,1.0,2.0,95.0
+2,3,Submit bond and insurance documents,1,G.C. General Management,4.0,0.25,2.0,120.0
+3,4,Prepare and submit project schedule,2,G.C. Project Management,4.0,0.25,2.0,95.0
+4,4,Prepare and submit project schedule,4,G.C. Scheduler,16.0,1.0,2.0,80.0
+5,5,Prepare and submit schedule of values,1,G.C. General Management,1.6,0.1,2.0,120.0
+6,5,Prepare and submit schedule of values,2,G.C. Project Management,16.0,1.0,2.0,95.0
+7,6,Obtain building permits,2,G.C. Project Management,16.0,0.5,4.0,95.0
+8,6,Obtain building permits,3,G.C. Procurement,16.0,0.5,4.0,75.0
+9,7,Submit preliminary shop drawings,2,G.C. Project Management,40.0,0.5,10.0,95.0
+10,7,Submit preliminary shop drawings,3,G.C. Procurement,40.0,0.5,10.0,75.0
+11,10,Submit shop drawings and order long lead items - steel,22,Steel Erection Contractor Management,80.0,1.0,10.0,85.0
+12,11,Submit shop drawings and order long lead items - roofing,27,Roofing Contractor Management,80.0,1.0,10.0,75.0
+13,12,Submit shop drawings and order long lead items - elevator,20,Elevator Contractor Management,80.0,1.0,10.0,90.0
+14,13,Submit shop drawings and order long lead items - plumbing,14,Plumbing Contractor Management,80.0,1.0,10.0,80.0
+15,14,Submit shop drawings and order long lead items - electric,16,Electric Contractor Management,80.0,1.0,10.0,80.0
+16,15,Submit shop drawings and order long lead items - HVAC,18,HVAC Contractor Management,80.0,1.0,10.0,80.0
+17,16,"Detail, fabricate and deliver steel",22,Steel Erection Contractor Management,240.0,0.5,60.0,85.0
+18,16,"Detail, fabricate and deliver steel",21,Steel Erection Contractor,240.0,0.5,60.0,75.0
+19,18,Install temporary power,15,Electric Contractor,16.0,1.0,2.0,65.0
+20,19,Install temporary water service,13,Plumbing Contractor,16.0,1.0,2.0,65.0
+21,20,Set up site office,6,G.C. Superintendent,24.0,1.0,3.0,85.0
+22,20,Set up site office,9,G.C. Labor Crew,2.4,0.1,2.9999999999999996,30.0
+23,21,Set line and grade benchmarks,7,G.C. Survey Crew,24.0,1.0,3.0,65.0
+24,22,Prepare site - lay down yard and temporary fencing,12,Site Grading Contractor,16.0,1.0,2.0,70.0
+25,22,Prepare site - lay down yard and temporary fencing,9,G.C. Labor Crew,1.6,0.1,2.0,30.0
+26,24,Clear and grub site,12,Site Grading Contractor,24.0,1.0,3.0,70.0
+27,25,Stone site access and temporary parking area,12,Site Grading Contractor,16.0,1.0,2.0,70.0
+28,26,Rough grade site (cut and fill),12,Site Grading Contractor,40.0,1.0,5.0,70.0
+29,27,Install storm drainage,12,Site Grading Contractor,80.0,1.0,10.0,70.0
+30,28,Install exterior fire line and building fire riser,13,Plumbing Contractor,80.0,1.0,10.0,65.0
+31,29,Perform final site grading,12,Site Grading Contractor,80.0,1.0,10.0,70.0
+32,30,Erect building batter boards and layout building,7,G.C. Survey Crew,40.0,1.0,5.0,65.0
+33,32,Excavate foundations,12,Site Grading Contractor,40.0,0.5,10.0,70.0
+34,33,Excavate elevator pit,12,Site Grading Contractor,16.0,1.0,2.0,70.0
+35,34,Form column piers and spread foundations,8,G.C. Rough Carpenter Crew,32.0,1.0,4.0,55.0
+36,35,Rough-in electric and plumbing in elevator,13,Plumbing Contractor,32.0,1.0,4.0,65.0
+37,35,Rough-in electric and plumbing in elevator,15,Electric Contractor,32.0,1.0,4.0,65.0
+38,36,Form elevator pit walls,8,G.C. Rough Carpenter Crew,32.0,1.0,4.0,55.0
+39,37,Set reinforcing and anchor bolts,8,G.C. Rough Carpenter Crew,32.0,1.0,4.0,55.0
+40,38,Pour column piers and foundations,10,G.C. Concrete Crew,40.0,1.0,5.0,60.0
+41,39,Pour concrete elevator walls,10,G.C. Concrete Crew,8.0,1.0,1.0,60.0
+42,40,Cure elevator wall concrete,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+43,41,Cure piers and foundations,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+44,42,Strip wall forms,9,G.C. Labor Crew,0.8,0.1,1.0,30.0
+45,43,Strip column piers and foundation forms,9,G.C. Labor Crew,24.0,1.0,3.0,30.0
+46,44,Install pneumatic tube in elevator pit,19,Elevator Contractor,24.0,1.0,3.0,80.0
+47,45,Prepare and pour concrete floor in elevator pit,10,G.C. Concrete Crew,8.0,1.0,1.0,60.0
+48,47,"Erect steel columns, beams and joist - 1st and 2nd floors",21,Steel Erection Contractor,80.0,1.0,10.0,75.0
+49,48,"Erect steel columns, beams and joist - 3rd floor and roof",21,Steel Erection Contractor,80.0,1.0,10.0,75.0
+50,49,Install miscellaneous iron and bracing - 1st and 2nd floors,21,Steel Erection Contractor,60.0,0.75,10.0,75.0
+51,50,Install miscellaneous iron and bracing - 3rd floor and roof,21,Steel Erection Contractor,60.0,0.75,10.0,75.0
+52,51,Install stairs and miscellaneous iron railing,21,Steel Erection Contractor,40.0,0.5,10.0,75.0
+53,52,Touch-up paint on steel,21,Steel Erection Contractor,8.0,0.2,5.0,75.0
+54,54,Form 2nd floor including all floor openings,8,G.C. Rough Carpenter Crew,40.0,1.0,5.0,55.0
+55,54,Form 2nd floor including all floor openings,9,G.C. Labor Crew,8.0,0.2,5.0,30.0
+56,55,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",9,G.C. Labor Crew,13.2,0.33,4.999999999999999,30.0
+57,55,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",13,Plumbing Contractor,13.2,0.33,4.999999999999999,65.0
+58,55,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",15,Electric Contractor,13.2,0.33,4.999999999999999,65.0
+59,60,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",9,G.C. Labor Crew,13.2,0.33,4.999999999999999,30.0
+60,60,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",13,Plumbing Contractor,13.2,0.33,4.999999999999999,65.0
+61,60,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",15,Electric Contractor,13.2,0.33,4.999999999999999,65.0
+62,65,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",9,G.C. Labor Crew,13.2,0.33,4.999999999999999,30.0
+63,65,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",13,Plumbing Contractor,13.2,0.33,4.999999999999999,65.0
+64,65,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",15,Electric Contractor,13.2,0.33,4.999999999999999,65.0
+65,56,Pour 2nd floor slab,10,G.C. Concrete Crew,32.0,1.0,4.0,60.0
+66,57,Cure 2nd floor slab,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+67,58,Strip forms from 2nd floor slab,9,G.C. Labor Crew,16.0,1.0,2.0,30.0
+68,59,Form 3rd floor including all floor openings,8,G.C. Rough Carpenter Crew,20.0,0.5,5.0,55.0
+69,59,Form 3rd floor including all floor openings,9,G.C. Labor Crew,8.0,0.2,5.0,30.0
+70,61,Pour 3rd floor slab,10,G.C. Concrete Crew,32.0,1.0,4.0,60.0
+71,62,Cure 3rd floor slab,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+72,63,Strip forms from 3rd floor slab,9,G.C. Labor Crew,16.0,1.0,2.0,30.0
+73,64,Form roof slab including all floor openings,8,G.C. Rough Carpenter Crew,40.0,1.0,5.0,55.0
+74,64,Form roof slab including all floor openings,9,G.C. Labor Crew,8.0,0.2,5.0,30.0
+75,66,Pour roof slab,10,G.C. Concrete Crew,32.0,1.0,4.0,60.0
+76,67,Cure roof slab,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+77,68,Strip forms from roof slab,9,G.C. Labor Crew,16.0,1.0,2.0,30.0
+78,69,Form 1st floor,8,G.C. Rough Carpenter Crew,32.0,1.0,4.0,55.0
+79,70,Install electrical underground,15,Electric Contractor,40.0,1.0,5.0,65.0
+80,71,Install plumbing underground,13,Plumbing Contractor,40.0,1.0,5.0,65.0
+81,72,Install rebar and in-floor utilities,9,G.C. Labor Crew,10.56,0.33,4.0,30.0
+82,72,Install rebar and in-floor utilities,13,Plumbing Contractor,10.56,0.33,4.0,65.0
+83,72,Install rebar and in-floor utilities,15,Electric Contractor,10.56,0.33,4.0,65.0
+84,73,Pour 1st floor slab,10,G.C. Concrete Crew,32.0,1.0,4.0,60.0
+85,74,Cure 1st floor slab,9,G.C. Labor Crew,5.6,0.1,6.999999999999999,30.0
+86,75,Strip forms from 1st floor slab,9,G.C. Labor Crew,16.0,1.0,2.0,30.0
+87,77,Install exterior sheathing and metal studs,23,Drywall Contractor,120.0,1.0,15.0,50.0
+88,79,Rough-in plumbing at toilets and masonry walls,13,Plumbing Contractor,160.0,1.0,20.0,65.0
+89,80,"Lay masonry at core, mechanical, and toilets",24,Masonry Contractor,160.0,1.0,20.0,55.0
+90,81,Install exterior masonry work,24,Masonry Contractor,200.0,1.0,25.0,55.0
+91,82,Install roof drains,26,Roofing Contractor,16.0,1.0,2.0,55.0
+92,83,Install tile in toilet rooms,25,Tile Contractor,80.0,1.0,10.0,55.0
+93,84,Clean masonry,24,Masonry Contractor,20.0,0.5,5.0,55.0
+94,85,Clean toilet room tile,25,Tile Contractor,20.0,0.5,5.0,55.0
+95,87,Install flashing at parapet walls,26,Roofing Contractor,32.0,1.0,4.0,55.0
+96,88,Pour lightweight concrete roof fill,26,Roofing Contractor,16.0,1.0,2.0,55.0
+97,89,Install seamless roofing material,26,Roofing Contractor,40.0,1.0,5.0,55.0
+98,90,Spread stone ballast on seamless roof,26,Roofing Contractor,40.0,1.0,5.0,55.0
+99,91,Set rooftop equipment,17,HVAC Contractor,80.0,1.0,10.0,65.0
+100,93,Install window wall aluminum and glass,28,Window Contractor,200.0,1.0,25.0,50.0
+101,94,Install interior stud walls and drywall,23,Drywall Contractor,200.0,1.0,25.0,50.0
+102,95,Install interior doors and hardware,11,G.C. Finish Carpenter Crew,80.0,1.0,10.0,60.0
+103,96,Install store front doors and hardware,28,Window Contractor,120.0,1.0,15.0,50.0
+104,98,Install millwork and wood trim,11,G.C. Finish Carpenter Crew,120.0,1.0,15.0,60.0
+105,99,Paint walls and woodwork,32,Painting Contractor,160.0,1.0,20.0,45.0
+106,100,Install conduit at ceiling plenum space,15,Electric Contractor,120.0,1.0,15.0,65.0
+107,101,Install duct in ceiling plenum space,17,HVAC Contractor,120.0,1.0,15.0,65.0
+108,102,Install ceiling grid,23,Drywall Contractor,80.0,1.0,10.0,50.0
+109,103,Install ceiling tile,23,Drywall Contractor,80.0,1.0,10.0,50.0
+110,104,Hang wallpaper,32,Painting Contractor,80.0,1.0,10.0,45.0
+111,105,Install building carpet,29,Carpet Contractor,160.0,1.0,20.0,45.0
+112,106,Install hardware and accessories,11,G.C. Finish Carpenter Crew,120.0,1.0,15.0,60.0
+113,107,Complete interior and exterior sod and plantings,30,Landscape Contractor,80.0,1.0,10.0,45.0
+114,108,"Pave, curb, and stripe parking lot",31,Paving Contractor,80.0,1.0,10.0,60.0
+115,110,Set elevator equipment in shafts,19,Elevator Contractor,160.0,1.0,20.0,80.0
+116,111,Set equipment in mechanical room,19,Elevator Contractor,80.0,1.0,10.0,80.0
+117,126,Set equipment in mechanical room,17,HVAC Contractor,80.0,1.0,10.0,65.0
+118,112,Test and align doors and equipment,19,Elevator Contractor,80.0,1.0,10.0,80.0
+119,114,Rough-in plumbing in drywall walls,13,Plumbing Contractor,160.0,1.0,20.0,65.0
+120,115,Tie-in fire line riser and set valves,13,Plumbing Contractor,80.0,1.0,10.0,65.0
+121,116,Set plumbing fixtures and trim,13,Plumbing Contractor,120.0,1.0,15.0,65.0
+122,117,"Flush, test, and clean piping and fixtures",13,Plumbing Contractor,80.0,1.0,10.0,65.0
+123,119,Rough-in electrical in masonry walls,15,Electric Contractor,160.0,1.0,20.0,65.0
+124,120,Rough-in electrical in drywall walls,15,Electric Contractor,160.0,1.0,20.0,65.0
+125,121,Pull wire in conduit and set area transformers,15,Electric Contractor,120.0,1.0,15.0,65.0
+126,122,Install and terminate electrical devices,15,Electric Contractor,120.0,1.0,15.0,65.0
+127,123,Make electrical terminations for HVAC equipment,15,Electric Contractor,16.0,1.0,2.0,65.0
+128,124,Install light fixtures - test and clean,15,Electric Contractor,80.0,1.0,10.0,65.0
+129,127,Rough-in mechanical in masonry walls,17,HVAC Contractor,160.0,1.0,20.0,65.0
+130,128,Rough-in mechanical in drywall walls,17,HVAC Contractor,80.0,1.0,10.0,65.0
+131,129,Install duct in building chase,17,HVAC Contractor,120.0,1.0,15.0,65.0
+132,130,Set HVAC trim and test and balance system,17,HVAC Contractor,160.0,1.0,20.0,65.0
+133,132,Install hard tile flooring in common areas,25,Tile Contractor,40.0,1.0,5.0,55.0
+134,133,Clean hard tile floors,25,Tile Contractor,16.0,0.5,4.0,55.0
+135,134,Remove debris from building and do final clean-up,9,G.C. Labor Crew,32.0,1.0,4.0,30.0
+136,135,Substantial completion date,6,G.C. Superintendent,8.0,1.0,1.0,85.0
+137,137,Complete elevator inspection and certification,19,Elevator Contractor,24.0,1.0,3.0,80.0
+138,138,Perform architect's inspection,6,G.C. Superintendent,4.0,0.5,1.0,85.0
+139,138,Perform architect's inspection,2,G.C. Project Management,4.0,0.5,1.0,95.0
+140,139,Perform local building agency inspection,2,G.C. Project Management,4.0,0.5,1.0,95.0
+141,139,Perform local building agency inspection,6,G.C. Superintendent,4.0,0.5,1.0,85.0
+142,140,Perform Fire Marshal's inspection,6,G.C. Superintendent,4.0,0.5,1.0,85.0
+143,140,Perform Fire Marshal's inspection,2,G.C. Project Management,4.0,0.5,1.0,95.0
+144,141,Complete punch list items from all inspections,6,G.C. Superintendent,8.8,0.11,10.0,85.0
+145,141,Complete punch list items from all inspections,9,G.C. Labor Crew,8.8,0.11,10.0,30.0
+146,141,Complete punch list items from all inspections,13,Plumbing Contractor,8.8,0.11,10.0,65.0
+147,141,Complete punch list items from all inspections,15,Electric Contractor,8.8,0.11,10.0,65.0
+148,141,Complete punch list items from all inspections,17,HVAC Contractor,8.8,0.11,10.0,65.0
+149,141,Complete punch list items from all inspections,23,Drywall Contractor,8.8,0.11,10.0,50.0
+150,141,Complete punch list items from all inspections,29,Carpet Contractor,8.8,0.11,10.0,45.0
+151,141,Complete punch list items from all inspections,31,Paving Contractor,8.8,0.11,10.0,60.0
+152,141,Complete punch list items from all inspections,32,Painting Contractor,8.8,0.11,10.0,45.0
+153,142,Obtain certificate of occupancy,2,G.C. Project Management,16.0,1.0,2.0,95.0
+154,143,Issue final completion documents including warranties,2,G.C. Project Management,8.0,1.0,1.0,95.0
+155,144,Issue final request for payment,2,G.C. Project Management,2.64,0.33,1.0,95.0
+156,144,Issue final request for payment,5,G.C. Accounting,2.64,0.33,1.0,70.0
+157,144,Issue final request for payment,1,G.C. General Management,2.64,0.33,1.0,120.0
+158,8,Submit monthly requests for payment,9,G.C. Labor Crew,8.0,1.0,1.0,30.0

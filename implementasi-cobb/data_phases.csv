@@ -1,0 +1,23 @@
+id,name,duration_days
+1,General Conditions,17.0
+9,Long Lead Procurement,70.0
+17,Mobilize on Site,10.0
+23,Site Grading and Utilities,35.0
+31,Foundations,33.0
+46,Steel Erection,45.0
+53,Form and Pour Concrete - Floors and Roof,85.0
+76,Carpentry Work,15.0
+78,Masonry Work,110.0
+86,Roofing,31.0
+92,Window wall and store front closures,60.0
+97,Building Finishes,80.0
+109,Elevators,40.0
+113,Plumbing,90.0
+118,Electrical,139.0
+125,Heating and Ventilating - AC,180.0
+131,Final Clean-up and Occupancy,60.0
+136,Complete Final Inspections,6.0
+141,Complete punch list items from all inspections,10.0
+142,Obtain certificate of occupancy,2.0
+143,Issue final completion documents including warranties,1.0
+144,Issue final request for payment,1.0

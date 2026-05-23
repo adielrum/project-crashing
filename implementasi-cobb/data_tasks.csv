@@ -1,0 +1,127 @@
+task_id,task_name,duration_days
+2,Receive notice to proceed and sign contract,3.0
+3,Submit bond and insurance documents,2.0
+4,Prepare and submit project schedule,2.0
+5,Prepare and submit schedule of values,2.0
+6,Obtain building permits,4.0
+7,Submit preliminary shop drawings,10.0
+8,Submit monthly requests for payment,1.0
+10,Submit shop drawings and order long lead items - steel,10.0
+11,Submit shop drawings and order long lead items - roofing,10.0
+12,Submit shop drawings and order long lead items - elevator,10.0
+13,Submit shop drawings and order long lead items - plumbing,10.0
+14,Submit shop drawings and order long lead items - electric,10.0
+15,Submit shop drawings and order long lead items - HVAC,10.0
+16,"Detail, fabricate and deliver steel",60.0
+18,Install temporary power,2.0
+19,Install temporary water service,2.0
+20,Set up site office,3.0
+21,Set line and grade benchmarks,3.0
+22,Prepare site - lay down yard and temporary fencing,2.0
+24,Clear and grub site,3.0
+25,Stone site access and temporary parking area,2.0
+26,Rough grade site (cut and fill),5.0
+27,Install storm drainage,10.0
+28,Install exterior fire line and building fire riser,10.0
+29,Perform final site grading,10.0
+30,Erect building batter boards and layout building,5.0
+32,Excavate foundations,10.0
+33,Excavate elevator pit,2.0
+34,Form column piers and spread foundations,4.0
+35,Rough-in electric and plumbing in elevator,4.0
+36,Form elevator pit walls,4.0
+37,Set reinforcing and anchor bolts,4.0
+38,Pour column piers and foundations,5.0
+39,Pour concrete elevator walls,1.0
+40,Cure elevator wall concrete,7.0
+41,Cure piers and foundations,7.0
+42,Strip wall forms,1.0
+43,Strip column piers and foundation forms,3.0
+44,Install pneumatic tube in elevator pit,3.0
+45,Prepare and pour concrete floor in elevator pit,1.0
+47,"Erect steel columns, beams and joist - 1st and 2nd floors",10.0
+48,"Erect steel columns, beams and joist - 3rd floor and roof",10.0
+49,Install miscellaneous iron and bracing - 1st and 2nd floors,10.0
+50,Install miscellaneous iron and bracing - 3rd floor and roof,10.0
+51,Install stairs and miscellaneous iron railing,10.0
+52,Touch-up paint on steel,5.0
+54,Form 2nd floor including all floor openings,5.0
+55,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",5.0
+56,Pour 2nd floor slab,4.0
+57,Cure 2nd floor slab,7.0
+58,Strip forms from 2nd floor slab,2.0
+59,Form 3rd floor including all floor openings,5.0
+60,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",5.0
+61,Pour 3rd floor slab,4.0
+62,Cure 3rd floor slab,7.0
+63,Strip forms from 3rd floor slab,2.0
+64,Form roof slab including all floor openings,5.0
+65,"Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",5.0
+66,Pour roof slab,4.0
+67,Cure roof slab,7.0
+68,Strip forms from roof slab,2.0
+69,Form 1st floor,4.0
+70,Install electrical underground,5.0
+71,Install plumbing underground,5.0
+72,Install rebar and in-floor utilities,4.0
+73,Pour 1st floor slab,4.0
+74,Cure 1st floor slab,7.0
+75,Strip forms from 1st floor slab,2.0
+77,Install exterior sheathing and metal studs,15.0
+79,Rough-in plumbing at toilets and masonry walls,20.0
+80,"Lay masonry at core, mechanical, and toilets",20.0
+81,Install exterior masonry work,25.0
+82,Install roof drains,2.0
+83,Install tile in toilet rooms,10.0
+84,Clean masonry,5.0
+85,Clean toilet room tile,5.0
+87,Install flashing at parapet walls,4.0
+88,Pour lightweight concrete roof fill,2.0
+89,Install seamless roofing material,5.0
+90,Spread stone ballast on seamless roof,5.0
+91,Set rooftop equipment,10.0
+93,Install window wall aluminum and glass,25.0
+94,Install interior stud walls and drywall,25.0
+95,Install interior doors and hardware,10.0
+96,Install store front doors and hardware,15.0
+98,Install millwork and wood trim,15.0
+99,Paint walls and woodwork,20.0
+100,Install conduit at ceiling plenum space,15.0
+101,Install duct in ceiling plenum space,15.0
+102,Install ceiling grid,10.0
+103,Install ceiling tile,10.0
+104,Hang wallpaper,10.0
+105,Install building carpet,20.0
+106,Install hardware and accessories,15.0
+107,Complete interior and exterior sod and plantings,10.0
+108,"Pave, curb, and stripe parking lot",10.0
+110,Set elevator equipment in shafts,20.0
+111,Set equipment in mechanical room,10.0
+112,Test and align doors and equipment,10.0
+114,Rough-in plumbing in drywall walls,20.0
+115,Tie-in fire line riser and set valves,10.0
+116,Set plumbing fixtures and trim,15.0
+117,"Flush, test, and clean piping and fixtures",10.0
+119,Rough-in electrical in masonry walls,20.0
+120,Rough-in electrical in drywall walls,20.0
+121,Pull wire in conduit and set area transformers,15.0
+122,Install and terminate electrical devices,15.0
+123,Make electrical terminations for HVAC equipment,2.0
+124,Install light fixtures - test and clean,10.0
+126,Set equipment in mechanical room,10.0
+127,Rough-in mechanical in masonry walls,20.0
+128,Rough-in mechanical in drywall walls,10.0
+129,Install duct in building chase,15.0
+130,Set HVAC trim and test and balance system,20.0
+132,Install hard tile flooring in common areas,5.0
+133,Clean hard tile floors,4.0
+134,Remove debris from building and do final clean-up,4.0
+135,Substantial completion date,1.0
+137,Complete elevator inspection and certification,3.0
+138,Perform architect's inspection,1.0
+139,Perform local building agency inspection,1.0
+140,Perform Fire Marshal's inspection,1.0
+141,Complete punch list items from all inspections,10.0
+142,Obtain certificate of occupancy,2.0
+143,Issue final completion documents including warranties,1.0
+144,Issue final request for payment,1.0
