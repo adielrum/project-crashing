@@ -1,0 +1,284 @@
+import numpy as np
+import pandas as pd
+from pymoo.core.problem import ElementwiseProblem
+
+# ===========================================================================
+# Data Loader
+# ===========================================================================
+
+def load_data(path_tasks, path_precedence, path_resources):
+    """Muat data proyek dari CSV yang sudah dipisah dan dirapikan."""
+    tasks = pd.read_csv(path_tasks)
+    precedence = pd.read_csv(path_precedence)
+    resources = pd.read_csv(path_resources)
+
+    N = len(tasks)
+
+    # Mapping: task_id asli → indeks lokal 0..N-1
+    id_to_idx = {tid: idx for idx, tid in enumerate(tasks["task_id"])}
+
+    # --- Preprocessing Precedence ---
+    precedence = precedence.copy()
+    precedence["i"] = precedence["task_id"].map(id_to_idx)
+    precedence["j"] = precedence["pred_id"].map(id_to_idx)
+    # Hapus baris yang mapping-nya gagal (NaN)
+    precedence = precedence.dropna(subset=["i", "j"])
+    # Konversi ke int
+    precedence = precedence.astype({"i": int, "j": int})
+    # PERBAIKAN 1: Reset index agar 0, 1, 2... berurutan
+    precedence = precedence.reset_index(drop=True)
+
+    # --- Preprocessing Resources ---
+    resources = resources.copy()
+    resources["i"] = resources["task_id"].map(id_to_idx)
+    # PERBAIKAN 2: Hapus resource yang task-nya tidak ditemukan (NaN)
+    resources = resources.dropna(subset=["i"])
+    resources["i"] = resources["i"].astype(int)
+    resources["D_base_ik"] = resources["D_base"]  # Pastikan kolom ini konsisten
+    # PERBAIKAN 1 (Resource): Reset index agar sesuai dengan urutan array di Python
+    resources = resources.reset_index(drop=True)
+
+    # Mapping: task_idx i → list of row indices di resources dataframe
+    K_i = {}
+    for row_idx, row in resources.iterrows():
+        i = int(row["i"])
+        K_i.setdefault(i, []).append(row_idx)
+
+    return tasks, precedence, resources, N, K_i
+
+
+# ===========================================================================
+# Problem Definition
+# ===========================================================================
+
+class ResourceBasedScheduling(ElementwiseProblem):
+    """Resource-Based Project Scheduling Problem."""
+
+    def __init__(self, tasks, precedence, resources, N, K_i,
+                 alpha=0.5, beta=0.5,
+                 x_min=1.0, x_max=None,
+                 tau_min=1.0, tau_max=4.0,
+                 c_late=150.0, c_early=100.0,
+                 T_max=344,
+                 overtime_mult=1.5,
+                 hours_per_day=8, **kwargs):
+
+        # Simpan data
+        self.tasks = tasks
+        self.precedence = precedence
+        self.resources = resources
+        self.N = N
+        self.K_i = K_i
+        self.P = len(resources)  # jumlah pasangan (i,k)
+
+        # Simpan parameter
+        self.alpha = alpha
+        self.beta = beta
+        self.x_min = x_min
+        self.tau_min = tau_min
+        self.tau_max = tau_max
+        self.c_late = c_late
+        self.c_early = c_early
+        self.T_max = T_max
+        self.overtime_mult = overtime_mult
+        self.hours_per_day = hours_per_day
+
+        # Hitung x_max otomatis dari alpha
+        if x_max is None:
+            x_max = self._compute_x_max(alpha, x_min)
+        self.x_max = x_max
+
+        # --- Data per pasangan (i,k) ---
+        # Konversi tarif: USD/jam -> Miliar USD/jam (karena biaya di akhir dibagi 1e6)
+        # Namun agar konsisten dengan unit di Fungsi Objektif, kita sesuaikan.
+        # r_k_usd asumsi dalam USD.
+        self.r_k = resources["r_k_usd"].values / 1e6 
+        self.r_k_ot = self.r_k * overtime_mult
+
+        self.W_ik = resources["W_ik"].values             
+        self.U_ik = resources["U_ik"].values             
+        # Gunakan kolom yang sudah disiapkan
+        self.D_base_ik = resources["D_base_ik"].values      
+        self.res_task_idx = resources["i"].values         
+
+        # --- Bangun batas bawah dan atas ---
+        P = self.P
+        xl = np.concatenate([
+            np.zeros(N),                          # s_i >= 0
+            np.full(P, x_min),                    # x_{i,k} >= x_min
+            np.full(P, tau_min),                  # tau_{i,k} >= tau_min
+        ])
+        xu = np.concatenate([
+            np.full(N, 2.0 * T_max),             # s_i <= 2*T_max
+            np.full(P, x_max),                    # x_{i,k} <= x_max
+            np.full(P, tau_max),                  # tau_{i,k} <= tau_max
+        ])
+
+        super().__init__(
+            n_var=N + 2 * P,
+            n_obj=1,
+            n_ieq_constr=len(precedence),
+            xl=xl,
+            xu=xu,
+            **kwargs,
+        )
+
+    @staticmethod
+    def _compute_x_max(alpha, x_min=1.0, threshold=0.01):
+        x = x_min
+        while x < 50:
+            delta = (1.0 / x) ** alpha - (1.0 / (x + 1)) ** alpha
+            if delta < threshold:
+                break
+            x += 0.5
+        return max(x, x_min + 1.0)
+
+    def crash_duration(self, x_ik, tau_ik, D_base_ik):
+        crowd = (1.0 / x_ik) ** self.alpha
+        fatigue = (8.0 / (8.0 + tau_ik)) ** self.beta
+        return D_base_ik * crowd * fatigue
+
+    def _evaluate(self, x, out, *args, **kwargs):
+        """Evaluasi fungsi objektif dan kendala untuk satu solusi."""
+        N, P = self.N, self.P
+
+        # ---- Ekstrak variabel ----
+        s = x[0:N]                        # s_i
+        x_ik = x[N:N + P]                 # x_{i,k}
+        tau_ik = x[N + P:N + 2 * P]       # tau_{i,k}
+
+        # ---- Durasi crash per (i,k) ----
+        # Vectorized calculation bisa dipertimbangkan untuk speedup, 
+        # tapi loop list comprehension lebih aman untuk memastikan urutan
+        D_ik = np.array([
+            self.crash_duration(x_ik[p], tau_ik[p], self.D_base_ik[p])
+            for p in range(P)
+        ])
+
+        # ---- Durasi per task: D_i = max_{k in K_i} D_{i,k} ----
+        D_i = np.zeros(N)
+        for i in range(N):
+            # K_i berisi index baris di resources (yang sekarang sudah 0..P-1 berurutan)
+            for p in self.K_i.get(i, []):
+                D_i[i] = max(D_i[i], D_ik[p])
+
+        # ---- Fungsi Objektif ----
+        labor_cost = np.sum(
+            D_ik * x_ik * self.U_ik
+            * (self.hours_per_day * self.r_k + tau_ik * self.r_k_ot)
+        )
+
+        T_finish = np.max(s + D_i)
+        penalty = self.c_late * max(0.0, T_finish - self.T_max)
+        bonus = self.c_early * max(0.0, self.T_max - T_finish)
+
+        # PyMOO menerima scalar atau array. Untuk single objective, scalar biasanya ok,
+        # tapi lebih aman wrap dalam array 2D [[value]]
+        out["F"] = labor_cost + penalty - bonus
+
+        # ---- Kendala Precedence (g <= 0) ----
+        # Inisialisasi array G dengan ukuran sesuai jumlah baris precedence
+        G = np.zeros(len(self.precedence))
+
+        # Karena precedence index sudah di-reset, k akan berjalan 0, 1, 2... sesuai panjang G
+        for k, row in self.precedence.iterrows():
+            i = int(row["i"])
+            j = int(row["j"])
+            lag = row["lag"]
+
+            if row["type"] == "FS":
+                G[k] = s[j] + D_i[j] + lag - s[i]
+            elif row["type"] == "FF":
+                G[k] = s[j] + D_i[j] + lag - s[i] - D_i[i]
+            elif row["type"] == "SS":
+                G[k] = s[j] + lag - s[i]
+
+        out["G"] = G
+
+
+# ===========================================================================
+# Main: Inisialisasi Problem
+# ===========================================================================
+
+if __name__ == "__main__":
+    # Pastikan file CSV ada di direktori yang sama atau berikan path lengkap
+    # Untuk contoh ini, kita buat dummy data agar kode bisa langsung dijalankan untuk testing
+    # Jika Anda sudah punya file, hapus blok "Dummy Data Creation" di bawah ini
+    
+    import os
+    if not os.path.exists("data_tasks.csv"):
+        print("Membuat dummy data untuk testing...")
+        # Dummy Tasks
+        tasks = pd.DataFrame({
+            'task_id': [1, 2, 3, 4], 
+            'task_name': ['A', 'B', 'C', 'D'], 
+            'duration_days': [10, 20, 15, 10]
+        })
+        tasks.to_csv("data_tasks.csv", index=False)
+
+        # Dummy Precedence
+        precedence = pd.DataFrame({
+            'task_id': [2, 3, 4], 
+            'pred_id': [1, 2, 3], 
+            'type': ['FS', 'FS', 'FS'], 
+            'lag': [0, 0, 0]
+        })
+        precedence.to_csv("data_precedence.csv", index=False)
+
+        # Dummy Resources
+        res_data = []
+        for tid in tasks['task_id']:
+            res_data.append({
+                'task_id': tid, 'task_name': f'Task {tid}',
+                'resource_id': 1, 'resource_name': 'Worker',
+                'W_ik': 80.0, 'U_ik': 1.0, 'D_base': 10.0, 'r_k_usd': 10.0
+            })
+        resources = pd.DataFrame(res_data)
+        resources.to_csv("data_assignments.csv", index=False)
+
+    # ---- 1. Muat data ----
+    tasks, precedence, resources, N, K_i = load_data(
+        path_tasks="data_tasks.csv",
+        path_precedence="data_precedence.csv",
+        path_resources="data_assignments.csv",
+    )
+
+    # ---- 2. Buat instance problem ----
+    problem = ResourceBasedScheduling(
+        tasks=tasks,
+        precedence=precedence,
+        resources=resources,
+        N=N,
+        K_i=K_i,
+        alpha=0.5, beta=0.5,
+        x_min=1.0, tau_min=1.0, tau_max=4.0,
+        c_late=150.0, c_early=100.0,
+        T_max=344,
+        overtime_mult=1.5,
+    )
+
+    # ---- 3. Info problem ----
+    P = len(resources)
+    print(f"Tasks       : N = {N}")
+    print(f"Resources   : P = {P}")
+    print(f"Precedence  : {len(precedence)}")
+    print(f"n_var       : {problem.n_var}")
+    print(f"x_max       : {problem.x_max}")
+
+    # ---- 4. Verifikasi ----
+    np.random.seed(42)
+    # Generate random solution
+    x_rand = np.random.rand(problem.n_var)
+    # Scale to bounds
+    x_test = problem.xl + (problem.xu - problem.xl) * x_rand
+    
+    # PERBAIKAN 3: Reshape ke 2D (1 individu, n_var)
+    x_test = x_test.reshape(1, -1)
+    
+    F, G = problem.evaluate(x_test)
+
+    print(f"\nVerifikasi evaluasi:")
+    # F adalah array 2D [[nilai]], jadi ambil elemen pertama
+    print(f"  F (biaya total)     = {F[0, 0]:.4f} M Rp")
+    print(f"  Kendala terpenuhi   = {np.sum(G <= 0)} / {len(G)}")
+    print(f"  Kendala dilanggar   = {np.sum(G > 0)} / {len(G)}")
