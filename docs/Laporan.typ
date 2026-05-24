@@ -198,7 +198,7 @@ $ min (s_(n+1), sum_(i in I_0^C) C_i (d_i^(max) - (e_i - s_i))). $
 === _Bonus-Penalty Driven_
 Pemodelan _time-cost tradeoff_ tidak perlu dengan pendekatan multi-objektif seperti di atas. Penggabungannya bisa mempertahankan fungsi objektif tunggal dengan menggunakan metrik penalti harian $c_"late"$ dan bonus harian $c_"early"$. Ini menghasilkan fungsi objektif berikut:
 
-$ min sum_(i in I_0^C) C_i (d_i^max - (e_i - s_i)) + c_"late" max(0, T_"max" - s_(n+1)) + c_"early" max(0, s_(n+1)- T_"max"). $
+$ min sum_(i in I_0^C) C_i (d_i^max - (e_i - s_i)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)). $
 
 == Metode Penyelesaian
 Model baseline diselesaikan menggunakan *Google OR-Tools CP-SAT Solver*. CP-SAT dipilih karena menyediakan variabel interval (`IntervalVar`) secara native yang mempermudah representasi durasi tugas dan memiliki algoritma propagasi batasan kumulatif (`AddCumulative`) yang sangat efisien untuk memecahkan masalah penjadwalan dengan batasan sumber daya berkapasitas terbatas.
@@ -454,15 +454,14 @@ $ min (s_(n+1), sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k))). $
 === _Bonus-Penalty Driven_
 Pemodelan _time-cost tradeoff_ tidak perlu dengan pendekatan multi-objektif seperti di atas. Penggabungannya bisa mempertahankan fungsi objektif tunggal dengan menggunakan metrik penalti harian $c_"late"$ dan bonus harian $c_"early"$. Ini menghasilkan fungsi objektif berikut:
 
-$ min sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k)) + c_"late" max(0, T_"max" - s_(n+1)) + c_"early" max(0, s_(n+1)- T_"max"). $
+$ min sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)). $
 
-#pagebreak()
 
-= Metode Penyelesaian Skenario 2
+== Metode Penyelesaian Skenario 2
 
 Model Cobb-Douglas asli merupakan model *MINLP (Mixed-Integer Non-Linear Programming)* yang non-konveks karena persamaan durasi dan biaya mengandung eksponen pecahan. Untuk menyelesaikan model ini secara efisien dan andal, digunakan dua pendekatan:
 
-== 1. MILP berbasis Diskretisasi Grid
+=== MILP berbasis Diskretisasi Grid
 Metode ini mendiskretkan ruang pencarian kontinu pengali overcrowding $x_(i,k)$ dan overtime harian $tau_(i,k)$ menjadi beberapa titik grid tertentu:
 -   $x_g in \{1.0, 1.25, 1.5, 1.75, 2.0\}$
 -   $tau_g in \{0.0, 1.0, 2.0, 3.0, 4.0\}$
@@ -472,7 +471,7 @@ Dengan diskretisasi ini, nilai durasi $d_{i,m,n}$ dan biaya harian labor $"cost"
 $ d_i = sum_(m) sum_(n) xi_(i,k)^(m,n) dot d_{i,m,n}. $
 Model ini kemudian dimodelkan menggunakan *Pyomo* dan diselesaikan menggunakan solver MILP komersial/open-source seperti *CBC* atau *HiGHS* hingga mencapai jaminan solusi optimal global dalam hitungan detik.
 
-== 2. Pendekatan Metaheuristik (Genetic Algorithm)
+=== Pendekatan Metaheuristik (Genetic Algorithm)
 Sebagai alternatif pembanding untuk ruang pencarian kontinu tanpa diskretisasi, diimplementasikan algoritma genetika (GA) menggunakan pustaka *`pymoo`* di Python:
 -   *Representasi Kromosom*: Variabel keputusan $(x, tau)$ dikodekan langsung sebagai vektor bilangan real.
 -   *Fungsi Penalti*: Karena GA sulit menangani batasan secara langsung, kendala precedence dan kapasitas sumber daya ditambahkan sebagai penalti kuadratis ke dalam fungsi objektif jika terjadi pelanggaran (*precedence violation penalty*).
@@ -480,22 +479,104 @@ Sebagai alternatif pembanding untuk ruang pencarian kontinu tanpa diskretisasi, 
 
 Meskipun metode GA dapat menangani fungsi Cobb-Douglas asli tanpa diskretisasi, ia tidak memberikan jaminan optimalitas global dan membutuhkan waktu komputasi yang lebih lama untuk konvergensi dibandingkan dengan pendekatan MILP diskret.
 
+#pagebreak()
+= Hybrid Model (Skenario 3)
+
+== Deskripsi Data
+Model Hybrid menggunakan struktur data yang sama dengan Skenario 2, yakni data aktivitas (`task_table.json`), data sumber daya (`resource_table.json`), dan alokasi tugas (`assignment_table.json`). Pengguna tidak perlu menyediakan estimasi biaya pemotongan harian ($C_i$) secara langsung, karena parameter tersebut akan dihitung secara endogen dari data internal organisasi.
+
+== Asumsi dan Limitasi Model
+Formulasi model hybrid didasarkan pada beberapa asumsi berikut:
+- *Linearisasi Lokal*: Hubungan non-linier antara alokasi sumber daya dengan durasi proyek didekati secara linier melalui perhitungan *crash slope* lokal antara kondisi baseline dengan kondisi akselerasi maksimal.
+- *Batas Kendali Maksimal*: Ditentukan batas overcrowding maksimum ($x_"max" = 2.0$) dan batas overtime harian maksimum ($tau_"max" = 2.0$ jam/hari) sebagai kondisi batas percepatan proyek yang realistis.
+- *Sunk Cost*: Biaya masa lalu diabaikan dalam optimisasi dinamis.
+
+== Langkah Preprocessing Data
+Untuk menjembatani realisme data Skenario 2 dengan kecepatan komputasi Skenario 1, dilakukan preprocessing menggunakan fungsi Cobb-Douglas untuk setiap aktivitas $i$ dan jenis SDM $k in K_i$:
+
+1. *Durasi Normal ($d_i^((max))$)*:
+   $ d_i^((max)) = max_(k in K_i) ceil.l W_(i,k) / (8 U_(i,k)) ceil.r $
+
+2. *Biaya Normal ($Z_i^("base")$)*:
+   $ Z_i^("base") = sum_(k in K_i) W_(i,k) dot r_k $
+
+3. *Durasi Minimum ($d_i^((min))$)*:
+   $ d_i^((min)) = max_(k in K_i) ceil.l W_(i,k) / (8 U_(i,k)) dot (1 / x_"max")^alpha dot (8 / (8 + tau_"max"))^beta ceil.r $
+
+4. *Biaya Crashing Maksimum ($Z_i^("crash")$)*:
+   $ Z_i^("crash") = sum_(k in K_i) z_(i,k)(x_"max", tau_"max") $
+   dengan:
+   $ z_(i,k)(x_"max", tau_"max") = W_(i,k) r_k dot x_"max"^(1-alpha) dot ((8 + tau_"max") / 8)^(1-beta) dot (8 + r'_k / r_k tau_"max") / (8 + tau_"max") $
+
+5. *Crash Slope ($C_i$)*:
+   $ C_i = cases(
+     (Z_i^("crash") - Z_i^("base")) / (d_i^((max)) - d_i^((min))) & "jika" d_i^((max)) > d_i^((min)),
+     0 & "jika" d_i^((max)) = d_i^((min))
+   ) $
+
+== Integrasi ke CP-SAT Solver
+Nilai $d_i^((max))$, $d_i^((min))$, dan $C_i$ yang dihitung pada tahap preprocessing digunakan langsung sebagai parameter input untuk model penjadwalan CP-SAT. Model ini meminimalkan biaya crashing total:
+
+$ min sum_(i in I_0^C) C_i (d_i^((max)) - (e_i - s_i)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)) $
+
+dengan batasan-batasan sebagai berikut:
+
+- *Batasan Waktu*:
+  $ e_i = s_i + d_i, quad forall i in I $
+
+- *Batasan Durasi*:
+  $ d_i^((min)) <= e_i - s_i <= d_i^((max)), quad forall i in I $
+
+- *Batasan Precedence*:
+  $ s_i >= e_j, quad forall (i,j) in E $
+
+- *Batasan Kapasitas Sumber Daya*:
+  $ sum_(i in I) U_(i,k) dot bb(1) \{ s_i <= s_j < e_i \} <= U_k^((max)), quad forall k in K, forall j in I $
+
+- *Batasan Dinamis*:
+  Untuk aktivitas yang belum dilaksanakan:
+  $ s_i >= T_0, quad forall i in I_1. $
+  Untuk aktivitas yang sedang dilaksanakan:
+  #align(center)[
+    #grid(
+      columns: 2,
+      align: (center, horizon), 
+      $ s_i &= s_i^(\(0\)), \
+        e_i &>= T_0, $,
+      $ quad forall i in I_0^C inter I_1^C. $
+    )
+  ]
+  Untuk aktivitas yang sudah selesai: 
+  #align(center)[
+    #grid(
+      columns: 2,
+      align: (center, horizon), 
+      $ s_i &= s_i^(\(0\)), \
+        e_i &= e_i^(\(0\)), $,
+      $ quad forall i in I_0. $
+    )
+  ]
+
+Karena seluruh konstrain dan fungsi tujuan di atas bersifat linier, model ini dapat diselesaikan oleh CP-SAT secara optimal global dalam hitungan milidetik.
+
+#pagebreak()
+
 = Kesimpulan dan Perbandingan Model
 
 #align(center)[
   #table(
-    columns: (3.5cm, 5.5cm, 5.5cm),
-    align: (center, left, left),
+    columns: (3cm, 4.2cm, 4.2cm, 4.2cm),
+    align: (center, left, left, left),
     fill: (col, row) => if row == 0 { luma(240) },
     table.header(
-      [*Karakteristik*], [*Model Baseline (CP-SAT)*], [*Model Novel (Cobb-Douglas)*],
+      [*Karakteristik*], [*Model Baseline (Skenario 1)*], [*Model Novel (Skenario 2)*], [*Model Hybrid (Skenario 3)*],
     ),
-    [*Input Biaya*], [Eksplisit diketahui per hari crashing per tugas (\$/hari).], [Ditentukan secara endogen dari tarif reguler/lembur SDM (\$/jam).],
-    [*Tuas Akselerasi*], [Langsung memotong hari durasi tugas.], [Menambah pekerja (*overcrowding*) & menambah jam kerja lembur (*overtime*).],
-    [*Sifat Efisiensi*], [Efisiensi konstan (biaya linier terhadap waktu pemangkasan).], [Efisiensi menurun (*diminishing returns*) akibat koordinasi & kelelahan.],
-    [*Tipe Precedence*], [Finish-to-Start (FS) sederhana tanpa lag.], [Finish-to-Start (FS), Start-to-Start (SS), Finish-to-Finish (FF) dengan lag.],
-    [*Metode Solver*], [Constraint Programming (OR-Tools CP-SAT).], [MILP (Pyomo + CBC) via Diskretisasi Grid & Metaheuristik (pymoo GA).],
+    [*Input Biaya*], [Eksplisit diketahui per hari crashing per tugas (\$/hari).], [Ditentukan secara endogen dari tarif reguler/lembur SDM (\$/jam).], [Dihitung secara endogen melalui preprocessing Cobb-Douglas, lalu di-linearisasi per tugas.],
+    [*Tuas Akselerasi*], [Langsung memotong hari durasi tugas.], [Menambah pekerja (*overcrowding*) & menambah jam kerja lembur (*overtime*).], [Menggunakan batas $x_"max"$ dan $tau_"max"$ pada preprocessing untuk memotong durasi.],
+    [*Sifat Efisiensi*], [Efisiensi konstan (biaya linier terhadap waktu pemangkasan).], [Efisiensi menurun (*diminishing returns*) akibat koordinasi & kelelahan.], [Efisiensi non-linier didekati dengan linearisasi lokal (*crash slope*) per tugas.],
+    [*Tipe Precedence*], [Finish-to-Start (FS) sederhana tanpa lag.], [Finish-to-Start (FS), Start-to-Start (SS), Finish-to-Finish (FF) dengan lag.], [Finish-to-Start (FS) sederhana tanpa lag.],
+    [*Metode Solver*], [Constraint Programming (OR-Tools CP-SAT).], [MILP (Pyomo + CBC) via Diskretisasi Grid & Metaheuristik (pymoo GA).], [Constraint Programming (OR-Tools CP-SAT) setelah preprocessing.],
   )
 ]
 
-Secara ringkas, jika manajer proyek memiliki estimasi biaya crashing langsung dan mengabaikan efek kelelahan kerja, *Model Baseline* adalah pilihan tercepat. Namun, untuk alokasi proyek yang lebih realistis dan taktis yang memperhatikan kelelahan pekerja serta batasan kapasitas harian terperinci, *Model Novel Cobb-Douglas* memberikan solusi yang jauh lebih akurat dan dapat memodelkan trade-off operasional yang sebenarnya di lapangan.
+Secara ringkas, jika manajer proyek memiliki estimasi biaya crashing langsung dan mengabaikan efek kelelahan kerja, *Model Baseline* adalah pilihan tercepat. Untuk alokasi proyek taktis yang memperhatikan kelelahan pekerja secara dinamis dan memiliki hubungan precedence kompleks, *Model Novel Cobb-Douglas* memberikan presisi yang tinggi. Namun, jika manajer proyek menginginkan solusi yang realistis berbasis data perusahaan tetapi membutuhkan kecepatan komputasi yang sangat tinggi (milidetik) dengan jaminan solusi optimal global, *Model Hybrid* menawarkan solusi jalan tengah terbaik dengan memadukan keunggulan preprocessing Cobb-Douglas dan efisiensi solver CP-SAT.
