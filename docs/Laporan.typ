@@ -70,6 +70,23 @@ Model baseline ini dibangun menggunakan tiga berkas data utama yang saling berka
 2. *Kapasitas Sumber Daya* (`resource_capacity_v3.json`): Menentukan batas kapasitas harian maksimum ($U_k^max$) untuk setiap jenis sumber daya $k$.
 3. *Kebutuhan Sumber Daya* (`resource_requirements_v3.json`): Menentukan kebutuhan harian aktivitas $i$ terhadap sumber daya $k$ (yaitu $U_(i, k)$) ketika aktivitas tersebut sedang aktif berjalan.
 
+Contoh format dan sampel data terintegrasi untuk Skenario 1 dapat dilihat pada tabel di bawah ini:
+
+#align(center)[
+  #set text(size: 9pt)
+  #table(
+    columns: (3cm, 2.5cm, 2cm, 2cm, 2.2cm, 4.3cm),
+    align: (left, center, center, center, center, left),
+    fill: (col, row) => if row == 0 { luma(240) },
+    table.header(
+      [*Nama Aktivitas*], [*Precedence*], [*$d_i^min$*], [*$d_i^max$*], [*$C_i$ (USD/hari)*], [*Sumber Daya (Kebutuhan)*]
+    ),
+    [Bids & Contracts], [-], [7 hari], [10 hari], [\$60.00], [General Management (1), Project Management (1)],
+    [Grading & Permits], [Bids & Contracts], [7 hari], [10 hari], [\$70.00], [General Management (1), Survey Crew (1), Grading Contractor (2)],
+    [Site Work], [Grading & Permits], [5 hari], [7 hari], [\$30.00], [Labor Crew (3), Grading Contractor (2), Survey Crew (1)]
+  )
+]
+
 == Asumsi dan Limitasi Model
 Formulasi model baseline didasarkan pada beberapa asumsi dan limitasi berikut:
 - *Linieritas Biaya Crashing*: Pengurangan durasi suatu aktivitas diasumsikan memiliki biaya tambahan konstan per hari. Total biaya crashing untuk suatu tugas adalah hasil kali dari jumlah hari pemotongan dengan biaya harian.
@@ -213,9 +230,60 @@ Di sini, kami memformulasikan model TCTP baru. Secara khusus, dibuat model RC-WT
 
 == Deskripsi Data
 Model ini menggunakan berkas data sebagai berikut: 
-1.  *Data Aktivitas* (`task_table.json`): Berisi daftar seluruh aktivitas ($Im$), level outline, durasi baseline, tanggal mulai dan selesai, serta dependensi (_precedence_) dengan nilai *lag/lead*-nya.
+1.  *Data Aktivitas* (`task_table.json`): Berisi daftar seluruh aktivitas ($I$), level outline, durasi baseline, tanggal mulai dan selesai, serta dependensi (_precedence_) dengan nilai *lag/lead*-nya.
 2.  *Data Sumber Daya* (`resource_table.json`): Berisi daftar jenis tenaga kerja ($K$), kapasitas maksimal harian ($U_k^max$ dalam persen), dan tarif upah standar per jam ($r_k$). 
 3.  *Data Alokasi Tugas* (`assignment_table.json`): Menghubungkan aktivitas dengan tenaga kerja yang ditugaskan ($K_i$), mencakup usaha kerja baseline ($W_(i,k)$ dalam jam) dan persentase alokasi harian baseline ($U_(i,k)$).
+
+Contoh format dan sampel data terintegrasi untuk Skenario 2 ditunjukkan pada tabel-tabel di bawah ini:
+
+#align(center)[
+  #grid(
+    columns: 1,
+    gutter: 1.2em,
+    [
+      #set text(size: 8.5pt)
+      #table(
+        columns: (1cm, 6.2cm, 2.5cm, 2.2cm, 2.6cm),
+        align: (center, left, center, center, center),
+        fill: (col, row) => if row == 0 { luma(240) },
+        table.header(
+          [*ID*], [*Nama Aktivitas (`task_table`)*], [*Durasi Baseline*], [*Outline Level*], [*Predecessors*]
+        ),
+        [2], [Receive notice to proceed and sign contract], [3 hari], [2], [-],
+        [3], [Submit bond and insurance documents], [2 hari], [2], [2FS],
+        [4], [Prepare and submit project schedule], [4 hari], [2], [3FS]
+      )
+    ],
+    [
+      #set text(size: 8.5pt)
+      #table(
+        columns: (1cm, 5.5cm, 3.5cm, 4.5cm),
+        align: (center, left, center, center),
+        fill: (col, row) => if row == 0 { luma(240) },
+        table.header(
+          [*ID*], [*Nama Sumber Daya (`resource_table`)*], [*Max Units (Kapasitas)*], [*Standard Rate (Tarif)*]
+        ),
+        [1], [G.C. General Management], [100% (1 orang)], [\$120.00/jam],
+        [2], [G.C. Project Management], [100% (1 orang)], [\$95.00/jam],
+        [6], [G.C. Labor Crew], [300% (3 orang)], [\$35.00/jam]
+      )
+    ],
+    [
+      #set text(size: 8.5pt)
+      #table(
+        columns: (5.2cm, 5.2cm, 2.3cm, 2.3cm),
+        align: (left, left, center, center),
+        fill: (col, row) => if row == 0 { luma(240) },
+        table.header(
+          [*Nama Aktivitas (`assignment_table`)*], [*Nama Sumber Daya*], [*Work (Usaha)*], [*Units (Alokasi)*]
+        ),
+        [Submit bond and insurance documents], [G.C. Project Management], [16 jam], [100%],
+        [Submit bond and insurance documents], [G.C. General Management], [4 jam], [25%],
+        [Prepare and submit project schedule], [G.C. Scheduler], [16 jam], [100%]
+      )
+    ]
+  )
+]
 
 == Asumsi dan Limitasi Model
 Formulasi model Cobb-Douglas didasarkan pada beberapa asumsi realistis berikut:
