@@ -366,5 +366,7 @@ def run_optimizer():
 
 
 if __name__ == '__main__':
-    print("Web UI on http://127.0.0.1:5000")
-    app.run(debug=False, host='127.0.0.1', port=5000)
+    import os
+    port = int(os.environ.get("PORT", 5001))
+    print(f"Web UI on http://127.0.0.1:{port}")
+    app.run(debug=False, host='127.0.0.1', port=port)

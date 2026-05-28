@@ -808,17 +808,17 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--activity-data",
-        default="data/activity_data_v3.json",
+        default="./data/activity_data_v3.json",
         help="Path to activity_data JSON",
     )
     parser.add_argument(
         "--resource-capacity",
-        default="data/resource_capacity_v3.json",
+        default="./data/resource_capacity_v3.json",
         help="Path to resource_capacity JSON",
     )
     parser.add_argument(
         "--resource-requirements",
-        default="data/resource_requirements_v3.json",
+        default="./data/resource_requirements_v3.json",
         help="Path to resource_requirements JSON",
     )
     parser.add_argument(
@@ -853,22 +853,22 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-json",
-        default="outputs/solution.json",
+        default="./outputs/solution.json",
         help="Path to output solution JSON",
     )
     parser.add_argument(
         "--output-csv",
-        default="outputs/schedule.csv",
+        default="./outputs/schedule.csv",
         help="Path to output schedule CSV",
     )
     parser.add_argument(
         "--output-gantt",
-        default="outputs/gantt_comparison.png",
+        default="./outputs/gantt_comparison.png",
         help="Path to output Gantt chart comparison plot (original vs crashed)",
     )
     parser.add_argument(
         "--output-resources",
-        default="outputs/resource_usage.png",
+        default="./outputs/resource_usage.png",
         help="Path to output resource usage plot across time",
     )
     parser.add_argument(

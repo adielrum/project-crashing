@@ -1,0 +1,11 @@
+flask
+ortools
+pulp
+pymoo
+pyomo
+numpy
+scipy
+pandas
+matplotlib
+plotly
+openpyxl

@@ -45,8 +45,9 @@ pip install flask ortools pulp pymoo pyomo numpy scipy pandas matplotlib plotly 
 ### Web Application (Recommended)
 
 ```bash
+cd webapp
 python webapp.py
-# Open http://127.0.0.1:5000
+# Open http://127.0.0.1:5001
 ```
 
 The web UI provides:
@@ -76,20 +77,22 @@ Both prompt for `current_day` and `target_day` interactively.
 
 ```
 project-crashing/
-├── webapp.py                     # Flask web UI (primary entry point)
+├── webapp/                       # Main Web Application directory
+│   ├── webapp.py                 # Flask web UI (primary entry point)
+│   ├── optimizer_core.py         # Shared: data classes, Cobb-Douglas math, GA solver, Plotly vis
+│   ├── solver_milp.py            # MILP solver via PuLP+CBC
+│   ├── templates/index.html      # Jinja2 template for web UI
+│   ├── static/
+│   │   ├── css/style.css
+│   │   └── js/main.js
+│   └── Schedules_CSV/            # CSV exports from MS Project (web data source)
+│
 ├── solve_project_crashing.py     # OR-Tools CP-SAT solver (standalone CLI)
-├── solver_milp.py                # MILP solver via PuLP+CBC
-├── optimizer_core.py             # Shared: data classes, Cobb-Douglas math, GA solver, Plotly vis
 ├── project_optimizer.py          # V1: LP + scipy optimizer
 ├── project_optimizer_v2.py       # V2: MILP + GA without resource capacity
 ├── project_optimizer_v3.py       # V3: MILP + GA with resource capacity
 ├── gantt_chart.py                # Static Gantt chart generator (matplotlib)
 ├── update_rates.py               # Utility to update resource wage rates
-│
-├── templates/index.html          # Jinja2 template for web UI
-├── static/
-│   ├── css/style.css
-│   └── js/main.js
 │
 ├── data/                         # Schedule data (JSON)
 │   ├── activity_data_v3.json
