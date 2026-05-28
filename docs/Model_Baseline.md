@@ -1,6 +1,6 @@
 # Formulasi Model Optimisasi Matematika (CP-SAT Project Crashing)
 
-Dokumen ini menjelaskan formulasi model pemrograman batasan (Constraint Programming) yang diimplementasikan dalam berkas [solve_project_crashing.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/solve_project_crashing.py) menggunakan pustaka **Google OR-Tools CP-SAT Solver**.
+Dokumen ini menjelaskan formulasi model pemrograman batasan (Constraint Programming) yang diimplementasikan dalam berkas [solver_base.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-base/solver_base.py) menggunakan pustaka **Google OR-Tools CP-SAT Solver**.
 
 Model ini memecahkan masalah **Dynamic Resource-Constrained Project Scheduling Problem with Time-Cost Trade-offs (RCPSP-TCT)** dengan durasi diskrit dan biaya crashing linier.
 
@@ -167,12 +167,34 @@ graph TD
 
 ## 6. Pemetaan Formulasi ke Kode Python
 
-Berikut adalah bagian kode di dalam [solve_project_crashing.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/solve_project_crashing.py) yang merepresentasikan komponen matematika di atas:
+Berikut adalah pemetaan komponen matematika ke dalam kode Python pada berkas [solver_base.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-base/solver_base.py):
 
-*   **Skalasi Biaya Desimal**: Diimplementasikan pada fungsi `decimal_scale` (Baris 45-51) dan diaplikasikan pada baris 348.
-*   **Definisi Variabel Keputusan**: Baris 380-386 mendefinisikan $s_a$, $d_a$, $e_a$, $c_a$, dan `IntervalVar`.
-*   **Batasan Precedence**: Baris 389-393 mengikat hubungan ketergantungan tugas.
-*   **Batasan Kapasitas Sumber Daya (Cumulative)**: Baris 396-404 menambahkan batasan kapasitas harian kumulatif menggunakan `model.AddCumulative`.
-*   **Penguncian Status Dinamis**: Baris 407-452 membatasi domain dan nilai variabel berdasarkan `status_a` (`not_started`, `in_progress`, `completed`).
+*   **Skalasi Biaya Desimal**: Diimplementasikan pada fungsi `decimal_scale` (Baris 45-51) untuk mendeteksi presisi desimal maksimum dan mengembalikan faktor skala $S = 10^{\text{max\_dp}}$, kemudian diterapkan pada baris 348 untuk menskalakan biaya crash desimal ke bilangan bulat.
+*   **Definisi Variabel Keputusan**: Baris 380-386 mendefinisikan variabel integer $s_a$, $d_a$, $e_a$, $c_a$, serta mengikat mereka ke dalam objek `model.NewIntervalVar`.
+*   **Batasan Precedence**: Baris 389-393 mengikat relasi Finish-to-Start ($s_a \ge e_p$) untuk setiap tugas pendahulu.
+*   **Batasan Kapasitas Sumber Daya (Cumulative)**: Baris 396-404 mengimplementasikan batasan kapasitas harian maksimum menggunakan `model.AddCumulative`.
+*   **Penguncian Status Dinamis**: Baris 407-453 menerapkan penguncian dinamis untuk aktivitas `not_started`, `in_progress`, dan `completed` berdasarkan hari evaluasi $t_{\text{now}}$ (`current_day`).
 *   **Definisi Makespan ($C_{\text{max}}$)**: Baris 454-456 mengikat makespan proyek.
 *   **Pilihan Fungsi Tujuan**: Baris 459-480 mengatur objektif berdasarkan mode pencarian (`cost_with_deadline` vs `min_makespan`).
+
+---
+
+## 7. Status Implementasi dan Rencana Kerja Sisa
+
+Berdasarkan perbandingan antara model teoritis yang diajukan dalam [Laporan.typ](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/docs/Laporan.typ) dengan implementasi pada [solver_base.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-base/solver_base.py), berikut adalah statusnya:
+
+### Yang Sudah Diimplementasikan (Implemented)
+- **Constraint Programming (CP-SAT)**: Solusi optimisasi berbasis CP-SAT berjalan dengan sangat cepat (orde milidetik) dan menjamin solusi optimal global.
+- **Dynamic Scheduling State Locking**: Penguncian dinamis berhasil mengatasi perubahan kondisi proyek di tengah jalan secara retrospektif (mencegah pemendekan durasi yang tidak logis untuk pekerjaan yang sudah dikerjakan).
+- **Auto-Repair Siklus Precedence**: Algoritma deteksi siklus terimplementasi dengan opsi auto-fix untuk memutuskan ketergantungan melingkar `Paint <-> Interior Trim` dengan membuang relasi `Paint -> Interior Trim`.
+- **Dua Mode Optimisasi**: Mode `cost_with_deadline` dan mode fallback `min_makespan` ketika tenggat waktu tidak layak.
+- **Ekspor dan Visualisasi**: Ekspor hasil jadwal ke format JSON dan CSV, serta visualisasi Gantt chart dan pemuatan kapasitas sumber daya.
+
+### Yang Belum Diimplementasikan / Perlu Dikembangkan (To Be Implemented)
+- **Batasan Anggaran pada Mode Time-Driven**:
+  Dalam formulasi teoritis (Subbab 2.5.2), mode *Time-Driven* harus mendukung batasan anggaran keras:
+  $$ \sum_{i \in I} C_i (d_i^{\max} - (e_i - s_i)) \le B $$
+  Pada kode saat ini, mode `min_makespan` hanya meminimalkan waktu selesai proyek tanpa memperhitungkan batasan anggaran $B$ ataupun biaya crashing.
+- **Fungsi Tujuan Multi-Objektif & Bonus-Penalty**:
+  - Formulasi teoritis menyarankan minimalisasi simultan atas makespan dan biaya crash (Subbab 2.5.3). Saat ini, CP-SAT berjalan secara satu per satu (sekuensial) bukan dengan Pareto/Lexicographic optimization.
+  - Formulasi *Bonus-Penalty Driven* (Subbab 2.5.4) menggabungkan biaya crash, denda keterlambatan ($c_{\text{late}}$), dan bonus penyelesaian awal ($c_{\text{early}}$) menjadi satu fungsi tujuan tunggal. CP-SAT belum mengimplementasikan fungsi tujuan ini (meskipun model ini terimplementasi di solver MILP/GA Cobb-Douglas).

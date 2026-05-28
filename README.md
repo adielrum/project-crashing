@@ -64,15 +64,6 @@ python solve_project_crashing.py \
     --output-csv outputs/schedule.csv
 ```
 
-### V2/V3 Optimizer (Interactive CLI)
-
-```bash
-python project_optimizer_v2.py   # MILP + GA without resource capacity
-python project_optimizer_v3.py   # MILP + GA with resource capacity
-```
-
-Both prompt for `current_day` and `target_day` interactively.
-
 ## Project Structure
 
 ```
@@ -87,26 +78,18 @@ project-crashing/
 │   │   └── js/main.js
 │   └── Schedules_CSV/            # CSV exports from MS Project (web data source)
 │
-├── solve_project_crashing.py     # OR-Tools CP-SAT solver (standalone CLI)
-├── project_optimizer.py          # V1: LP + scipy optimizer
-├── project_optimizer_v2.py       # V2: MILP + GA without resource capacity
-├── project_optimizer_v3.py       # V3: MILP + GA with resource capacity
-├── gantt_chart.py                # Static Gantt chart generator (matplotlib)
-├── update_rates.py               # Utility to update resource wage rates
-│
 ├── data/                         # Schedule data (JSON)
 │   ├── activity_data_v3.json
 │   ├── resource_capacity_v3.json
 │   ├── resource_requirements_v3.json
 │   └── original-data/            # Raw data from Excel
 │
-├── Schedules_CSV/                # CSV exports from MS Project
 │
-├── output/                       # V1/V2/V3 results
 ├── outputs/                      # CP-SAT solver results
 │
 ├── implementasi-cobb/            # Cobb-Douglas GA implementation (pymoo)
-├── implementasi-cobb-2/          # Cobb-Douglas Pyomo MILP/MINLP
+|
+├── implementasi-base/            # Baseline Model Implementation (OR-Tools)
 │
 └── docs/                         # Mathematical formulations and reports
     ├── Model_Baseline.md
@@ -177,12 +160,3 @@ The webapp uses these defaults (defined in `optimizer_core.py`):
 | `ot_mult` | 1.5 | Overtime wage multiplier |
 | `c_late` | 150000000 | Late delivery penalty (Rp/day) |
 | `c_early` | 100000000 | Early delivery bonus (Rp/day) |
-
-## Documentation
-
-- `docs/Model_Baseline.md` - CP-SAT mathematical formulation (Indonesian)
-- `docs/Model_CD.md` - Cobb-Douglas model formulation (Indonesian)
-- `docs/Model_Hybrid.md` - Hybrid model formulation (Indonesian)
-- `implementasi-cobb/model_formulation.md` - GA formulation (English)
-- `implementasi-cobb-2/Model-cobb-2.md` - Pyomo MILP formulation blueprint
-- `docs/Laporan.typ` / `docs/Laporan.pdf` - Full project report

@@ -19,6 +19,8 @@ Fitur utama:
 """
 
 import os
+import json
+import argparse
 import numpy as np
 import pandas as pd
 from pymoo.core.problem import ElementwiseProblem
@@ -27,6 +29,7 @@ from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.optimize import minimize
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
+import matplotlib.pyplot as plt
 
 
 # ===========================================================================
@@ -78,6 +81,22 @@ def load_data(path_tasks, path_precedence, path_assignments):
 # ===========================================================================
 # Problem Definition
 # ===========================================================================
+
+from pymoo.algorithms.soo.nonconvex.pso import PSO
+from pymoo.problems import get_problem
+from pymoo.optimize import minimize
+from pymoo.core.callback import Callback
+
+class MyCallback(Callback):
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.n_evals = []
+        self.opt = []
+
+    def notify(self, algorithm):
+        self.n_evals.append(algorithm.evaluator.n_eval)
+        self.opt.append(algorithm.opt[0].F)
 
 class ResourceBasedScheduling(ElementwiseProblem):
     """
@@ -355,24 +374,370 @@ class ResourceBasedScheduling(ElementwiseProblem):
         out["G"] = G
 
 
-# ===========================================================================
-# Main
-# ===========================================================================
+def generate_gantt_comparison_plot(tasks, s_bl, f_bl, s_opt, f_opt, current_day, output_path):
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+    from matplotlib.lines import Line2D
+    import os
+
+    N = len(tasks)
+    baseline_order = sorted(range(N), key=lambda i: (s_bl[i], f_bl[i], i))
+    optimized_order = sorted(range(N), key=lambda i: (s_opt[i], f_opt[i], i))
+
+    def get_color(i, end_day):
+        if end_day <= current_day:
+            return "#95a5a6"  # Gray for completed tasks
+        
+        baseline_idx = baseline_order.index(i)
+        optimized_idx = optimized_order.index(i)
+        order_changed = baseline_idx != optimized_idx
+        
+        crashed = (f_opt[i] - s_opt[i]) < (f_bl[i] - s_bl[i] - 1e-5)
+        
+        if order_changed and crashed:
+            return "#e67e22"  # Orange (crashed & order changed)
+        elif order_changed and not crashed:
+            return "#2ecc71"  # Green (order changed)
+        elif not order_changed and crashed:
+            return "#e74c3c"  # Red (crashed)
+        else:
+            return "#3498db"  # Blue (normal)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=(18, max(8, 0.35 * N)))
+
+    # Plot baseline
+    for idx, i in enumerate(baseline_order):
+        name = tasks.iloc[i]["task_name"]
+        start = s_bl[i]
+        duration = f_bl[i] - s_bl[i]
+        end = f_bl[i]
+        color = "#95a5a6" if end <= current_day else "#3498db"
+        ax1.barh(idx, duration, left=start, height=0.6, color=color, edgecolor="black", linewidth=0.5)
+        if duration > 2:
+            ax1.text(start + duration / 2, idx, f"{duration:.1f}", va="center", ha="center", color="white", fontsize=8, weight="bold")
+        else:
+            ax1.text(start + duration + 0.5, idx, f"{duration:.1f}", va="center", ha="left", color="black", fontsize=8)
+
+    ax1.set_title("Original Schedule (Baseline)", fontsize=14, pad=15)
+    ax1.set_xlabel("Project Day", fontsize=12)
+    ax1.set_yticks(range(N))
+    ax1.set_yticklabels([tasks.iloc[i]["task_name"] for i in baseline_order], fontsize=8)
+    ax1.invert_yaxis()
+    ax1.grid(axis="x", linestyle="--", alpha=0.5)
+    ax1.axvline(x=current_day, color="#2c3e50", linestyle="--", linewidth=1.5)
+
+    # Plot optimized
+    for idx, i in enumerate(optimized_order):
+        name = tasks.iloc[i]["task_name"]
+        start = s_opt[i]
+        duration = f_opt[i] - s_opt[i]
+        end = f_opt[i]
+        color = get_color(i, end)
+        ax2.barh(idx, duration, left=start, height=0.6, color=color, edgecolor="black", linewidth=0.5)
+        if duration > 2:
+            ax2.text(start + duration / 2, idx, f"{duration:.1f}", va="center", ha="center", color="white", fontsize=8, weight="bold")
+        else:
+            ax2.text(start + duration + 0.5, idx, f"{duration:.1f}", va="center", ha="left", color="black", fontsize=8)
+
+    ax2.set_title("Crashed/Optimized Cobb-Douglas Schedule", fontsize=14, pad=15)
+    ax2.set_xlabel("Project Day", fontsize=12)
+    ax2.set_yticks(range(N))
+    ax2.set_yticklabels([tasks.iloc[i]["task_name"] for i in optimized_order], fontsize=8)
+    ax2.invert_yaxis()
+    ax2.grid(axis="x", linestyle="--", alpha=0.5)
+    ax2.axvline(x=current_day, color="#2c3e50", linestyle="--", linewidth=1.5)
+    
+    opt_end_date = np.max(f_opt)
+    ax2.axvline(x=opt_end_date, color="red", linestyle="--", linewidth=1.5)
+
+    legend_elements = [
+        Patch(facecolor="#95a5a6", edgecolor="black", label="Completed (Finished <= Current Day)"),
+        Patch(facecolor="#3498db", edgecolor="black", label="Normal (No Crash, Order Unchanged)"),
+        Patch(facecolor="#e74c3c", edgecolor="black", label="Crashed (Order Unchanged)"),
+        Patch(facecolor="#2ecc71", edgecolor="black", label="Normal (No Crash, Order Changed)"),
+        Patch(facecolor="#e67e22", edgecolor="black", label="Crashed & Order Changed"),
+        Line2D([0], [0], color="#2c3e50", linestyle="--", linewidth=1.5, label=f"Current Day (Day {current_day})"),
+        Line2D([0], [0], color="red", linestyle="--", linewidth=1.5, label=f"Project End Date (Day {opt_end_date:.1f})"),
+    ]
+    fig.legend(handles=legend_elements, loc="lower center", bbox_to_anchor=(0.5, -0.05), ncol=4, fontsize=9)
+
+    plt.tight_layout()
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"Saved Gantt chart comparison plot to: {output_path}")
+
+
+def generate_interactive_gantt_html(
+    tasks, resources, s_bl, f_bl, s_opt, f_opt, x_ik_opt, tau_ik_opt, D_ik_opt, D_i_opt,
+    current_day, T_max, output_path
+):
+    import plotly.graph_objects as go
+    from collections import defaultdict
+    import os
+
+    N = len(tasks)
+    P = len(resources)
+    
+    # Map task index to its assignments' optimized x and tau
+    task_crashes = defaultdict(list)
+    for p in range(P):
+        tid = int(resources.loc[p, "i"])
+        tname = tasks.iloc[tid]["task_name"]
+        x_val = float(x_ik_opt[p])
+        tau_val = float(tau_ik_opt[p])
+        res_name = resources.loc[p, "resource_name"] if "resource_name" in resources else f"Resource_{resources.loc[p, 'resource_id']}"
+        
+        if x_val > 1.0 + 1e-5 or tau_val > 0.0 + 1e-5:
+            # Calculate duration saved for this resource
+            d_base = float(resources.loc[p, "D_base_ik"])
+            d_crashed = float(D_ik_opt[p])
+            saved = d_base - d_crashed
+            
+            task_crashes[tid].append({
+                "resource": res_name,
+                "x": round(x_val, 2),
+                "tau": round(tau_val, 1),
+                "saved": round(saved, 2)
+            })
+
+    # Sort tasks by baseline start time
+    baseline_order = sorted(range(N), key=lambda i: (s_bl[i], f_bl[i], i))
+    task_labels = [f"{tasks.iloc[i]['task_id']}: {tasks.iloc[i]['task_name']}" for i in baseline_order]
+
+    fig = go.Figure()
+    legend_shown = set()
+
+    for i in baseline_order:
+        tname = tasks.iloc[i]["task_name"]
+        label = f"{tasks.iloc[i]['task_id']}: {tname}"
+        sv, fv = s_opt[i], f_opt[i]
+        
+        is_done = fv <= current_day
+        is_crashed = len(task_crashes[i]) > 0
+        
+        if is_done:
+            group, color = "Completed", "#95a5a6"
+        elif is_crashed:
+            group, color = "Crashed", "#ef4444"
+        else:
+            group, color = "Active (normal)", "#3b82f6"
+
+        info = [
+            f"<b>{label}</b>",
+            f"Day {sv:.1f} &rarr; Day {fv:.1f} (Duration: {fv-sv:.2f}d)"
+        ]
+        
+        if is_crashed:
+            info.append("<br><b>Cobb-Douglas Crashing:</b>")
+            for entry in task_crashes[i]:
+                info.append(
+                    f"&nbsp;&nbsp;{entry['resource']}: x={entry['x']}, &tau;={entry['tau']}h (saved {entry['saved']:.1f}d)"
+                )
+        
+        text = "<br>".join(info)
+
+        # Plotly Scatter lines for Gantt bars
+        fig.add_trace(go.Scatter(
+            x=[sv, fv], y=[label, label],
+            mode='lines',
+            line=dict(color=color, width=14),
+            name=group,
+            legendgroup=group,
+            showlegend=(group not in legend_shown),
+            hovertemplate=text + "<extra></extra>"
+        ))
+        legend_shown.add(group)
+
+    # Vertical lines for current day and target deadline
+    fig.add_shape(type="line", x0=current_day, x1=current_day, y0=0, y1=1, yref="paper",
+                  line=dict(color="black", width=2, dash="dash"))
+    fig.add_shape(type="line", x0=T_max, x1=T_max, y0=0, y1=1, yref="paper",
+                  line=dict(color="blue", width=2, dash="dot"))
+    
+    fig.add_annotation(x=current_day, y=1.02, yref="paper", showarrow=False,
+                       text=f"Current Day {current_day}", font=dict(color="black"))
+    fig.add_annotation(x=T_max, y=-0.05, yref="paper", showarrow=False,
+                       text=f"Target Deadline Day {T_max}", font=dict(color="blue"))
+
+    fig.update_layout(
+        title=f"Crashed Cobb-Douglas Gantt Chart (Current Day: {current_day}, Makespan: {np.max(f_opt):.2f}d)",
+        xaxis_title="Project Day",
+        yaxis_title="Task",
+        height=max(600, 18 * N),
+        hovermode="closest",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=300, r=40, t=80, b=60),
+    )
+    fig.update_yaxes(autorange="reversed", tickfont=dict(size=8),
+                     categoryorder="array", categoryarray=task_labels)
+
+    html = fig.to_html(include_plotlyjs='cdn', full_html=True)
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    with open(output_path, 'w', encoding='utf-8') as fh:
+        fh.write(html)
+    print(f"Saved interactive HTML Gantt chart to: {output_path}")
+
+
+def save_solution_json(
+    tasks, resources, precedence, problem,
+    x_opt, x_ik_opt, tau_ik_opt, D_ik_opt, D_i_opt, s_opt, f_opt,
+    current_day, T_max, makespan, labor_cost, total_project_cost,
+    output_path
+):
+    import json
+    import os
+    
+    crash_plan = {}
+    P = len(resources)
+    N = len(tasks)
+    
+    for p in range(P):
+        tid = int(resources.loc[p, "i"])
+        tname = tasks.iloc[tid]["task_name"]
+        x_val = float(x_ik_opt[p])
+        tau_val = float(tau_ik_opt[p])
+        
+        if x_val > 1.0 + 1e-5 or tau_val > 0.0 + 1e-5:
+            r_k = float(problem.r_k[p])
+            U_ik = float(problem.U_ik[p])
+            W_ik = float(problem.W_ik[p])
+            
+            c_chosen = float(D_ik_opt[p] * x_val * U_ik * (problem.hours_per_day * r_k + tau_val * problem.r_k_ot[p]))
+            c_base = float(problem.D_base_ik[p] * 1.0 * U_ik * (problem.hours_per_day * r_k + 0.0 * problem.r_k_ot[p]))
+            cost_delta = c_chosen - c_base
+            
+            d_base = float(problem.D_base_ik[p])
+            d_crashed = float(D_ik_opt[p])
+            saved = d_base - d_crashed
+            
+            res_name = resources.loc[p, "resource_name"] if "resource_name" in resources else f"Resource_{resources.loc[p, 'resource_id']}"
+            crash_plan.setdefault(tname, []).append({
+                "resource": res_name,
+                "x": round(x_val, 4),
+                "tau": round(tau_val, 4),
+                "cost_delta": round(cost_delta, 2),
+                "duration_saved": round(saved, 2),
+            })
+            
+    schedule = []
+    for i in range(N):
+        task_id = int(tasks.iloc[i]["task_id"])
+        task_name = tasks.iloc[i]["task_name"]
+        
+        status = "completed" if f_opt[i] <= current_day else ("in_progress" if s_opt[i] <= current_day < f_opt[i] else "not_started")
+        
+        assignments = []
+        for p in problem.K_i.get(i, []):
+            res_name = resources.loc[p, "resource_name"] if "resource_name" in resources else f"Resource_{resources.loc[p, 'resource_id']}"
+            assignments.append({
+                "resource_name": res_name,
+                "baseline_duration": float(problem.D_base_ik[p]),
+                "optimized_duration": float(D_ik_opt[p]),
+                "x": float(x_ik_opt[p]),
+                "tau": float(tau_ik_opt[p]),
+            })
+            
+        schedule.append({
+            "task_id": task_id,
+            "task_name": task_name,
+            "baseline_start": float(problem.s_baseline[i]),
+            "baseline_finish": float(problem.f_baseline[i]),
+            "baseline_duration": float(problem.D_base_i[i]),
+            "optimized_start": float(s_opt[i]),
+            "optimized_finish": float(f_opt[i]),
+            "optimized_duration": float(D_i_opt[i]),
+            "status": status,
+            "assignments": assignments
+        })
+        
+    result_data = {
+        "success": True,
+        "solver": "pymoo_GA",
+        "current_day": current_day,
+        "target_day": T_max,
+        "baseline_makespan": float(np.max(problem.f_baseline)),
+        "makespan": float(makespan),
+        "makespan_reduction": float(np.max(problem.f_baseline) - makespan),
+        "labor_cost": float(labor_cost),
+        "total_project_cost": float(total_project_cost),
+        "crash_plan": crash_plan,
+        "schedule": schedule
+    }
+    
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as fh:
+        json.dump(result_data, fh, indent=2)
+    print(f"Wrote solution JSON to: {output_path}")
+
+
+def parse_args():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Solve dynamic project crashing under Cobb-Douglas with pymoo GA"
+    )
+    parser.add_argument(
+        "--path-tasks",
+        default=data_path("data_tasks.csv"),
+        help="Path to tasks CSV"
+    )
+    parser.add_argument(
+        "--path-precedence",
+        default=data_path("data_precedence.csv"),
+        help="Path to precedence CSV"
+    )
+    parser.add_argument(
+        "--path-assignments",
+        default=data_path("data_assignments.csv"),
+        help="Path to assignments CSV"
+    )
+    parser.add_argument(
+        "--current-day",
+        type=int,
+        default=156,
+        help="Current execution day"
+    )
+    parser.add_argument(
+        "--output-json",
+        default=os.path.join(BASE_DIR, "../outputs/cobb_solution.json"),
+        help="Path to output solution JSON"
+    )
+    parser.add_argument(
+        "--output-gantt",
+        default=os.path.join(BASE_DIR, "../outputs/cobb_gantt.png"),
+        help="Path to output Gantt chart PNG"
+    )
+    parser.add_argument(
+        "--output-gantt-html",
+        default=os.path.join(BASE_DIR, "../outputs/cobb_gantt.html"),
+        help="Path to output interactive Gantt chart HTML"
+    )
+    parser.add_argument(
+        "--pop-size",
+        type=int,
+        default=100,
+        help="Population size for GA"
+    )
+    parser.add_argument(
+        "--n-gen",
+        type=int,
+        default=250,
+        help="Number of generations for GA"
+    )
+    return parser.parse_args()
+
 
 if __name__ == "__main__":
+    args = parse_args()
 
     # ---- 1. Muat data ----
     tasks, precedence, resources, N, K_i = load_data(
-        path_tasks=data_path("data_tasks.csv"),
-        path_precedence=data_path("data_precedence.csv"),
-        path_assignments=data_path("data_assignments.csv"),
+        path_tasks=args.path_tasks,
+        path_precedence=args.path_precedence,
+        path_assignments=args.path_assignments,
     )
 
-    # ---- 2. Parameter utama ----
-    # current_day : hari ke berapa proyek saat ini berjalan.
-    #               Crashing hanya diterapkan untuk task yang belum selesai
-    #               pada hari ini. Ubah nilai ini sesuai kondisi aktual proyek.
-    CURRENT_DAY = 156
+    CURRENT_DAY = args.current_day
 
     # ---- 3. Buat instance problem ----
     problem = ResourceBasedScheduling(
@@ -412,7 +777,6 @@ if __name__ == "__main__":
     print(f"n_var             : {problem.n_var}  = x_ik:{P} + tau_ik:{P}")
     print(f"n_ieq_constr      : {problem.n_ieq_constr}  (D_min per pasangan i,k)")
     print(f"x_max             : {problem.x_max:.2f}")
-    # print(f"Baseline makespan : {np.max(problem.f_baseline):.1f} hari")
 
     # ---- 5. GA Solver ----
     print("\n" + "=" * 60)
@@ -420,19 +784,43 @@ if __name__ == "__main__":
     print("=" * 60)
 
     algorithm = GA(
-        pop_size=100,
+        pop_size=args.pop_size,
         crossover=SBX(prob=0.9, eta=15),
         mutation=PM(eta=20),
         eliminate_duplicates=True,
     )
 
+    callback = MyCallback()
+
     res = minimize(
         problem,
         algorithm,
-        termination=("n_gen", 250),
+        callback=callback,
+        termination=("n_gen", args.n_gen),
         seed=42,
         verbose=True,
     )
+
+    plt.title("Convergence")
+    plt.plot(callback.n_evals, callback.opt, "--")
+    plt.yscale("log")
+    plt.xlabel("Number of Evaluations")
+    plt.ylabel("Best Objective Value")
+    convergence_path = os.path.join(os.path.dirname(args.output_json), "cobb_convergence.png")
+    os.makedirs(os.path.dirname(convergence_path) or ".", exist_ok=True)
+    plt.savefig(convergence_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"Saved convergence plot to: {convergence_path}")
+
+    # Save callback convergence data
+    callback_path = os.path.join(os.path.dirname(args.output_json), "cobb_callback.json")
+    os.makedirs(os.path.dirname(callback_path) or ".", exist_ok=True)
+    with open(callback_path, "w") as fh:
+        json.dump({
+            "n_evals": callback.n_evals,
+            "opt": [float(v) for v in callback.opt],
+        }, fh, indent=2)
+    print(f"Saved callback convergence data to: {callback_path}")
 
     # ---- 6. Hasil ----
     print("\n" + "=" * 60)
@@ -488,6 +876,34 @@ if __name__ == "__main__":
             print(f"  {i:>3}  {nama:<46}  {s_opt[i]:>6.1f}  {f_opt[i]:>6.1f}  {D_i_opt[i]:>7.2f}")
         if N > 10:
             print(f"  ... dan {N - 10} task lainnya")
+
+        # Save solution and plot Gantt
+        save_solution_json(
+            tasks=tasks, resources=resources, precedence=precedence, problem=problem,
+            x_opt=x_opt, x_ik_opt=x_ik_opt, tau_ik_opt=tau_ik_opt, D_ik_opt=D_ik_opt, D_i_opt=D_i_opt,
+            s_opt=s_opt, f_opt=f_opt, current_day=CURRENT_DAY, T_max=problem.T_max,
+            makespan=makespan, labor_cost=labor_cost, total_project_cost=total,
+            output_path=args.output_json
+        )
+        
+        try:
+            generate_gantt_comparison_plot(
+                tasks=tasks, s_bl=problem.s_baseline, f_bl=problem.f_baseline,
+                s_opt=s_opt, f_opt=f_opt, current_day=CURRENT_DAY,
+                output_path=args.output_gantt
+            )
+        except Exception as plot_err:
+            print(f"[warning] Failed to generate static Gantt chart: {plot_err}")
+
+        try:
+            generate_interactive_gantt_html(
+                tasks=tasks, resources=resources, s_bl=problem.s_baseline, f_bl=problem.f_baseline,
+                s_opt=s_opt, f_opt=f_opt, x_ik_opt=x_ik_opt, tau_ik_opt=tau_ik_opt,
+                D_ik_opt=D_ik_opt, D_i_opt=D_i_opt, current_day=CURRENT_DAY, T_max=problem.T_max,
+                output_path=args.output_gantt_html
+            )
+        except Exception as html_err:
+            print(f"[warning] Failed to generate interactive HTML Gantt chart: {html_err}")
 
     else:
         print("GA tidak menemukan solusi. Coba naikkan pop_size atau n_gen.")
