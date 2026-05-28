@@ -70,6 +70,13 @@ Model baseline ini dibangun menggunakan tiga berkas data utama yang saling berka
 2. *Kapasitas Sumber Daya* (`resource_capacity_v3.json`): Menentukan batas kapasitas harian maksimum ($U_k^max$) untuk setiap jenis sumber daya $k$.
 3. *Kebutuhan Sumber Daya* (`resource_requirements_v3.json`): Menentukan kebutuhan harian aktivitas $i$ terhadap sumber daya $k$ (yaitu $U_(i, k)$) ketika aktivitas tersebut sedang aktif berjalan.
 
+== Asumsi dan Limitasi Model
+Formulasi model baseline didasarkan pada beberapa asumsi dan limitasi berikut:
+- *Linieritas Biaya Crashing*: Pengurangan durasi suatu aktivitas diasumsikan memiliki biaya tambahan konstan per hari. Total biaya crashing untuk suatu tugas adalah hasil kali dari jumlah hari pemotongan dengan biaya harian.
+- *Precedence Finish-to-Start*: Hubungan ketergantungan antar-aktivitas yang didukung hanya tipe *Finish-to-Start* (FS) tanpa adanya *lag/lead* waktu.
+- *Non-Preemptive*: Aktivitas yang sedang dikerjakan tidak dapat diinterupsi atau diberhentikan sementara hingga benar-benar selesai.
+- *Sunk Cost*: Biaya crashing yang terjadi pada masa lalu (sudah selesai) dianggap sebagai biaya hangus (*sunk cost*) dan diabaikan dari fungsi tujuan optimisasi aktif.
+
 Contoh format dan sampel data terintegrasi untuk Skenario 1 dapat dilihat pada tabel di bawah ini:
 
 #align(center)[
@@ -86,13 +93,6 @@ Contoh format dan sampel data terintegrasi untuk Skenario 1 dapat dilihat pada t
     [Site Work], [Grading & Permits], [5 hari], [7 hari], [\$30.00], [Labor Crew (3), Grading Contractor (2), Survey Crew (1)]
   )
 ]
-
-== Asumsi dan Limitasi Model
-Formulasi model baseline didasarkan pada beberapa asumsi dan limitasi berikut:
-- *Linieritas Biaya Crashing*: Pengurangan durasi suatu aktivitas diasumsikan memiliki biaya tambahan konstan per hari. Total biaya crashing untuk suatu tugas adalah hasil kali dari jumlah hari pemotongan dengan biaya harian.
-- *Precedence Finish-to-Start*: Hubungan ketergantungan antar-aktivitas yang didukung hanya tipe *Finish-to-Start* (FS) tanpa adanya *lag/lead* waktu.
-- *Non-Preemptive*: Aktivitas yang sedang dikerjakan tidak dapat diinterupsi atau diberhentikan sementara hingga benar-benar selesai.
-- *Sunk Cost*: Biaya crashing yang terjadi pada masa lalu (sudah selesai) dianggap sebagai biaya hangus (*sunk cost*) dan diabaikan dari fungsi tujuan optimisasi aktif.
 
 == Notasi
 #align(center)[
@@ -187,6 +187,14 @@ Untuk aktivitas yang sudah selesai:
   )
 ]
 
+=== Batasan Domain
+
+Terakhir, _domain_ dari variabel keputusan adalah 
+
+$ s_i in ZZ, quad e_i in ZZ $
+
+dikarenakan metode CP-SAT yang akan digunakan paling cocok dengan batasan ini. Selebihnya, asumsi hari yang bulat standar di literatur. 
+
 == Formulasi Objektif
 
 === _Cost-Driven_
@@ -215,7 +223,7 @@ $ min (s_(n+1), sum_(i in I_0^C) C_i (d_i^(max) - (e_i - s_i))). $
 === _Bonus-Penalty Driven_
 Pemodelan _time-cost tradeoff_ tidak perlu dengan pendekatan multi-objektif seperti di atas. Penggabungannya bisa mempertahankan fungsi objektif tunggal dengan menggunakan metrik penalti harian $c_"late"$ dan bonus harian $c_"early"$. Ini menghasilkan fungsi objektif berikut:
 
-$ min sum_(i in I_0^C) C_i (d_i^max - (e_i - s_i)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)). $
+$ min sum_(i in I_0^C) C_i (d_i^max - (e_i - s_i)) + c_"late" max(0, T_"max" - s_(n+1)) + c_"early" max(0, s_(n+1)- T_"max"). $
 
 == Metode Penyelesaian
 Model baseline diselesaikan menggunakan *Google OR-Tools CP-SAT Solver*. CP-SAT dipilih karena menyediakan variabel interval (`IntervalVar`) secara native yang mempermudah representasi durasi tugas dan memiliki algoritma propagasi batasan kumulatif (`AddCumulative`) yang sangat efisien untuk memecahkan masalah penjadwalan dengan batasan sumber daya berkapasitas terbatas.
@@ -230,9 +238,16 @@ Di sini, kami memformulasikan model TCTP baru. Secara khusus, dibuat model RC-WT
 
 == Deskripsi Data
 Model ini menggunakan berkas data sebagai berikut: 
-1.  *Data Aktivitas* (`task_table.json`): Berisi daftar seluruh aktivitas ($I$), level outline, durasi baseline, tanggal mulai dan selesai, serta dependensi (_precedence_) dengan nilai *lag/lead*-nya.
+1.  *Data Aktivitas* (`task_table.json`): Berisi daftar seluruh aktivitas ($Im$), level outline, durasi baseline, tanggal mulai dan selesai, serta dependensi (_precedence_) dengan nilai *lag/lead*-nya.
 2.  *Data Sumber Daya* (`resource_table.json`): Berisi daftar jenis tenaga kerja ($K$), kapasitas maksimal harian ($U_k^max$ dalam persen), dan tarif upah standar per jam ($r_k$). 
 3.  *Data Alokasi Tugas* (`assignment_table.json`): Menghubungkan aktivitas dengan tenaga kerja yang ditugaskan ($K_i$), mencakup usaha kerja baseline ($W_(i,k)$ dalam jam) dan persentase alokasi harian baseline ($U_(i,k)$).
+
+== Asumsi dan Limitasi Model
+Formulasi model Cobb-Douglas didasarkan pada beberapa asumsi realistis berikut:
+- *Diminishing Returns*: Menambah jumlah pekerja pada suatu aktivitas (*overcrowding*) atau memperpanjang jam kerja (*overtime*) akan mempercepat pengerjaan aktivitas, namun dengan efisiensi marjinal yang menurun. Hal ini dimodelkan dengan eksponen elastisitas $alpha, beta in (0, 1)$ pada fungsi Cobb-Douglas.
+- *Koordinasi dan Kelelahan*: Overcrowding menyebabkan hilangnya efisiensi karena peningkatan beban koordinasi antar-pekerja. Overtime menurunkan produktivitas pekerja karena kelelahan (*fatigue*).
+- *Tarif Lembur Lebih Tinggi*: Jam kerja lembur ($tau$) dikenakan tarif upah yang lebih tinggi daripada jam reguler (dikali multiplier upah lembur $r'_k = "ot_mult" dot r_k$).
+- *Non-Preemptive*: Pengerjaan tugas bersifat kontinu dari hari mulai hingga selesai (non-preemptive).
 
 Contoh format dan sampel data terintegrasi untuk Skenario 2 ditunjukkan pada tabel-tabel di bawah ini:
 
@@ -284,13 +299,6 @@ Contoh format dan sampel data terintegrasi untuk Skenario 2 ditunjukkan pada tab
     ]
   )
 ]
-
-== Asumsi dan Limitasi Model
-Formulasi model Cobb-Douglas didasarkan pada beberapa asumsi realistis berikut:
-- *Diminishing Returns*: Menambah jumlah pekerja pada suatu aktivitas (*overcrowding*) atau memperpanjang jam kerja (*overtime*) akan mempercepat pengerjaan aktivitas, namun dengan efisiensi marjinal yang menurun. Hal ini dimodelkan dengan eksponen elastisitas $alpha, beta in (0, 1)$ pada fungsi Cobb-Douglas.
-- *Koordinasi dan Kelelahan*: Overcrowding menyebabkan hilangnya efisiensi karena peningkatan beban koordinasi antar-pekerja. Overtime menurunkan produktivitas pekerja karena kelelahan (*fatigue*).
-- *Tarif Lembur Lebih Tinggi*: Jam kerja lembur ($tau$) dikenakan tarif upah yang lebih tinggi daripada jam reguler (dikali multiplier upah lembur $r'_k = "ot_mult" dot r_k$).
-- *Non-Preemptive*: Pengerjaan tugas bersifat kontinu dari hari mulai hingga selesai (non-preemptive).
 
 == Notasi
 #align(center)[
@@ -463,7 +471,16 @@ Sekali lagi, pengecekan cukup dilakukan di setiap awal aktivitas (tidak perlu se
 
 Terakhir, diperlukan batasan untuk aktivitas-aktivitas yang akan atau tidak akan di-_crash_. Untuk aktivitas yang belum dilaksanakan:
 
-$ s_i >= T_0, quad forall i in I_1, $
+#align(center)[
+  #grid(
+    columns: 2,
+    align: (center, horizon), 
+    $ s_i >= T_0, \
+      1 <= x_(i,k) <= x_(i,k)^max, \
+      0 <= tau_(i,k) <= 4, $,
+    $ quad forall i in I_1, $
+  )
+]
 
 dan perhitungan waktu kerja total menggunakan yang orisinal: 
 
@@ -473,9 +490,18 @@ Untuk aktivitas yang sedang dilaksanakan, kita menghitung suatu rasio $p_(i,k)$ 
 
 $ W_(i,k) = W_(i,k)^(\(0\))(1 - p_(i,k)), quad forall i in I_0^C inter I_1^C. $
 
-Selain itu, diperlukan seperti biasa
+Selain itu, disesuaikan batasan $s_i$ menjadi
 
-$ s_i &= s_i^(\(0\)), quad forall i in I_0^C inter I_1^C. $
+#align(center)[
+  #grid(
+    columns: 2,
+    align: (center, horizon), 
+    $ s_i = s_i^(\(0\)), \
+      1 <= x_(i,k) <= x_(i,k)^max, \
+      0 <= tau_(i,k) <= 4, $,
+    $ quad forall i in I_0^C inter I_1^C. $
+  )
+]
 
 Untuk aktivitas yang sudah selesai: 
 
@@ -493,6 +519,14 @@ Untuk aktivitas yang sudah selesai:
 dan perhitungan waktu kerja total menggunakan yang orisinal: 
 
 $ W_(i,k) = W_(i,k)^(\(0\)), quad forall i in I_0. $
+
+=== Batasan Domain
+
+Terakhir, _domain_ dari variabel keputusan adalah 
+
+$ s_i in RR, quad x_(i,k) in RR, quad tau_(i,k) in ZZ, $
+
+dengan waktu mulai diperbolehkan bilangan ril apapun sehingga bisa memulai atau mengakhiri aktivitas di tengah hari, dan waktu lembur dipilih perlu bulat agar pembiayaan gaji masuk akal. 
 
 == Formulasi Objektif 
 
@@ -522,8 +556,9 @@ $ min (s_(n+1), sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k))). $
 === _Bonus-Penalty Driven_
 Pemodelan _time-cost tradeoff_ tidak perlu dengan pendekatan multi-objektif seperti di atas. Penggabungannya bisa mempertahankan fungsi objektif tunggal dengan menggunakan metrik penalti harian $c_"late"$ dan bonus harian $c_"early"$. Ini menghasilkan fungsi objektif berikut:
 
-$ min sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)). $
+$ min sum_(i in I_0^C) sum_(k in K) z_(i,k)(x_(i,k), tau_(i,k)) + c_"late" max(0, T_"max" - s_(n+1)) + c_"early" max(0, s_(n+1)- T_"max"). $
 
+#pagebreak()
 
 == Metode Penyelesaian Skenario 2
 
@@ -539,7 +574,7 @@ Dengan diskretisasi ini, nilai durasi $d_{i,m,n}$ dan biaya harian labor $"cost"
 $ d_i = sum_(m) sum_(n) xi_(i,k)^(m,n) dot d_{i,m,n}. $
 Model ini kemudian dimodelkan menggunakan *Pyomo* dan diselesaikan menggunakan solver MILP komersial/open-source seperti *CBC* atau *HiGHS* hingga mencapai jaminan solusi optimal global dalam hitungan detik.
 
-=== Pendekatan Metaheuristik (Genetic Algorithm)
+===  Pendekatan Metaheuristik (Genetic Algorithm)
 Sebagai alternatif pembanding untuk ruang pencarian kontinu tanpa diskretisasi, diimplementasikan algoritma genetika (GA) menggunakan pustaka *`pymoo`* di Python:
 -   *Representasi Kromosom*: Variabel keputusan $(x, tau)$ dikodekan langsung sebagai vektor bilangan real.
 -   *Fungsi Penalti*: Karena GA sulit menangani batasan secara langsung, kendala precedence dan kapasitas sumber daya ditambahkan sebagai penalti kuadratis ke dalam fungsi objektif jika terjadi pelanggaran (*precedence violation penalty*).
@@ -627,7 +662,6 @@ dengan batasan-batasan sebagai berikut:
 
 Karena seluruh konstrain dan fungsi tujuan di atas bersifat linier, model ini dapat diselesaikan oleh CP-SAT secara optimal global dalam hitungan milidetik.
 
-#pagebreak()
 
 = Kesimpulan dan Perbandingan Model
 

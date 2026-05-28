@@ -172,7 +172,7 @@ Substitusikan $d_(i,k)$ untuk mengeliminasi durasi:
 $ z_(i,k) (x_(i,k), tau_(i,k)) = W_(i,k) r_k dot x_(i,k)^(1-alpha) dot ((8 + tau_(i,k)) / 8)^(1-beta) dot (8 + r'_k / r_k tau_(i,k)) / (8 + tau_(i,k)) $
 *Justifikasi*: Karena $1-alpha, 1-beta < 1$, biaya marjinal per hari pengerjaan akan meningkat seiring kita memotong durasi tugas, sehingga pemotongan durasi tidak lagi "gratis".
 
-== Metode Penyelesaian & Limitasi Skenario 2
+== Metode Penyelesaian Skenario 2
 
 - *Sifat Matematis*: Model ini merupakan *MINLP (Mixed-Integer Non-Linear Programming)* yang non-konveks dan NP-hard.
 - *Pendekatan*:
@@ -189,7 +189,7 @@ $ z_(i,k) (x_(i,k), tau_(i,k)) = W_(i,k) r_k dot x_(i,k)^(1-alpha) dot ((8 + tau
 - Parameter hasil preprocessing ($d_i^((min)), d_i^((max)), C_i$) kemudian dimasukkan langsung ke solver CP-SAT Skenario 1.
 - Solver CP-SAT akan menyelesaikan model dalam waktu kurang dari 10 milidetik secara optimal global.
 
-== Langkah Preprocessing Model Hybrid
+== Langkah Preprocessing 
 
 Untuk setiap tugas $i$ dan jenis SDM $k$ dihitung:
 1. *Durasi Normal*: $d_i^((max)) = max_k ceil(W_(i,k) / (8 U_(i,k)))$ dan *Biaya Baseline*: $Z_i^("base") = sum_k W_(i,k) r_k$
