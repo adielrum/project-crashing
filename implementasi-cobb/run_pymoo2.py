@@ -29,6 +29,8 @@ from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.optimize import minimize
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
+from pymoo.termination.ftol import MultiObjectiveSpaceTermination
+from pymoo.termination.robust import RobustTermination
 import matplotlib.pyplot as plt
 
 
@@ -715,13 +717,13 @@ def parse_args():
     parser.add_argument(
         "--pop-size",
         type=int,
-        default=100,
+        default=500,
         help="Population size for GA"
     )
     parser.add_argument(
         "--n-gen",
         type=int,
-        default=250,
+        default=1000,
         help="Number of generations for GA"
     )
     return parser.parse_args()
@@ -792,11 +794,16 @@ if __name__ == "__main__":
 
     callback = MyCallback()
 
+
+    termination = RobustTermination(
+        MultiObjectiveSpaceTermination(tol=0.005, n_skip=5), period=20)
+
     res = minimize(
         problem,
         algorithm,
         callback=callback,
-        termination=("n_gen", args.n_gen),
+        # termination=("n_gen", args.n_gen),
+        termination=termination,
         seed=42,
         verbose=True,
     )
