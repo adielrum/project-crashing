@@ -11,7 +11,7 @@ Features
 - Exports solution summary and activity schedule to JSON/CSV.
 
 Example
-  python solve_project_crashing.py --target-end-date 243 --current-day 20 --output-json outputs/solution_20_243.json --output-csv outputs/schedule_20_243.csv
+  python implementasi-base/solver_base.py --target-end-date 243 --current-day 20 --output-json ./outputs/solution_20_243.json --output-csv ./outputs/schedule_20_243.csv
 """
 
 from __future__ import annotations

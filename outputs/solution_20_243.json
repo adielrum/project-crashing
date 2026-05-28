@@ -2,9 +2,9 @@
   "input": {
     "target_end_date": 243,
     "current_day": 20,
-    "activity_data": "data/activity_data_v3.json",
-    "resource_capacity": "data/resource_capacity_v3.json",
-    "resource_requirements": "data/resource_requirements_v3.json",
+    "activity_data": "./data/activity_data_v3.json",
+    "resource_capacity": "./data/resource_capacity_v3.json",
+    "resource_requirements": "./data/resource_requirements_v3.json",
     "state_file": null
   },
   "preprocessing_logs": [
