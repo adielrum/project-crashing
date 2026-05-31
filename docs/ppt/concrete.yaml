@@ -1,0 +1,167 @@
+show-today: false
+start: "2023-10-23"
+end: "2024-01-02"
+headers:
+  - month
+  - week
+milestones:
+  - name: "Current Date"
+    date: "2023-11-10"
+tasks:
+  # -- 2nd Floor --
+  - id: t54
+    name: "Form 2nd Fl."
+    start: "2023-10-24"
+    end: "2023-10-30"
+    done: "2023-10-30"
+    
+  - id: t56
+    name: "Pour 2nd Fl."
+    start: "2023-10-31"
+    end: "2023-11-03"
+    done: "2023-11-03"
+    dependencies: 
+      - id: t54
+      
+  - id: t57
+    name: "Cure 2nd Fl."
+    start: "2023-11-06"
+    end: "2023-11-14"
+    done: "2023-11-10"
+    dependencies: 
+      - id: t56
+      
+  - id: t58
+    name: "Strip 2nd Fl."
+    start: "2023-11-15"
+    end: "2023-11-16"
+    dependencies: 
+      - id: t57
+
+  # -- 3rd Floor --
+  - id: t59
+    name: "Form 3rd Fl."
+    start: "2023-11-15"
+    end: "2023-11-21"
+    dependencies: 
+      - id: t57
+      
+  - id: t60
+    name: "Install MEP 3rd Fl."
+    start: "2023-11-15"
+    end: "2023-11-21"
+    dependencies: 
+      - id: t57
+      
+  - id: t61
+    name: "Pour 3rd Fl."
+    start: "2023-11-22"
+    end: "2023-11-27"
+    dependencies: 
+      - id: t59
+      - id: t60
+      
+  - id: t62
+    name: "Cure 3rd Fl."
+    start: "2023-11-28"
+    end: "2023-12-06"
+    dependencies: 
+      - id: t61
+      
+  - id: t63
+    name: "Strip 3rd Fl."
+    start: "2023-12-07"
+    end: "2023-12-08"
+    dependencies: 
+      - id: t62
+
+  # -- Roof --
+  - id: t64
+    name: "Form Roof"
+    start: "2023-12-07"
+    end: "2023-12-13"
+    dependencies: 
+      - id: t62
+      
+  - id: t65
+    name: "Install MEP Roof"
+    start: "2023-12-07"
+    end: "2023-12-13"
+    dependencies: 
+      - id: t62
+      
+  - id: t66
+    name: "Pour Roof"
+    start: "2023-12-14"
+    end: "2023-12-19"
+    dependencies: 
+      - id: t64
+      - id: t65
+      
+  - id: t67
+    name: "Cure Roof"
+    start: "2023-12-20"
+    end: "2023-12-28"
+    dependencies: 
+      - id: t66
+      
+  - id: t68
+    name: "Strip Roof"
+    start: "2023-12-29"
+    end: "2024-01-01"
+    end: "2024-01-01"
+    dependencies: 
+      - id: t67
+
+  # -- 1st Floor --
+  - id: t69
+    name: "Form 1st Fl."
+    start: "2023-11-17"
+    end: "2023-11-22"
+    dependencies: 
+      - id: t58
+      
+  - id: t70
+    name: "Install Elec. UG"
+    start: "2023-11-17"
+    end: "2023-11-23"
+    dependencies: 
+      - id: t58
+      
+  - id: t71
+    name: "Install Plumb. UG"
+    start: "2023-11-17"
+    end: "2023-11-23"
+    dependencies: 
+      - id: t58
+      
+  - id: t72
+    name: "Install Rebar 1st Fl."
+    start: "2023-11-17"
+    end: "2023-11-22"
+    dependencies: 
+      - id: t58
+      
+  - id: t73
+    name: "Pour 1st Fl."
+    start: "2023-11-24"
+    end: "2023-11-29"
+    dependencies: 
+      - id: t69
+      - id: t70
+      - id: t71
+      - id: t72
+      
+  - id: t74
+    name: "Cure 1st Fl."
+    start: "2023-11-30"
+    end: "2023-12-08"
+    dependencies: 
+      - id: t73
+      
+  - id: t75
+    name: "Strip 1st Fl."
+    start: "2023-12-11"
+    end: "2023-12-12"
+    dependencies: 
+      - id: t74
