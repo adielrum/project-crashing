@@ -131,12 +131,13 @@
     }
   }
   let body = {
-    if info.logo != none {
-      place(right, text(fill: self.colors.primary, info.logo))
-    }
     std.align(
       center + horizon,
       {
+        if info.logo != none {
+          info.logo
+          v(1em)
+        }
         block(
           inset: 0em,
           breakable: false,
