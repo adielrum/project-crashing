@@ -48,12 +48,13 @@
     institution: [ MA3251 Pemodelan Matematika \
     Institut Teknologi Bandung],
     logo: {
+      v(1em)
       grid(
         columns: 2,
-        gutter: 2em,
+        gutter: 1em,
         align: horizon,
-        image("itb.png", height: 3cm),
-        image("idsc.png", height: 2cm),
+        image("itb.png", height: 2.1cm),
+        image("idsc.png", height: 1.9cm),
       )
     }
   ),
@@ -97,8 +98,9 @@
 - Skenario 1: Model Baseline (Diskret Linear)
 - Skenario 2: Model Baru (Cobb-Douglas)
 - Metode Penylesaian
-- Skenario 3: Model Hybrid 
 - Hasil Eksplorasi 
+- Skenario 3: Model Hybrid
+- Kesimpulan
 - Rencana Selanjutnya
 
 = Latar Belakang & Masalah
@@ -124,7 +126,7 @@
         #set text(size: 16pt)
         Misalkan PT XYZ saat ini sedang melaksanakan proyek pembangunan Gedung ABC. 
         
-        Per 10 November, proyek tersebut diproyeksikan akan selesai pada Desember 30
+        Kami diberikan *jadwal* terkini projek mereka. Per 10 November, proyek tersebut diproyeksikan akan selesai pada Desember 30
       ]
     )]
   )
@@ -152,9 +154,9 @@
       radius: 4pt,
       [
         #set text(size: 16pt)
-        Namun, PT GHI telah menetapkan batas waktu penyelesaian (deadline) pada Desember 10. 
+        Namun, PT XYZ telah menetapkan batas waktu penyelesaian (_deadline_) pada Desember 10. 
         
-        Oleh karena itu, PT XYZ perlu mempercepat proses pengerjaan proyek tersebut. 
+        Oleh karena itu, PT XYZ perlu mempercepat proses pengerjaan proyek tersebut, yang disebut proses *_crashing_*. 
         
         Terkait hal ini, PT XYZ meminta kami untuk menentukan strategi crashing yang paling optimal.
       ]
@@ -277,7 +279,7 @@ align(horizon)[#block(
       
       [
         #set text(size: 16pt)
-        Proyek pembangunan memiliki berbagai batasan maksimum, salah satunya adalah batasan sumber daya. 
+        Proyek pembangunan memiliki berbagai batasan, salah satunya adalah batasan *sumber daya*. 
         
         Dalam kasus ini, sebagai contoh, alokasi labor crew di lapangan per hari untuk setiap task dengan batasan maksimal 7 pekerja per hari, dapat dilihat pada grafik.
       ]
@@ -303,20 +305,18 @@ align(horizon)[#block(
       [
         
         #set text(size: 16pt)
-        Namun, PT GHI telah menetapkan batas waktu penyelesaian (deadline) pada Desember 10. 
-        
-        Oleh karena itu, PT XYZ perlu mempercepat proses pengerjaan proyek tersebut. 
-        
-        Terkait hal ini, PT XYZ meminta kami untuk menentukan strategi crashing yang paling optimal.
+        Selain itu, ada juga batasan *waktu*. Batasan ini berupa ketergantungan (_dependencies_) antara setiap task pada projek. 
+
+        Jadi, suatu task tidak bisa mulai atau berakhir sebelum beberapa task-task tertentu belum selesai atau memulai. Secara khusus, ini sering disebut _precedence constraint_.
       ]
     )]
   )
 
 #set text(size: 16pt)
 
-== Resource Constrained Project Scheduling Problem (RCPSP)
+== RCPSP & TCTP
 
-// #set text(size: 20pt)
+#v(-1em)
 
 #align(center + horizon)[
   #set text(size: 25pt)
@@ -326,28 +326,28 @@ align(horizon)[#block(
     node-inset: 10pt,
     edge-stroke: 1pt + black,
     mark-scale: 80%,
-    spacing: (30pt, 40pt),
+    spacing: (0pt, 40pt),
     
-    node((1, 0), text(fill: rgb("#5B9BD5"))[*RCPSP*]),
+    node((1, 0), text(fill: rgb("#5B9BD5"))[*Resource-Constrained Project Scheduling Problem (RCPSP)*]),
     
-    node((0, 1), [Resource Constraint]),
+    node((0.4, 1), [Resource Constraint]),
     node((1, 1), [Project Objective]),
-    node((2, 1), [Temporal Constraint]),
+    node((1.6, 1), [Temporal Constraint]),
     
-    node((0.5, 2), [Time]),
-    node((1.5, 2), [Cost]),
+    node((0.75, 2), [Time]),
+    node((1.25, 2), [Cost]),
     
-    node((1, 3), [*TCTP*]),
+    node((1, 3), [*Resource Constrained Time-Cost Tradeoff Problem (RC-TCTP)*]),
     
-    edge((1, 0), (0, 1), "-|>"),
+    edge((1, 0), (0.4, 1), "-|>"),
     edge((1, 0), (1, 1), "-|>"),
-    edge((1, 0), (2, 1), "-|>"),
+    edge((1, 0), (1.6, 1), "-|>"),
     
-    edge((1, 1), (0.5, 2), "-|>"),
-    edge((1, 1), (1.5, 2), "-|>"),
+    edge((1, 1), (0.75, 2), "-|>"),
+    edge((1, 1), (1.25, 2), "-|>"),
     
-    edge((0.5, 2), (1, 3), "-|>"),
-    edge((1.5, 2), (1, 3), "-|>")
+    edge((0.75, 2), (1.5, 3), "-|>"),
+    edge((1.25, 2), (0.5, 3), "-|>")
   )
 ]
 
@@ -518,7 +518,9 @@ Tarif _General Manager_ adalah \$120 per jam kerja dan _Project Manager_ adalah 
 
 = Skenario 1: Model Baseline (Diskret Linear)
 
-== Parameter & Variabel Lengkap
+== Parameter & Variabel 
+
+#v(1.5em)
 
 #grid(
   columns: (1fr, 1.2fr),
@@ -568,10 +570,12 @@ Tarif _General Manager_ adalah \$120 per jam kerja dan _Project Manager_ adalah 
 )
 
 
-== Asumsi Dasar & Karakteristik
+== Asumsi Dasar
 
 Model baseline merumuskan masalah optimisasi penjadwalan dengan durasi diskrit dan biaya percepatan durasi _crashing cost_ linier menggunakan parameter yang diketahui sejak awal.
-#v(2.5em)
+
+#v(2em)
+
 #grid( 
   columns: (1fr, 1fr),
   gutter: 1.5em,
@@ -631,9 +635,8 @@ Model baseline merumuskan masalah optimisasi penjadwalan dengan durasi diskrit d
     )
   ]
 )
-#pagebreak()
 
-== Variabel Keputusan
+== Decision Variable
 
 #align(center)[
   #v(1em)
@@ -641,6 +644,7 @@ Model baseline merumuskan masalah optimisasi penjadwalan dengan durasi diskrit d
   #table(
     columns: (6cm, 2.5cm, 9.5cm),
     align: center + horizon,
+    inset: 0.5em,
     fill: (col, row) => if row == 0 { luma(240) },
     table.header([*Variabel Keputusan*], [*Domain*], [*Deskripsi*]),
     [$s_i$], [$ZZ$], [Hari mulai untuk aktivitas $i in I$.],
@@ -670,7 +674,7 @@ $s_(n+1) >= e_i$ untuk semua aktivitas $i$ sehingga $s_(n+1)$ akan bernilai sama
 
 #pagebreak()
 
-== Batasan Waktu & Precedence
+== Temporal Constraints
 
 #grid(
   columns: (1fr, 1.2fr),
@@ -719,7 +723,7 @@ $s_(n+1) >= e_i$ untuk semua aktivitas $i$ sehingga $s_(n+1)$ akan bernilai sama
 
 #pagebreak()
 
-== Batasan Kapasitas Sumber Daya
+== Resource Constraints
 
 Jumlah kebutuhan harian untuk setiap jenis sumber daya yang sedang aktif digunakan secara bersamaan tidak boleh melebihi kapasitas maksimum yang tersedia.
 
@@ -735,7 +739,7 @@ Jumlah kebutuhan harian untuk setiap jenis sumber daya yang sedang aktif digunak
 
 #pagebreak()
 
-== Fungsi Objektif
+== Project Objective
 
 #align(center)[
   #tidy-tree-graph(
@@ -812,7 +816,9 @@ Jumlah kebutuhan harian untuk setiap jenis sumber daya yang sedang aktif digunak
 
 = Skenario 2: Model Baru (Cobb-Douglas)
 
-== Skenario 2: Parameter & Variabel Lengkap
+== Parameter & Variabel
+
+#v(0.75em)
 
 #grid(
   columns: (1.1fr, 1.3fr),
@@ -942,8 +948,14 @@ $ d^'_(i,k) = d_(i,k)^((0)) dot (1 / x_(i,k))^alpha dot (8 / (8 + tau_(i,k)))^be
 
 == Penurunan Biaya Crashing
 
-*Formulasi Biaya Harian:* \
+#v(1em)
+*Formulasi Biaya Harian:*
+#v(0.1em)
+
 Biaya total baru adalah hasil kali dari durasi kerja aktual, jumlah pekerja harian, dan tarif upah harian yang mencakup premi tarif lembur ($r'_k$):
+
+#v(1em)
+
 $ 
 z_(i,k)(x_(i,k), tau_(i,k)) 
 &= d_(i,k) (x_(i,k), tau_(i,k)) dot x_(i,k) U_(i,k) dot (8 r_k + tau_(i,k) r'_k) \ 
@@ -959,11 +971,77 @@ underbrace(((8 + tau_(i,k)) / 8)^(1-beta), "overtime") dot
 underbrace((8 + r'_k / r_k tau_(i,k)) / (8 + tau_(i,k)), "extra wage"). 
 $
 
-#pagebreak()
+== Asumsi
 
-== Variabel Keputusan
+Berdasarkan penurunan mekanisme kerja yang telah dilakukan sebelumnya, model ini mengasumsikan beberapa hal secara implisit mengenai sifat _project crashing_ yang dilakukan. 
 
-Solver menentukan waktu mulai, tingkat overmanning, dan jam lembur untuk menghasilkan jadwal proyek dengan total biaya minimum.
+#v(2em)
+
+#grid( 
+  columns: (1fr, 1fr),
+  gutter: 1.5em,
+  [
+    #block(
+      width: 100%,
+      height: 6.2em,
+      fill: rgb("#5B9BD5").transparentize(90%),
+      stroke: 1.5pt + rgb("#5B9BD5"),
+      inset: 0.8em,
+      radius: 4pt,
+      [
+        *Mekanisme Dasar* \
+        _Crashing_ dilakukan secara tidak langsung melalui dua mekanisme: _overtime_ (lembur) dan _overmanning_ (penambahan pekerja). 
+      ]
+    )
+    #v(0.5em)
+    #block(
+      width: 100%,
+      height: 6.2em,
+      fill: rgb("#5B9BD5").transparentize(90%),
+      stroke: 1.5pt + rgb("#5B9BD5"),
+      inset: 0.8em,
+      radius: 4pt,
+      [
+        *Non-Linieritas Biaya Crashing* \
+        Diasumsikan hubungan dua variabel mekanisme berhubungan tak linear dengan durasi (sehingga juga dengan biaya) berdasarkan aturan Cobb-Douglas. 
+      ]
+    )
+  ],
+  [
+    #block(
+      width: 100%,
+      height: 6.2em,
+      fill: rgb("#4A90C0").transparentize(90%),
+      stroke: 1.5pt + rgb("#4A90C0"),
+      inset: 0.8em,
+      radius: 4pt,
+      [
+        *Non-Preemptive* \
+        Aktivitas yang sedang berjalan tidak dapat diinterupsi. Tetapi, suatu sumber daya (pekerja) dapat berpindah antar aktivitas. 
+      ]
+    )
+    #v(0.5em)
+    
+    #block(
+      width: 100%,
+      height: 6.2em,
+      fill: rgb("#4A90C0").transparentize(90%),
+      stroke: 1.5pt + rgb("#4A90C0"),
+      inset: 0.8em,
+      radius: 4pt,
+      [
+        *Ketersediaan _Resource_* \
+        Resource _availability_ dari masing-masing resource dianggap konstan. Tetapi, resource _requirement_ dari masing-masing task bisa berubah. 
+      ]
+    )
+  ]
+)
+
+== Decision Variable
+
+Solver menentukan waktu mulai, tingkat overmanning, dan jam lembur untuk menghasilkan jadwal proyek optimal.
+
+#v(0.5em)
 
 #align(center)[
   #set text(size: 14pt)
@@ -1000,7 +1078,7 @@ $s_(n+1) >= e_i$ untuk semua aktivitas $i$ sehingga $s_(n+1)$ akan bernilai sama
 
 #pagebreak()
 
-== Batasan Waktu, Precedence & Dinamis
+== Temporal Constraints
 
 #grid(
   columns: (1.1fr, 1fr),
@@ -1056,7 +1134,7 @@ $s_(n+1) >= e_i$ untuk semua aktivitas $i$ sehingga $s_(n+1)$ akan bernilai sama
 
 #pagebreak()
 
-== Batasan Kapasitas Sumber Daya
+== Resource Constraints
 
 Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi kapasitas maksimum yang tersedia sepanjang durasi tugas mereka.
 
@@ -1071,7 +1149,7 @@ Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi 
 
 #pagebreak()
 
-== Alternatif Objektif
+== Project Objective
 
 #v(-0.25em)
 
@@ -1144,10 +1222,13 @@ Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi 
 
 = Metode Penyelesaian
 
-== Metode Penyelesaian Skenario 1 & 2
+== Metode Penyelesaian Skenario 1
+
+#v(3em)
 
 #grid(
   columns: (1fr, 1fr),
+  align: center + horizon,
   gutter: 1.5em,
   [
     #block(
@@ -1156,19 +1237,50 @@ Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi 
       inset: 0.8em,
       radius: 4pt,
       width: 100%,
-      height: 16em,
       [
-        #set text(size: 11.5pt)
-        *Skenario 1: Google OR-Tools CP-SAT* \
-        Model diselesaikan secara optimal global menggunakan Constraint Programming (CP) solver.
+        #set text(size: 15pt)
+        *A. Pendekatan Multi-Objektif* \
+        Menggunakan base metode `CP-SAT` dengan wrapper metode $epsilon$--constraint. Ini berarti kita bisa membuat _pareto front_ untuk masalah diskrit ini. 
+
+        #grid( 
+          columns: (1fr, 1fr),
+          gutter: 1em,
+          [
+            #block(
+              width: 100%,
+              height: 8em,
+              fill: rgb("#A0B89E").transparentize(90%),
+              stroke: 1.5pt + rgb("#A0B89E"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                #align(center + horizon)[
+                  *`CP-SAT`* \
+                  #set text(size: 14pt)
+                  Constraint Programming -- Satisfiability yang dibuat oleh Google untuk optimisasi _integer_. 
+                ]
+              ]
+            )
+          ],
+          [
+            #block(
+              width: 100%,
+              height: 8em,
+              fill: rgb("#A0B89E").transparentize(90%),
+              stroke: 1.5pt + rgb("#A0B89E"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                #align(center + horizon)[
+                  *$epsilon$--constraint* \
+                  #set text(size: 14pt)
+                  Konversi multi-objektif menjadi single-objektif dengan membatasi salah satu variabel keputusan.
+                ]
+              ]
+            )
+          ]
+        )
         
-        #v(0.3em)
-        *Setup Solver:*
-        - *Interval Task*: `NewIntervalVar(s_i, d_i, e_i)` menggabungkan mulai, durasi, dan selesai.
-        - *Relasi Crashing*: $d_i + c_i == d_i^max$, dengan variabel crash days $c_i in [0, d_i^max - d_i^min]$.
-        - *Precedence*: `model.Add(s_j >= e_i)` untuk memaksakan hubungan Finish-to-Start.
-        - *Kapasitas*: `model.AddCumulative(intervals, demands, capacity)` untuk batasan resource.
-        - *Multi-threading*: `num_search_workers` pada parameter solver.
       ]
     )
   ],
@@ -1179,19 +1291,140 @@ Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi 
       inset: 0.8em,
       radius: 4pt,
       width: 100%,
-      height: 16em,
       [
-        #set text(size: 11.5pt)
-        *Skenario 2: Genetic Algorithm (pymoo)* \
-        Model diselesaikan dengan pendekatan metaheuristik untuk menangani non-linieritas Cobb-Douglas.
+        #set text(size: 15pt)
+        *B. Pendekatan Bonus--Penalty* \
+        Cukup menggunakan metode basis `CP-SAT`.
+
+        #grid( 
+          columns: (1fr),
+          gutter: 1em,
+          align: center+ horizon,
+          [
+            #block(
+              width: 60%,
+              height: 7em,
+              fill: rgb("#5B9BD5").transparentize(90%),
+              stroke: 1.5pt + rgb("#5B9BD5"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                #align(center + horizon)[
+                  *`CP-SAT`* \
+                  #set text(size: 14pt)
+                  Constraint Programming -- Satisfiability yang dibuat oleh Google untuk optimisasi _integer_. 
+                ]
+              ]
+            )
+          ]
+        )
         
-        #v(0.3em)
-        *Setup Algoritma:*
-        - *Representasi*: `ElementwiseProblem` dengan pengali overmanning $x_(i,k) in [1, x_(i,k)^max]$ dan jam lembur $tau_(i,k) in [0, 4]$.
-        - *Evaluasi Fitnes*: *CPM Forward Pass* di dalam kode Python untuk menghitung makespan ($s_(n+1)$).
-        - *Kendala*: Batasan durasi minimum ($d_(i,k)^"min"$) dimodelkan sebagai kendala inequality $G[p] <= 0$.
-        - *Operator GA*: Crossover menggunakan *SBX* (probabilitas $0.9$) dan mutasi *PM*.
-        - *Kriteria Berhenti*: Kriteria konvergensi toleransi multiobjektif (`RobustTermination`).
+      ]
+    )
+  ]
+)
+
+== Metode Penyelesaian Skenario 2
+
+#v(0.75em)
+
+#grid(
+  columns: (1fr, 1fr),
+  align: center + horizon,
+  gutter: 1.5em,
+  [
+    #block(
+      fill: rgb("#5B9BD5").transparentize(90%),
+      stroke: 1.5pt + rgb("#5B9BD5"),
+      inset: 0.8em,
+      radius: 4pt,
+      width: 100%,
+      [
+        #set text(size: 15pt)
+        *A. Pendekatan Multi-Objektif* \
+        Di sini, kita pikirkan dua jenis metode yang memungkinkan. Akan dicoba keduanya. 
+
+        #grid( 
+          columns: (1fr),
+          gutter: 1em,
+          [
+            #block(
+              width: 100%,
+              height: 8em,
+              fill: rgb("#A0B89E").transparentize(90%),
+              stroke: 1.5pt + rgb("#A0B89E"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                #align(center + horizon)[
+                  *NSGA--II* \
+                  #set text(size: 14pt)
+                  Non-dominated Sorting Genetic Algorithm II berupa algoritma genetik untuk masalah multi-objektif. Ini dapat menghasilkan _pareto front_ yang akurat, tetapi dengan biaya komputasi mahal. 
+                ]
+              ]
+            )
+          ],
+          [
+            #block(
+              width: 100%,
+              height: 8em,
+              fill: rgb("#A0B89E").transparentize(90%),
+              stroke: 1.5pt + rgb("#A0B89E"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                #align(center + horizon)[
+                  *Diskritisasi MILP + $epsilon$--constraint* \
+                  #set text(size: 14pt)
+                  Dilakukan diskritisasi nilai $x_(i,k)$ menjadi $m$ nilai mungkin dan $tau_(i,k)$ menjadi $n$ nilai mungkin, sehingga diperoleh gridisasi $xi_(i,k)^(m,n)$. Ini menjadi masalah \
+                  *Multi-Modal RCPSP (MRCPSP)*.
+                ]
+              ]
+            )
+          ]
+        )
+        
+      ]
+    )
+  ],
+  [
+    #block(
+      fill: rgb("#A0B89E").transparentize(90%),
+      stroke: 1.5pt + rgb("#A0B89E"),
+      inset: 0.8em,
+      radius: 4pt,
+      width: 100%,
+      [
+        #set text(size: 15pt)
+        *B. Pendekatan Bonus--Penalty* \
+        Cukup menggunakan metode basis algoritma genetik.
+
+        #grid( 
+          columns: (1fr),
+          gutter: 1em,
+          align: center + horizon,
+          [
+            #block(
+              width: 75%,
+              fill: rgb("#5B9BD5").transparentize(90%),
+              stroke: 1.5pt + rgb("#5B9BD5"),
+              inset: 0.8em,
+              radius: 4pt,
+              [
+                *Genetic Algorithm* \
+                #align(left + horizon)[
+                  #set text(size: 14pt)
+                  -  *Representasi Kromosom*: Satuan gen adalah $(x_(i,k), tau_(i,k))$ sehingga kromosom adalah vektor semua pasangan.
+                  
+                  -  *Evaluasi Fitness*: Membangun jadwal dari kromosom, lalu menghitung fungsi objektifnya.
+                  
+                  -  *Operator Genetika*: Menggunakan operator seleksi turnamen, persilangan SBX (_Simulated Binary Crossover_), dan mutasi PM (_Polynomial Mutation_). 
+                ]
+              ]
+            )
+          ]
+        )
+        
       ]
     )
   ]
@@ -1200,7 +1433,10 @@ Total alokasi pekerja harian untuk suatu jenis sumber daya tidak boleh melebihi 
 = Hasil Eksplorasi
 
 == Hasil Eksplorasi Model 1 
-Digunakan objective _cost driven_ dengan parameter $T_0=20$ dan $T_max=243$, diperoleh hasil berikut. 
+Digunakan *objective _cost driven_* dengan parameter $T_0=20$ dan $T_max=243$, diperoleh hasil berikut. 
+
+#v(0.5em)
+
 #grid(
   columns: (1fr, 1fr),
   gutter: 1.5em,
@@ -1208,6 +1444,7 @@ Digunakan objective _cost driven_ dengan parameter $T_0=20$ dan $T_max=243$, dip
     #set text(size: 14pt)
     #align(center)[
       *Gantt Chart Model IDSC*
+      #v(-1em)
       #image("gantt_idsc.jpeg", height: 50%)
     ]
   ],
@@ -1215,37 +1452,49 @@ Digunakan objective _cost driven_ dengan parameter $T_0=20$ dan $T_max=243$, dip
     #set text(size: 14pt)
     #align(center)[
       *Gantt Chart Model Kami*
+      #v(-1em)
       #image("gantt_crashed.png", height: 50%)
     ]
   ]
 )
 
-#v(0.2em)
+#v(0.5em)
+
 #align(center)[
   #set text(size: 14pt)
-  *Tabel 1: Perbandingan Kuantitatif Hasil Optimasi Penjadwalan*
-  #v(0.2em)
-  #set text(size: 12pt)
   #table(
-    columns: (4cm, 3.5cm, 3cm, 4cm),
+    columns: (4cm, 4cm, 4cm, 4cm),
     align: center + horizon,
+    inset: 0.5em, 
     fill: (col, row) => if row == 0 { luma(240) },
     [*Model*], [*Total Biaya (\$)*], [*Status Solusi*], [*Waktu Eksekusi*],
-    [IDSC], [220], [Optimal Global], [\~3 mnt],
+    [IDSC], [220], [Optimal Global], [\~30 s],
     [*Kami*], [*220*], [*Optimal Global*], [*< 1s*]
   )
 ]
 
 #pagebreak()
 
-== Hasil Eksplorasi Model 2 (Cobb-Douglas)
+== Hasil Eksplorasi Model 2 
 
-#set text(size: 13pt)
+#set text(size: 16pt)
 
-Digunakan objective _bonus-penalty_ dengan parameter $T_0=156$ dan $T_max=344$, diperoleh hasil berikut (hanya ditampilkan 20 _task_ aktif pertama) dengan waktu eksekusi \~30 menit. 
+Digunakan *objective _bonus-penalty_* dengan parameter $T_0=156$ dan $T_max=344$, diperoleh hasil berikut (hanya ditampilkan 20 _task_ aktif pertama untuk kejelasan) dengan waktu eksekusi \~30 menit. 
 
 #align(center)[
-  #image("cobb_gantt_20.png", width: 80%)
+  #set text(size: 12pt)
+  #grid(
+    columns: 2,
+    align: center + horizon,
+    gutter: 5pt,
+    image("cobb_gantt_20.png", width: 95%),
+    table(
+      columns: (auto, auto),
+      inset: 0.75em,
+      [Biaya Baseline], [\$506,210],
+      [Biaya Crashing], [\$551,288]
+    )
+  )
 ]
 
 #pagebreak()
@@ -1253,42 +1502,120 @@ Digunakan objective _bonus-penalty_ dengan parameter $T_0=156$ dan $T_max=344$, 
 #set text(20pt)
 = Skenario 3: Model Hybrid 
 
-== Skenario 3 - Model Hybrid
-- *Ide Utama*: Menggabungkan kelebihan realisme data Skenario 2 (upah SDM, Cobb-Douglas) dengan kecepatan komputasi Skenario 1 (CP-SAT).
-- *Mekanisme*: Melakukan *preprocessing* menggunakan matematika Cobb-Douglas dari Skenario 2 untuk mengestimasi batas durasi dan biaya crashing per hari secara otomatis.
-- Parameter hasil preprocessing ($d_i^(min), d_i^(max), C_i$) kemudian dimasukkan langsung ke solver CP-SAT Skenario 1.
-- Solver CP-SAT akan menyelesaikan model dalam waktu yang cepat.
+== Motivasi Hybrid
+
+#v(1em)
+
+#block(
+  fill: rgb("#5B9BD5").transparentize(90%),
+  stroke: 1.5pt + rgb("#5B9BD5"),
+  inset: 1.2em,
+  radius: 4pt,
+  width: 100%,
+  [
+    #set text(size: 16pt)
+    *Ide Utama:* 
+    #v(0.1em)
+    Menggabungkan kelebihan *realisme data* Skenario 2 (mekanisme Cobb-Douglas) dengan *kecepatan komputasi* Skenario 1 (metode `CP-SAT`).
+  ]
+)
+
+#v(1em)
+
+#align(center)[
+  #diagram(
+    node-stroke: 1pt + rgb("#7F7F7F"),
+    node-fill: white,
+    node-inset: 1em,
+    edge-stroke: 2pt + rgb("#7F7F7F"),
+    mark-scale: 80%,
+    spacing: (50pt, 0pt),
+
+    // Node 1: Skenario 2 (Sumber Data)
+    node((0,0), align(center)[
+      #set text(size: 16pt)
+      *Model 2* \
+      #v(0.3em)
+      #set text(size: 14pt)
+      Formulasi analitik \
+      berbasis *Cobb-Douglas* \
+      (mekanisme _overtime_ dan _overmanning_)
+    ], corner-radius: 4pt, fill: rgb("#A0B89E").transparentize(90%), stroke: 1.5pt + rgb("#A0B89E"), name: <m2>, width: 6.5cm, height: 5cm),
+
+    // Node 2: Preprocessing (Jembatan)
+    node((1,0), align(center)[
+      #set text(size: 16pt)
+      *Preprocessing* \
+      #v(0.3em)
+      #set text(size: 14pt)
+      Estimasi otomatis \ batas parameter: \
+      #v(0.1em)
+      #set text(size: 16pt, weight: "bold")
+      $d_i^min, d_i^max, C_i$
+    ], corner-radius: 4pt, fill: luma(250), stroke: 1.5pt + rgb("#4A90C0"), name: <pre>, width: 6.5cm, height: 5cm),
+
+    // Node 3: Skenario 1 (Eksekusi Solver)
+    node((2,0), align(center)[
+      #set text(size: 16pt)
+      *Model 1* \
+      #v(0.3em)
+      #set text(size: 14pt)
+      Solver *`CP-SAT`* menerima parameter _high--level_ untuk mengeksekusi optimisasi dengan cepat. 
+    ], corner-radius: 4pt, fill: rgb("#5B9BD5").transparentize(90%), stroke: 1.5pt + rgb("#5B9BD5"), name: <m1>, width: 6.5cm, height: 5cm),
+
+    // Panah Penghubung
+    edge(<m2>, <pre>, "-|>", stroke: 2pt + rgb("#A0B89E")),
+    edge(<pre>, <m1>, "-|>", stroke: 2pt + rgb("#5B9BD5"))
+  )
+]
 
 == Langkah Preprocessing 
 
-Untuk setiap tugas $i$ dan jenis SDM $k$ dihitung:
-1. *Durasi Normal*: $d_i^(max) = max_k ceil(W_(i,k) / (8 U_(i,k)))$ dan *Biaya Baseline*: $Z_i^("base") = sum_k W_(i,k) r_k$
-2. *Durasi Minimum* (pada $x_"max" = 2.0$ dan $tau_"max" = 2.0$):
-   $ d_i^(min) = max_(k in K_i) ceil(W_(i,k) / (8 U_(i,k)) dot (1 / x_"max")^alpha dot (8 / (8 + tau_"max"))^beta) $
-3. *Biaya Crashing Maksimum*: $Z_i^("crash") = sum_k z_(i,k)(x_"max", tau_"max")$
-4. *Biaya Crashing Harian (Crash Slope)* $C_i$:
-   $ C_i = cases(
-     (Z_i^("crash") - Z_i^("base")) / (d_i^(max) - d_i^(min)) & "jika" d_i^(max) > d_i^(min),
-     0 & "jika" d_i^(max) = d_i^(min)
+#set text(size: 16pt)
+
+Untuk setiap $i in I$, $k in K$ dihitung $(d_(i,k)^((max)), d_(i,k)^((min)), C_i)$ sebagai berikut. 
+
+#table(
+  columns: (1fr, 1fr),
+  inset: 10pt,
+  align: center + horizon,
+  [*Durasi Normal*], $ d_i^(max) = max_k ceil(W_(i,k) / (8 U_(i,k))) $, 
+  [*Durasi Minimum*], $ d_i^(min) = max_(k in K_i) ceil(W_(i,k) / (8 U_(i,k)) dot (1 / x_"max")^alpha dot (8 / (8 + tau_"max"))^beta) $,
+  [Biaya _Crashing_ Baseline], $ Z_i^(("base")) = sum_k W_(i,k) r_k $,
+  [Biaya _Crashing_ Maksimum], $ Z_i^(("crash")) = sum_k z_(i,k)(x_"max", tau_"max") $,
+  [*Biaya Crashing Harian*], $ C_i = cases(
+     (Z_i^(("crash")) - Z_i^(("base"))) / (d_i^(max) - d_i^(min))\, & quad d_i^((max)) > d_i^((min))\,,
+     0\, & quad d_i^((max)) = d_i^((min))\.
    ) $
+)
 
-== Integrasi ke Solver CP-SAT
+== Re-Integrasi Model 1
 
-#set text(20pt)
+#set text(16pt)
 
-Setelah preprocessing, kita selesaikan model penjadwalan linier:
-$ min sum_(i in I_0^C) C_i (d_i^(max) - (e_i - s_i)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)) $
-dengan batasan linier terpusat:
-- *Batasan Waktu & Durasi*:
-  $ e_i = s_i + d_i $
-  $ d_i^(min) <= e_i - s_i <= d_i^(max) $
-- *Precedence*: $s_j >= e_i$
-- *Kapasitas*: $sum_i U_(i,k) dot bb(1)\{s_i <= s_j < e_i\} <= U_k^(max)$
-- *Batasan Dinamis* terhadap $T_0$.
+Setelah preprocessing, kita kembali selesaikan Model 1 tetapi dengan nilai $d_(i,k)^((max)), d_(i,k)^((min)), C_i$ yang baru. 
+
+#v(1em)
+
+#align(center)[
+
+  *Project Objetive*
+  $ min sum_(i in I_0^C) C_i (d_i^((max)) - (e_i - s_i)) + c_"late" max(0, s_(n+1) - T_"max") - c_"early" max(0, T_"max" - s_(n+1)) $
+  
+  *Temporal Constraints*
+    $ s_j >= e_i $
+    $ d_i^(min) <= e_i - s_i <= d_i^(max) $
+  
+  #v(1em)
+  *Resource Constraints*
+    $ sum_i U_(i,k) dot bb(1)\{s_i <= s_j < e_i\} <= U_k^(max) $
+]
 
 == Perbandingan Karakteristik Model
 
 #set text(size: 20pt)
+
+#v(1em)
 #align(center)[
   
   #set text(size: 15pt) 
@@ -1300,79 +1627,103 @@ dengan batasan linier terpusat:
     table.header(
       [*Karakteristik*], [*Model Baseline (Skenario 1)*], [*Model Baru (Skenario 2)*], [*Model Hybrid (Skenario 3)*],
     ),
-    [*Input Biaya*], [Eksplisit per hari crashing (\$/hari).], [Endogen dari upah SDM (\$/jam).], [Cobb-Douglas preprocessing + linearisasi crash slope.],
-    [*Akselerasi*], [Memotong hari durasi secara langsung.], [Menambah orang ($x$) & jam kerja lembur ($tau$).], [Batas $x_"max"$, $tau_"max"$ pada preprocessing.],
-    [*Sifat Efisiensi*], [Efisiensi konstan (biaya linier terhadap crashing).], [Efisiensi menurun (*diminishing returns*).], [Efisiensi Cobb-Douglas didekati linier lokal per tugas.],
-    [*Tipe Precedence*], [Finish-to-Start (FS) tanpa lag.], [FS, SS, FF dengan lag/lead.], [Finish-to-Start (FS) tanpa lag.],
-    [*Metode Solver*], [OR-Tools CP-SAT (Sangat Cepat).], [MILP (Pyomo) & GA (pymoo) (Sangat Lambat).], [OR-Tools CP-SAT setelah preprocessing (Sangat Cepat).]
+    [*Input Biaya*], [Eksplisit per hari crashing (\$/hari).], [Implicit dari upah SDM (\$/jam).], [Cobb-Douglas preprocessing + linearisasi crash slope.],
+    [*Percepatan*], [Memotong hari durasi secara langsung.], [Menambah orang ($x$) & jam kerja lembur ($tau$).], [Memotong hari durasi secara langsung.],
+    [*Sifat Efisiensi*], [Efisiensi konstan (biaya linier terhadap crashing).], [Efisiensi menurun (*diminishing returns*).], [Efisiensi Cobb-Douglas didekati secara lokal.],
+    [*Tipe Precedence*], [_Finish-to-Start_ (FS)], [_Finish-to-Start_ (FS).], [_Finish-to-Start_ (FS).],
+    [*Metode Solver*], [`CP-SAT` (OR-Tools)], [MILP (`Pyomo`) vs GA (`Pymoo`)], [`CP-SAT` (OR-Tools) setelah preprocessing (`Python`)]
   )
 ]
 
 
-= Kesimpulan
+= Kesimpulan 
 
 == Kesimpulan
 
+1. *Skenario 1 (Diskret Linear)* 
+    - Berkinerja sangat cepat dengan metode CP-SAT
+    - Data biaya crashing per hari jarang dimiliki perusahaan
+    
+2. *Skenario 2 (Cobb-Douglas)*: 
+    - Memodelkan realitas penambahan tenaga kerja dan lembur 
+    - Menggunakan mekanisme Cobb-Douglas
+    - Biaya komputasi yang tinggi dengan metode GA
 
-1. *Skenario 1*: Berkinerja cepat tetapi tidak realistis di lapangan karena data biaya crashing per hari jarang dimiliki perusahaan.
-2. *Skenario 2*: Memodelkan realitas penambahan tenaga kerja dan lembur secara presisi menggunakan Cobb-Douglas, namun memiliki biaya komputasi yang tinggi (NP-hard).
-3. *Skenario 3 (Hybrid)*: Menawarkan *solusi jalan tengah terbaik*. Menggunakan preprocessing Cobb-Douglas dari Skenario 2 untuk menghasilkan parameter biaya dan durasi realistis secara otomatis, kemudian menyelesaikannya dalam waktu kurang dari 10 milidetik menggunakan solver CP-SAT Skenario 1.
+3. *Skenario 3 (Hybrid)*: 
+    - Menggunakan preprocessing Cobb-Douglas dari Skenario 2 
+    - Menghasilkan parameter biaya dan durasi berdasarkan data yang sudah ada tanpa data _crash cost_ yang lengkap
+    - Dapat diselesaikan dengan cepat menggunakan CP-SAT. 
 
 
 = Rencana Selanjutnya
 
 == Langkah Strategis Selanjutnya
+
 #align(center + horizon)[
-  #set text(size: 11pt)
+  #set text(size: 16pt)
   #v(-1em)
   #diagram(
     node-stroke: 1pt + rgb("#7F7F7F"),
     node-fill: white,
-    node-inset: 8pt,
+    node-inset: 1em,
     edge-stroke: 1pt + rgb("#7F7F7F"),
     mark-scale: 80%,
     spacing: (60pt, 30pt),
     
     // Model 1 (CP-SAT)
-    node((0, 0), align(center)[
+    node((0.1, 0), align(center)[
       *Model 1: Baseline (CP-SAT)*
     ], corner-radius: 4pt, fill: rgb("#5B9BD5").transparentize(90%), stroke: 1.5pt + rgb("#5B9BD5"), name: <m1>),
     
-    node((1.5, 0), align(left)[
+    node((1.04, 0), align(left)[
       *Implementasi:* \
       - Multiobjektif
       - Bonus-Penalty
     ], corner-radius: 4pt, fill: rgb("#5B9BD5").transparentize(90%), stroke: 1.5pt + rgb("#5B9BD5"), name: <m1_impl>),
     
     // Model 2 (Cobb-Douglas GA)
-    node((0, 1.5), align(center)[
+    node((0.1, 1), align(center)[
       *Model 2: Cobb-Douglas (GA)*
     ], corner-radius: 4pt, fill: rgb("#A0B89E").transparentize(90%), stroke: 1.5pt + rgb("#A0B89E"), name: <m2>),
     
-    node((1.5, 1.5), align(left)[
+    node((1.04, 1), align(left)[
       *Implementasi:* \
       - Multiobjektif
+      - Diskritisasi MILP
     ], corner-radius: 4pt, fill: rgb("#A0B89E").transparentize(90%), stroke: 1.5pt + rgb("#A0B89E"), name: <m2_impl>),
     
     // Skenario 3 (Hybrid)
-    node((0, 3.0), align(center)[
+    node((0.1, 2), align(center)[
       *Skenario 3: Hybrid*
     ], corner-radius: 4pt, fill: rgb("#4A90C0").transparentize(90%), stroke: 1.5pt + rgb("#4A90C0"), name: <s3>),
     
-    node((1.5, 3.0), align(left)[
+    node((1.04, 2), align(left)[
       *Implementasi:* \
       - Model Hybrid
     ], corner-radius: 4pt, fill: rgb("#4A90C0").transparentize(90%), stroke: 1.5pt + rgb("#4A90C0"), name: <s3_impl>),
     
     // Convergence Target: Sensitivity Analysis
-    node((3.3, 1.5), align(center)[
+    node((2, 0), align(center)[
       *Analisis Sensitivitas* \
-      (Sensitivity Analysis) \
       #v(0.3em)
       Menguji variasi parameter: \
-      $alpha$, $beta$, denda/bonus, \
-      $x_"max"$, dan $tau_"max"$
-    ], corner-radius: 4pt, fill: luma(250), stroke: 2pt + luma(180), name: <sens>),
+      $alpha$, $beta$, $c_"late"$, $c_"early"$, 
+      $x_"max"$, $tau_"max", ...$
+    ], corner-radius: 4pt, fill: luma(250), stroke: 2pt + luma(180), name: <sens>, width: 11cm),
+
+    node((2, 1), align(center)[
+      *Analisis Komparatif* \
+      #v(0.3em)
+      Membandingkan efisiensi (kuantitatif) \ 
+      dan efektivitas (kualitatif) ketiga model. 
+    ], corner-radius: 4pt, fill: luma(250), stroke: 2pt + luma(180), name: <comp>, width: 11cm),
+
+    node((2, 2), align(center)[
+      *Analisis Empiris * \
+      #v(0.3em)
+      _Stress test_ ketiga model dengan \
+      data projek realistis (_benchmarking_).
+    ], corner-radius: 4pt, fill: luma(250), stroke: 2pt + luma(180), name: <emp>, width: 11cm),
     
     // Edges
     edge(<m1>, <m1_impl>, "-|>"),
@@ -1380,8 +1731,16 @@ dengan batasan linier terpusat:
     edge(<s3>, <s3_impl>, "-|>"),
     
     edge(<m1_impl>, <sens>, "-|>", bend: -15deg),
-    edge(<m2_impl>, <sens>, "-|>"),
+    edge(<m2_impl>, <sens>, "-|>", bend: -15deg),
     edge(<s3_impl>, <sens>, "-|>", bend: 15deg),
+
+    edge(<m1_impl>, <comp>, "-|>", bend: -15deg),
+    edge(<m2_impl>, <comp>, "-|>", bend: -15deg),
+    edge(<s3_impl>, <comp>, "-|>", bend: 15deg),
+
+    edge(<m1_impl>, <emp>, "-|>", bend: -15deg),
+    edge(<m2_impl>, <emp>, "-|>", bend: -15deg),
+    edge(<s3_impl>, <emp>, "-|>", bend: 15deg),
   )
 ]
 
