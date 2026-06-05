@@ -105,7 +105,7 @@
         "crash_cost": 110.0
     },
     "Interior Trim": {
-        "required_activities": ["Paint"],
+        "required_activities": [],
         "activity_min_time": 15,
         "activity_normal_time": 20,
         "normal_cost": 500,
