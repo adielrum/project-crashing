@@ -15,15 +15,13 @@ def solve_milp_cobb_douglas(
     model = cp_model.CpModel()
     
     # Pre-calculate discrete options
-    # x options: 1.0, 1.5, 2.0
-    # tau options: 0, 1, 2, 3, 4
     x_options = np.arange(x_min, x_max + 0.1, 0.5)
     tau_options = np.arange(tau_min, tau_max + 0.1, 1.0)
     
-    options = []
+    raw_options = []
     for x in x_options:
         for tau in tau_options:
-            options.append({"x": x, "tau": tau})
+            raw_options.append({"x": x, "tau": tau})
             
     P = len(resources)
     r_k = resources["r_k_usd"].values
@@ -68,19 +66,32 @@ def solve_milp_cobb_douglas(
     if mode == "cost_with_deadline":
         horizon = max(horizon, int(T_max) + 100)
     
-    # Variables
-    # b[p][opt_idx] is boolean
-    b = {}
+    scale = 1000  # For cost precision
+    
+    # ── Per-pair: build deduplicated feasible option tables ──────────────
+    # Instead of creating 15 booleans per pair with conditional constraints,
+    # we precompute the feasible (dur_int, cost_int) tuples, deduplicate them
+    # (many options ceil to the same duration), keep only the cheapest per
+    # unique duration, and use a single integer index variable + AddElement.
+    
+    b = {}            # b[p] = index variable  (int, not dict-of-bools)
     d_ik = {}
     cost_ik = {}
-    scale = 1000  # For cost precision
+    pair_options = {} # pair_options[p] = list of {x, tau, dur_int, cost_int}
     
     total_labor_cost_scaled = 0
     
     for i in range(N):
-        s[i] = model.NewIntVar(0, horizon, f"s_{i}")
-        e[i] = model.NewIntVar(0, horizon, f"e_{i}")
-        d_i[i] = model.NewIntVar(0, horizon, f"d_i_{i}")
+        # Tighter domain bounds for start/end using baseline knowledge
+        s_lb = max(0, int(np.floor(s_baseline[i]))) if i not in completed_tasks else int(s_baseline[i])
+        s_ub = horizon
+        
+        s[i] = model.NewIntVar(s_lb, s_ub, f"s_{i}")
+        e[i] = model.NewIntVar(s_lb, s_ub, f"e_{i}")
+        
+        # Duration: at most the baseline (no crashing makes it longer), at least 0
+        d_max_i = int(np.ceil(D_base_i[i])) if D_base_i[i] > 0 else 0
+        d_i[i] = model.NewIntVar(0, max(d_max_i, 1), f"d_i_{i}")
         model.Add(e[i] == s[i] + d_i[i])
         
         if i in completed_tasks:
@@ -90,32 +101,83 @@ def solve_milp_cobb_douglas(
             model.Add(s[i] >= int(np.ceil(current_day)))
             
         for p in K_i.get(i, []):
-            d_ik[p] = model.NewIntVar(0, horizon, f"d_ik_{p}")
-            cost_ik[p] = model.NewIntVar(0, 1000000000, f"cost_ik_{p}")
-            
             if p in completed_pairs:
-                model.Add(d_ik[p] == int(np.ceil(D_base_ik[p])))
-                cost = int(D_base_ik[p] * U_ik[p] * (hours_per_day * r_k[p]) * scale)
-                model.Add(cost_ik[p] == cost)
+                dur_fixed = int(np.ceil(D_base_ik[p]))
+                cost_fixed = int(D_base_ik[p] * U_ik[p] * (hours_per_day * r_k[p]) * scale)
+                d_ik[p] = model.NewIntVar(dur_fixed, dur_fixed, f"d_ik_{p}")
+                cost_ik[p] = model.NewIntVar(cost_fixed, cost_fixed, f"cost_ik_{p}")
             else:
-                b[p] = {}
-                for opt_idx, opt in enumerate(options):
-                    b[p][opt_idx] = model.NewBoolVar(f"b_{p}_{opt_idx}")
-                model.AddExactlyOne(b[p].values())
-                
-                for opt_idx, opt in enumerate(options):
+                # ── Build feasible options, deduplicate ──────────────
+                feasible = []
+                for opt in raw_options:
                     x_val = opt["x"]
                     tau_val = opt["tau"]
                     dur = D_base_ik[p] * (1.0 / x_val)**alpha * (8.0 / (8.0 + tau_val))**beta
-                    # ensure D_min constraint
+                    # Enforce D_min constraint: skip infeasible options entirely
                     if dur < D_min_ik[p] - 1e-5:
-                        model.Add(b[p][opt_idx] == 0)
-                        
+                        continue
                     dur_int = int(np.ceil(dur))
-                    model.Add(d_ik[p] == dur_int).OnlyEnforceIf(b[p][opt_idx])
-                    
                     cost_val = dur * x_val * U_ik[p] * (hours_per_day * r_k[p] + tau_val * r_k_ot[p])
-                    model.Add(cost_ik[p] == int(cost_val * scale)).OnlyEnforceIf(b[p][opt_idx])
+                    cost_int = int(cost_val * scale)
+                    feasible.append({
+                        "x": x_val, "tau": tau_val,
+                        "dur_int": dur_int, "cost_int": cost_int,
+                    })
+                
+                # Deduplicate: for options with same dur_int, keep cheapest
+                best_by_dur = {}
+                for f in feasible:
+                    key = f["dur_int"]
+                    if key not in best_by_dur or f["cost_int"] < best_by_dur[key]["cost_int"]:
+                        best_by_dur[key] = f
+                deduped = sorted(best_by_dur.values(), key=lambda f: f["dur_int"])
+                
+                # Further prune dominated options:
+                # An option is dominated if another has both lower-or-equal
+                # duration AND lower-or-equal cost.
+                pruned = []
+                for f in deduped:
+                    dominated = False
+                    for g in deduped:
+                        if g is f:
+                            continue
+                        if g["dur_int"] <= f["dur_int"] and g["cost_int"] <= f["cost_int"]:
+                            dominated = True
+                            break
+                    if not dominated:
+                        pruned.append(f)
+                
+                if not pruned:
+                    # Fallback: use baseline (no crash)
+                    dur_int = int(np.ceil(D_base_ik[p]))
+                    cost_int = int(D_base_ik[p] * U_ik[p] * (hours_per_day * r_k[p]) * scale)
+                    pruned = [{"x": 1.0, "tau": 0.0, "dur_int": dur_int, "cost_int": cost_int}]
+                
+                pair_options[p] = pruned
+                n_opts = len(pruned)
+                
+                if n_opts == 1:
+                    # Only one feasible option — fix the values directly
+                    d_ik[p] = model.NewIntVar(pruned[0]["dur_int"], pruned[0]["dur_int"], f"d_ik_{p}")
+                    cost_ik[p] = model.NewIntVar(pruned[0]["cost_int"], pruned[0]["cost_int"], f"cost_ik_{p}")
+                else:
+                    # Use AddElement: idx selects from precomputed tables
+                    dur_table = [f["dur_int"] for f in pruned]
+                    cost_table = [f["cost_int"] for f in pruned]
+                    
+                    idx_var = model.NewIntVar(0, n_opts - 1, f"idx_{p}")
+                    b[p] = idx_var
+                    
+                    d_min_p = min(dur_table)
+                    d_max_p = max(dur_table)
+                    c_min_p = min(cost_table)
+                    c_max_p = max(cost_table)
+                    
+                    d_ik[p] = model.NewIntVar(d_min_p, d_max_p, f"d_ik_{p}")
+                    cost_ik[p] = model.NewIntVar(c_min_p, c_max_p, f"cost_ik_{p}")
+                    
+                    model.AddElement(idx_var, dur_table, d_ik[p])
+                    model.AddElement(idx_var, cost_table, cost_ik[p])
             
             total_labor_cost_scaled += cost_ik[p]
             model.Add(d_i[i] >= d_ik[p])
@@ -163,26 +225,42 @@ def solve_milp_cobb_douglas(
         model.Add(obj == tlc_var + penalty_scaled - bonus_scaled)
         model.Minimize(obj)
 
+    # ── Search strategy hints ────────────────────────────────────────────
+    # Guide the solver to branch on the index variables first with
+    # a minimum-value strategy (prefer shorter durations / lower cost).
+    idx_vars = [b[p] for p in sorted(b.keys())]
+    if idx_vars:
+        model.AddDecisionStrategy(
+            idx_vars,
+            cp_model.CHOOSE_FIRST,
+            cp_model.SELECT_MIN_VALUE,
+        )
+
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
+    # Use all available cores
+    solver.parameters.num_workers = 1
+    # solver.parameters.log_search_progress = True  # enable for debugging
     status = solver.Solve(model)
     
     if status in [cp_model.OPTIMAL, cp_model.FEASIBLE]:
         x_opt = np.ones(P)
         tau_opt = np.zeros(P)
         for p in range(P):
-            if p not in completed_pairs:
-                for opt_idx, opt in enumerate(options):
-                    if solver.Value(b[p][opt_idx]):
-                        x_opt[p] = opt["x"]
-                        tau_opt[p] = opt["tau"]
-                        break
+            if p in pair_options:
+                opts = pair_options[p]
+                if len(opts) == 1:
+                    x_opt[p] = opts[0]["x"]
+                    tau_opt[p] = opts[0]["tau"]
+                elif p in b:
+                    chosen = solver.Value(b[p])
+                    x_opt[p] = opts[chosen]["x"]
+                    tau_opt[p] = opts[chosen]["tau"]
         makespan = solver.Value(Cmax)
         labor_cost = solver.Value(tlc_var) / scale
         print(f"MILP Solver: Status={solver.StatusName(status)}, Makespan={makespan}, Labor Cost={labor_cost}")
         
         # Prepare for saving
-        # Let's populate D_ik_opt, D_i_opt, s_opt, f_opt
         D_ik_opt = np.zeros(P)
         for p in range(P):
             D_ik_opt[p] = solver.Value(d_ik[p])
