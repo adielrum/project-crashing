@@ -83,7 +83,7 @@ def solve_milp_cobb_douglas(
     
     for i in range(N):
         # Tighter domain bounds for start/end using baseline knowledge
-        s_lb = max(0, int(np.floor(s_baseline[i]))) if i not in completed_tasks else int(s_baseline[i])
+        s_lb = 0 if i not in completed_tasks else int(s_baseline[i])
         s_ub = horizon
         
         s[i] = model.NewIntVar(s_lb, s_ub, f"s_{i}")
