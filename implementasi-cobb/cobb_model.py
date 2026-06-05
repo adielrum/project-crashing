@@ -142,6 +142,8 @@ class ResourceBasedScheduling(ElementwiseProblem):
                  current_day=0,        # ← input pengguna: hari mulai crashing
                  overtime_mult=1.5,
                  hours_per_day=8,
+                 mode="bonus_penalty",
+                 budget_limit=None,
                  **kwargs):
 
         self.tasks         = tasks
@@ -163,6 +165,8 @@ class ResourceBasedScheduling(ElementwiseProblem):
         self.current_day   = current_day
         self.overtime_mult = overtime_mult
         self.hours_per_day = hours_per_day
+        self.mode          = mode
+        self.budget_limit  = budget_limit
 
         if x_max is None:
             x_max = self._compute_x_max(alpha, x_min)
@@ -220,10 +224,17 @@ class ResourceBasedScheduling(ElementwiseProblem):
             xl_x[p]   = xu_x[p]   = 1.0   # x_ik dikunci ke 1 (tidak di-crash)
             xl_tau[p] = xu_tau[p] = 0.0   # tau_ik dikunci ke 0 (tidak lembur)
 
+        n_obj = 2 if self.mode == "multiobjective" else 1
+        n_constr = P
+        if self.mode == "cost_with_deadline":
+            n_constr += 1
+        elif self.mode == "time_with_budget":
+            n_constr += 1
+            
         super().__init__(
             n_var=2 * P,
-            n_obj=1,
-            n_ieq_constr=P,   # D_min per pasangan (i,k)
+            n_obj=n_obj,
+            n_ieq_constr=n_constr,   # D_min per pasangan (i,k) + possible deadline/budget constr
             xl=np.concatenate([xl_x, xl_tau]),
             xu=np.concatenate([xu_x, xu_tau]),
             **kwargs,
@@ -367,12 +378,25 @@ class ResourceBasedScheduling(ElementwiseProblem):
         penalty = self.c_late  * max(0.0, T_finish - self.T_max)
         bonus   = self.c_early * max(0.0, self.T_max - T_finish)
 
-        out["F"] = labor_cost + penalty - bonus
+        if self.mode == "bonus_penalty":
+            out["F"] = labor_cost + penalty - bonus
+        elif self.mode == "cost_with_deadline":
+            out["F"] = labor_cost
+        elif self.mode == "time_with_budget":
+            out["F"] = T_finish
+        elif self.mode == "multiobjective":
+            out["F"] = [T_finish, labor_cost]
 
         # Kendala D_min: aktif hanya untuk task belum selesai
         G = self.D_min_ik - D_ik
         for p in self.completed_pairs:
             G[p] = 0.0   # task selesai selalu feasible, tidak dihitung
+            
+        if self.mode == "cost_with_deadline":
+            G = np.append(G, T_finish - self.T_max)
+        elif self.mode == "time_with_budget":
+            G = np.append(G, labor_cost - self.budget_limit)
+            
         out["G"] = G
 
 

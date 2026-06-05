@@ -35,6 +35,9 @@ class SolveConfig:
     num_workers: int
     auto_fix_paint_trim_cycle: bool
     remove_edges: List[Tuple[str, str]]
+    budget_limit: Optional[float] = None
+    c_late: float = 0.0
+    c_early: float = 0.0
 
 
 def read_json(path: str) -> Any:
@@ -340,6 +343,8 @@ def build_model_and_solve(
     """
     mode:
       - 'cost_with_deadline': minimize crash cost subject to Cmax <= target_end_date
+      - 'time_with_budget': minimize Cmax subject to crash cost <= budget_limit
+      - 'bonus_penalty': minimize crash cost + penalty - bonus
       - 'min_makespan': minimize Cmax (no explicit deadline)
     """
     activities = list(activity_data.keys())
@@ -355,6 +360,12 @@ def build_model_and_solve(
             raise ValueError("target_end_date is required for cost_with_deadline mode")
         horizon = cfg.target_end_date
     elif mode == "min_makespan":
+        sum_nt = sum(int(activity_data[a]["activity_normal_time"]) for a in activities)
+        horizon = max(sum_nt + cfg.current_day + 5, (cfg.target_end_date or 0) + 5)
+    elif mode == "time_with_budget":
+        sum_nt = sum(int(activity_data[a]["activity_normal_time"]) for a in activities)
+        horizon = max(sum_nt + cfg.current_day + 5, (cfg.target_end_date or 0) + 5)
+    elif mode == "bonus_penalty":
         sum_nt = sum(int(activity_data[a]["activity_normal_time"]) for a in activities)
         horizon = max(sum_nt + cfg.current_day + 5, (cfg.target_end_date or 0) + 5)
     else:
@@ -455,28 +466,55 @@ def build_model_and_solve(
     for a in activities:
         model.Add(Cmax >= e[a])
 
+    # Past completed costs are sunk and excluded from objective.
+    terms = []
+    for a in activities:
+        if states[a]["status"] != "completed":
+            coeff = int(Decimal(str(activity_data[a]["crash_cost"])) * scale)
+            terms.append(coeff * c[a])
+
+    total_crash_cost_scaled = model.NewIntVar(0, 10**12, "total_crash_cost_scaled")
+    if terms:
+        model.Add(total_crash_cost_scaled == sum(terms))
+    else:
+        model.Add(total_crash_cost_scaled == 0)
+
     # Objective
     if mode == "cost_with_deadline":
         assert cfg.target_end_date is not None
         model.Add(Cmax <= cfg.target_end_date)
-
-        # Past completed costs are sunk and excluded from objective.
-        terms = []
-        for a in activities:
-            if states[a]["status"] != "completed":
-                coeff = int(Decimal(str(activity_data[a]["crash_cost"])) * scale)
-                terms.append(coeff * c[a])
-
-        total_crash_cost_scaled = model.NewIntVar(0, 10**12, "total_crash_cost_scaled")
-        if terms:
-            model.Add(total_crash_cost_scaled == sum(terms))
-        else:
-            model.Add(total_crash_cost_scaled == 0)
         model.Minimize(total_crash_cost_scaled)
 
+    elif mode == "time_with_budget":
+        if cfg.budget_limit is None:
+            raise ValueError("budget_limit is required for time_with_budget mode")
+        budget_scaled = int(Decimal(str(cfg.budget_limit)) * scale)
+        model.Add(total_crash_cost_scaled <= budget_scaled)
+        model.Minimize(Cmax)
+
+    elif mode == "bonus_penalty":
+        if cfg.target_end_date is None:
+            raise ValueError("target_end_date is required for bonus_penalty mode")
+        
+        c_late_scaled = int(Decimal(str(cfg.c_late)) * scale)
+        c_early_scaled = int(Decimal(str(cfg.c_early)) * scale)
+        
+        late_days = model.NewIntVar(0, horizon, "late_days")
+        early_days = model.NewIntVar(0, horizon, "early_days")
+        
+        model.AddMaxEquality(late_days, [0, Cmax - cfg.target_end_date])
+        model.AddMaxEquality(early_days, [0, cfg.target_end_date - Cmax])
+        
+        penalty_scaled = model.NewIntVar(0, 10**12, "penalty_scaled")
+        bonus_scaled = model.NewIntVar(0, 10**12, "bonus_scaled")
+        model.Add(penalty_scaled == c_late_scaled * late_days)
+        model.Add(bonus_scaled == c_early_scaled * early_days)
+        
+        obj_var = model.NewIntVar(-10**12, 10**12, "obj_var")
+        model.Add(obj_var == total_crash_cost_scaled + penalty_scaled - bonus_scaled)
+        model.Minimize(obj_var)
+
     else:  # min_makespan
-        total_crash_cost_scaled = model.NewIntVar(0, 10**12, "total_crash_cost_scaled")
-        model.Add(total_crash_cost_scaled == 0)
         model.Minimize(Cmax)
 
     solver = cp_model.CpSolver()

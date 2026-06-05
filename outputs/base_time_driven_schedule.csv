@@ -1,0 +1,26 @@
+activity,status,start,end,duration,normal_duration,min_duration,crash_days,crash_cost_per_day,crash_cost
+Bids & Contracts,not_started,0,7,7,10,7,3,60.0,180.0
+Grading & Building Permits,not_started,7,14,7,10,7,3,70.0,210.0
+Site Work,not_started,14,19,5,7,5,2,30.0,60.0
+Foundation,not_started,19,37,18,22,18,4,80.0,320.0
+Interior Trim,not_started,19,39,20,20,15,0,50.0,0.0
+Rough Carpentry,not_started,37,62,25,30,25,5,90.0,450.0
+Concrete Slabs,not_started,62,70,8,8,6,0,40.0,0.0
+Electric Rough-in,not_started,62,81,19,19,14,0,55.0,0.0
+Exterior Finishes,not_started,62,82,20,30,20,10,180.0,1800.0
+H.V.A.C.,not_started,82,99,17,17,12,0,55.0,0.0
+Roofing,not_started,82,110,28,30,25,2,200.0,400.0
+Floor Finishes,not_started,82,112,30,30,25,0,130.0,0.0
+Plumbing Rough-in,not_started,99,129,30,30,25,0,65.0,0.0
+Insulation,not_started,110,114,4,5,4,1,30.0,30.0
+Drywall,not_started,114,129,15,20,15,5,80.0,400.0
+Paint,not_started,129,154,25,30,25,5,110.0,550.0
+Plumbing Trim,not_started,154,157,3,5,3,2,40.0,80.0
+Hardware,not_started,154,166,12,12,8,0,40.0,0.0
+Electrical Final Trim,not_started,157,179,22,23,18,1,250.0,250.0
+Final Building Inspection,not_started,179,180,1,1,1,0,20.0,0.0
+Use & Occupancy Certificate,not_started,180,181,1,1,1,0,10.0,0.0
+First Walk-thru,not_started,181,182,1,1,1,0,10.0,0.0
+Final Punch-out,not_started,182,188,6,9,6,3,30.0,90.0
+Cleaning,not_started,188,198,10,14,10,4,40.0,160.0
+Final Walk-through,not_started,198,199,1,1,1,0,0.0,0.0
