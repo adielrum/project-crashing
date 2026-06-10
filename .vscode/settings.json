@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "./implementasi-base",
+        "./implementasi-cobb",
+        "./implementasi-hybrid"
+    ]
+}

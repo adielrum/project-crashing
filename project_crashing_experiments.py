@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.14.5
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -96,7 +96,7 @@ if "schedule" in res_1:
 # %% [markdown]
 # ## Skenario 2: Cobb-Douglas Production Function (Genetic Algorithm)
 # This model uses a non-linear continuous production function for crashing. We solve it using the NSGA-II/GA metaheuristic algorithm.
-# 
+#
 # *Note: For testing purposes in this notebook, `pop_size` and `n_gen` are set small. Increase them for a full run.*
 
 # %%
@@ -160,6 +160,67 @@ if res_ga.X is not None:
     display(Image(filename=out_png_2))
 else:
     print("No feasible solution found.")
+
+# %% [markdown]
+# ## Skenario 2: Cobb-Douglas (Multi-Objective Optimization via NSGA-II)
+# We can also perform multi-objective optimization using the NSGA-II algorithm to minimize both Makespan and Labor Cost simultaneously, finding the Pareto Front of optimal trade-offs.
+
+# %%
+import matplotlib.pyplot as plt
+from pymoo.algorithms.moo.nsga2 import NSGA2
+from pymoo.core.termination import Termination
+from pymoo.termination.ftol import MultiObjectiveSpaceTermination
+from pymoo.termination.robust import RobustTermination
+
+problem_moo = ResourceBasedScheduling(
+    tasks=tasks, precedence=prec_2, resources=res_2, N=N_2, K_i=K_i_2,
+    alpha=0.7, beta=0.7, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
+    T_max=344, current_day=current_day_1, overtime_mult=1.5, hours_per_day=8,
+    mode="multiobjective"
+)
+
+algorithm_moo = NSGA2(
+    pop_size=200, crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20),
+    eliminate_duplicates=True,
+)
+
+t_robust = RobustTermination(MultiObjectiveSpaceTermination(tol=0.002, n_skip=5), period=30)
+t_max_gen = get_termination("n_gen", 300)
+
+class CombinedTermination(Termination):
+    def __init__(self, t1, t2):
+        super().__init__()
+        self.t1 = t1
+        self.t2 = t2
+    def _update(self, algorithm):
+        return max(self.t1.update(algorithm), self.t2.update(algorithm))
+        
+termination_moo = CombinedTermination(t_robust, t_max_gen)
+
+print("Running NSGA-II Multi-Objective Optimization...")
+res_moo = minimize(problem_moo, algorithm_moo, termination_moo, seed=42, verbose=True)
+
+if res_moo.F is not None:
+    F = res_moo.F
+    # Sort by makespan for plotting
+    sorted_indices = np.argsort(F[:, 0])
+    F_sorted = F[sorted_indices]
+    
+    plt.figure(figsize=(8, 6))
+    plt.scatter(F_sorted[:, 0], F_sorted[:, 1], color='b', marker='o')
+    plt.plot(F_sorted[:, 0], F_sorted[:, 1], color='b', linestyle='-')
+    plt.xlabel('Makespan (days)')
+    plt.ylabel('Labor Cost ($)')
+    plt.title('Time-Cost Pareto Front (Cobb-Douglas NSGA-II)')
+    plt.grid(True)
+    
+    out_pareto = os.path.join(base_dir, "outputs/cobb_pareto_front.png")
+    os.makedirs(os.path.dirname(out_pareto), exist_ok=True)
+    plt.savefig(out_pareto, dpi=150, bbox_inches="tight")
+    plt.show()
+    print(f"Saved Pareto front plot to: {out_pareto}")
+else:
+    print("Multi-objective: No feasible solutions found.")
 
 # %% [markdown]
 # ## Skenario 2: Cobb-Douglas (MILP Discretization via CP-SAT)

@@ -2,104 +2,13 @@
   "success": true,
   "solver": "pymoo_GA",
   "current_day": 0,
-  "target_day": 310,
+  "target_day": 344,
   "baseline_makespan": 344.0,
-  "makespan": 310.0,
-  "makespan_reduction": 34.0,
-  "labor_cost": 510918.905,
-  "total_project_cost": 510918.905,
-  "crash_plan": {
-    "Excavate foundations": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 560.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Cure piers and foundations": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 60.0,
-        "duration_saved": 3.0
-      }
-    ],
-    "Install stairs and miscellaneous iron railing": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 600.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Touch-up paint on steel": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 255.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Cure 2nd floor slab": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 60.0,
-        "duration_saved": 3.0
-      }
-    ],
-    "Cure 3rd floor slab": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 60.0,
-        "duration_saved": 3.0
-      }
-    ],
-    "Cure roof slab": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 60.0,
-        "duration_saved": 3.0
-      }
-    ],
-    "Install window wall aluminum and glass": [
-      {
-        "resource": "Window Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1400.0,
-        "duration_saved": 6.0
-      }
-    ],
-    "Install interior stud walls and drywall": [
-      {
-        "resource": "Drywall Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1400.0,
-        "duration_saved": 6.0
-      }
-    ],
-    "Paint walls and woodwork": [
-      {
-        "resource": "Painting Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1440.0,
-        "duration_saved": 4.0
-      }
-    ]
-  },
+  "makespan": 344.0,
+  "makespan_reduction": 0.0,
+  "labor_cost": 506209.991,
+  "total_project_cost": 506209.991,
+  "crash_plan": {},
   "schedule": [
     {
       "task_id": 2,
@@ -483,7 +392,7 @@
         },
         {
           "resource_name": "G.C. Labor Crew",
-          "baseline_duration": 2.9999999999999996,
+          "baseline_duration": 3.0,
           "optimized_duration": 3.0,
           "x": 1.0,
           "tau": 0.0
@@ -684,15 +593,15 @@
       "baseline_finish": 58.0,
       "baseline_duration": 10.0,
       "optimized_start": 48.0,
-      "optimized_finish": 56.0,
-      "optimized_duration": 8.0,
+      "optimized_finish": 58.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -723,8 +632,8 @@
       "baseline_start": 58.0,
       "baseline_finish": 62.0,
       "baseline_duration": 4.0,
-      "optimized_start": 56.0,
-      "optimized_finish": 60.0,
+      "optimized_start": 58.0,
+      "optimized_finish": 62.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -790,8 +699,8 @@
       "baseline_start": 62.0,
       "baseline_finish": 66.0,
       "baseline_duration": 4.0,
-      "optimized_start": 60.0,
-      "optimized_finish": 64.0,
+      "optimized_start": 62.0,
+      "optimized_finish": 66.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -810,8 +719,8 @@
       "baseline_start": 66.0,
       "baseline_finish": 71.0,
       "baseline_duration": 5.0,
-      "optimized_start": 64.0,
-      "optimized_finish": 69.0,
+      "optimized_start": 66.0,
+      "optimized_finish": 71.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -870,17 +779,17 @@
       "baseline_start": 71.0,
       "baseline_finish": 78.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 69.0,
-      "optimized_finish": 73.0,
-      "optimized_duration": 4.0,
+      "optimized_start": 71.0,
+      "optimized_finish": 78.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "optimized_duration": 4.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -910,8 +819,8 @@
       "baseline_start": 78.0,
       "baseline_finish": 81.0,
       "baseline_duration": 3.0,
-      "optimized_start": 73.0,
-      "optimized_finish": 76.0,
+      "optimized_start": 78.0,
+      "optimized_finish": 81.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -970,8 +879,8 @@
       "baseline_start": 81.0,
       "baseline_finish": 91.0,
       "baseline_duration": 10.0,
-      "optimized_start": 76.0,
-      "optimized_finish": 86.0,
+      "optimized_start": 81.0,
+      "optimized_finish": 91.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -990,8 +899,8 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 86.0,
-      "optimized_finish": 96.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 101.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1010,8 +919,8 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 86.0,
-      "optimized_finish": 96.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 101.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1030,8 +939,8 @@
       "baseline_start": 101.0,
       "baseline_finish": 111.0,
       "baseline_duration": 10.0,
-      "optimized_start": 96.0,
-      "optimized_finish": 106.0,
+      "optimized_start": 101.0,
+      "optimized_finish": 111.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1050,16 +959,16 @@
       "baseline_start": 111.0,
       "baseline_finish": 121.0,
       "baseline_duration": 10.0,
-      "optimized_start": 106.0,
-      "optimized_finish": 114.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 111.0,
+      "optimized_finish": 121.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -1070,17 +979,17 @@
       "baseline_start": 121.0,
       "baseline_finish": 126.0,
       "baseline_duration": 5.0,
-      "optimized_start": 114.0,
-      "optimized_finish": 117.0,
-      "optimized_duration": 3.0,
+      "optimized_start": 121.0,
+      "optimized_finish": 126.0,
+      "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 5.0,
-          "optimized_duration": 3.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1090,8 +999,8 @@
       "baseline_start": 126.0,
       "baseline_finish": 131.0,
       "baseline_duration": 5.0,
-      "optimized_start": 117.0,
-      "optimized_finish": 122.0,
+      "optimized_start": 126.0,
+      "optimized_finish": 131.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1117,8 +1026,8 @@
       "baseline_start": 91.0,
       "baseline_finish": 96.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 86.0,
-      "optimized_finish": 91.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 96.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1151,8 +1060,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 135.0,
       "baseline_duration": 4.0,
-      "optimized_start": 122.0,
-      "optimized_finish": 126.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 135.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1171,17 +1080,17 @@
       "baseline_start": 135.0,
       "baseline_finish": 142.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 126.0,
-      "optimized_finish": 130.0,
-      "optimized_duration": 4.0,
+      "optimized_start": 135.0,
+      "optimized_finish": 142.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "optimized_duration": 4.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1191,8 +1100,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 144.0,
       "baseline_duration": 2.0,
-      "optimized_start": 191.0,
-      "optimized_finish": 193.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 144.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1211,8 +1120,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 5.0,
-      "optimized_start": 130.0,
-      "optimized_finish": 135.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 147.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1238,8 +1147,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 130.0,
-      "optimized_finish": 135.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 147.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1272,8 +1181,8 @@
       "baseline_start": 147.0,
       "baseline_finish": 151.0,
       "baseline_duration": 4.0,
-      "optimized_start": 135.0,
-      "optimized_finish": 139.0,
+      "optimized_start": 147.0,
+      "optimized_finish": 151.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1292,17 +1201,17 @@
       "baseline_start": 151.0,
       "baseline_finish": 158.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 139.0,
-      "optimized_finish": 143.0,
-      "optimized_duration": 4.0,
+      "optimized_start": 151.0,
+      "optimized_finish": 158.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "optimized_duration": 4.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1312,8 +1221,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 160.0,
       "baseline_duration": 2.0,
-      "optimized_start": 143.0,
-      "optimized_finish": 145.0,
+      "optimized_start": 158.0,
+      "optimized_finish": 160.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1332,8 +1241,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 5.0,
-      "optimized_start": 143.0,
-      "optimized_finish": 148.0,
+      "optimized_start": 158.0,
+      "optimized_finish": 163.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1359,8 +1268,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 143.0,
-      "optimized_finish": 148.0,
+      "optimized_start": 158.0,
+      "optimized_finish": 163.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1393,8 +1302,8 @@
       "baseline_start": 163.0,
       "baseline_finish": 167.0,
       "baseline_duration": 4.0,
-      "optimized_start": 148.0,
-      "optimized_finish": 152.0,
+      "optimized_start": 163.0,
+      "optimized_finish": 167.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1413,17 +1322,17 @@
       "baseline_start": 167.0,
       "baseline_finish": 174.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 152.0,
-      "optimized_finish": 156.0,
-      "optimized_duration": 4.0,
+      "optimized_start": 167.0,
+      "optimized_finish": 174.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "optimized_duration": 4.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1433,8 +1342,8 @@
       "baseline_start": 174.0,
       "baseline_finish": 176.0,
       "baseline_duration": 2.0,
-      "optimized_start": 156.0,
-      "optimized_finish": 158.0,
+      "optimized_start": 174.0,
+      "optimized_finish": 176.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1453,8 +1362,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 148.0,
       "baseline_duration": 4.0,
-      "optimized_start": 193.0,
-      "optimized_finish": 197.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 148.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1473,8 +1382,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 193.0,
-      "optimized_finish": 198.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 149.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1493,8 +1402,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 193.0,
-      "optimized_finish": 198.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 149.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1513,8 +1422,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 148.0,
       "baseline_duration": 4.0,
-      "optimized_start": 193.0,
-      "optimized_finish": 197.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 148.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1547,8 +1456,8 @@
       "baseline_start": 149.0,
       "baseline_finish": 153.0,
       "baseline_duration": 4.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 202.0,
+      "optimized_start": 149.0,
+      "optimized_finish": 153.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1567,8 +1476,8 @@
       "baseline_start": 153.0,
       "baseline_finish": 160.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 202.0,
-      "optimized_finish": 209.0,
+      "optimized_start": 153.0,
+      "optimized_finish": 160.0,
       "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
@@ -1587,8 +1496,8 @@
       "baseline_start": 160.0,
       "baseline_finish": 162.0,
       "baseline_duration": 2.0,
-      "optimized_start": 209.0,
-      "optimized_finish": 211.0,
+      "optimized_start": 160.0,
+      "optimized_finish": 162.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1607,8 +1516,8 @@
       "baseline_start": 176.0,
       "baseline_finish": 191.0,
       "baseline_duration": 15.0,
-      "optimized_start": 158.0,
-      "optimized_finish": 173.0,
+      "optimized_start": 176.0,
+      "optimized_finish": 191.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -1627,8 +1536,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 211.0,
-      "optimized_finish": 231.0,
+      "optimized_start": 162.0,
+      "optimized_finish": 182.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -1647,8 +1556,8 @@
       "baseline_start": 111.0,
       "baseline_finish": 131.0,
       "baseline_duration": 20.0,
-      "optimized_start": 106.0,
-      "optimized_finish": 126.0,
+      "optimized_start": 111.0,
+      "optimized_finish": 131.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -1667,8 +1576,8 @@
       "baseline_start": 191.0,
       "baseline_finish": 216.0,
       "baseline_duration": 25.0,
-      "optimized_start": 173.0,
-      "optimized_finish": 198.0,
+      "optimized_start": 191.0,
+      "optimized_finish": 216.0,
       "optimized_duration": 25.0,
       "status": "not_started",
       "assignments": [
@@ -1687,8 +1596,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 218.0,
       "baseline_duration": 2.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 200.0,
+      "optimized_start": 216.0,
+      "optimized_finish": 218.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1707,8 +1616,8 @@
       "baseline_start": 182.0,
       "baseline_finish": 192.0,
       "baseline_duration": 10.0,
-      "optimized_start": 231.0,
-      "optimized_finish": 241.0,
+      "optimized_start": 182.0,
+      "optimized_finish": 192.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1727,8 +1636,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 221.0,
       "baseline_duration": 5.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 203.0,
+      "optimized_start": 216.0,
+      "optimized_finish": 221.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1747,8 +1656,8 @@
       "baseline_start": 192.0,
       "baseline_finish": 197.0,
       "baseline_duration": 5.0,
-      "optimized_start": 241.0,
-      "optimized_finish": 246.0,
+      "optimized_start": 192.0,
+      "optimized_finish": 197.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1767,8 +1676,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 220.0,
       "baseline_duration": 4.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 202.0,
+      "optimized_start": 216.0,
+      "optimized_finish": 220.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1787,8 +1696,8 @@
       "baseline_start": 220.0,
       "baseline_finish": 222.0,
       "baseline_duration": 2.0,
-      "optimized_start": 239.0,
-      "optimized_finish": 241.0,
+      "optimized_start": 273.0,
+      "optimized_finish": 275.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1807,8 +1716,8 @@
       "baseline_start": 227.0,
       "baseline_finish": 232.0,
       "baseline_duration": 5.0,
-      "optimized_start": 246.0,
-      "optimized_finish": 251.0,
+      "optimized_start": 280.0,
+      "optimized_finish": 285.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1827,8 +1736,8 @@
       "baseline_start": 232.0,
       "baseline_finish": 237.0,
       "baseline_duration": 5.0,
-      "optimized_start": 251.0,
-      "optimized_finish": 256.0,
+      "optimized_start": 285.0,
+      "optimized_finish": 290.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1847,8 +1756,8 @@
       "baseline_start": 237.0,
       "baseline_finish": 247.0,
       "baseline_duration": 10.0,
-      "optimized_start": 278.0,
-      "optimized_finish": 288.0,
+      "optimized_start": 312.0,
+      "optimized_finish": 322.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1867,16 +1776,16 @@
       "baseline_start": 216.0,
       "baseline_finish": 241.0,
       "baseline_duration": 25.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 217.0,
-      "optimized_duration": 19.0,
+      "optimized_start": 216.0,
+      "optimized_finish": 241.0,
+      "optimized_duration": 25.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Window Contractor",
           "baseline_duration": 25.0,
-          "optimized_duration": 19.0,
-          "x": 1.5,
+          "optimized_duration": 25.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -1887,16 +1796,16 @@
       "baseline_start": 241.0,
       "baseline_finish": 266.0,
       "baseline_duration": 25.0,
-      "optimized_start": 217.0,
-      "optimized_finish": 236.0,
-      "optimized_duration": 19.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 266.0,
+      "optimized_duration": 25.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 25.0,
-          "optimized_duration": 19.0,
-          "x": 1.5,
+          "optimized_duration": 25.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -1907,8 +1816,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 276.0,
       "baseline_duration": 10.0,
-      "optimized_start": 236.0,
-      "optimized_finish": 246.0,
+      "optimized_start": 266.0,
+      "optimized_finish": 276.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1927,8 +1836,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 231.0,
       "baseline_duration": 15.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 213.0,
+      "optimized_start": 216.0,
+      "optimized_finish": 231.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -1947,8 +1856,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 236.0,
-      "optimized_finish": 251.0,
+      "optimized_start": 266.0,
+      "optimized_finish": 281.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -1967,16 +1876,16 @@
       "baseline_start": 281.0,
       "baseline_finish": 301.0,
       "baseline_duration": 20.0,
-      "optimized_start": 251.0,
-      "optimized_finish": 267.0,
-      "optimized_duration": 16.0,
+      "optimized_start": 281.0,
+      "optimized_finish": 301.0,
+      "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Painting Contractor",
           "baseline_duration": 20.0,
-          "optimized_duration": 16.0,
-          "x": 1.5,
+          "optimized_duration": 20.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -1987,8 +1896,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 217.0,
-      "optimized_finish": 232.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 256.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2007,8 +1916,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 252.0,
-      "optimized_finish": 267.0,
+      "optimized_start": 266.0,
+      "optimized_finish": 281.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2027,8 +1936,8 @@
       "baseline_start": 281.0,
       "baseline_finish": 291.0,
       "baseline_duration": 10.0,
-      "optimized_start": 267.0,
-      "optimized_finish": 277.0,
+      "optimized_start": 281.0,
+      "optimized_finish": 291.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2047,8 +1956,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 277.0,
-      "optimized_finish": 287.0,
+      "optimized_start": 291.0,
+      "optimized_finish": 301.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2067,8 +1976,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 277.0,
-      "optimized_finish": 287.0,
+      "optimized_start": 291.0,
+      "optimized_finish": 301.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2087,8 +1996,8 @@
       "baseline_start": 301.0,
       "baseline_finish": 321.0,
       "baseline_duration": 20.0,
-      "optimized_start": 267.0,
-      "optimized_finish": 287.0,
+      "optimized_start": 301.0,
+      "optimized_finish": 321.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2107,8 +2016,8 @@
       "baseline_start": 301.0,
       "baseline_finish": 316.0,
       "baseline_duration": 15.0,
-      "optimized_start": 272.0,
-      "optimized_finish": 287.0,
+      "optimized_start": 301.0,
+      "optimized_finish": 316.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2127,8 +2036,8 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 274.0,
-      "optimized_finish": 284.0,
+      "optimized_start": 301.0,
+      "optimized_finish": 311.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2147,8 +2056,8 @@
       "baseline_start": 311.0,
       "baseline_finish": 321.0,
       "baseline_duration": 10.0,
-      "optimized_start": 284.0,
-      "optimized_finish": 294.0,
+      "optimized_start": 318.0,
+      "optimized_finish": 328.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2167,8 +2076,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 151.0,
       "baseline_duration": 20.0,
-      "optimized_start": 251.0,
-      "optimized_finish": 271.0,
+      "optimized_start": 285.0,
+      "optimized_finish": 305.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2187,8 +2096,8 @@
       "baseline_start": 151.0,
       "baseline_finish": 161.0,
       "baseline_duration": 10.0,
-      "optimized_start": 271.0,
-      "optimized_finish": 281.0,
+      "optimized_start": 305.0,
+      "optimized_finish": 315.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2207,8 +2116,8 @@
       "baseline_start": 161.0,
       "baseline_finish": 171.0,
       "baseline_duration": 10.0,
-      "optimized_start": 281.0,
-      "optimized_finish": 291.0,
+      "optimized_start": 315.0,
+      "optimized_finish": 325.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2227,8 +2136,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 226.0,
-      "optimized_finish": 246.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 261.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2247,8 +2156,8 @@
       "baseline_start": 221.0,
       "baseline_finish": 231.0,
       "baseline_duration": 10.0,
-      "optimized_start": 203.0,
-      "optimized_finish": 213.0,
+      "optimized_start": 221.0,
+      "optimized_finish": 231.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2267,8 +2176,8 @@
       "baseline_start": 261.0,
       "baseline_finish": 276.0,
       "baseline_duration": 15.0,
-      "optimized_start": 246.0,
-      "optimized_finish": 261.0,
+      "optimized_start": 261.0,
+      "optimized_finish": 276.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2287,8 +2196,8 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 267.0,
-      "optimized_finish": 277.0,
+      "optimized_start": 301.0,
+      "optimized_finish": 311.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2307,8 +2216,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 211.0,
-      "optimized_finish": 231.0,
+      "optimized_start": 162.0,
+      "optimized_finish": 182.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2327,8 +2236,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 217.0,
-      "optimized_finish": 237.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 261.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2347,8 +2256,8 @@
       "baseline_start": 256.0,
       "baseline_finish": 271.0,
       "baseline_duration": 15.0,
-      "optimized_start": 232.0,
-      "optimized_finish": 247.0,
+      "optimized_start": 256.0,
+      "optimized_finish": 271.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2367,8 +2276,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 286.0,
       "baseline_duration": 15.0,
-      "optimized_start": 247.0,
-      "optimized_finish": 262.0,
+      "optimized_start": 271.0,
+      "optimized_finish": 286.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2387,8 +2296,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 273.0,
       "baseline_duration": 2.0,
-      "optimized_start": 288.0,
-      "optimized_finish": 290.0,
+      "optimized_start": 322.0,
+      "optimized_finish": 324.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2407,8 +2316,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 277.0,
-      "optimized_finish": 287.0,
+      "optimized_start": 291.0,
+      "optimized_finish": 301.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2427,8 +2336,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 141.0,
       "baseline_duration": 10.0,
-      "optimized_start": 265.0,
-      "optimized_finish": 275.0,
+      "optimized_start": 299.0,
+      "optimized_finish": 309.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2447,8 +2356,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 211.0,
-      "optimized_finish": 231.0,
+      "optimized_start": 162.0,
+      "optimized_finish": 182.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2467,8 +2376,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 251.0,
       "baseline_duration": 10.0,
-      "optimized_start": 217.0,
-      "optimized_finish": 227.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 251.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2487,8 +2396,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 275.0,
-      "optimized_finish": 290.0,
+      "optimized_start": 309.0,
+      "optimized_finish": 324.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2507,8 +2416,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 311.0,
       "baseline_duration": 20.0,
-      "optimized_start": 290.0,
-      "optimized_finish": 310.0,
+      "optimized_start": 324.0,
+      "optimized_finish": 344.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2527,8 +2436,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 271.0,
       "baseline_duration": 5.0,
-      "optimized_start": 236.0,
-      "optimized_finish": 241.0,
+      "optimized_start": 266.0,
+      "optimized_finish": 271.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2547,8 +2456,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 275.0,
       "baseline_duration": 4.0,
-      "optimized_start": 241.0,
-      "optimized_finish": 245.0,
+      "optimized_start": 271.0,
+      "optimized_finish": 275.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -2567,8 +2476,8 @@
       "baseline_start": 321.0,
       "baseline_finish": 325.0,
       "baseline_duration": 4.0,
-      "optimized_start": 287.0,
-      "optimized_finish": 291.0,
+      "optimized_start": 321.0,
+      "optimized_finish": 325.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -2587,8 +2496,8 @@
       "baseline_start": 325.0,
       "baseline_finish": 326.0,
       "baseline_duration": 1.0,
-      "optimized_start": 291.0,
-      "optimized_finish": 292.0,
+      "optimized_start": 325.0,
+      "optimized_finish": 326.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -2607,8 +2516,8 @@
       "baseline_start": 325.0,
       "baseline_finish": 328.0,
       "baseline_duration": 3.0,
-      "optimized_start": 291.0,
-      "optimized_finish": 294.0,
+      "optimized_start": 325.0,
+      "optimized_finish": 328.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -2627,8 +2536,8 @@
       "baseline_start": 328.0,
       "baseline_finish": 329.0,
       "baseline_duration": 1.0,
-      "optimized_start": 294.0,
-      "optimized_finish": 295.0,
+      "optimized_start": 328.0,
+      "optimized_finish": 329.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -2654,8 +2563,8 @@
       "baseline_start": 329.0,
       "baseline_finish": 330.0,
       "baseline_duration": 1.0,
-      "optimized_start": 295.0,
-      "optimized_finish": 296.0,
+      "optimized_start": 329.0,
+      "optimized_finish": 330.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -2681,8 +2590,8 @@
       "baseline_start": 330.0,
       "baseline_finish": 331.0,
       "baseline_duration": 1.0,
-      "optimized_start": 296.0,
-      "optimized_finish": 297.0,
+      "optimized_start": 330.0,
+      "optimized_finish": 331.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -2708,8 +2617,8 @@
       "baseline_start": 331.0,
       "baseline_finish": 341.0,
       "baseline_duration": 10.0,
-      "optimized_start": 297.0,
-      "optimized_finish": 307.0,
+      "optimized_start": 331.0,
+      "optimized_finish": 341.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2784,8 +2693,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 343.0,
       "baseline_duration": 2.0,
-      "optimized_start": 307.0,
-      "optimized_finish": 309.0,
+      "optimized_start": 341.0,
+      "optimized_finish": 343.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2804,8 +2713,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 342.0,
       "baseline_duration": 1.0,
-      "optimized_start": 307.0,
-      "optimized_finish": 308.0,
+      "optimized_start": 341.0,
+      "optimized_finish": 342.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -2824,8 +2733,8 @@
       "baseline_start": 343.0,
       "baseline_finish": 344.0,
       "baseline_duration": 1.0,
-      "optimized_start": 309.0,
-      "optimized_finish": 310.0,
+      "optimized_start": 343.0,
+      "optimized_finish": 344.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [

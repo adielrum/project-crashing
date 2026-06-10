@@ -6,7 +6,7 @@
   "objective_value": 199,
   "makespan": 199,
   "total_crash_cost": 4980.0,
-  "total_crash_days": 50,
+  "total_crash_days": 51,
   "num_crashed_activities": 14,
   "crashed_activities": [
     {
@@ -22,10 +22,22 @@
       "crash_cost": 1800.0
     },
     {
+      "activity": "Roofing",
+      "status": "not_started",
+      "start": 82,
+      "end": 109,
+      "duration": 27,
+      "normal_duration": 30,
+      "min_duration": 25,
+      "crash_days": 3,
+      "crash_cost_per_day": 200.0,
+      "crash_cost": 600.0
+    },
+    {
       "activity": "Paint",
       "status": "not_started",
-      "start": 129,
-      "end": 154,
+      "start": 128,
+      "end": 153,
       "duration": 25,
       "normal_duration": 30,
       "min_duration": 25,
@@ -48,25 +60,13 @@
     {
       "activity": "Drywall",
       "status": "not_started",
-      "start": 114,
-      "end": 129,
+      "start": 113,
+      "end": 128,
       "duration": 15,
       "normal_duration": 20,
       "min_duration": 15,
       "crash_days": 5,
       "crash_cost_per_day": 80.0,
-      "crash_cost": 400.0
-    },
-    {
-      "activity": "Roofing",
-      "status": "not_started",
-      "start": 82,
-      "end": 110,
-      "duration": 28,
-      "normal_duration": 30,
-      "min_duration": 25,
-      "crash_days": 2,
-      "crash_cost_per_day": 200.0,
       "crash_cost": 400.0
     },
     {
@@ -80,18 +80,6 @@
       "crash_days": 4,
       "crash_cost_per_day": 80.0,
       "crash_cost": 320.0
-    },
-    {
-      "activity": "Electrical Final Trim",
-      "status": "not_started",
-      "start": 157,
-      "end": 179,
-      "duration": 22,
-      "normal_duration": 23,
-      "min_duration": 18,
-      "crash_days": 1,
-      "crash_cost_per_day": 250.0,
-      "crash_cost": 250.0
     },
     {
       "activity": "Grading & Building Permits",
@@ -144,8 +132,8 @@
     {
       "activity": "Plumbing Trim",
       "status": "not_started",
-      "start": 154,
-      "end": 157,
+      "start": 153,
+      "end": 156,
       "duration": 3,
       "normal_duration": 5,
       "min_duration": 3,
@@ -166,10 +154,22 @@
       "crash_cost": 60.0
     },
     {
+      "activity": "Interior Trim",
+      "status": "not_started",
+      "start": 19,
+      "end": 38,
+      "duration": 19,
+      "normal_duration": 20,
+      "min_duration": 15,
+      "crash_days": 1,
+      "crash_cost_per_day": 50.0,
+      "crash_cost": 50.0
+    },
+    {
       "activity": "Insulation",
       "status": "not_started",
-      "start": 110,
-      "end": 114,
+      "start": 109,
+      "end": 113,
       "duration": 4,
       "normal_duration": 5,
       "min_duration": 4,
@@ -231,13 +231,13 @@
       "activity": "Interior Trim",
       "status": "not_started",
       "start": 19,
-      "end": 39,
-      "duration": 20,
+      "end": 38,
+      "duration": 19,
       "normal_duration": 20,
       "min_duration": 15,
-      "crash_days": 0,
+      "crash_days": 1,
       "crash_cost_per_day": 50.0,
-      "crash_cost": 0.0
+      "crash_cost": 50.0
     },
     {
       "activity": "Rough Carpentry",
@@ -303,13 +303,13 @@
       "activity": "Roofing",
       "status": "not_started",
       "start": 82,
-      "end": 110,
-      "duration": 28,
+      "end": 109,
+      "duration": 27,
       "normal_duration": 30,
       "min_duration": 25,
-      "crash_days": 2,
+      "crash_days": 3,
       "crash_cost_per_day": 200.0,
-      "crash_cost": 400.0
+      "crash_cost": 600.0
     },
     {
       "activity": "Floor Finishes",
@@ -338,8 +338,8 @@
     {
       "activity": "Insulation",
       "status": "not_started",
-      "start": 110,
-      "end": 114,
+      "start": 109,
+      "end": 113,
       "duration": 4,
       "normal_duration": 5,
       "min_duration": 4,
@@ -350,8 +350,8 @@
     {
       "activity": "Drywall",
       "status": "not_started",
-      "start": 114,
-      "end": 129,
+      "start": 113,
+      "end": 128,
       "duration": 15,
       "normal_duration": 20,
       "min_duration": 15,
@@ -362,8 +362,8 @@
     {
       "activity": "Paint",
       "status": "not_started",
-      "start": 129,
-      "end": 154,
+      "start": 128,
+      "end": 153,
       "duration": 25,
       "normal_duration": 30,
       "min_duration": 25,
@@ -374,8 +374,8 @@
     {
       "activity": "Plumbing Trim",
       "status": "not_started",
-      "start": 154,
-      "end": 157,
+      "start": 153,
+      "end": 156,
       "duration": 3,
       "normal_duration": 5,
       "min_duration": 3,
@@ -386,8 +386,8 @@
     {
       "activity": "Hardware",
       "status": "not_started",
-      "start": 154,
-      "end": 166,
+      "start": 153,
+      "end": 165,
       "duration": 12,
       "normal_duration": 12,
       "min_duration": 8,
@@ -398,14 +398,14 @@
     {
       "activity": "Electrical Final Trim",
       "status": "not_started",
-      "start": 157,
+      "start": 156,
       "end": 179,
-      "duration": 22,
+      "duration": 23,
       "normal_duration": 23,
       "min_duration": 18,
-      "crash_days": 1,
+      "crash_days": 0,
       "crash_cost_per_day": 250.0,
-      "crash_cost": 250.0
+      "crash_cost": 0.0
     },
     {
       "activity": "Final Building Inspection",

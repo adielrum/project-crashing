@@ -156,6 +156,30 @@
       "crash_cost": 0.0
     },
     {
+      "activity": "Concrete Slabs",
+      "status": "not_started",
+      "start": 99,
+      "end": 107,
+      "duration": 8,
+      "normal_duration": 8,
+      "min_duration": 6,
+      "crash_days": 0,
+      "crash_cost_per_day": 40.0,
+      "crash_cost": 0.0
+    },
+    {
+      "activity": "H.V.A.C.",
+      "status": "not_started",
+      "start": 107,
+      "end": 124,
+      "duration": 17,
+      "normal_duration": 17,
+      "min_duration": 12,
+      "crash_days": 0,
+      "crash_cost_per_day": 55.0,
+      "crash_cost": 0.0
+    },
+    {
       "activity": "Roofing",
       "status": "not_started",
       "start": 107,
@@ -168,15 +192,15 @@
       "crash_cost": 0.0
     },
     {
-      "activity": "Concrete Slabs",
+      "activity": "Plumbing Rough-in",
       "status": "not_started",
-      "start": 136,
-      "end": 144,
-      "duration": 8,
-      "normal_duration": 8,
-      "min_duration": 6,
+      "start": 124,
+      "end": 154,
+      "duration": 30,
+      "normal_duration": 30,
+      "min_duration": 25,
       "crash_days": 0,
-      "crash_cost_per_day": 40.0,
+      "crash_cost_per_day": 65.0,
       "crash_cost": 0.0
     },
     {
@@ -204,18 +228,6 @@
       "crash_cost": 0.0
     },
     {
-      "activity": "H.V.A.C.",
-      "status": "not_started",
-      "start": 144,
-      "end": 161,
-      "duration": 17,
-      "normal_duration": 17,
-      "min_duration": 12,
-      "crash_days": 0,
-      "crash_cost_per_day": 55.0,
-      "crash_cost": 0.0
-    },
-    {
       "activity": "Paint",
       "status": "not_started",
       "start": 161,
@@ -225,18 +237,6 @@
       "min_duration": 25,
       "crash_days": 0,
       "crash_cost_per_day": 110.0,
-      "crash_cost": 0.0
-    },
-    {
-      "activity": "Plumbing Rough-in",
-      "status": "not_started",
-      "start": 161,
-      "end": 191,
-      "duration": 30,
-      "normal_duration": 30,
-      "min_duration": 25,
-      "crash_days": 0,
-      "crash_cost_per_day": 65.0,
       "crash_cost": 0.0
     },
     {

@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
+from pymoo.core.termination import Termination
+from pymoo.termination.ftol import MultiObjectiveSpaceTermination
+from pymoo.termination.robust import RobustTermination
 from pymoo.termination import get_termination
 from pymoo.optimize import minimize
 from cobb_model import load_data, data_path, ResourceBasedScheduling
@@ -29,7 +32,19 @@ def run_multiobjective():
         pop_size=200, crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20),
         eliminate_duplicates=True,
     )
-    termination = get_termination("n_gen", 100)
+    
+    t_robust = RobustTermination(MultiObjectiveSpaceTermination(tol=0.002, n_skip=5), period=30)
+    t_max_gen = get_termination("n_gen", 300)
+    
+    class CombinedTermination(Termination):
+        def __init__(self, t1, t2):
+            super().__init__()
+            self.t1 = t1
+            self.t2 = t2
+        def _update(self, algorithm):
+            return max(self.t1.update(algorithm), self.t2.update(algorithm))
+            
+    termination = CombinedTermination(t_robust, t_max_gen)
 
     res = minimize(problem, algorithm, termination, seed=42, verbose=True)
 

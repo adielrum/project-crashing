@@ -7,7 +7,7 @@ Foundation,not_started,19,37,18,22,18,4,80.0,320.0
 Floor Finishes,not_started,34,59,25,30,25,5,130.0,650.0
 Rough Carpentry,not_started,37,62,25,30,25,5,90.0,450.0
 Concrete Slabs,not_started,62,70,8,8,6,0,40.0,0.0
-Electric Rough-in,not_started,62,76,14,19,14,5,55.0,275.0
+Electric Rough-in,not_started,62,81,19,19,14,0,55.0,0.0
 Exterior Finishes,not_started,62,82,20,30,20,10,180.0,1800.0
 H.V.A.C.,not_started,82,99,17,17,12,0,55.0,0.0
 Roofing,not_started,82,107,25,30,25,5,200.0,1000.0
