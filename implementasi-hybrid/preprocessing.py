@@ -34,10 +34,7 @@ def preprocess():
         if not succ or not pred: continue
         preds_dict.setdefault(succ, []).append(pred)
         
-    for _, row in resources.iterrows():
-        res_id = str(row["resource_id"])
-        # We already loaded resource_capacity from the base data
-            
+    
     # Process each task
     for _, row in tasks.iterrows():
         tid = str(row["task_id"])
@@ -67,6 +64,7 @@ def preprocess():
         
         for _, res_row in task_res.iterrows():
             D_base_ik = res_row["D_base"]
+            W_ik = res_row["W_ik"]
             U_ik = res_row["U_ik"]
             r_k = res_row["r_k_usd"]
             r_k_ot = r_k * overtime_mult
@@ -80,14 +78,21 @@ def preprocess():
             
             D_crashed_i = max(D_crashed_i, D_crashed_ik)
             
-            c_base_ik = D_base_ik * 1.0 * U_ik * (hours_per_day * r_k)
-            c_crashed_ik = D_crashed_ik * x_val * U_ik * (hours_per_day * r_k + tau_val * r_k_ot)
+            # Cobb-Douglas cost formula (matches mode_cost_per_assignment in optimizer_core.py
+            # and Z_i^base / z_{i,k} definitions in Model_Hybrid.md §2):
+            #   Z_i^base = Σ W_{i,k} · r_k  (x=1, τ=0 → factors collapse to 1)
+            #   z_{i,k}  = W_{i,k} · x^(1-α) · (8/(8+τ))^β · (r_k + (τ/8)·r'_k)
+            c_base_ik = W_ik * r_k
+            c_crashed_ik = (W_ik
+                            * (x_val ** (1.0 - alpha))
+                            * ((8.0 / (8.0 + tau_val)) ** beta)
+                            * (r_k + (tau_val / 8.0) * r_k_ot))
             
             cost_base += c_base_ik
             cost_crashed += c_crashed_ik
             
         D_base_i_int = int(np.ceil(D_base_i))
-        D_crashed_i_int = int(np.floor(D_crashed_i))
+        D_crashed_i_int = int(np.ceil(D_crashed_i))  # ceil to match spec §2 and d_max rounding
         
         delta_d = D_base_i - D_crashed_i
         delta_c = cost_crashed - cost_base
