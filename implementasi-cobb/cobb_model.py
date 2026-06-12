@@ -428,8 +428,7 @@ def generate_gantt_comparison_plot(tasks, s_bl, f_bl, s_opt, f_opt, current_day,
             return "#e74c3c"  # Red (crashed)
         else:
             return "#3498db"  # Blue (normal)
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=(18, max(8, 0.35 * N)))
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(12, max(12, 0.7 * N)))
 
     # Plot baseline
     for idx, i in enumerate(baseline_order):

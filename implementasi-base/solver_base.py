@@ -638,7 +638,7 @@ def generate_gantt_comparison_plot(
             return "#3498db"  # Blue
 
     num_activities = len(baseline_order)
-    fig, (ax1, ax2) = plt.subplots(1, 2, sharey=False, figsize=(18, max(8, 0.45 * num_activities)))
+    fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(12, max(12, 0.9 * num_activities)))
 
     # Plot baseline on ax1
     y_pos_baseline = list(range(num_activities))
