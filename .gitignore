@@ -1,2 +1,21 @@
 .agents
 tekod
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints/
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Virtual environments (if any are created later)
+venv/
+env/
+.env
