@@ -291,8 +291,23 @@ def solve_milp_cobb_douglas(
             np.concatenate([x_opt, tau_opt]), x_opt, tau_opt, D_ik_opt, D_i_opt, s_opt, f_opt,
             current_day, T_max, makespan, labor_cost, labor_cost, out_json
         )
+        total_cost = labor_cost
+        if mode == "bonus_penalty":
+            total_cost = labor_cost + c_late * max(0, makespan - T_max) - c_early * max(0, T_max - makespan)
+        return {
+            "makespan": makespan,
+            "labor_cost": labor_cost,
+            "total_cost": total_cost,
+            "x_ik": x_opt,
+            "tau_ik": tau_opt,
+            "D_ik": D_ik_opt,
+            "D_i": D_i_opt,
+            "s": s_opt,
+            "f": f_opt
+        }
     else:
         print(f"MILP Solver: No feasible solution found for mode {mode}.")
+        return None
 
 if __name__ == "__main__":
     tasks, precedence, resources, N, K_i = load_data(
