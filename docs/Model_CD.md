@@ -98,15 +98,14 @@ Diimplementasikan dalam berkas [run_pymoo.py](file:///Users/macintoshhd/Document
 - **CPM Forward Pass (Bellman-Ford)**: Dibandingkan optimisasi langsung start time $s_i$ sebagai variabel keputusan (yang akan memperbesar ruang pencarian GA dan memicu banyak solusi tidak layak), algoritma **CPM Forward Pass** (iterasi Bellman-Ford pada DAG) dipanggil di dalam fungsi evaluasi objektif. Ini menjamin semua batasan precedence (FS, SS, FF) dengan lag selalu bernilai valid dan terpenuhi.
 - **Batasan Durasi Minimum ($D_{\min}$)**: Dalam berkas dinamis `run_pymoo2.py`, batasan durasi minimum dihitung sebagai $G[p] = D_{\min,i,k} - D_{i,k} \le 0$ per alokasi dan dievaluasi sebagai kendala inequality dari pustaka `pymoo`.
 
-### 3.2 Pendekatan MILP berbasis Diskretisasi Grid (PuLP + CBC)
-Diimplementasikan dalam berkas [solver_milp.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/webapp/solver_milp.py) yang digunakan oleh aplikasi web.
+### 3.2 Pendekatan CP-SAT berbasis Diskretisasi Grid
+Diimplementasikan dalam berkas [solver_milp.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-cobb/solver_milp.py).
 
-- **Diskretisasi Grid**: Karena hubungan durasi dan biaya Cobb-Douglas bersifat non-linier dan non-konveks, pencarian variabel kontinu $x_{i,k}$ dan $\tau_{i,k}$ didiskretkan menjadi titik grid:
-  - $x_g \in \{1.0, 1.25, 1.5, 1.75, 2.0\}$
-  - $\tau_g \in \{0.0, 1.0, 2.0, 3.0, 4.0\}$
-- **Variabel Keputusan Biner ($\xi_{i,k}^{m,n}$)**: Menggunakan variabel biner yang bernilai 1 jika memilih titik grid overcrowding ke-$m$ dan overtime ke-$n$.
-- **Linearisasi Batasan**: Durasi $d_i$ dan biaya $z_{i,k}$ dihitung terlebih dahulu (*precomputed*) sebelum pencarian, sehingga konstrain durasi dan biaya menjadi linier terhadap variabel biner.
-- **Penyelesaian**: Solver PuLP dengan CBC menyelesaikan masalah Integer Linear Programming ini dengan cepat dan memberikan jaminan solusi optimal global.
+- **Diskretisasi Grid**: Karena hubungan durasi dan biaya Cobb-Douglas bersifat non-linier dan non-konveks, pencarian variabel kontinu didiskretkan menjadi kombinasi titik grid $x_g$ dan $\tau_g$.
+- **Strategi Deduplikasi dan Seleksi Elemen**: 
+  Setiap kombinasi grid $(x, \tau)$ dihitung durasi dan biayanya terlebih dahulu (*precomputed*). Kombinasi yang menghasilkan durasi yang sama (setelah pembulatan ke atas) dideduplikasi, dan hanya opsi dengan biaya termurah yang dipertahankan. Opsi-opsi yang didominasi (durasi lebih lama dan biaya lebih mahal) juga dibuang.
+- **Variabel Keputusan Indeks**: Solver menggunakan `model.AddElement` pada array opsi yang layak menggunakan variabel indeks tunggal per pasangan alokasi.
+- **Penyelesaian**: Solver Google OR-Tools CP-SAT menyelesaikan masalah penjadwalan kombinatorial ini dengan cepat dan memberikan jaminan solusi optimal global dalam grid diskrit tersebut.
 
 ---
 
@@ -119,8 +118,7 @@ Diimplementasikan dalam berkas [solver_milp.py](file:///Users/macintoshhd/Docume
 - **Batasan Dinamis**: Penguncian alokasi tugas yang sudah selesai dan penyesuaian durasi sisa untuk tugas sedang berjalan.
 
 ### Yang Belum Diimplementasikan / Perlu Dikembangkan (To Be Implemented)
-- **Batasan Kapasitas Sumber Daya pada GA**:
-  Meskipun kapasitas harian maksimum $U_k^{\max}$ dimodelkan secara teoritis, **solver GA (`run_pymoo.py` dan `run_pymoo2.py`) saat ini belum mengimplementasikan pengecekan kapasitas sumber daya**. Model GA mengabaikan batasan kapasitas harian pekerja.
-  *Rencana Kerja Sisa*: Menambahkan batasan kapasitas harian sebagai penalti kuadratis pada fungsi fitness GA jika pemakaian harian melebihi kapasitas maksimum, atau menggunakan operator perbaikan kromosom (repair operator).
-- **Penyederhanaan Kapasitas Sumber Daya pada MILP**:
-  Dalam `solver_milp.py`, pengecekan kapasitas harian penuh dibatasi dengan pendekatan **pairwise non-overlap** (menggunakan big-M disjunctive constraint) untuk tugas yang berbagi sumber daya dan total alokasinya melebihi kapasitas. Pendekatan ini mengabaikan amplifikasi $x_{i,k}$ untuk penyederhanaan komputasi, dan tidak mendeteksi jika terjadi pelanggaran oleh 3 tugas secara simultan (misal, 3 tugas masing-masing 40% pada kapasitas sumber daya 100%).
+- **Batasan Kapasitas Sumber Daya Harian**:
+  Baik pada solver GA (`cobb_model.py`) maupun CP-SAT (`solver_milp.py`), **pengecekan dan penegakan kapasitas sumber daya harian penuh ($U_k^{\max}$) masih diabaikan**. 
+  - *Pada GA*: Membutuhkan penambahan fungsi penalti kuadratis atau operator perbaikan (repair operator) ketika jadwal melebihi kapasitas maksimum.
+  - *Pada CP-SAT*: Membutuhkan penambahan fungsi `model.AddCumulative`, namun hal ini memperhitungkan alokasi yang diperkuat oleh pengali crowding $x_{i,k}$, yang mempersulit pemodelan kebutuhan daya harian yang fleksibel. Saat ini CP-SAT hanya fokus pada optimalisasi biaya waktu (Time-Cost Trade-off).

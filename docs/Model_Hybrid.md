@@ -102,3 +102,29 @@ Di mana $I_{\text{late}} = \max(0, e_n - T_{\max})$ dan $I_{\text{early}} = \max
 
 5.  **Batasan Penjadwalan Dinamis**:
     Sama halnya dengan Skenario 1, untuk aktivitas yang sudah selesai sebelum $T_0$, variabel $s_i, e_i, d_i$ dikunci ke nilai realisasinya. Untuk aktivitas yang sedang berjalan pada $T_0$, waktu mulai dikunci ($s_i = s_i^{(0)}$) dan sisa durasi minimum disesuaikan dengan progress pekerjaan. Untuk aktivitas masa depan, $s_i \ge T_0$.
+
+---
+
+## 4. Status Implementasi dan Pemetaan Kode
+
+Model Hybrid (Skenario 3) diimplementasikan secara terpisah di dalam direktori `implementasi-hybrid/`:
+
+### Tahap 1: Preprocessing Data
+Berkas [`preprocessing.py`](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-hybrid/preprocessing.py) bertugas menerjemahkan formulasi Cobb-Douglas menjadi data set diskrit linear.
+- Menghitung $d_i^{\max}$ berdasarkan hari durasi normal maksimum.
+- Mengevaluasi $d_i^{\min}$ pada titik crashing maksimum ($x = 2.0$, $\tau = 4.0$) dengan eksponen $\alpha = 0.7, \beta = 0.7$.
+- Menghitung baseline cost ($Z_i^{\text{base}}$) dan crash cost ($Z_i^{\text{crash}}$).
+- Mengeluarkan tarif linier *crash cost per day* ($C_i$) apabila durasi berhasil dipangkas.
+- Output preprocessing disimpan sebagai representasi JSON standar di direktori `data/` di dalam folder `implementasi-hybrid`.
+
+### Tahap 2: Solusi Optimisasi CP-SAT
+Tahap optimasi menggunakan kembali engine solver dasar di [`implementasi-base/solver_base.py`](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-base/solver_base.py) melalui serangkaian script penggerak (*runner*):
+- `run_cost_driven.py`: Mode `cost_with_deadline`.
+- `run_time_driven.py`: Mode `time_with_budget`.
+- `run_bonus_penalty.py`: Mode `bonus_penalty`.
+- `run_multiobjective.py`: Menyediakan loop iteratif yang menyelesaikan masalah `cost_with_deadline` secara inkremental pada rentang target makespan yang berbeda-beda untuk merepresentasikan set *Pareto Front* empiris.
+
+### Yang Sudah Diimplementasikan (Implemented)
+- **Konversi Otomatis**: Preprocessing mengubah input Cobb-Douglas (relasional sumber daya ke aktivitas) menjadi format array data aktivitas pipih tanpa ada galat integrasi.
+- **Batasan Kapasitas Sumber Daya Kumulatif**: Karena menggunakan CP-SAT pada core-nya, Skenario Hybrid **berhasil memodelkan batasan kapasitas sumber daya aktual harian** (`model.AddCumulative`), berbeda dari solver GA dan MILP di Skenario 2 yang meniadakannya.
+- **Eksplorasi Paretro**: Script `run_multiobjective.py` menjadi kompromi fungsional untuk limitasi CP-SAT yang ber-objektif tunggal, yakni mengeksplorasi spektrum makespan dan mengumpulkan seluruh titik kelayakan cost-time trade-off.

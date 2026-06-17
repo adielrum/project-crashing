@@ -183,18 +183,17 @@ Berikut adalah pemetaan komponen matematika ke dalam kode Python pada berkas [so
 
 Berdasarkan perbandingan antara model teoritis yang diajukan dalam [Laporan.typ](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/docs/Laporan.typ) dengan implementasi pada [solver_base.py](file:///Users/macintoshhd/Documents/Adiel/pemod/Pemod-3.0/project-crashing/implementasi-base/solver_base.py), berikut adalah statusnya:
 
-### Yang Sudah Diimplementasikan (Implemented)
+#### Yang Sudah Diimplementasikan (Implemented)
 - **Constraint Programming (CP-SAT)**: Solusi optimisasi berbasis CP-SAT berjalan dengan sangat cepat (orde milidetik) dan menjamin solusi optimal global.
-- **Dynamic Scheduling State Locking**: Penguncian dinamis berhasil mengatasi perubahan kondisi proyek di tengah jalan secara retrospektif (mencegah pemendekan durasi yang tidak logis untuk pekerjaan yang sudah dikerjakan).
-- **Auto-Repair Siklus Precedence**: Algoritma deteksi siklus terimplementasi dengan opsi auto-fix untuk memutuskan ketergantungan melingkar `Paint <-> Interior Trim` dengan membuang relasi `Paint -> Interior Trim`.
-- **Dua Mode Optimisasi**: Mode `cost_with_deadline` dan mode fallback `min_makespan` ketika tenggat waktu tidak layak.
+- **Dynamic Scheduling State Locking**: Penguncian dinamis berhasil mengatasi perubahan kondisi proyek di tengah jalan secara retrospektif.
+- **Auto-Repair Siklus Precedence**: Algoritma deteksi siklus terimplementasi dengan opsi auto-fix untuk memutuskan ketergantungan melingkar.
+- **Empat Mode Optimisasi**:
+  1. `cost_with_deadline`: Minimalisasi biaya pemangkasan dengan batasan tenggat waktu proyek.
+  2. `time_with_budget`: Minimalisasi durasi penyelesaian (makespan) dengan batasan total anggaran pemangkasan maksimum.
+  3. `bonus_penalty`: Minimalisasi total biaya gabungan (biaya pemangkasan + penalti keterlambatan - bonus awal).
+  4. `min_makespan`: Fallback untuk meminimalkan waktu selesai proyek tanpa memedulikan biaya.
 - **Ekspor dan Visualisasi**: Ekspor hasil jadwal ke format JSON dan CSV, serta visualisasi Gantt chart dan pemuatan kapasitas sumber daya.
 
 ### Yang Belum Diimplementasikan / Perlu Dikembangkan (To Be Implemented)
-- **Batasan Anggaran pada Mode Time-Driven**:
-  Dalam formulasi teoritis (Subbab 2.5.2), mode *Time-Driven* harus mendukung batasan anggaran keras:
-  $$ \sum_{i \in I} C_i (d_i^{\max} - (e_i - s_i)) \le B $$
-  Pada kode saat ini, mode `min_makespan` hanya meminimalkan waktu selesai proyek tanpa memperhitungkan batasan anggaran $B$ ataupun biaya crashing.
-- **Fungsi Tujuan Multi-Objektif & Bonus-Penalty**:
-  - Formulasi teoritis menyarankan minimalisasi simultan atas makespan dan biaya crash (Subbab 2.5.3). Saat ini, CP-SAT berjalan secara satu per satu (sekuensial) bukan dengan Pareto/Lexicographic optimization.
-  - Formulasi *Bonus-Penalty Driven* (Subbab 2.5.4) menggabungkan biaya crash, denda keterlambatan ($c_{\text{late}}$), dan bonus penyelesaian awal ($c_{\text{early}}$) menjadi satu fungsi tujuan tunggal. CP-SAT belum mengimplementasikan fungsi tujuan ini (meskipun model ini terimplementasi di solver MILP/GA Cobb-Douglas).
+- **Fungsi Tujuan Multi-Objektif Pareto/Lexicographic**:
+  Formulasi teoritis menyarankan minimalisasi simultan atas makespan dan biaya crash (Subbab 2.5.3). Saat ini, solver CP-SAT hanya dapat menangani satu objektif linear pada satu waktu, sehingga trade-off dilakukan melalui iterasi sekuensial atau pembobotan, bukan pembangkitan *Pareto Front* secara langsung dalam satu run.

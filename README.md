@@ -25,7 +25,7 @@ Due to weather disruptions and supply chain delays, the project is behind schedu
 | Model | Description | Solver |
 |-------|-------------|--------|
 | **Baseline (Scenario 1)** | Linear crash cost per day, cumulative resource constraints | CP-SAT (OR-Tools) |
-| **Cobb-Douglas (Scenario 2)** | Nonlinear duration/cost via production function, overcrowding (x) and overtime (tau) variables | GA (pymoo) |
+| **Cobb-Douglas (Scenario 2)** | Nonlinear duration/cost via production function, overcrowding (x) and overtime (tau) variables | GA (pymoo) & CP-SAT (OR-Tools) |
 | **Hybrid (Scenario 3)** | Cobb-Douglas preprocessing to derive d_min and crash slopes, then CP-SAT for fast solving | CP-SAT |
 
 Full mathematical formulations are in `docs/Model_Baseline.md`, `docs/Model_CD.md`, and `docs/Model_Hybrid.md`.
@@ -85,11 +85,13 @@ project-crashing/
 │   └── original-data/            # Raw data from Excel
 │
 │
-├── outputs/                      # CP-SAT solver results
+├── outputs/                      # Output hasil optimisasi (JSON, CSV, Gambar)
 │
-├── implementasi-cobb/            # Cobb-Douglas GA implementation (pymoo)
+├── implementasi-cobb/            # Implementasi model Cobb-Douglas (Skenario 2) menggunakan GA dan CP-SAT
 |
-├── implementasi-base/            # Baseline Model Implementation (OR-Tools)
+├── implementasi-base/            # Implementasi model Baseline (Skenario 1) menggunakan CP-SAT
+│
+├── implementasi-hybrid/          # Implementasi model Hybrid (Skenario 3) preprocessing Cobb-Douglas -> CP-SAT
 │
 └── docs/                         # Mathematical formulations and reports
     ├── Model_Baseline.md
