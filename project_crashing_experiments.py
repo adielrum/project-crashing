@@ -254,4 +254,107 @@ if "schedule" in res_3:
     generate_gantt_comparison_plot(baseline_3, res_3["schedule"], 0, out_png_3)
     display(Image(filename=out_png_3))
 
+# %% [markdown]
+# ## Skenario 4: Sensitivity Analysis
+# We analyze how sensitive the model is to changes in parameters such as crowding elasticity (`alpha`), penalty rate (`c_late`), and target deadline (`T_max`).
+# 
+# The following code was used to generate the sensitivity datasets (commented out to save time since it is computationally intensive):
+# ```python
+# # import pandas as pd
+# # from cobb_model import ResourceBasedScheduling, solve
+# # 
+# # # Example snippet for OAT: alpha
+# # alpha_values = [0.5, 0.6, 0.7, 0.8, 0.9]
+# # res_alpha = []
+# # for a in alpha_values:
+# #     prob = ResourceBasedScheduling(
+# #         tasks=tasks, precedence=prec_2, resources=res_2, N=N_2, K_i=K_i_2,
+# #         alpha=a, beta=0.7, T_max=310, current_day=current_day_1, mode="cost_with_deadline"
+# #     )
+# #     sol = solve(prob, pop_size=200, seed=42, verbose=False, max_gen=5000)
+# #     if sol:
+# #         res_alpha.append({"alpha": a, "makespan": sol["makespan"], "total_cost": sol["total_cost"]})
+# # pd.DataFrame(res_alpha).to_csv("outputs/sensitivity_analysis/oat_alpha.csv", index=False)
+# ```
+
 # %%
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load and visualize OAT Sensitivity Data
+out_dir = os.path.join(base_dir, "outputs/sensitivity_analysis")
+
+def plot_oat(file_name, param_col, title):
+    path = os.path.join(out_dir, file_name)
+    if os.path.exists(path):
+        df = pd.read_csv(path)
+        
+        fig, ax1 = plt.subplots(figsize=(8, 5))
+        
+        # Plot Cost on primary y-axis
+        color = 'tab:red'
+        ax1.set_xlabel(param_col)
+        ax1.set_ylabel('Total Cost ($)', color=color)
+        ax1.plot(df[param_col], df['total_cost'], marker='o', color=color, linewidth=2, label='Total Cost')
+        ax1.tick_params(axis='y', labelcolor=color)
+        
+        # Plot Makespan on secondary y-axis
+        ax2 = ax1.twinx()
+        color = 'tab:blue'
+        ax2.set_ylabel('Makespan (days)', color=color)
+        ax2.plot(df[param_col], df['makespan'], marker='s', color=color, linestyle='--', linewidth=2, label='Makespan')
+        ax2.tick_params(axis='y', labelcolor=color)
+        
+        fig.tight_layout()
+        plt.title(title)
+        
+        # Combine legends
+        lines_1, labels_1 = ax1.get_legend_handles_labels()
+        lines_2, labels_2 = ax2.get_legend_handles_labels()
+        ax1.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper center')
+        
+        plt.grid(True, alpha=0.3)
+        out_png = path.replace('.csv', '.png')
+        plt.savefig(out_png, dpi=150, bbox_inches="tight")
+        plt.show()
+        print(f"Saved plot to {out_png}")
+    else:
+        print(f"Data file not found: {path}")
+
+# Plot OAT Alpha
+plot_oat("oat_alpha.csv", "alpha", "Sensitivity Analysis: Crowding Elasticity (alpha)")
+
+# Plot OAT c_late
+plot_oat("oat_c_late.csv", "c_late", "Sensitivity Analysis: Penalty Rate (c_late)")
+
+# Plot OAT T_max
+plot_oat("oat_T_max.csv", "T_max", "Sensitivity Analysis: Target Deadline (T_max)")
+
+# %%
+# Load and visualize Pareto Shift Data
+path_pareto = os.path.join(out_dir, "pareto_alpha.csv")
+if os.path.exists(path_pareto):
+    df_pareto = pd.read_csv(path_pareto)
+    
+    plt.figure(figsize=(10, 6))
+    
+    colors = ['r', 'g', 'b', 'c', 'm']
+    alpha_vals = df_pareto['alpha'].unique()
+    
+    for i, a in enumerate(alpha_vals):
+        subset = df_pareto[df_pareto['alpha'] == a].sort_values(by='makespan')
+        plt.plot(subset['makespan'], subset['labor_cost'], marker='o', 
+                 color=colors[i % len(colors)], label=f'alpha = {a}')
+        
+    plt.xlabel('Makespan (days)')
+    plt.ylabel('Labor Cost ($)')
+    plt.title('Pareto Front Shift: Impact of Crowding Elasticity (alpha)')
+    plt.legend()
+    plt.grid(True)
+    out_png_pareto = path_pareto.replace('.csv', '.png')
+    plt.savefig(out_png_pareto, dpi=150, bbox_inches="tight")
+    plt.show()
+    print(f"Saved plot to {out_png_pareto}")
+else:
+    print(f"Data file not found: {path_pareto}")
