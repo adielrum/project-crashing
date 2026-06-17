@@ -1,6 +1,6 @@
 .agents
 tekod
-
+.misc
 # Python caches
 __pycache__/
 *.py[cod]
