@@ -24,11 +24,14 @@ import argparse
 import numpy as np
 import pandas as pd
 from pymoo.core.problem import ElementwiseProblem
-from pymoo.core.repair import Repair
+from pymoo.core.callback import Callback
+from pymoo.core.termination import Termination
 from pymoo.algorithms.soo.nonconvex.ga import GA
+from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.operators.crossover.sbx import SBX
 from pymoo.operators.mutation.pm import PM
+from pymoo.termination import get_termination
 from pymoo.termination.ftol import MultiObjectiveSpaceTermination
 from pymoo.termination.robust import RobustTermination
 import matplotlib.pyplot as plt
@@ -84,11 +87,6 @@ def load_data(path_tasks, path_precedence, path_assignments):
 # Problem Definition
 # ===========================================================================
 
-from pymoo.algorithms.soo.nonconvex.pso import PSO
-from pymoo.problems import get_problem
-from pymoo.optimize import minimize
-from pymoo.core.callback import Callback
-
 class MyCallback(Callback):
 
     def __init__(self) -> None:
@@ -99,6 +97,19 @@ class MyCallback(Callback):
     def notify(self, algorithm):
         self.n_evals.append(algorithm.evaluator.n_eval)
         self.opt.append(algorithm.opt[0].F)
+
+
+class CombinedTermination(Termination):
+    """Terminate when EITHER criterion is met (whichever fires first)."""
+
+    def __init__(self, t1, t2):
+        super().__init__()
+        self.t1 = t1
+        self.t2 = t2
+
+    def _update(self, algorithm):
+        return max(self.t1.update(algorithm), self.t2.update(algorithm))
+
 
 class ResourceBasedScheduling(ElementwiseProblem):
     """
@@ -696,6 +707,126 @@ def save_solution_json(
     print(f"Wrote solution JSON to: {output_path}")
 
 
+# ===========================================================================
+# Unified Solver API
+# ===========================================================================
+
+def extract_solution(problem, x_vec):
+    """
+    Extract and post-process a solution vector from the optimizer.
+
+    Returns a dict with keys: x_ik, tau_ik, D_ik, D_i, s, f,
+    makespan, labor_cost, penalty, bonus, total_cost.
+    """
+    P = problem.P
+    x_ik = x_vec[0:P].copy()
+    tau_ik = x_vec[P:2 * P].copy()
+
+    for p in problem.completed_pairs:
+        x_ik[p] = 1.0
+        tau_ik[p] = 0.0
+
+    D_ik, D_i = problem.compute_durations(x_vec)
+    for i in problem.completed_tasks:
+        D_i[i] = problem.D_base_i[i]
+
+    s, f = problem.forward_pass(D_i)
+    makespan = float(np.max(f))
+
+    labor_cost = float(np.sum(
+        D_ik * x_ik * problem.U_ik
+        * (problem.hours_per_day * problem.r_k + tau_ik * problem.r_k_ot)
+    ))
+
+    penalty = problem.c_late * max(0.0, makespan - problem.T_max)
+    bonus = problem.c_early * max(0.0, problem.T_max - makespan)
+    total_cost = labor_cost + penalty - bonus
+
+    return {
+        "x_ik": x_ik,
+        "tau_ik": tau_ik,
+        "D_ik": D_ik,
+        "D_i": D_i,
+        "s": s,
+        "f": f,
+        "makespan": makespan,
+        "labor_cost": labor_cost,
+        "penalty": penalty,
+        "bonus": bonus,
+        "total_cost": total_cost,
+    }
+
+
+def build_termination(tol=0.005, period=20, max_gen=10000):
+    """
+    Build a robust termination criterion:
+      - Convergence: change/eps < tol for `period` consecutive iterations
+      - Safety cap: max_gen generations
+    Whichever triggers first stops the optimization.
+    """
+    t_convergence = RobustTermination(
+        MultiObjectiveSpaceTermination(tol=tol, n_skip=5), period=period
+    )
+    t_max_gen = get_termination("n_gen", max_gen)
+    return CombinedTermination(t_convergence, t_max_gen)
+
+
+def solve(problem, pop_size=200, seed=42, verbose=True,
+          max_gen=10000, tol=0.005, period=20, callback=None):
+    """
+    Unified solver for ResourceBasedScheduling problems.
+
+    Automatically selects GA (single-objective) or NSGA2 (multiobjective)
+    based on problem.mode.
+
+    Termination: convergence eps < tol for `period` iterations,
+                 OR max_gen generations (whichever fires first).
+
+    Returns:
+      - Single-objective: dict from extract_solution() with extra keys
+        'pymoo_result' and 'callback', or None if infeasible.
+      - Multiobjective: pymoo Result object (with .F, .X, .callback).
+    """
+    is_moo = problem.mode == "multiobjective"
+
+    if is_moo:
+        algorithm = NSGA2(
+            pop_size=pop_size,
+            crossover=SBX(prob=0.9, eta=15),
+            mutation=PM(eta=20),
+            eliminate_duplicates=True,
+        )
+    else:
+        algorithm = GA(
+            pop_size=pop_size,
+            crossover=SBX(prob=0.9, eta=15),
+            mutation=PM(eta=20),
+            eliminate_duplicates=True,
+        )
+
+    termination = build_termination(tol=tol, period=period, max_gen=max_gen)
+
+    if callback is None:
+        callback = MyCallback()
+
+    res = minimize(
+        problem, algorithm, termination,
+        seed=seed, callback=callback, verbose=verbose,
+    )
+
+    if is_moo:
+        res.callback = callback
+        return res
+
+    if res.X is None:
+        return None
+
+    solution = extract_solution(problem, res.X)
+    solution["pymoo_result"] = res
+    solution["callback"] = callback
+    return solution
+
+
 def parse_args():
     import argparse
     parser = argparse.ArgumentParser(
@@ -803,137 +934,73 @@ if __name__ == "__main__":
     print(f"n_ieq_constr      : {problem.n_ieq_constr}  (D_min per pasangan i,k)")
     print(f"x_max             : {problem.x_max:.2f}")
 
-    # ---- 5. GA Solver ----
-    print("\n" + "=" * 60)
-    print(f"CRASHING DARI HARI KE-{CURRENT_DAY} HINGGA T_MAX={problem.T_max}")
-    print("=" * 60)
+    # ---- 5. Solve ----
+    print(f"\nCRASHING DARI HARI KE-{CURRENT_DAY} HINGGA T_MAX={problem.T_max}")
 
-    algorithm = GA(
-        pop_size=args.pop_size,
-        crossover=SBX(prob=0.9, eta=15),
-        mutation=PM(eta=20),
-        eliminate_duplicates=True,
-    )
+    solution = solve(problem, pop_size=args.pop_size, seed=42, verbose=True)
 
-    callback = MyCallback()
+    if solution is None:
+        print("GA tidak menemukan solusi. Coba naikkan pop_size atau n_gen.")
+    else:
+        # Convergence plot
+        cb = solution["callback"]
+        if cb.n_evals:
+            plt.title("Convergence")
+            plt.plot(cb.n_evals, cb.opt, "--")
+            plt.yscale("log")
+            plt.xlabel("Number of Evaluations")
+            plt.ylabel("Best Objective Value")
+            conv_path = os.path.join(os.path.dirname(args.output_json), "cobb_convergence.png")
+            os.makedirs(os.path.dirname(conv_path) or ".", exist_ok=True)
+            plt.savefig(conv_path, dpi=150, bbox_inches="tight")
+            plt.close()
 
+        # ---- 6. Hasil ----
+        makespan = solution["makespan"]
+        labor_cost = solution["labor_cost"]
+        total = solution["total_cost"]
 
-    termination = RobustTermination(
-        MultiObjectiveSpaceTermination(tol=0.005, n_skip=5), period=20)
-
-    res = minimize(
-        problem,
-        algorithm,
-        callback=callback,
-        # termination=("n_gen", args.n_gen),
-        termination=termination,
-        seed=42,
-        verbose=True,
-    )
-
-    plt.title("Convergence")
-    plt.plot(callback.n_evals, callback.opt, "--")
-    plt.yscale("log")
-    plt.xlabel("Number of Evaluations")
-    plt.ylabel("Best Objective Value")
-    convergence_path = os.path.join(os.path.dirname(args.output_json), "cobb_convergence.png")
-    os.makedirs(os.path.dirname(convergence_path) or ".", exist_ok=True)
-    plt.savefig(convergence_path, dpi=150, bbox_inches="tight")
-    plt.close()
-    print(f"Saved convergence plot to: {convergence_path}")
-
-    # Save callback convergence data
-    callback_path = os.path.join(os.path.dirname(args.output_json), "cobb_callback.json")
-    os.makedirs(os.path.dirname(callback_path) or ".", exist_ok=True)
-    with open(callback_path, "w") as fh:
-        json.dump({
-            "n_evals": callback.n_evals,
-            "opt": [float(v) for v in callback.opt],
-        }, fh, indent=2)
-    print(f"Saved callback convergence data to: {callback_path}")
-
-    # ---- 6. Hasil ----
-    print("\n" + "=" * 60)
-    print("HASIL OPTIMASI TERBAIK")
-    print("=" * 60)
-
-    if res.X is not None:
-        x_opt      = res.X
-        x_ik_opt   = x_opt[0:P].copy()
-        tau_ik_opt = x_opt[P:2 * P].copy()
-
-        for p in problem.completed_pairs:
-            x_ik_opt[p]   = 1.0
-            tau_ik_opt[p] = 0.0
-
-        D_ik_opt, D_i_opt = problem.compute_durations(x_opt)
-        for i in problem.completed_tasks:
-            D_i_opt[i] = problem.D_base_i[i]
-
-        s_opt, f_opt = problem.forward_pass(D_i_opt)
-        makespan     = float(np.max(f_opt))
-
-        labor_cost = float(np.sum(
-            D_ik_opt * x_ik_opt * problem.U_ik
-            * (problem.hours_per_day * problem.r_k + tau_ik_opt * problem.r_k_ot)
-        ))
-        penalty = problem.c_late  * max(0.0, makespan - problem.T_max)
-        bonus   = problem.c_early * max(0.0, problem.T_max - makespan)
-        total   = labor_cost + penalty - bonus
-
+        print(f"\n{'='*60}")
+        print("HASIL OPTIMASI TERBAIK")
+        print(f"{'='*60}")
         print(f"  Biaya Tenaga Kerja   = {labor_cost:>15,.2f} USD")
         print(f"  Total Biaya Proyek   = {total:>15,.2f} USD")
         print(f"  Baseline makespan    = {np.max(problem.f_baseline):>10.1f} hari")
         print(f"  Optimized makespan   = {makespan:>10.2f} hari  "
               f"(Batas: {problem.T_max} hari)")
-        print(f"  Reduksi durasi       = "
-              f"{np.max(problem.f_baseline)-makespan:>10.1f} hari  "
-              f"({(np.max(problem.f_baseline)-makespan)/np.max(problem.f_baseline)*100:.1f}%)")
+        reduction = np.max(problem.f_baseline) - makespan
+        print(f"  Reduksi durasi       = {reduction:>10.1f} hari  "
+              f"({reduction / np.max(problem.f_baseline) * 100:.1f}%)")
 
-        if bonus > 0:
-            print(f"  Bonus diterima       = {bonus:>15,.2f} USD  (selesai lebih awal)")
-        elif penalty > 0:
-            print(f"  Denda keterlambatan  = {penalty:>15,.2f} USD")
-        else:
-            print(f"  Tepat waktu — tidak ada penalti maupun bonus.")
-
-        # Ringkasan jadwal
-        print(f"\n--- Ringkasan Jadwal (10 task pertama) ---")
-        print(f"  {'#':>3}  {'Nama Task':<46}  {'Start':>6}  {'Finish':>6}  {'Durasi':>7}")
-        print(f"  {'-'*3}  {'-'*46}  {'-'*6}  {'-'*6}  {'-'*7}")
-        for i in range(min(10, N)):
-            nama = tasks.iloc[i]["task_name"][:46]
-            print(f"  {i:>3}  {nama:<46}  {s_opt[i]:>6.1f}  {f_opt[i]:>6.1f}  {D_i_opt[i]:>7.2f}")
-        if N > 10:
-            print(f"  ... dan {N - 10} task lainnya")
-
-        # Save solution and plot Gantt
         save_solution_json(
             tasks=tasks, resources=resources, precedence=precedence, problem=problem,
-            x_opt=x_opt, x_ik_opt=x_ik_opt, tau_ik_opt=tau_ik_opt, D_ik_opt=D_ik_opt, D_i_opt=D_i_opt,
-            s_opt=s_opt, f_opt=f_opt, current_day=CURRENT_DAY, T_max=problem.T_max,
+            x_opt=solution["pymoo_result"].X,
+            x_ik_opt=solution["x_ik"], tau_ik_opt=solution["tau_ik"],
+            D_ik_opt=solution["D_ik"], D_i_opt=solution["D_i"],
+            s_opt=solution["s"], f_opt=solution["f"],
+            current_day=CURRENT_DAY, T_max=problem.T_max,
             makespan=makespan, labor_cost=labor_cost, total_project_cost=total,
-            output_path=args.output_json
+            output_path=args.output_json,
         )
-        
+
         try:
             generate_gantt_comparison_plot(
                 tasks=tasks, s_bl=problem.s_baseline, f_bl=problem.f_baseline,
-                s_opt=s_opt, f_opt=f_opt, current_day=CURRENT_DAY,
-                output_path=args.output_gantt
+                s_opt=solution["s"], f_opt=solution["f"],
+                current_day=CURRENT_DAY, output_path=args.output_gantt,
             )
-        except Exception as plot_err:
-            print(f"[warning] Failed to generate static Gantt chart: {plot_err}")
+        except Exception as e:
+            print(f"[warning] Static Gantt chart failed: {e}")
 
         try:
             generate_interactive_gantt_html(
-                tasks=tasks, resources=resources, s_bl=problem.s_baseline, f_bl=problem.f_baseline,
-                s_opt=s_opt, f_opt=f_opt, x_ik_opt=x_ik_opt, tau_ik_opt=tau_ik_opt,
-                D_ik_opt=D_ik_opt, D_i_opt=D_i_opt, current_day=CURRENT_DAY, T_max=problem.T_max,
-                output_path=args.output_gantt_html
+                tasks=tasks, resources=resources,
+                s_bl=problem.s_baseline, f_bl=problem.f_baseline,
+                s_opt=solution["s"], f_opt=solution["f"],
+                x_ik_opt=solution["x_ik"], tau_ik_opt=solution["tau_ik"],
+                D_ik_opt=solution["D_ik"], D_i_opt=solution["D_i"],
+                current_day=CURRENT_DAY, T_max=problem.T_max,
+                output_path=args.output_gantt_html,
             )
-        except Exception as html_err:
-            print(f"[warning] Failed to generate interactive HTML Gantt chart: {html_err}")
-
-    else:
-        print("GA tidak menemukan solusi. Coba naikkan pop_size atau n_gen.")
+        except Exception as e:
+            print(f"[warning] Interactive Gantt chart failed: {e}")

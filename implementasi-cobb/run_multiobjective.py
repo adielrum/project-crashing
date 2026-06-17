@@ -1,18 +1,9 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from pymoo.algorithms.moo.nsga2 import NSGA2
-from pymoo.operators.crossover.sbx import SBX
-from pymoo.operators.mutation.pm import PM
-from pymoo.core.termination import Termination
-from pymoo.termination.ftol import MultiObjectiveSpaceTermination
-from pymoo.termination.robust import RobustTermination
-from pymoo.termination import get_termination
-from pymoo.optimize import minimize
-from cobb_model import load_data, data_path, ResourceBasedScheduling
+from cobb_model import load_data, data_path, ResourceBasedScheduling, solve
 
 def run_multiobjective():
-    base_dir = os.path.dirname(os.path.abspath(__file__))
     tasks, precedence, resources, N, K_i = load_data(
         path_tasks=data_path("data_tasks.csv"),
         path_precedence=data_path("data_precedence.csv"),
@@ -25,35 +16,16 @@ def run_multiobjective():
         tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
         alpha=0.7, beta=0.7, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
         T_max=344, current_day=CURRENT_DAY, overtime_mult=1.5, hours_per_day=8,
-        mode="multiobjective"
+        mode="multiobjective",
     )
 
-    algorithm = NSGA2(
-        pop_size=200, crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20),
-        eliminate_duplicates=True,
-    )
-    
-    t_robust = RobustTermination(MultiObjectiveSpaceTermination(tol=0.002, n_skip=5), period=30)
-    t_max_gen = get_termination("n_gen", 300)
-    
-    class CombinedTermination(Termination):
-        def __init__(self, t1, t2):
-            super().__init__()
-            self.t1 = t1
-            self.t2 = t2
-        def _update(self, algorithm):
-            return max(self.t1.update(algorithm), self.t2.update(algorithm))
-            
-    termination = CombinedTermination(t_robust, t_max_gen)
+    res_moo = solve(problem, pop_size=200, seed=42, verbose=True)
 
-    res = minimize(problem, algorithm, termination, seed=42, verbose=True)
-
-    if res.F is not None:
-        F = res.F
-        # Sort by makespan
+    if res_moo is not None and res_moo.F is not None:
+        F = res_moo.F
         sorted_indices = np.argsort(F[:, 0])
         F_sorted = F[sorted_indices]
-        
+
         plt.figure(figsize=(8, 6))
         plt.scatter(F_sorted[:, 0], F_sorted[:, 1], color='b', marker='o')
         plt.plot(F_sorted[:, 0], F_sorted[:, 1], color='b', linestyle='-')
@@ -61,8 +33,8 @@ def run_multiobjective():
         plt.ylabel('Labor Cost ($)')
         plt.title('Time-Cost Pareto Front (Cobb-Douglas NSGA-II)')
         plt.grid(True)
-        
-        out_dir = os.path.join(base_dir, "../outputs")
+
+        out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../outputs")
         os.makedirs(out_dir, exist_ok=True)
         plt.savefig(os.path.join(out_dir, "cobb_pareto_front.png"))
         print(f"Saved Pareto front plot to {os.path.join(out_dir, 'cobb_pareto_front.png')}")

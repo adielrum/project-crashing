@@ -101,12 +101,10 @@ if "schedule" in res_1:
 
 # %%
 import numpy as np
-from pymoo.algorithms.soo.nonconvex.ga import GA
-from pymoo.operators.crossover.sbx import SBX
-from pymoo.operators.mutation.pm import PM
-from pymoo.termination import get_termination
-from pymoo.optimize import minimize
-from cobb_model import load_data, data_path, ResourceBasedScheduling, save_solution_json, generate_gantt_comparison_plot as cobb_gantt
+from cobb_model import (
+    load_data, ResourceBasedScheduling, solve as solve_cobb,
+    extract_solution, generate_gantt_comparison_plot as cobb_gantt,
+)
 
 # Configure Parameters for Skenario 2 (GA)
 mode_2 = "bonus_penalty" # Options: cost_with_deadline, time_with_budget, bonus_penalty
@@ -126,37 +124,27 @@ tasks, prec_2, res_2, N_2, K_i_2 = load_data(
 
 prob_2 = ResourceBasedScheduling(
     tasks=tasks, precedence=prec_2, resources=res_2, N=N_2, K_i=K_i_2,
-    T_max=T_MAX_2, mode=mode_2, budget_limit=BUDGET_LIMIT_2, c_late=c_late_2, c_early=c_early_2
+    T_max=T_MAX_2, mode=mode_2, budget_limit=BUDGET_LIMIT_2, c_late=c_late_2, c_early=c_early_2,
 )
 
-algorithm_2 = GA(pop_size=pop_size, crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20))
-termination_2 = get_termination("n_gen", n_gen)
-
 print("Running Genetic Algorithm...")
-res_ga = minimize(prob_2, algorithm_2, termination_2, seed=42, verbose=False)
+ga_solution = solve_cobb(prob_2, pop_size=pop_size, seed=42, verbose=False, max_gen=n_gen)
 
-if res_ga.X is not None:
-    P = prob_2.P
-    x_opt = res_ga.X
-    x_ik_opt = x_opt[0:P]
-    tau_ik_opt = x_opt[P:2*P]
-    D_ik_opt, D_i_opt = prob_2.compute_durations(x_opt)
-    s_opt, f_opt = prob_2.forward_pass(D_i_opt)
-    
-    print(f"Makespan: {np.max(f_opt):.2f} days")
+if ga_solution is not None:
+    print(f"Makespan: {ga_solution['makespan']:.2f} days")
     
     df_var = pd.DataFrame({
         "Resource": res_2["resource_name"],
-        "x (Crowding)": x_ik_opt,
-        "tau (Overtime)": tau_ik_opt,
+        "x (Crowding)": ga_solution["x_ik"],
+        "tau (Overtime)": ga_solution["tau_ik"],
         "Original Duration": res_2["D_base_ik"],
-        "Crashed Duration": D_ik_opt
+        "Crashed Duration": ga_solution["D_ik"],
     })
     display(df_var.head(10))
     
     out_png_2 = os.path.join(base_dir, "outputs/cobb_ga_gantt.png")
     os.makedirs(os.path.dirname(out_png_2), exist_ok=True)
-    cobb_gantt(tasks, prob_2.s_baseline, prob_2.f_baseline, s_opt, f_opt, current_day_1, out_png_2)
+    cobb_gantt(tasks, prob_2.s_baseline, prob_2.f_baseline, ga_solution["s"], ga_solution["f"], current_day_1, out_png_2)
     display(Image(filename=out_png_2))
 else:
     print("No feasible solution found.")
@@ -167,42 +155,19 @@ else:
 
 # %%
 import matplotlib.pyplot as plt
-from pymoo.algorithms.moo.nsga2 import NSGA2
-from pymoo.core.termination import Termination
-from pymoo.termination.ftol import MultiObjectiveSpaceTermination
-from pymoo.termination.robust import RobustTermination
 
 problem_moo = ResourceBasedScheduling(
     tasks=tasks, precedence=prec_2, resources=res_2, N=N_2, K_i=K_i_2,
     alpha=0.7, beta=0.7, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
     T_max=344, current_day=current_day_1, overtime_mult=1.5, hours_per_day=8,
-    mode="multiobjective"
+    mode="multiobjective",
 )
-
-algorithm_moo = NSGA2(
-    pop_size=200, crossover=SBX(prob=0.9, eta=15), mutation=PM(eta=20),
-    eliminate_duplicates=True,
-)
-
-t_robust = RobustTermination(MultiObjectiveSpaceTermination(tol=0.002, n_skip=5), period=30)
-t_max_gen = get_termination("n_gen", 300)
-
-class CombinedTermination(Termination):
-    def __init__(self, t1, t2):
-        super().__init__()
-        self.t1 = t1
-        self.t2 = t2
-    def _update(self, algorithm):
-        return max(self.t1.update(algorithm), self.t2.update(algorithm))
-        
-termination_moo = CombinedTermination(t_robust, t_max_gen)
 
 print("Running NSGA-II Multi-Objective Optimization...")
-res_moo = minimize(problem_moo, algorithm_moo, termination_moo, seed=42, verbose=True)
+res_moo = solve_cobb(problem_moo, pop_size=200, seed=42, verbose=True)
 
-if res_moo.F is not None:
+if res_moo is not None and res_moo.F is not None:
     F = res_moo.F
-    # Sort by makespan for plotting
     sorted_indices = np.argsort(F[:, 0])
     F_sorted = F[sorted_indices]
     
