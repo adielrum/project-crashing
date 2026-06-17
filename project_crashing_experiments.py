@@ -94,6 +94,33 @@ if "schedule" in res_1:
     display(Image(filename=out_png_1))
 
 # %% [markdown]
+# ### Skenario 1 Sensitivity Analysis: Varying Target Deadline (T_max)
+# We vary the target end date from the normal un-crashed makespan (249 days) down to the maximum crashable limit (193 days).
+
+# %%
+import matplotlib.pyplot as plt
+
+scen1_tmax_file = os.path.join(base_dir, "outputs/sensitivity_analysis/scenario_1_tmax.csv")
+if os.path.exists(scen1_tmax_file):
+    df_s1 = pd.read_csv(scen1_tmax_file)
+    
+    plt.figure(figsize=(9, 5))
+    # Note: T_max corresponds to target_end_date here. Skenario 1 minimizes total_crash_cost to meet T_max.
+    # Therefore, total cost increases as T_max decreases.
+    plt.plot(df_s1["target_end_date"], df_s1["total_crash_cost"], marker='o', color='tab:red', linewidth=2)
+    plt.xlabel('Target Deadline (T_max)')
+    plt.ylabel('Total Crash Cost ($)')
+    plt.title('Skenario 1: Cost to Crash to Target Deadline')
+    plt.grid(True, alpha=0.3)
+    
+    # We let matplotlib use default numeric axis (ascending from left to right)
+    
+    out_scen1_png = os.path.join(base_dir, "outputs/sensitivity_analysis/scenario_1_tmax_plot.png")
+    plt.savefig(out_scen1_png, dpi=150, bbox_inches="tight")
+    plt.show()
+    print(f"Saved Skenario 1 sensitivity plot to {out_scen1_png}")
+
+# %% [markdown]
 # ## Skenario 2: Cobb-Douglas Production Function (Genetic Algorithm)
 # This model uses a non-linear continuous production function for crashing. We solve it using the NSGA-II/GA metaheuristic algorithm.
 #
