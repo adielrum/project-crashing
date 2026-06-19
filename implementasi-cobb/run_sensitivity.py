@@ -16,8 +16,8 @@ def run_sensitivity():
     )
 
     CURRENT_DAY = 0
-    POP_SIZE = 40
-    MAX_GEN = 30
+    POP_SIZE = 800
+    MAX_GEN = 1000
     T_MAX_BASE = 310
     MILP_TIME_LIMIT = 5.0 # fast for testing
 
@@ -32,7 +32,7 @@ def run_sensitivity():
         sol = solve_milp_cobb_douglas(
             tasks, precedence, resources, N, K_i,
             alpha=a, beta=0.7, T_max=T_MAX_BASE, current_day=CURRENT_DAY, 
-            mode="cost_with_deadline", time_limit=MILP_TIME_LIMIT
+            mode="bonus_penalty", time_limit=MILP_TIME_LIMIT
         )
         if sol:
             res_alpha.append({"alpha": a, "makespan": sol["makespan"], "total_cost": sol["total_cost"]})
@@ -46,7 +46,7 @@ def run_sensitivity():
         sol = solve_milp_cobb_douglas(
             tasks, precedence, resources, N, K_i,
             alpha=0.7, beta=b, T_max=T_MAX_BASE, current_day=CURRENT_DAY, 
-            mode="cost_with_deadline", time_limit=MILP_TIME_LIMIT
+            mode="bonus_penalty", time_limit=MILP_TIME_LIMIT
         )
         if sol:
             res_beta.append({"beta": b, "makespan": sol["makespan"], "total_cost": sol["total_cost"]})
@@ -60,7 +60,7 @@ def run_sensitivity():
             sol = solve_milp_cobb_douglas(
                 tasks, precedence, resources, N, K_i,
                 alpha=a, beta=b, T_max=T_MAX_BASE, current_day=CURRENT_DAY, 
-                mode="cost_with_deadline", time_limit=MILP_TIME_LIMIT
+                mode="bonus_penalty", time_limit=MILP_TIME_LIMIT
             )
             if sol:
                 res_grid_ab.append({"alpha": a, "beta": b, "makespan": sol["makespan"], "total_cost": sol["total_cost"]})
@@ -116,7 +116,7 @@ def run_sensitivity():
         sol = solve_milp_cobb_douglas(
             tasks, precedence, resources, N, K_i,
             alpha=0.7, beta=0.7, T_max=int(t), current_day=CURRENT_DAY, 
-            mode="cost_with_deadline", time_limit=MILP_TIME_LIMIT
+            mode="bonus_penalty", time_limit=MILP_TIME_LIMIT
         )
         if sol:
             res_tmax.append({"T_max": t, "makespan": sol["makespan"], "total_cost": sol["total_cost"]})
