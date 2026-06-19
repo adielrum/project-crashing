@@ -19,7 +19,7 @@ def run_multiobjective():
         mode="multiobjective",
     )
 
-    res_moo = solve(problem, pop_size=200, seed=42, verbose=True)
+    res_moo = solve(problem, pop_size=1200, tol=0.002, seed=42, verbose=True)
 
     if res_moo is not None and res_moo.F is not None:
         F = res_moo.F

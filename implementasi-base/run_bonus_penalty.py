@@ -10,7 +10,7 @@ from solver_base import (
     write_schedule_csv
 )
 
-def run_bonus_penalty():
+def run_bonus_penalty(c_late=1000.0, c_early=500.0):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     
     activity_data_path = os.path.join(base_dir, "../data/activity_data_v3.json")
@@ -25,8 +25,6 @@ def run_bonus_penalty():
     
     current_day = 0
     target_end_date = 243
-    c_late = 1000.0
-    c_early = 500.0
     
     states, _ = infer_activity_states_without_state_file(
         activity_data, resource_requirements, resource_capacity,
