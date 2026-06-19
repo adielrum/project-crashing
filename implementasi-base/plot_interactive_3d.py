@@ -37,7 +37,7 @@ fig.add_trace(go.Surface(
 ))
 
 # Add Surface for Total Crash Cost (hidden by default)
-fig.add_trace(go.Surface(
+fig.add_trace(go.Surface(take
     z=pivot_crash_cost.values,
     x=x_early,
     y=y_late,

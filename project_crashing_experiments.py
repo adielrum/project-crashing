@@ -257,7 +257,7 @@ states_hyb, _ = infer_activity_states_without_state_file(
 cfg_3 = SolveConfig(
     target_end_date=target_end_date_3, budget_limit=budget_limit_3,
     time_limit=30.0, num_workers=1, auto_fix_paint_trim_cycle=True,
-    remove_edges=[]
+    remove_edges=[], current_day=0
 )
 
 res_3 = build_model_and_solve(
