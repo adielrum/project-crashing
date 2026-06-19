@@ -35,7 +35,7 @@ from pymoo.termination import get_termination
 from pymoo.termination.ftol import MultiObjectiveSpaceTermination
 from pymoo.termination.robust import RobustTermination
 import matplotlib.pyplot as plt
-
+from multiprocessing.pool import ThreadPool
 
 # ===========================================================================
 # Path Helper
@@ -808,10 +808,12 @@ def solve(problem, pop_size=200, seed=42, verbose=True,
 
     if callback is None:
         callback = MyCallback()
+        
+    pool = ThreadPool(processes=4)
 
     res = minimize(
         problem, algorithm, termination,
-        seed=seed, callback=callback, verbose=verbose,
+        seed=seed, callback=callback, verbose=verbose, starmap=pool.starmap,
     )
 
     if is_moo:
