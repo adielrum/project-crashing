@@ -2,12 +2,12 @@
   "success": true,
   "solver": "pymoo_GA",
   "current_day": 0,
-  "target_day": 310,
+  "target_day": 342,
   "baseline_makespan": 344.0,
-  "makespan": 209.0,
-  "makespan_reduction": 135.0,
-  "labor_cost": 575263.723,
-  "total_project_cost": 575263.723,
+  "makespan": 211.0,
+  "makespan_reduction": 133.0,
+  "labor_cost": 570594.528,
+  "total_project_cost": 570594.528,
   "crash_plan": {
     "Receive notice to proceed and sign contract": [
       {
@@ -421,40 +421,31 @@
         "duration_saved": 3.0
       }
     ],
-    "Install duct in ceiling plenum space": [
-      {
-        "resource": "HVAC Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1560.0,
-        "duration_saved": 3.0
-      }
-    ],
     "Install ceiling grid": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.5,
+        "x": 2.0,
         "tau": 0.0,
-        "cost_delta": 800.0,
-        "duration_saved": 2.0
+        "cost_delta": 1600.0,
+        "duration_saved": 3.0
       }
     ],
     "Install building carpet": [
       {
         "resource": "Carpet Contractor",
         "x": 2.0,
-        "tau": 2.0,
-        "cost_delta": 3690.0,
-        "duration_saved": 9.0
+        "tau": 0.0,
+        "cost_delta": 2160.0,
+        "duration_saved": 7.0
       }
     ],
     "Install hardware and accessories": [
       {
         "resource": "G.C. Finish Carpenter Crew",
-        "x": 2.0,
+        "x": 1.5,
         "tau": 0.0,
-        "cost_delta": 2400.0,
-        "duration_saved": 5.0
+        "cost_delta": 1440.0,
+        "duration_saved": 3.0
       }
     ],
     "Complete interior and exterior sod and plantings": [
@@ -464,33 +455,6 @@
         "tau": 0.0,
         "cost_delta": 720.0,
         "duration_saved": 2.0
-      }
-    ],
-    "Pave, curb, and stripe parking lot": [
-      {
-        "resource": "Paving Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 960.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Flush, test, and clean piping and fixtures": [
-      {
-        "resource": "Plumbing Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1040.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Pull wire in conduit and set area transformers": [
-      {
-        "resource": "Electric Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1560.0,
-        "duration_saved": 3.0
       }
     ],
     "Install and terminate electrical devices": [
@@ -505,10 +469,10 @@
     "Install light fixtures - test and clean": [
       {
         "resource": "Electric Contractor",
-        "x": 1.5,
+        "x": 2.0,
         "tau": 0.0,
-        "cost_delta": 1040.0,
-        "duration_saved": 2.0
+        "cost_delta": 2080.0,
+        "duration_saved": 3.0
       }
     ],
     "Remove debris from building and do final clean-up": [
@@ -777,8 +741,8 @@
       "baseline_start": 4.0,
       "baseline_finish": 14.0,
       "baseline_duration": 10.0,
-      "optimized_start": 3.0,
-      "optimized_finish": 13.0,
+      "optimized_start": 4.0,
+      "optimized_finish": 14.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -897,9 +861,9 @@
       "baseline_start": 14.0,
       "baseline_finish": 74.0,
       "baseline_duration": 60.0,
-      "optimized_start": 13.0,
+      "optimized_start": 14.0,
       "optimized_finish": 53.0,
-      "optimized_duration": 40.0,
+      "optimized_duration": 39.0,
       "status": "not_started",
       "assignments": [
         {
@@ -978,7 +942,7 @@
         },
         {
           "resource_name": "G.C. Labor Crew",
-          "baseline_duration": 2.9999999999999996,
+          "baseline_duration": 3.0,
           "optimized_duration": 2.0,
           "x": 2.0,
           "tau": 0.0
@@ -1988,8 +1952,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 110.0,
-      "optimized_finish": 115.0,
+      "optimized_start": 92.0,
+      "optimized_finish": 97.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2503,15 +2467,15 @@
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
       "optimized_start": 162.0,
-      "optimized_finish": 174.0,
-      "optimized_duration": 12.0,
+      "optimized_finish": 177.0,
+      "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 15.0,
-          "optimized_duration": 12.0,
-          "x": 1.5,
+          "optimized_duration": 15.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2522,16 +2486,16 @@
       "baseline_start": 281.0,
       "baseline_finish": 291.0,
       "baseline_duration": 10.0,
-      "optimized_start": 174.0,
-      "optimized_finish": 182.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 177.0,
+      "optimized_finish": 184.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 7.0,
+          "x": 2.0,
           "tau": 0.0
         }
       ]
@@ -2542,8 +2506,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 182.0,
-      "optimized_finish": 192.0,
+      "optimized_start": 184.0,
+      "optimized_finish": 194.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2562,8 +2526,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 182.0,
-      "optimized_finish": 192.0,
+      "optimized_start": 184.0,
+      "optimized_finish": 194.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2583,16 +2547,16 @@
       "baseline_finish": 321.0,
       "baseline_duration": 20.0,
       "optimized_start": 181.0,
-      "optimized_finish": 192.0,
-      "optimized_duration": 11.0,
+      "optimized_finish": 194.0,
+      "optimized_duration": 13.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Carpet Contractor",
           "baseline_duration": 20.0,
-          "optimized_duration": 11.0,
+          "optimized_duration": 13.0,
           "x": 2.0,
-          "tau": 2.0
+          "tau": 0.0
         }
       ]
     },
@@ -2602,16 +2566,16 @@
       "baseline_start": 301.0,
       "baseline_finish": 316.0,
       "baseline_duration": 15.0,
-      "optimized_start": 182.0,
-      "optimized_finish": 192.0,
-      "optimized_duration": 10.0,
+      "optimized_start": 181.0,
+      "optimized_finish": 193.0,
+      "optimized_duration": 12.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 15.0,
-          "optimized_duration": 10.0,
-          "x": 2.0,
+          "optimized_duration": 12.0,
+          "x": 1.5,
           "tau": 0.0
         }
       ]
@@ -2643,15 +2607,15 @@
       "baseline_finish": 321.0,
       "baseline_duration": 10.0,
       "optimized_start": 189.0,
-      "optimized_finish": 197.0,
-      "optimized_duration": 8.0,
+      "optimized_finish": 199.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Paving Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2783,15 +2747,15 @@
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
       "optimized_start": 183.0,
-      "optimized_finish": 192.0,
-      "optimized_duration": 9.0,
+      "optimized_finish": 193.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2843,15 +2807,15 @@
       "baseline_finish": 271.0,
       "baseline_duration": 15.0,
       "optimized_start": 160.0,
-      "optimized_finish": 172.0,
-      "optimized_duration": 12.0,
+      "optimized_finish": 175.0,
+      "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "optimized_duration": 12.0,
-          "x": 1.5,
+          "optimized_duration": 15.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2862,8 +2826,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 286.0,
       "baseline_duration": 15.0,
-      "optimized_start": 172.0,
-      "optimized_finish": 184.0,
+      "optimized_start": 175.0,
+      "optimized_finish": 187.0,
       "optimized_duration": 12.0,
       "status": "not_started",
       "assignments": [
@@ -2902,16 +2866,16 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 184.0,
-      "optimized_finish": 192.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 187.0,
+      "optimized_finish": 194.0,
+      "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 7.0,
+          "x": 2.0,
           "tau": 0.0
         }
       ]
@@ -3062,8 +3026,8 @@
       "baseline_start": 321.0,
       "baseline_finish": 325.0,
       "baseline_duration": 4.0,
-      "optimized_start": 192.0,
-      "optimized_finish": 195.0,
+      "optimized_start": 194.0,
+      "optimized_finish": 197.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -3102,8 +3066,8 @@
       "baseline_start": 325.0,
       "baseline_finish": 328.0,
       "baseline_duration": 3.0,
-      "optimized_start": 195.0,
-      "optimized_finish": 197.0,
+      "optimized_start": 197.0,
+      "optimized_finish": 199.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -3122,8 +3086,8 @@
       "baseline_start": 328.0,
       "baseline_finish": 329.0,
       "baseline_duration": 1.0,
-      "optimized_start": 197.0,
-      "optimized_finish": 198.0,
+      "optimized_start": 199.0,
+      "optimized_finish": 200.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3149,8 +3113,8 @@
       "baseline_start": 329.0,
       "baseline_finish": 330.0,
       "baseline_duration": 1.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 199.0,
+      "optimized_start": 200.0,
+      "optimized_finish": 201.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3176,8 +3140,8 @@
       "baseline_start": 330.0,
       "baseline_finish": 331.0,
       "baseline_duration": 1.0,
-      "optimized_start": 199.0,
-      "optimized_finish": 200.0,
+      "optimized_start": 201.0,
+      "optimized_finish": 202.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3203,8 +3167,8 @@
       "baseline_start": 331.0,
       "baseline_finish": 341.0,
       "baseline_duration": 10.0,
-      "optimized_start": 200.0,
-      "optimized_finish": 206.0,
+      "optimized_start": 202.0,
+      "optimized_finish": 208.0,
       "optimized_duration": 6.0,
       "status": "not_started",
       "assignments": [
@@ -3279,8 +3243,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 343.0,
       "baseline_duration": 2.0,
-      "optimized_start": 206.0,
-      "optimized_finish": 208.0,
+      "optimized_start": 208.0,
+      "optimized_finish": 210.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -3299,8 +3263,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 342.0,
       "baseline_duration": 1.0,
-      "optimized_start": 207.0,
-      "optimized_finish": 208.0,
+      "optimized_start": 208.0,
+      "optimized_finish": 209.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3319,8 +3283,8 @@
       "baseline_start": 343.0,
       "baseline_finish": 344.0,
       "baseline_duration": 1.0,
-      "optimized_start": 208.0,
-      "optimized_finish": 209.0,
+      "optimized_start": 210.0,
+      "optimized_finish": 211.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
