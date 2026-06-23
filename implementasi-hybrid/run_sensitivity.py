@@ -44,16 +44,7 @@ baseline_schedule = build_reference_no_crash_schedule(
     predecessors, current_day, 60.0, 1
 )
 NORMAL_DURATION = max(row["end"] for row in baseline_schedule.values())
-
-# Display cap for makespan. The bonus-penalty objective is unconstrained on
-# the upper end of Cmax, so when c_late is small relative to c_early the
-# solver can let Cmax drift all the way toward the model horizon (~1000+ days)
-# without it materially affecting the objective. That spike is a degenerate
-# artifact, not a meaningful schedule. Rather than clipping all the way down
-# to NORMAL_DURATION (which flattens genuinely-informative variation just
-# above it), we cap at a looser fixed value so the real shape of the surface
-# near/just-above normal duration still shows, while killing the ~1000d spike.
-MAKESPAN_CAP = 350
+MAKESPAN_CAP = 344
 
 
 def run_bonus_penalty(c_late=5000.0, c_early=2000.0):
@@ -221,16 +212,20 @@ if __name__ == "__main__":
     z_min_data = float(pivot_makespan.values.min())
     z_floor = max(0.0, z_min_data - 0.05 * (MAKESPAN_CAP - z_min_data))
 
-    # Add Surface for Makespan (visible by default) — capped at MAKESPAN_CAP,
-    # with z-axis range fixed so the scale isn't stretched by capped outliers.
+    # Add Surface for Makespan (visible by default) — shape (z-axis) based on
+    # capped makespan, but color mapped to total crash cost so you can read both
+    # dimensions at once from the single surface.
+    crash_cost_min = float(pivot_crash_cost.values.min())
+    crash_cost_max = float(pivot_crash_cost.values.max())
     fig.add_trace(go.Surface(
         z=pivot_makespan.values,
         x=x_early,
         y=y_late,
-        colorscale='Viridis',
-        cmin=z_min_data,
-        cmax=MAKESPAN_CAP,
-        colorbar=dict(title="Days", x=-0.1),
+        surfacecolor=pivot_crash_cost.values,   # color = crash cost
+        colorscale='Plasma',
+        cmin=crash_cost_min,
+        cmax=crash_cost_max,
+        colorbar=dict(title="Crash Cost ($)", x=-0.1),
         name='Makespan',
         visible=True
     ))
@@ -260,7 +255,7 @@ if __name__ == "__main__":
 
     # Update layout with dropdown and axis titles
     fig.update_layout(
-        title=f'Interactive 3D Sensitivity Analysis (Skenario 2) — Makespan capped at {MAKESPAN_CAP}d',
+        title=f'Interactive 3D Sensitivity Analysis (Skenario 2) — Makespan shape, Crash Cost color (capped at {MAKESPAN_CAP}d)',
         scene=dict(
             xaxis_title='Early Bonus (c_early)',
             yaxis_title='Late Penalty (c_late)',
@@ -275,7 +270,7 @@ if __name__ == "__main__":
                 active=0,
                 buttons=list([
                     dict(
-                        label="Makespan (Days)",
+                        label="Makespan (Days) — Color: Crash Cost",
                         method="update",
                         args=[{"visible": [True, False, False]},
                               {"scene.zaxis.title.text": "Makespan (days)",
