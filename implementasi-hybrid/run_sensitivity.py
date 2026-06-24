@@ -230,13 +230,17 @@ if __name__ == "__main__":
         visible=True
     ))
 
-    # Add Surface for Total Crash Cost (hidden by default)
+    # Add Surface for Total Crash Cost (hidden by default) — shape (z-axis)
+    # based on crash cost, but color mapped to makespan (capped).
     fig.add_trace(go.Surface(
         z=pivot_crash_cost.values,
         x=x_early,
         y=y_late,
-        colorscale='Plasma',
-        colorbar=dict(title="Cost ($)", x=-0.1),
+        surfacecolor=pivot_makespan.values,     # color = makespan (capped)
+        colorscale='Viridis',
+        cmin=z_min_data,
+        cmax=MAKESPAN_CAP,
+        colorbar=dict(title="Makespan (days)", x=-0.1),
         name='Total Crash Cost',
         visible=False
     ))
@@ -277,7 +281,7 @@ if __name__ == "__main__":
                                "scene.zaxis.range": [z_floor, MAKESPAN_CAP]}]
                     ),
                     dict(
-                        label="Total Crash Cost ($)",
+                        label="Total Crash Cost ($) — Color: Makespan",
                         method="update",
                         args=[{"visible": [False, True, False]},
                               {"scene.zaxis.title.text": "Crash Cost ($)",
