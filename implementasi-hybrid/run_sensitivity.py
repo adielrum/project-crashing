@@ -20,9 +20,9 @@ from solver_base import (
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-activity_data_path = os.path.join(base_dir, "data/activity_data.json")
-resource_capacity_path = os.path.join(base_dir, "data/resource_capacity.json")
-resource_req_path = os.path.join(base_dir, "data/resource_requirements.json")
+activity_data_path = os.path.join(base_dir, "data_simple/activity_data.json")
+resource_capacity_path = os.path.join(base_dir, "data_simple/resource_capacity.json")
+resource_req_path = os.path.join(base_dir, "data_simple/resource_requirements.json")
 
 activity_data = read_json(activity_data_path)
 resource_capacity = read_json(resource_capacity_path)
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # Save the raw results to CSV (includes both raw and capped columns)
     out_dir = os.path.join(base_dir, "../outputs/sensitivity_analysis")
     os.makedirs(out_dir, exist_ok=True)
-    csv_path = os.path.join(out_dir, "grid_skenario3_bonus_penalty_100x100.csv")
+    csv_path = os.path.join(out_dir, "grid_skenario3_simpledata_bonus_penalty_100x100.csv")
     df.to_csv(csv_path, index=False)
     print(f"Results saved to {csv_path}")
 
@@ -198,7 +198,7 @@ if __name__ == "__main__":
     fig.colorbar(im3, ax=axes[2], label='Net Cost ($)')
 
     plt.tight_layout()
-    plot_path = os.path.join(out_dir, "grid_skenario3_bonus_penalty_heatmap.png")
+    plot_path = os.path.join(out_dir, "grid_skenario3_simpledata_bonus_penalty_heatmap.png")
     plt.savefig(plot_path, dpi=300)
     plt.close()
     print(f"Heatmap plot saved to {plot_path}")
@@ -245,14 +245,17 @@ if __name__ == "__main__":
         visible=False
     ))
 
-    # Add Surface for Net Project Cost (hidden by default)
+    # Add Surface for Net Project Cost (hidden by default) - shape (z-axis)
+    # based on net cost, but color mapped to makespan (capped).
     fig.add_trace(go.Surface(
         z=pivot_net_cost.values,
         x=x_early,
         y=y_late,
-        colorscale='RdBu',
-        reversescale=True,
-        colorbar=dict(title="Net Cost ($)", x=-0.1),
+        surfacecolor=pivot_makespan.values,     # color = makespan (capped)
+        colorscale='Viridis',
+        cmin=z_min_data,
+        cmax=MAKESPAN_CAP,
+        colorbar=dict(title="Makespan (days)", x=-0.1),
         name='Net Project Cost',
         visible=False
     ))
@@ -288,7 +291,7 @@ if __name__ == "__main__":
                                "scene.zaxis.range": [None, None]}]
                     ),
                     dict(
-                        label="Net Project Cost ($)",
+                        label="Net Project Cost ($) — Color: Makespan",
                         method="update",
                         args=[{"visible": [False, False, True]},
                               {"scene.zaxis.title.text": "Net Cost ($)",
@@ -308,6 +311,6 @@ if __name__ == "__main__":
         height=800
     )
 
-    html_path = os.path.join(out_dir, "grid_skenario3_bonus_penalty_3d.html")
+    html_path = os.path.join(out_dir, "grid_skenario3_simpledata_bonus_penalty_3d.html")
     fig.write_html(html_path)
     print(f"Interactive 3D Plotly chart saved to {html_path}")
