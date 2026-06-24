@@ -15,8 +15,8 @@ def solve_milp_cobb_douglas(
     model = cp_model.CpModel()
     
     # Pre-calculate discrete options
-    x_options = np.arange(x_min, x_max + 0.1, 0.5)
-    tau_options = np.arange(tau_min, tau_max + 0.1, 1.0)
+    x_options = np.arange(x_min, x_max + 0.1, 0.25)
+    tau_options = np.arange(tau_min, tau_max + 0.1, 0.5)
     
     raw_options = []
     for x in x_options:
