@@ -33,18 +33,25 @@ def plot_oat(df, param_col, title, out_path):
 
 
 def plot_grid_3d(df, x_col, y_col, z_col, z_label, color_col, color_label, title, out_path):
+    pivot_z = df.pivot_table(index=y_col, columns=x_col, values=z_col)
+    pivot_c = df.pivot_table(index=y_col, columns=x_col, values=color_col)
     fig = go.Figure(data=[
-        go.Scatter3d(
-            x=df[x_col], y=df[y_col], z=df[z_col],
-            mode='markers',
-            marker=dict(
-                size=4,
-                color=df[color_col],
-                colorscale='Viridis',
-                colorbar=dict(title=color_label),
-                opacity=0.8,
-            ),
+        go.Surface(
+            x=pivot_z.columns.values,
+            y=pivot_z.index.values,
+            z=pivot_z.values,
+            surfacecolor=pivot_c.values,
+            colorscale='Viridis',
+            colorbar=dict(title=color_label),
+            opacity=1.0,
             name=z_label,
+            contours=dict(
+                x=dict(show=True, color='black', width=1),
+                y=dict(show=True, color='black', width=1),
+                z=dict(show=True, color='black', width=1),
+            ),
+            lighting=dict(ambient=0.8, diffuse=0.6, specular=0.1, roughness=0.9, fresnel=0.1),
+            lightposition=dict(x=1000, y=1000, z=1500),
         )
     ])
     fig.update_layout(
@@ -53,6 +60,9 @@ def plot_grid_3d(df, x_col, y_col, z_col, z_label, color_col, color_label, title
             xaxis_title=x_col,
             yaxis_title=y_col,
             zaxis_title=z_label,
+            xaxis=dict(gridcolor='rgba(200,200,200,0.3)', showbackground=True, backgroundcolor='rgb(240,240,240)'),
+            yaxis=dict(gridcolor='rgba(200,200,200,0.3)', showbackground=True, backgroundcolor='rgb(240,240,240)'),
+            zaxis=dict(gridcolor='rgba(200,200,200,0.3)', showbackground=True, backgroundcolor='rgb(240,240,240)'),
         ),
         width=900,
         height=700,
@@ -100,7 +110,7 @@ def run_sensitivity():
     POP_SIZE = 800
     MAX_GEN = 1000
     T_MAX_BASE = 310
-    MILP_TIME_LIMIT = 5.0 # fast for testing
+    MILP_TIME_LIMIT = 20.0 # fast for testing
 
     print(f"=== Starting Extensive Sensitivity Analysis ===")
     print(f"Test specs: GA POP={POP_SIZE}, GEN={MAX_GEN} | MILP TimeLimit={MILP_TIME_LIMIT}s\n")
@@ -226,77 +236,77 @@ def run_sensitivity():
     if not df_tmax.empty:
         plot_oat(df_tmax, "T_max", "Sensitivity: Target Deadline (T_max)", os.path.join(oat_dir, "oat_T_max.png"))
 
-    # 8. Pareto Shift: alpha (0.3, 0.6, 0.9) - GA
-    print("--- 8/11 Pareto Shift: alpha (GA) ---")
-    pareto_a = []
-    for a in tqdm([0.3, 0.6, 0.9], desc="Pareto alpha"):
-        prob = ResourceBasedScheduling(
-            tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
-            alpha=a, beta=0.7, T_max=344, current_day=CURRENT_DAY, mode="multiobjective"
-        )
-        sol = solve(prob, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
-        if sol and sol.F is not None:
-            for row in sol.F:
-                pareto_a.append({"alpha": a, "makespan": row[0], "labor_cost": row[1]})
-    df_pareto_a = pd.DataFrame(pareto_a)
-    df_pareto_a.to_csv(os.path.join(out_dir, "pareto_alpha.csv"), index=False)
-    if not df_pareto_a.empty:
-        plot_pareto_shift(df_pareto_a, "alpha", "Pareto Shift: Crowding Elasticity (alpha)", os.path.join(pareto_dir, "pareto_alpha.png"))
+    # # 8. Pareto Shift: alpha (0.3, 0.6, 0.9) - GA
+    # print("--- 8/11 Pareto Shift: alpha (GA) ---")
+    # pareto_a = []
+    # for a in tqdm([0.3, 0.6, 0.9], desc="Pareto alpha"):
+    #     prob = ResourceBasedScheduling(
+    #         tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
+    #         alpha=a, beta=0.7, T_max=344, current_day=CURRENT_DAY, mode="multiobjective"
+    #     )
+    #     sol = solve(prob, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
+    #     if sol and sol.F is not None:
+    #         for row in sol.F:
+    #             pareto_a.append({"alpha": a, "makespan": row[0], "labor_cost": row[1]})
+    # df_pareto_a = pd.DataFrame(pareto_a)
+    # df_pareto_a.to_csv(os.path.join(out_dir, "pareto_alpha.csv"), index=False)
+    # if not df_pareto_a.empty:
+    #     plot_pareto_shift(df_pareto_a, "alpha", "Pareto Shift: Crowding Elasticity (alpha)", os.path.join(pareto_dir, "pareto_alpha.png"))
 
-    # 9. Pareto Shift: beta (0.3, 0.6, 0.9) - GA
-    print("--- 9/11 Pareto Shift: beta (GA) ---")
-    pareto_b = []
-    for b in tqdm([0.3, 0.6, 0.9], desc="Pareto beta"):
-        prob = ResourceBasedScheduling(
-            tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
-            alpha=0.7, beta=b, T_max=344, current_day=CURRENT_DAY, mode="multiobjective"
-        )
-        sol = solve(prob, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
-        if sol and sol.F is not None:
-            for row in sol.F:
-                pareto_b.append({"beta": b, "makespan": row[0], "labor_cost": row[1]})
-    df_pareto_b = pd.DataFrame(pareto_b)
-    df_pareto_b.to_csv(os.path.join(out_dir, "pareto_beta.csv"), index=False)
-    if not df_pareto_b.empty:
-        plot_pareto_shift(df_pareto_b, "beta", "Pareto Shift: Overtime Efficiency (beta)", os.path.join(pareto_dir, "pareto_beta.png"))
+    # # 9. Pareto Shift: beta (0.3, 0.6, 0.9) - GA
+    # print("--- 9/11 Pareto Shift: beta (GA) ---")
+    # pareto_b = []
+    # for b in tqdm([0.3, 0.6, 0.9], desc="Pareto beta"):
+    #     prob = ResourceBasedScheduling(
+    #         tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
+    #         alpha=0.7, beta=b, T_max=344, current_day=CURRENT_DAY, mode="multiobjective"
+    #     )
+    #     sol = solve(prob, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
+    #     if sol and sol.F is not None:
+    #         for row in sol.F:
+    #             pareto_b.append({"beta": b, "makespan": row[0], "labor_cost": row[1]})
+    # df_pareto_b = pd.DataFrame(pareto_b)
+    # df_pareto_b.to_csv(os.path.join(out_dir, "pareto_beta.csv"), index=False)
+    # if not df_pareto_b.empty:
+    #     plot_pareto_shift(df_pareto_b, "beta", "Pareto Shift: Overtime Efficiency (beta)", os.path.join(pareto_dir, "pareto_beta.png"))
     
-    # 10. Pareto Shift: c_early and c_late - GA
-    print("--- 10/11 Pareto Shift: Base Run for Cost Parameters (GA) ---")
-    prob_base = ResourceBasedScheduling(
-        tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
-        alpha=0.7, beta=0.7, T_max=310, current_day=CURRENT_DAY, mode="multiobjective"
-    )
-    sol_base = solve(prob_base, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
-    if sol_base and sol_base.F is not None:
-        base_front = sol_base.F
+    # # 10. Pareto Shift: c_early and c_late - GA
+    # print("--- 10/11 Pareto Shift: Base Run for Cost Parameters (GA) ---")
+    # prob_base = ResourceBasedScheduling(
+    #     tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
+    #     alpha=0.7, beta=0.7, T_max=310, current_day=CURRENT_DAY, mode="multiobjective"
+    # )
+    # sol_base = solve(prob_base, pop_size=POP_SIZE, seed=42, verbose=False, max_gen=MAX_GEN)
+    # if sol_base and sol_base.F is not None:
+    #     base_front = sol_base.F
         
-        # c_late variations
-        print("--- 10/11 Pareto Shift: c_late ---")
-        pareto_cl = []
-        for cl in [2000, 5000, 8000]:
-            for row in base_front:
-                mkspan = row[0]
-                lab_cost = row[1]
-                tot_cost = lab_cost + cl * max(0, mkspan - 310) - 2000 * max(0, 310 - mkspan)
-                pareto_cl.append({"c_late": cl, "makespan": mkspan, "total_cost": tot_cost})
-        df_pareto_cl = pd.DataFrame(pareto_cl)
-        df_pareto_cl.to_csv(os.path.join(out_dir, "pareto_c_late.csv"), index=False)
-        if not df_pareto_cl.empty:
-            plot_pareto_shift(df_pareto_cl, "c_late", "Pareto Shift: Penalty Rate (c_late) on Total Cost", os.path.join(pareto_dir, "pareto_c_late.png"))
+    #     # c_late variations
+    #     print("--- 10/11 Pareto Shift: c_late ---")
+    #     pareto_cl = []
+    #     for cl in [2000, 5000, 8000]:
+    #         for row in base_front:
+    #             mkspan = row[0]
+    #             lab_cost = row[1]
+    #             tot_cost = lab_cost + cl * max(0, mkspan - 310) - 2000 * max(0, 310 - mkspan)
+    #             pareto_cl.append({"c_late": cl, "makespan": mkspan, "total_cost": tot_cost})
+    #     df_pareto_cl = pd.DataFrame(pareto_cl)
+    #     df_pareto_cl.to_csv(os.path.join(out_dir, "pareto_c_late.csv"), index=False)
+    #     if not df_pareto_cl.empty:
+    #         plot_pareto_shift(df_pareto_cl, "c_late", "Pareto Shift: Penalty Rate (c_late) on Total Cost", os.path.join(pareto_dir, "pareto_c_late.png"))
         
-        # c_early variations
-        print("--- 11/11 Pareto Shift: c_early ---")
-        pareto_ce = []
-        for ce in [0, 2000, 4000]:
-            for row in base_front:
-                mkspan = row[0]
-                lab_cost = row[1]
-                tot_cost = lab_cost + 5000 * max(0, mkspan - 310) - ce * max(0, 310 - mkspan)
-                pareto_ce.append({"c_early": ce, "makespan": mkspan, "total_cost": tot_cost})
-        df_pareto_ce = pd.DataFrame(pareto_ce)
-        df_pareto_ce.to_csv(os.path.join(out_dir, "pareto_c_early.csv"), index=False)
-        if not df_pareto_ce.empty:
-            plot_pareto_shift(df_pareto_ce, "c_early", "Pareto Shift: Bonus Rate (c_early) on Total Cost", os.path.join(pareto_dir, "pareto_c_early.png"))
+    #     # c_early variations
+    #     print("--- 11/11 Pareto Shift: c_early ---")
+    #     pareto_ce = []
+    #     for ce in [0, 2000, 4000]:
+    #         for row in base_front:
+    #             mkspan = row[0]
+    #             lab_cost = row[1]
+    #             tot_cost = lab_cost + 5000 * max(0, mkspan - 310) - ce * max(0, 310 - mkspan)
+    #             pareto_ce.append({"c_early": ce, "makespan": mkspan, "total_cost": tot_cost})
+    #     df_pareto_ce = pd.DataFrame(pareto_ce)
+    #     df_pareto_ce.to_csv(os.path.join(out_dir, "pareto_c_early.csv"), index=False)
+    #     if not df_pareto_ce.empty:
+    #         plot_pareto_shift(df_pareto_ce, "c_early", "Pareto Shift: Bonus Rate (c_early) on Total Cost", os.path.join(pareto_dir, "pareto_c_early.png"))
 
     print("\n=== Sensitivity Analysis Complete ===")
 
