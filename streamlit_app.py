@@ -16,7 +16,8 @@ sys.path.append(os.path.join(base_dir, "implementasi-hybrid"))
 from solver_base import (
     read_json, build_predecessors, infer_activity_states_without_state_file,
     SolveConfig as BaseSolveConfig, build_model_and_solve as build_model_and_solve_base, 
-    build_reference_no_crash_schedule, generate_gantt_comparison_plot as base_gantt
+    build_reference_no_crash_schedule, generate_gantt_comparison_plot as base_gantt,
+    generate_resource_usage_plot
 )
 import preprocessing
 
@@ -24,6 +25,7 @@ from cobb_model import (
     load_data as load_data_cobb, ResourceBasedScheduling, solve as solve_cobb,
     extract_solution, generate_gantt_comparison_plot as cobb_gantt,
 )
+from solver_milp import solve_milp_cobb_douglas
 
 class StreamlitWriter(io.StringIO):
     def __init__(self, placeholder):
@@ -45,7 +47,7 @@ def st_redirect(placeholder):
 st.set_page_config(layout="wide", page_title="Project Crashing Optimizer")
 st.title("Project Crashing Optimization WebApp")
 
-model_choice = st.sidebar.selectbox("Select Model", ["Base (Linear CP-SAT)", "Cobb-Douglas (GA)", "Cobb-Douglas (NSGA-II Multi-Objective)", "Hybrid (Preproc + CP-SAT)"])
+model_choice = st.sidebar.selectbox("Select Model", ["Base (Linear CP-SAT)", "Cobb-Douglas (MILP CP-SAT)", "Cobb-Douglas (NSGA-II Multi-Objective)", "Hybrid (Preproc + CP-SAT)"])
 
 st.sidebar.header("Parameters")
 
@@ -63,6 +65,120 @@ current_day = st.sidebar.number_input("Current Day", min_value=0, value=0)
 if "GA" in model_choice or "NSGA" in model_choice:
     pop_size = st.sidebar.number_input("Population Size", min_value=10, value=20)
     n_gen = st.sidebar.number_input("Generations", min_value=10, value=20)
+
+# Cobb-Douglas parameters: Alpha and Beta
+alpha = 0.7
+beta = 0.7
+if "Cobb-Douglas" in model_choice or "Hybrid" in model_choice:
+    st.sidebar.subheader("Cobb-Douglas Elasticities")
+    alpha = st.sidebar.slider("Alpha (Crowding Elasticity)", min_value=0.0, max_value=2.0, value=0.7, step=0.05)
+    beta = st.sidebar.slider("Beta (Overtime Elasticity)", min_value=0.0, max_value=2.0, value=0.7, step=0.05)
+
+# Custom data upload section on the main page
+st.markdown("### 📁 Custom Data Upload (Optional)")
+if model_choice == "Base (Linear CP-SAT)":
+    st.info("Upload JSON files to override default project data. Leave fields blank to use default dataset.")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        uploaded_act = st.file_uploader("Upload Activity Data (JSON)", type=["json"])
+    with col2:
+        uploaded_cap = st.file_uploader("Upload Resource Capacity (JSON)", type=["json"])
+    with col3:
+        uploaded_req = st.file_uploader("Upload Resource Requirements (JSON)", type=["json"])
+    
+    uploaded_tasks = None
+    uploaded_precedence = None
+    uploaded_assignments = None
+else:
+    # Cobb-Douglas or Hybrid
+    st.info("Upload CSV files to override default project data. Leave fields blank to use default dataset.")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        uploaded_tasks = st.file_uploader("Upload Tasks (CSV)", type=["csv"])
+    with col2:
+        uploaded_precedence = st.file_uploader("Upload Precedence (CSV)", type=["csv"])
+    with col3:
+        uploaded_assignments = st.file_uploader("Upload Assignments/Resources (CSV)", type=["csv"])
+        
+    # Hybrid also has optional Resource Capacity JSON
+    uploaded_cap = None
+    if model_choice == "Hybrid (Preproc + CP-SAT)":
+        uploaded_cap = st.file_uploader("Upload Resource Capacity (JSON) - Optional", type=["json"])
+    
+    uploaded_act = None
+    uploaded_req = None
+
+# Show uploaded files preview
+with st.expander("🔍 Preview Uploaded Data", expanded=False):
+    has_preview = False
+    import json
+    if model_choice == "Base (Linear CP-SAT)":
+        if uploaded_act:
+            try:
+                act_data = json.load(uploaded_act)
+                uploaded_act.seek(0)
+                st.write("**Activity Data (first 5 records):**")
+                st.json(list(act_data.items())[:5])
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Activity Data: {e}")
+        if uploaded_cap:
+            try:
+                cap_data = json.load(uploaded_cap)
+                uploaded_cap.seek(0)
+                st.write("**Resource Capacity:**")
+                st.json(cap_data)
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Resource Capacity: {e}")
+        if uploaded_req:
+            try:
+                req_data = json.load(uploaded_req)
+                uploaded_req.seek(0)
+                st.write("**Resource Requirements (first 5 records):**")
+                st.json(list(req_data.items())[:5])
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Resource Requirements: {e}")
+    else:
+        if uploaded_tasks:
+            try:
+                df = pd.read_csv(uploaded_tasks)
+                uploaded_tasks.seek(0)
+                st.write("**Tasks Data Preview:**")
+                st.dataframe(df.head())
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Tasks CSV: {e}")
+        if uploaded_precedence:
+            try:
+                df = pd.read_csv(uploaded_precedence)
+                uploaded_precedence.seek(0)
+                st.write("**Precedence Data Preview:**")
+                st.dataframe(df.head())
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Precedence CSV: {e}")
+        if uploaded_assignments:
+            try:
+                df = pd.read_csv(uploaded_assignments)
+                uploaded_assignments.seek(0)
+                st.write("**Assignments/Resources Data Preview:**")
+                st.dataframe(df.head())
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Assignments CSV: {e}")
+        if uploaded_cap:
+            try:
+                cap_data = json.load(uploaded_cap)
+                uploaded_cap.seek(0)
+                st.write("**Resource Capacity:**")
+                st.json(cap_data)
+                has_preview = True
+            except Exception as e:
+                st.error(f"Error parsing Resource Capacity: {e}")
+    if not has_preview:
+        st.write("No custom data files uploaded yet. Default datasets will be used.")
 
 if "run_id" not in st.session_state:
     st.session_state.run_id = 0
@@ -82,9 +198,24 @@ if st.session_state.get("optimizing", False):
     
     if model_choice == "Base (Linear CP-SAT)":
         status_placeholder.info("Loading data and solving Base Model...")
-        activity_data = read_json(os.path.join(base_dir, "data/activity_data_v3.json"))
-        resource_capacity = read_json(os.path.join(base_dir, "data/resource_capacity_v3.json"))
-        resource_req = read_json(os.path.join(base_dir, "data/resource_requirements_v3.json"))
+        import json
+        if uploaded_act is not None:
+            activity_data = json.load(uploaded_act)
+            uploaded_act.seek(0)
+        else:
+            activity_data = read_json(os.path.join(base_dir, "data/activity_data_v3.json"))
+            
+        if uploaded_cap is not None:
+            resource_capacity = json.load(uploaded_cap)
+            uploaded_cap.seek(0)
+        else:
+            resource_capacity = read_json(os.path.join(base_dir, "data/resource_capacity_v3.json"))
+            
+        if uploaded_req is not None:
+            resource_req = json.load(uploaded_req)
+            uploaded_req.seek(0)
+        else:
+            resource_req = read_json(os.path.join(base_dir, "data/resource_requirements_v3.json"))
         
         predecessors, _ = build_predecessors(activity_data, [], True)
         states, _ = infer_activity_states_without_state_file(
@@ -117,7 +248,33 @@ if st.session_state.get("optimizing", False):
             
     elif model_choice == "Hybrid (Preproc + CP-SAT)":
         status_placeholder.info("Preprocessing and solving Hybrid Model...")
-        preprocessing.preprocess()
+        
+        tasks_df = pd.read_csv(uploaded_tasks) if uploaded_tasks is not None else None
+        if uploaded_tasks is not None:
+            uploaded_tasks.seek(0)
+            
+        precedence_df = pd.read_csv(uploaded_precedence) if uploaded_precedence is not None else None
+        if uploaded_precedence is not None:
+            uploaded_precedence.seek(0)
+            
+        resources_df = pd.read_csv(uploaded_assignments) if uploaded_assignments is not None else None
+        if uploaded_assignments is not None:
+            uploaded_assignments.seek(0)
+            
+        res_cap_dict = None
+        if uploaded_cap is not None:
+            import json
+            res_cap_dict = json.load(uploaded_cap)
+            uploaded_cap.seek(0)
+            
+        preprocessing.preprocess(
+            tasks_df=tasks_df,
+            precedence_df=precedence_df,
+            resources_df=resources_df,
+            resource_capacity=res_cap_dict,
+            alpha=alpha,
+            beta=beta
+        )
         
         act_hyb = read_json(os.path.join(base_dir, "implementasi-hybrid/data/activity_data.json"))
         cap_hyb = read_json(os.path.join(base_dir, "implementasi-hybrid/data/resource_capacity.json"))
@@ -147,23 +304,65 @@ if st.session_state.get("optimizing", False):
         st.session_state.optimizing = False
         st.rerun()
             
-    elif model_choice == "Cobb-Douglas (GA)":
-        status_placeholder.info("Running Genetic Algorithm...")
+    elif model_choice == "Cobb-Douglas (MILP CP-SAT)":
+        status_placeholder.info("Running Cobb-Douglas MILP Solver...")
+        
+        tasks_input = uploaded_tasks if uploaded_tasks is not None else os.path.join(base_dir, "implementasi-cobb/data_tasks.csv")
+        prec_input = uploaded_precedence if uploaded_precedence is not None else os.path.join(base_dir, "implementasi-cobb/data_precedence.csv")
+        assign_input = uploaded_assignments if uploaded_assignments is not None else os.path.join(base_dir, "implementasi-cobb/data_assignments.csv")
+        
         tasks, prec, res_data, N, K_i = load_data_cobb(
-            path_tasks=os.path.join(base_dir, "implementasi-cobb/data_tasks.csv"),
-            path_precedence=os.path.join(base_dir, "implementasi-cobb/data_precedence.csv"),
-            path_assignments=os.path.join(base_dir, "implementasi-cobb/data_assignments.csv"),
+            tasks_input, prec_input, assign_input
         )
-        prob = ResourceBasedScheduling(
-            tasks=tasks, precedence=prec, resources=res_data, N=N, K_i=K_i,
-            T_max=target_end_date, mode=mode, budget_limit=budget_limit, c_late=c_late, c_early=c_early,
-            current_day=current_day,
-        )
+        if uploaded_tasks is not None:
+            uploaded_tasks.seek(0)
+        if uploaded_precedence is not None:
+            uploaded_precedence.seek(0)
+        if uploaded_assignments is not None:
+            uploaded_assignments.seek(0)
+            
         with st_redirect(verbose_placeholder):
-            ga_solution = solve_cobb(prob, pop_size=pop_size, seed=42, verbose=True, max_gen=n_gen)
+            milp_solution = solve_milp_cobb_douglas(
+                tasks=tasks, precedence=prec, resources=res_data, N=N, K_i=K_i,
+                alpha=alpha, beta=beta,
+                T_max=target_end_date, current_day=current_day,
+                mode=mode, budget_limit=budget_limit, c_late=c_late, c_early=c_early,
+                time_limit=60.0
+            )
 
-        st.session_state.ga_solution = ga_solution
-        st.session_state.ga_prob = prob
+        st.session_state.ga_solution = milp_solution
+        
+        class FakeProb:
+            def __init__(self):
+                # Calculate initial baseline
+                s_baseline = np.zeros(N)
+                D_base_i = np.zeros(N)
+                D_base_ik = res_data["D_base_ik"].values
+                for i in range(N):
+                    for p in K_i.get(i, []):
+                        D_base_i[i] = max(D_base_i[i], D_base_ik[p])
+                        
+                # Forward pass baseline
+                prec_i = prec["i"].values.astype(int)
+                prec_j = prec["j"].values.astype(int)
+                prec_lag = prec["lag"].values.astype(float)
+                prec_type = prec["type"].values
+                for _ in range(N):
+                    s_prev = s_baseline.copy()
+                    for idx in range(len(prec_i)):
+                        i, j = prec_i[idx], prec_j[idx]
+                        lag, t = prec_lag[idx], prec_type[idx]
+                        if t == "FS": cand = s_baseline[j] + D_base_i[j] + lag
+                        elif t == "FF": cand = s_baseline[j] + D_base_i[j] + lag - D_base_i[i]
+                        elif t == "SS": cand = s_baseline[j] + lag
+                        else: continue
+                        if cand > s_baseline[i]: s_baseline[i] = cand
+                    if np.allclose(s_baseline, s_prev, atol=1e-8):
+                        break
+                self.s_baseline = s_baseline
+                self.f_baseline = s_baseline + D_base_i
+                
+        st.session_state.ga_prob = FakeProb()
         st.session_state.ga_tasks = tasks
         st.session_state.ga_res_data = res_data
         st.session_state.optimizing = False
@@ -171,14 +370,24 @@ if st.session_state.get("optimizing", False):
 
     elif model_choice == "Cobb-Douglas (NSGA-II Multi-Objective)":
         status_placeholder.info("Running NSGA-II Multi-Objective...")
+        
+        tasks_input = uploaded_tasks if uploaded_tasks is not None else os.path.join(base_dir, "implementasi-cobb/data_tasks.csv")
+        prec_input = uploaded_precedence if uploaded_precedence is not None else os.path.join(base_dir, "implementasi-cobb/data_precedence.csv")
+        assign_input = uploaded_assignments if uploaded_assignments is not None else os.path.join(base_dir, "implementasi-cobb/data_assignments.csv")
+        
         tasks, prec, res_data, N, K_i = load_data_cobb(
-            path_tasks=os.path.join(base_dir, "implementasi-cobb/data_tasks.csv"),
-            path_precedence=os.path.join(base_dir, "implementasi-cobb/data_precedence.csv"),
-            path_assignments=os.path.join(base_dir, "implementasi-cobb/data_assignments.csv"),
+            tasks_input, prec_input, assign_input
         )
+        if uploaded_tasks is not None:
+            uploaded_tasks.seek(0)
+        if uploaded_precedence is not None:
+            uploaded_precedence.seek(0)
+        if uploaded_assignments is not None:
+            uploaded_assignments.seek(0)
+            
         problem_moo = ResourceBasedScheduling(
             tasks=tasks, precedence=prec, resources=res_data, N=N, K_i=K_i,
-            alpha=0.7, beta=0.7, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
+            alpha=alpha, beta=beta, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
             T_max=target_end_date, current_day=current_day, overtime_mult=1.5, hours_per_day=8,
             mode="multiobjective",
         )
@@ -208,14 +417,50 @@ if "base_res" in st.session_state:
         st.subheader("Schedule & Crashing Results")
         st.dataframe(df)
         
+        # Fallbacks for old/existing session state
+        act_data = st.session_state.get("base_act_data")
+        if act_data is None:
+            if uploaded_act is not None:
+                act_data = json.load(uploaded_act)
+                uploaded_act.seek(0)
+            else:
+                act_data = read_json(os.path.join(base_dir, "data/activity_data_v3.json"))
+                
+        res_req = st.session_state.get("base_res_req")
+        if res_req is None:
+            if uploaded_req is not None:
+                res_req = json.load(uploaded_req)
+                uploaded_req.seek(0)
+            else:
+                res_req = read_json(os.path.join(base_dir, "data/resource_requirements_v3.json"))
+                
+        res_cap = st.session_state.get("base_res_cap")
+        if res_cap is None:
+            if uploaded_cap is not None:
+                res_cap = json.load(uploaded_cap)
+                uploaded_cap.seek(0)
+            else:
+                res_cap = read_json(os.path.join(base_dir, "data/resource_capacity_v3.json"))
+                
+        pred = st.session_state.get("base_pred")
+        if pred is None:
+            pred, _ = build_predecessors(act_data, [], True)
+            
         baseline = build_reference_no_crash_schedule(
-            st.session_state.base_act_data, st.session_state.base_res_req, 
-            st.session_state.base_res_cap, st.session_state.base_pred, current_day, 60.0, 1
+            act_data, res_req, res_cap, pred, current_day, 60.0, 1
         )
+        
         out_png = os.path.join(base_dir, "outputs/st_base_gantt.png")
         os.makedirs(os.path.dirname(out_png), exist_ok=True)
         base_gantt(baseline, res["schedule"], current_day, out_png)
         st.image(out_png, caption="Gantt Comparison")
+        
+        # Resource allocation plot
+        res_png = os.path.join(base_dir, "outputs/st_base_resources.png")
+        generate_resource_usage_plot(
+            baseline, res["schedule"], res_req, res_cap, res_png
+        )
+        st.image(res_png, caption="Resource Allocation & Capacity Load")
 
 if "hyb_res" in st.session_state:
     res = st.session_state.hyb_res
@@ -232,21 +477,47 @@ if "hyb_res" in st.session_state:
         st.subheader("Schedule & Crashing Results")
         st.dataframe(df)
         
+        # Fallbacks for old/existing session state
+        act_data = st.session_state.get("hyb_act_data")
+        if act_data is None:
+            act_data = read_json(os.path.join(base_dir, "implementasi-hybrid/data/activity_data.json"))
+                
+        res_req = st.session_state.get("hyb_res_req")
+        if res_req is None:
+            res_req = read_json(os.path.join(base_dir, "implementasi-hybrid/data/resource_requirements.json"))
+                
+        res_cap = st.session_state.get("hyb_res_cap")
+        if res_cap is None:
+            res_cap = read_json(os.path.join(base_dir, "implementasi-hybrid/data/resource_capacity.json"))
+                
+        pred = st.session_state.get("hyb_pred")
+        if pred is None:
+            pred, _ = build_predecessors(act_data, [], True)
+            
         baseline = build_reference_no_crash_schedule(
-            st.session_state.hyb_act_data, st.session_state.hyb_res_req, 
-            st.session_state.hyb_res_cap, st.session_state.hyb_pred, current_day, 60.0, 1
+            act_data, res_req, res_cap, pred, current_day, 60.0, 1
         )
         out_png = os.path.join(base_dir, "outputs/st_hybrid_gantt.png")
         os.makedirs(os.path.dirname(out_png), exist_ok=True)
         base_gantt(baseline, res["schedule"], current_day, out_png)
         st.image(out_png, caption="Gantt Comparison")
+        
+        # Resource allocation plot
+        res_png = os.path.join(base_dir, "outputs/st_hybrid_resources.png")
+        generate_resource_usage_plot(
+            baseline, res["schedule"], res_req, res_cap, res_png
+        )
+        st.image(res_png, caption="Resource Allocation & Capacity Load")
 
 if "ga_solution" in st.session_state:
     ga_solution = st.session_state.ga_solution
     prob = st.session_state.ga_prob
     if ga_solution is not None:
         st.success("Optimization finished!")
-        st.metric("Makespan", f"{ga_solution['makespan']:.2f} days")
+        col1, col2 = st.columns(2)
+        col1.metric("Makespan", f"{ga_solution['makespan']:.2f} days")
+        if "total_cost" in ga_solution:
+            col2.metric("Total Cost", f"${ga_solution['total_cost']:.2f}")
 
         df_var = pd.DataFrame({
             "Resource": st.session_state.ga_res_data["resource_name"],

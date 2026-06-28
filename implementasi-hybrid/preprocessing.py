@@ -3,26 +3,25 @@ import json
 import numpy as np
 import pandas as pd
 
-def preprocess():
+def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_capacity=None, alpha=0.7, beta=0.7):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(base_dir, "../implementasi-cobb")
     out_dir = os.path.join(base_dir, "data")
     os.makedirs(out_dir, exist_ok=True)
     
-    tasks = pd.read_csv(os.path.join(data_dir, "data_tasks.csv"))
-    precedence = pd.read_csv(os.path.join(data_dir, "data_precedence.csv"))
-    resources = pd.read_csv(os.path.join(data_dir, "data_assignments.csv"))
+    tasks = tasks_df if tasks_df is not None else pd.read_csv(os.path.join(data_dir, "data_tasks.csv"))
+    precedence = precedence_df if precedence_df is not None else pd.read_csv(os.path.join(data_dir, "data_precedence.csv"))
+    resources = resources_df if resources_df is not None else pd.read_csv(os.path.join(data_dir, "data_assignments.csv"))
     
-    alpha = 0.7
-    beta = 0.7
     x_val = 2.0
     tau_val = 4.0
     overtime_mult = 1.5
     hours_per_day = 8
     
     activity_data = {}
-    with open(os.path.join(base_dir, "../data/resource_capacity_v3.json"), "r") as f:
-        resource_capacity = json.load(f)
+    if resource_capacity is None:
+        with open(os.path.join(base_dir, "../data/resource_capacity_v3.json"), "r") as f:
+            resource_capacity = json.load(f)
         
     resource_requirements = {}
     

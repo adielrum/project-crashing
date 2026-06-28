@@ -1,0 +1,15 @@
+### Alpha Calibration Lookup Table (Double the Workforce)
+| If you double your workforce (2x workers), and the task finishes in... | Then your Alpha (α) is approximately... | Example Trade |
+|---|---|---|
+| 50% of original time (Perfect efficiency) | 1.0 | Trench digging, basic labor |
+| 60% of original time | 0.7 - 0.8 | Bricklaying, framing |
+| 70% of original time | 0.5 | Electrical wiring, plumbing |
+| 85% of original time (Terrible efficiency) | 0.2 - 0.3 | Highly confined spaces, elevator shaft install |
+
+### Beta Calibration Lookup Table (12-Hour Shifts vs 8-Hour)
+| If you switch to 12-hour shifts (+50% hours), and daily output increases by... | Then your Beta (β) is approximately... | Example Trade |
+|---|---|---|
+| 50% (Perfect efficiency, no fatigue) | 1.0 | Automated machine operation |
+| 35% | 0.7 - 0.8 | Painting, light assembly |
+| 20% | 0.4 - 0.5 | Heavy lifting, concrete pouring |
+| <10% (Extreme fatigue, almost useless) | 0.2 | Extreme physical labor under heat |
