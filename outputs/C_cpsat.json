@@ -2087,5 +2087,10 @@
       "crash_cost_per_day": 936.17,
       "crash_cost": 0.0
     }
-  ]
+  ],
+  "total_normal_cost": 506210.0,
+  "total_comparable_cost": 603842.88,
+  "penalty": 0.0,
+  "bonus": 224000.0,
+  "total_cost": 379842.88
 }

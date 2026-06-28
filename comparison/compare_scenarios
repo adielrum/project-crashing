@@ -46,13 +46,13 @@ sys.path.insert(0, HYBRID_DIR)
 # ════════════════════════════════════════════════════════════════════════════
 T_MAX          = 310      # target finish day
 CURRENT_DAY    = 0        # day crashing starts from
-C_LATE         = 5000.0  # USD penalty per late day
-C_EARLY        = 2000.0  # USD bonus per early day
+C_LATE         = 5000.0   # USD penalty per late day
+C_EARLY        = 2000.0   # USD bonus per early day
 
 # Scenario A — GA
-GA_POP_SIZE    = 1000      # increase for better quality (e.g. 500)
+GA_POP_SIZE    = 1000     # increase for better quality (e.g. 500)
 GA_MAX_GEN     = 5000     # increase for more convergence (e.g. 2000)
-GA_TOL         = 0.0001    # convergence tolerance (relative change in objective)
+GA_TOL         = 0.0001   # convergence tolerance (relative change in objective)
 GA_PERIOD      = 20       # number of consecutive generations under tol before stopping
 GA_SEED        = 42
 
@@ -126,7 +126,7 @@ def run_scenario_A():
         problem,
         pop_size=GA_POP_SIZE,
         seed=GA_SEED,
-        verbose=False,
+        verbose=True,
         max_gen=GA_MAX_GEN,
         tol=GA_TOL,
         period=GA_PERIOD,
@@ -174,11 +174,11 @@ def run_scenario_A():
     except Exception as ex:
         print(f"  [warn] Gantt HTML: {ex}")
 
-    print(f"  ✓  Makespan   : {makespan:.2f} days  (saved {baseline_makespan - makespan:.1f} d)")
-    print(f"     Labor cost : ${labor_cost:,.2f}")
-    print(f"     Penalty    : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
-    print(f"     Total cost : ${total_cost:,.2f}")
-    print(f"     Solve time : {elapsed:.1f} s")
+    print(f"  ✓  Makespan        : {makespan:.2f} days  (saved {baseline_makespan - makespan:.1f} d)")
+    print(f"     Labor cost      : ${labor_cost:,.2f}")
+    print(f"     Penalty         : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
+    print(f"     Total cost      : ${total_cost:,.2f}")
+    print(f"     Solve time      : {elapsed:.1f} s")
 
     return {
         "scenario": "A",
@@ -267,10 +267,7 @@ def run_scenario_B():
 
     # Generate Gantt for B using cobb_model's plotting functions
     try:
-        from cobb_model import (
-            generate_gantt_comparison_plot,
-            generate_interactive_gantt_html,
-        )
+        from cobb_model import generate_gantt_comparison_plot
         generate_gantt_comparison_plot(
             tasks, _prob.s_baseline, _prob.f_baseline,
             result["s"], result["f"], CURRENT_DAY, out_gantt,
@@ -291,11 +288,11 @@ def run_scenario_B():
     except Exception as ex:
         print(f"  [warn] Gantt HTML B: {ex}")
 
-    print(f"  ✓  Makespan   : {makespan:.2f} days  (saved {baseline_makespan - makespan:.1f} d)")
-    print(f"     Labor cost : ${labor_cost:,.2f}")
-    print(f"     Penalty    : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
-    print(f"     Total cost : ${total_cost:,.2f}")
-    print(f"     Solve time : {elapsed:.1f} s")
+    print(f"  ✓  Makespan        : {makespan:.2f} days  (saved {baseline_makespan - makespan:.1f} d)")
+    print(f"     Labor cost      : ${labor_cost:,.2f}")
+    print(f"     Penalty         : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
+    print(f"     Total cost      : ${total_cost:,.2f}")
+    print(f"     Solve time      : {elapsed:.1f} s")
 
     return {
         "scenario": "B",
@@ -367,10 +364,27 @@ def run_scenario_C():
         return None
 
     makespan   = result["makespan"]
-    crash_cost = result["total_crash_cost"]
+
+    # ── Cost calculation (matches run_bonus_penalty.py 77-line version) ──
+    # total_crash_cost = incremental crashing cost (additional above normal)
+    # total_normal_cost = Sum W_i,k * r_k  (baseline labor cost for all activities)
+    # total_comparable_cost = total_normal_cost + total_crash_cost
+    # total_cost = total_comparable_cost + penalty - bonus
+    crash_cost        = result["total_crash_cost"]
+    total_normal_cost = sum(
+        float(a.get("activity_base_cost", 0.0)) for a in act.values()
+    )
+    total_comparable_cost = total_normal_cost + crash_cost
     penalty    = C_LATE  * max(0, makespan - T_MAX)
     bonus      = C_EARLY * max(0, T_MAX - makespan)
-    total_cost = crash_cost + penalty - bonus
+    total_cost = total_comparable_cost + penalty - bonus
+
+    # Enrich result with computed cost fields before saving
+    result["total_normal_cost"]      = total_normal_cost
+    result["total_comparable_cost"]  = total_comparable_cost
+    result["penalty"]                = penalty
+    result["bonus"]                  = bonus
+    result["total_cost"]             = total_cost
 
     out_json  = os.path.join(OUTPUTS_DIR, "C_cpsat.json")
     out_csv   = os.path.join(OUTPUTS_DIR, "C_cpsat_schedule.csv")
@@ -389,12 +403,14 @@ def run_scenario_C():
     except Exception as ex:
         print(f"  [warn] Gantt PNG: {ex}")
 
-    print(f"  ✓  Status     : {status}")
-    print(f"     Makespan   : {makespan} days  (saved {baseline_makespan - makespan} d)")
-    print(f"     Crash cost : ${crash_cost:,.2f}")
-    print(f"     Penalty    : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
-    print(f"     Total cost : ${total_cost:,.2f}")
-    print(f"     Solve time : {elapsed:.1f} s")
+    print(f"  ✓  Status          : {status}")
+    print(f"     Makespan        : {makespan} days  (saved {baseline_makespan - makespan} d)")
+    print(f"     Crash cost      : ${crash_cost:,.2f}")
+    print(f"     Normal cost     : ${total_normal_cost:,.2f}  (Sum W_i,k * r_k)")
+    print(f"     Comparable cost : ${total_comparable_cost:,.2f}")
+    print(f"     Penalty         : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
+    print(f"     Total cost      : ${total_cost:,.2f}")
+    print(f"     Solve time      : {elapsed:.1f} s")
 
     return {
         "scenario": "C",
@@ -402,7 +418,10 @@ def run_scenario_C():
         "baseline_makespan": float(baseline_makespan),
         "makespan": float(makespan),
         "makespan_reduction": float(baseline_makespan - makespan),
-        "labor_cost": crash_cost,
+        # labor_cost stores total_comparable_cost so the comparison table is apples-to-apples
+        "labor_cost": total_comparable_cost,
+        "crash_cost": crash_cost,
+        "normal_cost": total_normal_cost,
         "penalty": penalty,
         "bonus": bonus,
         "total_cost": total_cost,
@@ -436,15 +455,15 @@ def print_comparison(results):
     _hline()
 
     metrics = [
-        ("Baseline makespan (days)",  "baseline_makespan",  "{:.1f}"),
-        ("Optimized makespan (days)", "makespan",           "{:.2f}"),
-        ("Makespan reduction (days)", "makespan_reduction", "{:.2f}"),
-        ("On-time vs T_MAX",          "__ontime__",         None),
-        ("Labor / Crash cost (USD)",  "labor_cost",         "${:,.2f}"),
-        ("Late penalty (USD)",        "penalty",            "${:,.2f}"),
-        ("Early bonus (USD)",         "bonus",              "${:,.2f}"),
-        ("Total cost (USD)",          "total_cost",         "${:,.2f}"),
-        ("Solve time (s)",            "solve_time_s",       "{:.2f}"),
+        ("Baseline makespan (days)",        "baseline_makespan",     "{:.1f}"),
+        ("Optimized makespan (days)",        "makespan",              "{:.2f}"),
+        ("Makespan reduction (days)",        "makespan_reduction",    "{:.2f}"),
+        ("On-time vs T_MAX",                 "__ontime__",            None),
+        ("Labor / Comparable cost (USD)",    "labor_cost",            "${:,.2f}"),
+        ("Late penalty (USD)",               "penalty",               "${:,.2f}"),
+        ("Early bonus (USD)",                "bonus",                 "${:,.2f}"),
+        ("Total cost (USD)",                 "total_cost",            "${:,.2f}"),
+        ("Solve time (s)",                   "solve_time_s",          "{:.2f}"),
     ]
 
     for label, key, fmt in metrics:
@@ -461,6 +480,16 @@ def print_comparison(results):
         print(line)
 
     _hline()
+
+    # Extra breakdown row for Scenario C crash vs normal split
+    c_results = [r for r in valid if r["scenario"] == "C"]
+    if c_results:
+        print()
+        print("  Scenario C cost breakdown:")
+        for r in c_results:
+            print(f"    Crash cost      : ${r.get('crash_cost', 0):,.2f}")
+            print(f"    Normal cost     : ${r.get('normal_cost', 0):,.2f}  (Sum W_i,k * r_k)")
+            print(f"    Comparable cost : ${r['labor_cost']:,.2f}  (crash + normal)")
 
     # save JSON summary
     out_compare = os.path.join(OUTPUTS_DIR, "comparison_summary.json")
@@ -504,10 +533,10 @@ def _make_comparison_chart(results):
 
         # ── Left: makespan ──
         ax = axes[0]
-        bl = [r["baseline_makespan"] for r in results]
+        bl  = [r["baseline_makespan"] for r in results]
         opt = [r["makespan"] for r in results]
-        bars1 = ax.bar(x - w/2, bl,  w, label="Baseline",   color="#94a3b8")
-        bars2 = ax.bar(x + w/2, opt, w, label="Optimized",  color=colors[:n])
+        bars1 = ax.bar(x - w/2, bl,  w, label="Baseline",  color="#94a3b8")
+        bars2 = ax.bar(x + w/2, opt, w, label="Optimized", color=colors[:n])
         ax.axhline(T_MAX, color="red", linestyle="--", linewidth=1.2, label=f"T_MAX={T_MAX}")
         ax.set_xticks(x); ax.set_xticklabels(scenarios)
         ax.set_title("Makespan (days)"); ax.legend(fontsize=8)
@@ -518,12 +547,26 @@ def _make_comparison_chart(results):
 
         # ── Middle: cost breakdown ──
         ax = axes[1]
-        labor  = [r["labor_cost"]  for r in results]
-        penalty = [r["penalty"]    for r in results]
-        bonus  = [-r["bonus"]      for r in results]   # negative = savings
-        ax.bar(x,      labor,   label="Labor/Crash cost", color="#3b82f6")
-        ax.bar(x,      penalty, bottom=labor, label="Late penalty",   color="#ef4444")
-        ax.bar(x,      bonus,   bottom=labor, label="Early bonus (−)", color="#10b981")
+        # For Scenario C, split crash vs normal cost in the stacked bar
+        labor_base = []
+        crash_extra = []
+        for r in results:
+            if r["scenario"] == "C":
+                labor_base.append(r.get("normal_cost", r["labor_cost"]))
+                crash_extra.append(r.get("crash_cost", 0.0))
+            else:
+                labor_base.append(r["labor_cost"])
+                crash_extra.append(0.0)
+
+        penalty_vals = [r["penalty"] for r in results]
+        bonus_vals   = [-r["bonus"]  for r in results]   # negative = savings
+
+        ax.bar(x, labor_base,   label="Labor/Normal cost", color="#3b82f6")
+        ax.bar(x, crash_extra,  bottom=labor_base,         label="Crash cost (extra)", color="#f59e0b")
+        ax.bar(x, penalty_vals, bottom=[a+b for a,b in zip(labor_base, crash_extra)],
+               label="Late penalty", color="#ef4444")
+        ax.bar(x, bonus_vals,   bottom=[a+b for a,b in zip(labor_base, crash_extra)],
+               label="Early bonus (−)", color="#10b981")
         ax.set_xticks(x); ax.set_xticklabels(scenarios)
         ax.set_title("Cost Breakdown (USD)"); ax.legend(fontsize=8)
         ax.set_ylabel("USD")
