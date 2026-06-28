@@ -143,12 +143,12 @@ class ResourceBasedScheduling(ElementwiseProblem):
     """
 
     def __init__(self, tasks, precedence, resources, N, K_i,
-                 alpha=0.5, beta=0.5,
+                 alpha=0.7, beta=0.7,
                  x_min=1.0, x_max=None,
                  tau_min=0.0,
                  tau_max=4.0,
                  D_min_ratio=0.5,
-                 c_late=10000.0, c_early=1000.0,
+                 c_late=5000.0, c_early=2000.0,
                  T_max=344,
                  current_day=0,        # ← input pengguna: hari mulai crashing
                  overtime_mult=1.5,

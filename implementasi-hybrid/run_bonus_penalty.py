@@ -62,9 +62,25 @@ def run_hybrid_bonus_penalty():
             print("Penalty applied:", (result["makespan"] - target_end_date) * c_late)
         elif result["makespan"] < target_end_date:
             print("Bonus applied:", (target_end_date - result["makespan"]) * c_early)
-            
+
+    # Normal cost: Sum_{i,k} W_i,k * r_k, taken directly from activity_base_cost
+    # in activity_data (already aggregated over resources k for each activity i
+    # during preprocessing). Summed here over all activities i.
+    total_normal_cost = sum(
+        float(a.get("activity_base_cost", 0.0)) for a in activity_data.values()
+    )
+
     if "total_crash_cost" in result:
-        print("Total crash cost:", result["total_crash_cost"])
+        total_crash_cost = result["total_crash_cost"]
+        # Total Comparable Cost = Total crash cost + Sum_{i,k} W_i,k * r_k
+        total_comparable_cost = total_crash_cost + total_normal_cost
+
+        print("Total crash cost:", total_crash_cost)
+        print("Total normal cost (Sum W_i,k * r_k):", total_normal_cost)
+        print("Total Comparable Cost:", total_comparable_cost)
+
+        result["total_normal_cost"] = total_normal_cost
+        result["total_comparable_cost"] = total_comparable_cost
         
     out_dir = os.path.join(base_dir, "../outputs")
     os.makedirs(out_dir, exist_ok=True)

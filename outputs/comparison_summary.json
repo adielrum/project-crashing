@@ -1,0 +1,55 @@
+{
+  "settings": {
+    "T_MAX": 310,
+    "CURRENT_DAY": 0,
+    "C_LATE": 5000.0,
+    "C_EARLY": 2000.0
+  },
+  "results": [
+    {
+      "scenario": "A",
+      "method": "GA (Cobb-Douglas)",
+      "baseline_makespan": 344.0,
+      "makespan": 183.70916619372542,
+      "makespan_reduction": 160.29,
+      "labor_cost": 587103.7686093163,
+      "penalty": 0.0,
+      "bonus": 252581.66761254915,
+      "total_cost": 334522.10099676717,
+      "solve_time_s": 789.69,
+      "output_json": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\A_ga_cobb.json",
+      "output_gantt_png": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\A_ga_cobb_gantt.png",
+      "output_gantt_html": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\A_ga_cobb_gantt.html"
+    },
+    {
+      "scenario": "B",
+      "method": "MILP / CP-SAT (discretized Cobb-Douglas)",
+      "baseline_makespan": 344.0,
+      "makespan": 211.0,
+      "makespan_reduction": 133.0,
+      "labor_cost": 570401.484,
+      "penalty": 0.0,
+      "bonus": 198000.0,
+      "total_cost": 372401.48400000005,
+      "solve_time_s": 3.73,
+      "output_json": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\B_milp_cobb.json",
+      "output_gantt_png": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\B_milp_cobb_gantt.png",
+      "output_gantt_html": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\B_milp_cobb_gantt.html"
+    },
+    {
+      "scenario": "C",
+      "method": "CP-SAT (linear crash cost)",
+      "baseline_makespan": 344.0,
+      "makespan": 198.0,
+      "makespan_reduction": 146.0,
+      "labor_cost": 97632.88,
+      "penalty": 0.0,
+      "bonus": 224000.0,
+      "total_cost": -126367.12,
+      "solve_time_s": 6.5,
+      "output_json": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\C_cpsat.json",
+      "output_csv": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\C_cpsat_schedule.csv",
+      "output_gantt_png": "c:\\Users\\Aisyah Eka R\\Downloads\\PEMOD\\project-crashing\\outputs\\C_cpsat_gantt.png"
+    }
+  ]
+}

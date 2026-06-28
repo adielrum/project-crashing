@@ -4,6 +4,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 1194.47,
+    "activity_base_cost": 2880.0,
     "required_activities": []
   },
   "3": {
@@ -11,6 +12,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 1244.24,
+    "activity_base_cost": 2000.0,
     "required_activities": [
       "2"
     ]
@@ -20,6 +22,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 1032.72,
+    "activity_base_cost": 1660.0,
     "required_activities": [
       "3"
     ]
@@ -29,6 +32,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 1065.07,
+    "activity_base_cost": 1712.0,
     "required_activities": [
       "4"
     ]
@@ -38,6 +42,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 846.08,
+    "activity_base_cost": 2720.0,
     "required_activities": [
       "2"
     ]
@@ -47,6 +52,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 846.08,
+    "activity_base_cost": 6800.0,
     "required_activities": [
       "6"
     ]
@@ -56,6 +62,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 298.62,
+    "activity_base_cost": 240.0,
     "required_activities": [
       "2"
     ]
@@ -65,6 +72,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 846.08,
+    "activity_base_cost": 6800.0,
     "required_activities": [
       "8"
     ]
@@ -74,6 +82,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 746.54,
+    "activity_base_cost": 6000.0,
     "required_activities": [
       "7"
     ]
@@ -83,6 +92,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 895.85,
+    "activity_base_cost": 7200.0,
     "required_activities": [
       "7"
     ]
@@ -92,6 +102,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 796.31,
+    "activity_base_cost": 6400.0,
     "required_activities": [
       "7"
     ]
@@ -101,6 +112,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 796.31,
+    "activity_base_cost": 6400.0,
     "required_activities": [
       "7"
     ]
@@ -110,6 +122,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 796.31,
+    "activity_base_cost": 6400.0,
     "required_activities": [
       "7"
     ]
@@ -119,6 +132,7 @@
     "activity_normal_time": 60,
     "activity_min_time": 30,
     "crash_cost": 796.31,
+    "activity_base_cost": 38400.0,
     "required_activities": [
       "10"
     ]
@@ -128,6 +142,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 647.01,
+    "activity_base_cost": 1040.0,
     "required_activities": [
       "2"
     ]
@@ -137,6 +152,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 647.01,
+    "activity_base_cost": 1040.0,
     "required_activities": [
       "2"
     ]
@@ -146,6 +162,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 875.95,
+    "activity_base_cost": 2112.0,
     "required_activities": [
       "18",
       "19"
@@ -156,6 +173,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 647.01,
+    "activity_base_cost": 1560.0,
     "required_activities": [
       "20"
     ]
@@ -165,6 +183,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 726.64,
+    "activity_base_cost": 1168.0,
     "required_activities": [
       "21"
     ]
@@ -174,6 +193,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 696.78,
+    "activity_base_cost": 1680.0,
     "required_activities": [
       "20",
       "22"
@@ -184,6 +204,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 696.78,
+    "activity_base_cost": 1120.0,
     "required_activities": [
       "24",
       "22"
@@ -194,6 +215,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 696.78,
+    "activity_base_cost": 2800.0,
     "required_activities": [
       "25"
     ]
@@ -203,6 +225,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 696.78,
+    "activity_base_cost": 5600.0,
     "required_activities": [
       "26"
     ]
@@ -212,6 +235,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "26"
     ]
@@ -221,6 +245,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 696.78,
+    "activity_base_cost": 5600.0,
     "required_activities": [
       "27",
       "28"
@@ -231,6 +256,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 647.01,
+    "activity_base_cost": 2600.0,
     "required_activities": [
       "29"
     ]
@@ -240,6 +266,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 348.39,
+    "activity_base_cost": 2800.0,
     "required_activities": [
       "30"
     ]
@@ -249,6 +276,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 696.78,
+    "activity_base_cost": 1120.0,
     "required_activities": [
       "30"
     ]
@@ -258,6 +286,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 547.47,
+    "activity_base_cost": 1760.0,
     "required_activities": [
       "32"
     ]
@@ -267,6 +296,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 1294.01,
+    "activity_base_cost": 4160.0,
     "required_activities": [
       "33"
     ]
@@ -276,6 +306,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 547.47,
+    "activity_base_cost": 1760.0,
     "required_activities": [
       "35"
     ]
@@ -285,6 +316,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 547.47,
+    "activity_base_cost": 1760.0,
     "required_activities": [
       "34"
     ]
@@ -294,6 +326,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 597.24,
+    "activity_base_cost": 2400.0,
     "required_activities": [
       "37"
     ]
@@ -303,6 +336,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 597.24,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "36"
     ]
@@ -312,6 +346,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "39"
     ]
@@ -321,6 +356,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "38"
     ]
@@ -330,6 +366,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 29.86,
+    "activity_base_cost": 24.0,
     "required_activities": [
       "40"
     ]
@@ -339,6 +376,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 298.62,
+    "activity_base_cost": 720.0,
     "required_activities": [
       "41"
     ]
@@ -348,6 +386,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 796.31,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "42"
     ]
@@ -357,6 +396,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 597.24,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "44"
     ]
@@ -366,6 +406,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 746.54,
+    "activity_base_cost": 6000.0,
     "required_activities": [
       "43",
       "16"
@@ -376,6 +417,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 746.54,
+    "activity_base_cost": 6000.0,
     "required_activities": [
       "47"
     ]
@@ -385,6 +427,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 559.91,
+    "activity_base_cost": 4500.0,
     "required_activities": [
       "47"
     ]
@@ -394,6 +437,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 559.91,
+    "activity_base_cost": 4500.0,
     "required_activities": [
       "48"
     ]
@@ -403,6 +447,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 373.27,
+    "activity_base_cost": 3000.0,
     "required_activities": [
       "50"
     ]
@@ -412,6 +457,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 149.31,
+    "activity_base_cost": 600.0,
     "required_activities": [
       "51"
     ]
@@ -421,6 +467,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 607.19,
+    "activity_base_cost": 2440.0,
     "required_activities": [
       "52",
       "13",
@@ -434,6 +481,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 525.57,
+    "activity_base_cost": 2112.0,
     "required_activities": [
       "47"
     ]
@@ -443,6 +491,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 597.24,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "55",
       "54"
@@ -453,6 +502,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "56"
     ]
@@ -462,6 +512,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 298.62,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "57"
     ]
@@ -471,6 +522,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 333.46,
+    "activity_base_cost": 1340.0,
     "required_activities": [
       "57"
     ]
@@ -480,6 +532,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 525.57,
+    "activity_base_cost": 2112.0,
     "required_activities": [
       "57"
     ]
@@ -489,6 +542,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 597.24,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "60",
       "59"
@@ -499,6 +553,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "61"
     ]
@@ -508,6 +563,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 298.62,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "62"
     ]
@@ -517,6 +573,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 607.19,
+    "activity_base_cost": 2440.0,
     "required_activities": [
       "62"
     ]
@@ -526,6 +583,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 525.57,
+    "activity_base_cost": 2112.0,
     "required_activities": [
       "62"
     ]
@@ -535,6 +593,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 597.24,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "65",
       "64"
@@ -545,6 +604,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "66"
     ]
@@ -554,6 +614,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 298.62,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "67"
     ]
@@ -563,6 +624,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 547.47,
+    "activity_base_cost": 1760.0,
     "required_activities": [
       "58"
     ]
@@ -572,6 +634,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 647.01,
+    "activity_base_cost": 2600.0,
     "required_activities": [
       "58"
     ]
@@ -581,6 +644,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 647.01,
+    "activity_base_cost": 2600.0,
     "required_activities": [
       "58"
     ]
@@ -590,6 +654,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 525.57,
+    "activity_base_cost": 1689.6,
     "required_activities": [
       "58"
     ]
@@ -599,6 +664,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 597.24,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "69",
       "72",
@@ -611,6 +677,7 @@
     "activity_normal_time": 7,
     "activity_min_time": 4,
     "crash_cost": 29.86,
+    "activity_base_cost": 168.0,
     "required_activities": [
       "73"
     ]
@@ -620,6 +687,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 298.62,
+    "activity_base_cost": 480.0,
     "required_activities": [
       "74"
     ]
@@ -629,6 +697,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 497.7,
+    "activity_base_cost": 6000.0,
     "required_activities": [
       "63",
       "68"
@@ -639,6 +708,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "75",
       "13"
@@ -649,6 +719,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 547.47,
+    "activity_base_cost": 8800.0,
     "required_activities": [
       "49",
       "50"
@@ -659,6 +730,7 @@
     "activity_normal_time": 25,
     "activity_min_time": 13,
     "crash_cost": 547.47,
+    "activity_base_cost": 11000.0,
     "required_activities": [
       "77"
     ]
@@ -668,6 +740,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 547.47,
+    "activity_base_cost": 880.0,
     "required_activities": [
       "81"
     ]
@@ -677,6 +750,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 547.47,
+    "activity_base_cost": 4400.0,
     "required_activities": [
       "79"
     ]
@@ -686,6 +760,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 273.73,
+    "activity_base_cost": 1100.0,
     "required_activities": [
       "81"
     ]
@@ -695,6 +770,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 273.73,
+    "activity_base_cost": 1100.0,
     "required_activities": [
       "83"
     ]
@@ -704,6 +780,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 547.47,
+    "activity_base_cost": 1760.0,
     "required_activities": [
       "81"
     ]
@@ -713,6 +790,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 547.47,
+    "activity_base_cost": 880.0,
     "required_activities": [
       "11",
       "82",
@@ -724,6 +802,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 547.47,
+    "activity_base_cost": 2200.0,
     "required_activities": [
       "88"
     ]
@@ -733,6 +812,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 547.47,
+    "activity_base_cost": 2200.0,
     "required_activities": [
       "89"
     ]
@@ -742,6 +822,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "90"
     ]
@@ -751,6 +832,7 @@
     "activity_normal_time": 25,
     "activity_min_time": 13,
     "crash_cost": 497.7,
+    "activity_base_cost": 10000.0,
     "required_activities": [
       "81"
     ]
@@ -760,6 +842,7 @@
     "activity_normal_time": 25,
     "activity_min_time": 13,
     "crash_cost": 497.7,
+    "activity_base_cost": 10000.0,
     "required_activities": [
       "93"
     ]
@@ -769,6 +852,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 597.24,
+    "activity_base_cost": 4800.0,
     "required_activities": [
       "94"
     ]
@@ -778,6 +862,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 497.7,
+    "activity_base_cost": 6000.0,
     "required_activities": [
       "81"
     ]
@@ -787,6 +872,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 597.24,
+    "activity_base_cost": 7200.0,
     "required_activities": [
       "96",
       "94"
@@ -797,6 +883,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 447.93,
+    "activity_base_cost": 7200.0,
     "required_activities": [
       "98",
       "95"
@@ -807,6 +894,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "93"
     ]
@@ -816,6 +904,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "94",
       "100"
@@ -826,6 +915,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 497.7,
+    "activity_base_cost": 4000.0,
     "required_activities": [
       "94",
       "101"
@@ -836,6 +926,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 497.7,
+    "activity_base_cost": 4000.0,
     "required_activities": [
       "102"
     ]
@@ -845,6 +936,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 447.93,
+    "activity_base_cost": 3600.0,
     "required_activities": [
       "102"
     ]
@@ -854,6 +946,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 447.93,
+    "activity_base_cost": 7200.0,
     "required_activities": [
       "99"
     ]
@@ -863,6 +956,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 597.24,
+    "activity_base_cost": 7200.0,
     "required_activities": [
       "99"
     ]
@@ -872,6 +966,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 447.93,
+    "activity_base_cost": 3600.0,
     "required_activities": [
       "99"
     ]
@@ -881,6 +976,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 597.24,
+    "activity_base_cost": 4800.0,
     "required_activities": [
       "107"
     ]
@@ -890,6 +986,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 796.31,
+    "activity_base_cost": 12800.0,
     "required_activities": [
       "80",
       "45",
@@ -901,6 +998,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 796.31,
+    "activity_base_cost": 6400.0,
     "required_activities": [
       "110"
     ]
@@ -910,6 +1008,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 796.31,
+    "activity_base_cost": 6400.0,
     "required_activities": [
       "111"
     ]
@@ -919,6 +1018,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "93"
     ]
@@ -928,6 +1028,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "84"
     ]
@@ -937,6 +1038,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "85",
       "114",
@@ -948,6 +1050,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "99",
       "115",
@@ -959,6 +1062,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "75",
       "14"
@@ -969,6 +1073,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "93"
     ]
@@ -978,6 +1083,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "119",
       "100"
@@ -988,6 +1094,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "121",
       "120"
@@ -998,6 +1105,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 647.01,
+    "activity_base_cost": 1040.0,
     "required_activities": [
       "121",
       "91"
@@ -1008,6 +1116,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "102",
       "122"
@@ -1018,6 +1127,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "80",
       "15"
@@ -1028,6 +1138,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "75"
     ]
@@ -1037,6 +1148,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 647.01,
+    "activity_base_cost": 5200.0,
     "required_activities": [
       "93"
     ]
@@ -1046,6 +1158,7 @@
     "activity_normal_time": 15,
     "activity_min_time": 8,
     "crash_cost": 647.01,
+    "activity_base_cost": 7800.0,
     "required_activities": [
       "126",
       "127",
@@ -1057,6 +1170,7 @@
     "activity_normal_time": 20,
     "activity_min_time": 10,
     "crash_cost": 647.01,
+    "activity_base_cost": 10400.0,
     "required_activities": [
       "102",
       "129",
@@ -1068,6 +1182,7 @@
     "activity_normal_time": 5,
     "activity_min_time": 3,
     "crash_cost": 547.47,
+    "activity_base_cost": 2200.0,
     "required_activities": [
       "94"
     ]
@@ -1077,6 +1192,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 273.73,
+    "activity_base_cost": 880.0,
     "required_activities": [
       "132"
     ]
@@ -1086,6 +1202,7 @@
     "activity_normal_time": 4,
     "activity_min_time": 2,
     "crash_cost": 298.62,
+    "activity_base_cost": 960.0,
     "required_activities": [
       "105",
       "104",
@@ -1102,6 +1219,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 846.08,
+    "activity_base_cost": 680.0,
     "required_activities": [
       "134"
     ]
@@ -1111,6 +1229,7 @@
     "activity_normal_time": 3,
     "activity_min_time": 2,
     "crash_cost": 796.31,
+    "activity_base_cost": 1920.0,
     "required_activities": [
       "134",
       "112"
@@ -1121,6 +1240,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 895.85,
+    "activity_base_cost": 720.0,
     "required_activities": [
       "134",
       "108",
@@ -1132,6 +1252,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 895.85,
+    "activity_base_cost": 720.0,
     "required_activities": [
       "138"
     ]
@@ -1141,6 +1262,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 895.85,
+    "activity_base_cost": 720.0,
     "required_activities": [
       "139"
     ]
@@ -1150,6 +1272,7 @@
     "activity_normal_time": 10,
     "activity_min_time": 5,
     "crash_cost": 558.42,
+    "activity_base_cost": 4488.0,
     "required_activities": [
       "140"
     ]
@@ -1159,6 +1282,7 @@
     "activity_normal_time": 2,
     "activity_min_time": 1,
     "crash_cost": 945.62,
+    "activity_base_cost": 1520.0,
     "required_activities": [
       "141"
     ]
@@ -1168,6 +1292,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 945.62,
+    "activity_base_cost": 760.0,
     "required_activities": [
       "141"
     ]
@@ -1177,6 +1302,7 @@
     "activity_normal_time": 1,
     "activity_min_time": 1,
     "crash_cost": 936.17,
+    "activity_base_cost": 752.4,
     "required_activities": [
       "142",
       "143"
