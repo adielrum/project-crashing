@@ -1,6 +1,6 @@
 resource_id,resource_name,r_k_usd,resource_availability
 1,G.C. General Management,120.0,2
-2,G.C. Project Management,95.0,1
+2,G.C. Project Management,95.0,3
 3,G.C. Procurement,75.0,1
 4,G.C. Scheduler,80.0,1
 5,G.C. Accounting,70.0,1
@@ -11,20 +11,20 @@ resource_id,resource_name,r_k_usd,resource_availability
 10,G.C. Concrete Crew,60.0,4
 11,G.C. Finish Carpenter Crew,60.0,4
 12,Site Grading Contractor,70.0,6
-13,Plumbing Contractor,65.0,1
+13,Plumbing Contractor,65.0,2
 14,Plumbing Contractor Management,80.0,6
-15,Electric Contractor,65.0,1
+15,Electric Contractor,65.0,3
 16,Electric Contractor Management,80.0,4
-17,HVAC Contractor,65.0,1
+17,HVAC Contractor,65.0,4
 18,HVAC Contractor Management,80.0,3
 19,Elevator Contractor,80.0,1
 20,Elevator Contractor Management,90.0,8
-21,Steel Erection Contractor,75.0,1
+21,Steel Erection Contractor,75.0,3
 22,Steel Erection Contractor Management,85.0,8
 23,Drywall Contractor,50.0,10
 24,Masonry Contractor,55.0,4
 25,Tile Contractor,55.0,6
-26,Roofing Contractor,55.0,1
+26,Roofing Contractor,55.0,3
 27,Roofing Contractor Management,75.0,4
 28,Window Contractor,50.0,3
 29,Carpet Contractor,45.0,5

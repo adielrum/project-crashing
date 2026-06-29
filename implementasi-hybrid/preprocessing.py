@@ -48,6 +48,7 @@ def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_ca
                 "activity_normal_time": 0,
                 "activity_min_time": 0,
                 "crash_cost": 0.0,
+                "activity_base_cost": 0.0,
                 "required_activities": preds_dict.get(tid, [])
             }
             resource_requirements[tid] = {}
@@ -105,6 +106,7 @@ def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_ca
             "activity_normal_time": D_base_i_int,
             "activity_min_time": D_crashed_i_int,
             "crash_cost": round(crash_cost_per_day, 2),
+            "activity_base_cost": round(cost_base, 2),
             "required_activities": preds_dict.get(tid, [])
         }
         resource_requirements[tid] = reqs

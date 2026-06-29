@@ -5,10 +5,11 @@ from cobb_model import (
 )
 
 def run_bonus_penalty():
-    tasks, precedence, resources, N, K_i = load_data(
+    tasks, precedence, resources, N, K_i, resource_master = load_data(
         path_tasks=data_path("data_tasks.csv"),
         path_precedence=data_path("data_precedence.csv"),
         path_assignments=data_path("data_assignments.csv"),
+        path_resources=data_path("data_resources.csv"),
     )
 
     CURRENT_DAY = 0
@@ -16,12 +17,14 @@ def run_bonus_penalty():
 
     problem = ResourceBasedScheduling(
         tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
+        resource_master=resource_master,
         alpha=0.7, beta=0.7, x_min=1.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
         T_max=T_MAX, current_day=CURRENT_DAY, overtime_mult=1.5, hours_per_day=8,
         mode="bonus_penalty", c_late=5000.0, c_early=2000.0,
+        enforce_resource_constraint=True,
     )
 
-    solution = solve(problem, pop_size=200, seed=42, verbose=False)
+    solution = solve(problem, pop_size=200, seed=42, verbose=True)
 
     if solution is not None:
         base_dir = os.path.dirname(os.path.abspath(__file__))

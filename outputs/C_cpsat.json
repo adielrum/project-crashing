@@ -3,7 +3,7 @@
   "mode": "bonus_penalty",
   "horizon": 1056,
   "scale": 100,
-  "objective_value": 198,
+  "objective_value": -126367.12,
   "makespan": 198,
   "total_crash_cost": 97632.88,
   "total_crash_days": 180,
@@ -19,7 +19,8 @@
       "min_duration": 30,
       "crash_days": 22,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 17518.82
+      "crash_cost": 17518.82,
+      "activity_base_cost": 38400.0
     },
     {
       "activity": "81",
@@ -31,7 +32,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 6569.64
+      "crash_cost": 6569.64,
+      "activity_base_cost": 11000.0
     },
     {
       "activity": "93",
@@ -43,7 +45,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 5972.4
+      "crash_cost": 5972.4,
+      "activity_base_cost": 10000.0
     },
     {
       "activity": "94",
@@ -55,7 +58,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 5972.4
+      "crash_cost": 5972.4,
+      "activity_base_cost": 10000.0
     },
     {
       "activity": "99",
@@ -67,7 +71,8 @@
       "min_duration": 10,
       "crash_days": 10,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 4479.3
+      "crash_cost": 4479.3,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "47",
@@ -79,7 +84,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 746.54,
-      "crash_cost": 3732.7
+      "crash_cost": 3732.7,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "48",
@@ -91,7 +97,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 746.54,
-      "crash_cost": 3732.7
+      "crash_cost": 3732.7,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "29",
@@ -103,7 +110,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 3483.9
+      "crash_cost": 3483.9,
+      "activity_base_cost": 5600.0
     },
     {
       "activity": "77",
@@ -115,7 +123,8 @@
       "min_duration": 8,
       "crash_days": 7,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 3483.9
+      "crash_cost": 3483.9,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "121",
@@ -127,7 +136,8 @@
       "min_duration": 8,
       "crash_days": 5,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 3235.05
+      "crash_cost": 3235.05,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "98",
@@ -139,7 +149,8 @@
       "min_duration": 8,
       "crash_days": 5,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 2986.2
+      "crash_cost": 2986.2,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "50",
@@ -151,7 +162,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 559.91,
-      "crash_cost": 2799.55
+      "crash_cost": 2799.55,
+      "activity_base_cost": 4500.0
     },
     {
       "activity": "141",
@@ -163,7 +175,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 558.42,
-      "crash_cost": 2792.1
+      "crash_cost": 2792.1,
+      "activity_base_cost": 4488.0
     },
     {
       "activity": "105",
@@ -175,7 +188,8 @@
       "min_duration": 10,
       "crash_days": 5,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 2239.65
+      "crash_cost": 2239.65,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "51",
@@ -187,7 +201,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 373.27,
-      "crash_cost": 1866.35
+      "crash_cost": 1866.35,
+      "activity_base_cost": 3000.0
     },
     {
       "activity": "32",
@@ -199,7 +214,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 348.39,
-      "crash_cost": 1741.95
+      "crash_cost": 1741.95,
+      "activity_base_cost": 2800.0
     },
     {
       "activity": "26",
@@ -211,7 +227,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 1393.56
+      "crash_cost": 1393.56,
+      "activity_base_cost": 2800.0
     },
     {
       "activity": "100",
@@ -223,7 +240,8 @@
       "min_duration": 8,
       "crash_days": 2,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 1294.02
+      "crash_cost": 1294.02,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "30",
@@ -235,7 +253,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 1294.02
+      "crash_cost": 1294.02,
+      "activity_base_cost": 2600.0
     },
     {
       "activity": "54",
@@ -247,7 +266,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 607.19,
-      "crash_cost": 1214.38
+      "crash_cost": 1214.38,
+      "activity_base_cost": 2440.0
     },
     {
       "activity": "64",
@@ -259,7 +279,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 607.19,
-      "crash_cost": 1214.38
+      "crash_cost": 1214.38,
+      "activity_base_cost": 2440.0
     },
     {
       "activity": "38",
@@ -271,7 +292,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 2400.0
     },
     {
       "activity": "56",
@@ -283,7 +305,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "61",
@@ -295,7 +318,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "66",
@@ -307,7 +331,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "2",
@@ -319,7 +344,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 1194.47,
-      "crash_cost": 1194.47
+      "crash_cost": 1194.47,
+      "activity_base_cost": 2880.0
     },
     {
       "activity": "34",
@@ -331,7 +357,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 1094.94
+      "crash_cost": 1094.94,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "37",
@@ -343,7 +370,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 1094.94
+      "crash_cost": 1094.94,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "60",
@@ -355,7 +383,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 1051.14
+      "crash_cost": 1051.14,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "65",
@@ -367,7 +396,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 1051.14
+      "crash_cost": 1051.14,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "142",
@@ -379,7 +409,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 945.62,
-      "crash_cost": 945.62
+      "crash_cost": 945.62,
+      "activity_base_cost": 1520.0
     },
     {
       "activity": "20",
@@ -391,7 +422,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 875.95,
-      "crash_cost": 875.95
+      "crash_cost": 875.95,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "137",
@@ -403,7 +435,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 796.31
+      "crash_cost": 796.31,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "22",
@@ -415,7 +448,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 726.64,
-      "crash_cost": 726.64
+      "crash_cost": 726.64,
+      "activity_base_cost": 1168.0
     },
     {
       "activity": "24",
@@ -427,7 +461,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 696.78
+      "crash_cost": 696.78,
+      "activity_base_cost": 1680.0
     },
     {
       "activity": "25",
@@ -439,7 +474,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 696.78
+      "crash_cost": 696.78,
+      "activity_base_cost": 1120.0
     },
     {
       "activity": "59",
@@ -451,7 +487,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 333.46,
-      "crash_cost": 666.92
+      "crash_cost": 666.92,
+      "activity_base_cost": 1340.0
     },
     {
       "activity": "21",
@@ -463,7 +500,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 647.01
+      "crash_cost": 647.01,
+      "activity_base_cost": 1560.0
     },
     {
       "activity": "134",
@@ -475,7 +513,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 597.24
+      "crash_cost": 597.24,
+      "activity_base_cost": 960.0
     },
     {
       "activity": "107",
@@ -487,7 +526,8 @@
       "min_duration": 5,
       "crash_days": 1,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 447.93
+      "crash_cost": 447.93,
+      "activity_base_cost": 3600.0
     },
     {
       "activity": "43",
@@ -499,7 +539,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 720.0
     },
     {
       "activity": "52",
@@ -511,7 +552,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 149.31,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 600.0
     },
     {
       "activity": "68",
@@ -523,7 +565,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "41",
@@ -535,7 +578,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "57",
@@ -547,7 +591,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "62",
@@ -559,7 +604,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "67",
@@ -571,7 +617,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     }
   ],
   "schedule": [
@@ -585,7 +632,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 1194.47,
-      "crash_cost": 1194.47
+      "crash_cost": 1194.47,
+      "activity_base_cost": 2880.0
     },
     {
       "activity": "8",
@@ -597,7 +645,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 240.0
     },
     {
       "activity": "18",
@@ -609,7 +658,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1040.0
     },
     {
       "activity": "19",
@@ -621,7 +671,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1040.0
     },
     {
       "activity": "3",
@@ -633,7 +684,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 1244.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2000.0
     },
     {
       "activity": "6",
@@ -645,7 +697,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 846.08,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2720.0
     },
     {
       "activity": "10",
@@ -657,7 +710,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 846.08,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6800.0
     },
     {
       "activity": "20",
@@ -669,7 +723,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 875.95,
-      "crash_cost": 875.95
+      "crash_cost": 875.95,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "21",
@@ -681,7 +736,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 647.01
+      "crash_cost": 647.01,
+      "activity_base_cost": 1560.0
     },
     {
       "activity": "22",
@@ -693,7 +749,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 726.64,
-      "crash_cost": 726.64
+      "crash_cost": 726.64,
+      "activity_base_cost": 1168.0
     },
     {
       "activity": "24",
@@ -705,7 +762,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 696.78
+      "crash_cost": 696.78,
+      "activity_base_cost": 1680.0
     },
     {
       "activity": "25",
@@ -717,7 +775,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 696.78
+      "crash_cost": 696.78,
+      "activity_base_cost": 1120.0
     },
     {
       "activity": "26",
@@ -729,7 +788,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 1393.56
+      "crash_cost": 1393.56,
+      "activity_base_cost": 2800.0
     },
     {
       "activity": "16",
@@ -741,7 +801,8 @@
       "min_duration": 30,
       "crash_days": 22,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 17518.82
+      "crash_cost": 17518.82,
+      "activity_base_cost": 38400.0
     },
     {
       "activity": "27",
@@ -753,7 +814,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5600.0
     },
     {
       "activity": "28",
@@ -765,7 +827,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "29",
@@ -777,7 +840,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 3483.9
+      "crash_cost": 3483.9,
+      "activity_base_cost": 5600.0
     },
     {
       "activity": "30",
@@ -789,7 +853,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 1294.02
+      "crash_cost": 1294.02,
+      "activity_base_cost": 2600.0
     },
     {
       "activity": "32",
@@ -801,7 +866,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 348.39,
-      "crash_cost": 1741.95
+      "crash_cost": 1741.95,
+      "activity_base_cost": 2800.0
     },
     {
       "activity": "34",
@@ -813,7 +879,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 1094.94
+      "crash_cost": 1094.94,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "37",
@@ -825,7 +892,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 1094.94
+      "crash_cost": 1094.94,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "38",
@@ -837,7 +905,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 2400.0
     },
     {
       "activity": "41",
@@ -849,7 +918,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "33",
@@ -861,7 +931,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 696.78,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1120.0
     },
     {
       "activity": "7",
@@ -873,7 +944,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 846.08,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6800.0
     },
     {
       "activity": "43",
@@ -885,7 +957,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 720.0
     },
     {
       "activity": "35",
@@ -897,7 +970,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 1294.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4160.0
     },
     {
       "activity": "47",
@@ -909,7 +983,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 746.54,
-      "crash_cost": 3732.7
+      "crash_cost": 3732.7,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "36",
@@ -921,7 +996,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "48",
@@ -933,7 +1009,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 746.54,
-      "crash_cost": 3732.7
+      "crash_cost": 3732.7,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "49",
@@ -945,7 +1022,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 559.91,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4500.0
     },
     {
       "activity": "39",
@@ -957,7 +1035,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "40",
@@ -969,7 +1048,8 @@
       "min_duration": 4,
       "crash_days": 0,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "13",
@@ -981,7 +1061,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6400.0
     },
     {
       "activity": "14",
@@ -993,7 +1074,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6400.0
     },
     {
       "activity": "15",
@@ -1005,7 +1087,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6400.0
     },
     {
       "activity": "12",
@@ -1017,7 +1100,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 895.85,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "50",
@@ -1029,7 +1113,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 559.91,
-      "crash_cost": 2799.55
+      "crash_cost": 2799.55,
+      "activity_base_cost": 4500.0
     },
     {
       "activity": "42",
@@ -1041,7 +1126,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 24.0
     },
     {
       "activity": "44",
@@ -1053,7 +1139,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "51",
@@ -1065,7 +1152,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 373.27,
-      "crash_cost": 1866.35
+      "crash_cost": 1866.35,
+      "activity_base_cost": 3000.0
     },
     {
       "activity": "55",
@@ -1077,7 +1165,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "80",
@@ -1089,7 +1178,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 8800.0
     },
     {
       "activity": "45",
@@ -1101,7 +1191,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "52",
@@ -1113,7 +1204,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 149.31,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 600.0
     },
     {
       "activity": "54",
@@ -1125,7 +1217,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 607.19,
-      "crash_cost": 1214.38
+      "crash_cost": 1214.38,
+      "activity_base_cost": 2440.0
     },
     {
       "activity": "56",
@@ -1137,7 +1230,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "57",
@@ -1149,7 +1243,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "58",
@@ -1161,7 +1256,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "59",
@@ -1173,7 +1269,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 333.46,
-      "crash_cost": 666.92
+      "crash_cost": 666.92,
+      "activity_base_cost": 1340.0
     },
     {
       "activity": "60",
@@ -1185,7 +1282,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 1051.14
+      "crash_cost": 1051.14,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "69",
@@ -1197,7 +1295,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "72",
@@ -1209,7 +1308,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1689.6
     },
     {
       "activity": "70",
@@ -1221,7 +1321,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2600.0
     },
     {
       "activity": "71",
@@ -1233,7 +1334,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2600.0
     },
     {
       "activity": "61",
@@ -1245,7 +1347,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "110",
@@ -1257,7 +1360,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 12800.0
     },
     {
       "activity": "62",
@@ -1269,7 +1373,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "73",
@@ -1281,7 +1386,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "64",
@@ -1293,7 +1399,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 607.19,
-      "crash_cost": 1214.38
+      "crash_cost": 1214.38,
+      "activity_base_cost": 2440.0
     },
     {
       "activity": "65",
@@ -1305,7 +1412,8 @@
       "min_duration": 3,
       "crash_days": 2,
       "crash_cost_per_day": 525.57,
-      "crash_cost": 1051.14
+      "crash_cost": 1051.14,
+      "activity_base_cost": 2112.0
     },
     {
       "activity": "66",
@@ -1317,7 +1425,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 1194.48
+      "crash_cost": 1194.48,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "67",
@@ -1329,7 +1438,8 @@
       "min_duration": 4,
       "crash_days": 3,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 89.58
+      "crash_cost": 89.58,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "63",
@@ -1341,7 +1451,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "68",
@@ -1353,7 +1464,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 298.62
+      "crash_cost": 298.62,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "77",
@@ -1365,7 +1477,8 @@
       "min_duration": 8,
       "crash_days": 7,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 3483.9
+      "crash_cost": 3483.9,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "74",
@@ -1377,7 +1490,8 @@
       "min_duration": 4,
       "crash_days": 0,
       "crash_cost_per_day": 29.86,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 168.0
     },
     {
       "activity": "11",
@@ -1389,7 +1503,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 746.54,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "81",
@@ -1401,7 +1516,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 6569.64
+      "crash_cost": 6569.64,
+      "activity_base_cost": 11000.0
     },
     {
       "activity": "75",
@@ -1413,7 +1529,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 480.0
     },
     {
       "activity": "119",
@@ -1425,7 +1542,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "127",
@@ -1437,7 +1555,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "79",
@@ -1449,7 +1568,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "126",
@@ -1461,7 +1581,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "82",
@@ -1473,7 +1594,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 880.0
     },
     {
       "activity": "87",
@@ -1485,7 +1607,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1760.0
     },
     {
       "activity": "93",
@@ -1497,7 +1620,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 5972.4
+      "crash_cost": 5972.4,
+      "activity_base_cost": 10000.0
     },
     {
       "activity": "88",
@@ -1509,7 +1633,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 880.0
     },
     {
       "activity": "96",
@@ -1521,7 +1646,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6000.0
     },
     {
       "activity": "89",
@@ -1533,7 +1659,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2200.0
     },
     {
       "activity": "90",
@@ -1545,7 +1672,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2200.0
     },
     {
       "activity": "100",
@@ -1557,7 +1685,8 @@
       "min_duration": 8,
       "crash_days": 2,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 1294.02
+      "crash_cost": 1294.02,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "94",
@@ -1569,7 +1698,8 @@
       "min_duration": 13,
       "crash_days": 12,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 5972.4
+      "crash_cost": 5972.4,
+      "activity_base_cost": 10000.0
     },
     {
       "activity": "114",
@@ -1581,7 +1711,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "120",
@@ -1593,7 +1724,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "83",
@@ -1605,7 +1737,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4400.0
     },
     {
       "activity": "129",
@@ -1617,7 +1750,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "91",
@@ -1629,7 +1763,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "84",
@@ -1641,7 +1776,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 273.73,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1100.0
     },
     {
       "activity": "85",
@@ -1653,7 +1789,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 273.73,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1100.0
     },
     {
       "activity": "121",
@@ -1665,7 +1802,8 @@
       "min_duration": 8,
       "crash_days": 5,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 3235.05
+      "crash_cost": 3235.05,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "95",
@@ -1677,7 +1815,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4800.0
     },
     {
       "activity": "98",
@@ -1689,7 +1828,8 @@
       "min_duration": 8,
       "crash_days": 5,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 2986.2
+      "crash_cost": 2986.2,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "101",
@@ -1701,7 +1841,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "115",
@@ -1713,7 +1854,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "111",
@@ -1725,7 +1867,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6400.0
     },
     {
       "activity": "116",
@@ -1737,7 +1880,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "123",
@@ -1749,7 +1893,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1040.0
     },
     {
       "activity": "99",
@@ -1761,7 +1906,8 @@
       "min_duration": 10,
       "crash_days": 10,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 4479.3
+      "crash_cost": 4479.3,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "122",
@@ -1773,7 +1919,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7800.0
     },
     {
       "activity": "132",
@@ -1785,7 +1932,8 @@
       "min_duration": 3,
       "crash_days": 0,
       "crash_cost_per_day": 547.47,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 2200.0
     },
     {
       "activity": "112",
@@ -1797,7 +1945,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 6400.0
     },
     {
       "activity": "102",
@@ -1809,7 +1958,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4000.0
     },
     {
       "activity": "133",
@@ -1821,7 +1971,8 @@
       "min_duration": 2,
       "crash_days": 0,
       "crash_cost_per_day": 273.73,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 880.0
     },
     {
       "activity": "107",
@@ -1833,7 +1984,8 @@
       "min_duration": 5,
       "crash_days": 1,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 447.93
+      "crash_cost": 447.93,
+      "activity_base_cost": 3600.0
     },
     {
       "activity": "105",
@@ -1845,7 +1997,8 @@
       "min_duration": 10,
       "crash_days": 5,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 2239.65
+      "crash_cost": 2239.65,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "106",
@@ -1857,7 +2010,8 @@
       "min_duration": 8,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 7200.0
     },
     {
       "activity": "117",
@@ -1869,7 +2023,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "103",
@@ -1881,7 +2036,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 497.7,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4000.0
     },
     {
       "activity": "104",
@@ -1893,7 +2049,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 447.93,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 3600.0
     },
     {
       "activity": "124",
@@ -1905,7 +2062,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "130",
@@ -1917,7 +2075,8 @@
       "min_duration": 10,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 10400.0
     },
     {
       "activity": "128",
@@ -1929,7 +2088,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 647.01,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 5200.0
     },
     {
       "activity": "108",
@@ -1941,7 +2101,8 @@
       "min_duration": 5,
       "crash_days": 0,
       "crash_cost_per_day": 597.24,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 4800.0
     },
     {
       "activity": "4",
@@ -1953,7 +2114,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 1032.72,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1660.0
     },
     {
       "activity": "5",
@@ -1965,7 +2127,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 1065.07,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 1712.0
     },
     {
       "activity": "134",
@@ -1977,7 +2140,8 @@
       "min_duration": 2,
       "crash_days": 2,
       "crash_cost_per_day": 298.62,
-      "crash_cost": 597.24
+      "crash_cost": 597.24,
+      "activity_base_cost": 960.0
     },
     {
       "activity": "135",
@@ -1989,7 +2153,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 846.08,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 680.0
     },
     {
       "activity": "137",
@@ -2001,7 +2166,8 @@
       "min_duration": 2,
       "crash_days": 1,
       "crash_cost_per_day": 796.31,
-      "crash_cost": 796.31
+      "crash_cost": 796.31,
+      "activity_base_cost": 1920.0
     },
     {
       "activity": "138",
@@ -2013,7 +2179,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 895.85,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 720.0
     },
     {
       "activity": "139",
@@ -2025,7 +2192,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 895.85,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 720.0
     },
     {
       "activity": "140",
@@ -2037,7 +2205,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 895.85,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 720.0
     },
     {
       "activity": "141",
@@ -2049,7 +2218,8 @@
       "min_duration": 5,
       "crash_days": 5,
       "crash_cost_per_day": 558.42,
-      "crash_cost": 2792.1
+      "crash_cost": 2792.1,
+      "activity_base_cost": 4488.0
     },
     {
       "activity": "142",
@@ -2061,7 +2231,8 @@
       "min_duration": 1,
       "crash_days": 1,
       "crash_cost_per_day": 945.62,
-      "crash_cost": 945.62
+      "crash_cost": 945.62,
+      "activity_base_cost": 1520.0
     },
     {
       "activity": "143",
@@ -2073,7 +2244,8 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 945.62,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 760.0
     },
     {
       "activity": "144",
@@ -2085,12 +2257,15 @@
       "min_duration": 1,
       "crash_days": 0,
       "crash_cost_per_day": 936.17,
-      "crash_cost": 0.0
+      "crash_cost": 0.0,
+      "activity_base_cost": 752.4
     }
   ],
-  "total_normal_cost": 506210.0,
+  "total_base_cost": 506210.0,
   "total_comparable_cost": 603842.88,
   "penalty": 0.0,
   "bonus": 224000.0,
+  "net_cost": -126367.12,
+  "total_normal_cost": 506210.0,
   "total_cost": 379842.88
 }
