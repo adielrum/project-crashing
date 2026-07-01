@@ -1,439 +1,104 @@
 {
   "success": true,
   "solver": "pymoo_GA",
-  "current_day": 0,
+  "current_day": 156,
   "target_day": 344,
   "baseline_makespan": 344.0,
-  "makespan": 183.6515958181712,
-  "makespan_reduction": 160.3484041818288,
-  "labor_cost": 587098.8304839685,
-  "total_project_cost": 266402.02212031087,
+  "makespan": 256.67682262057497,
+  "makespan_reduction": 87.32317737942503,
+  "labor_cost": 551288.2195693369,
+  "total_project_cost": 376641.8648104868,
   "crash_plan": {
-    "Receive notice to proceed and sign contract": [
-      {
-        "resource": "G.C. General Management",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 665.7,
-        "duration_saved": 1.15
-      }
-    ],
-    "Submit shop drawings and order long lead items - steel": [
-      {
-        "resource": "Steel Erection Contractor Management",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 1571.78,
-        "duration_saved": 3.84
-      }
-    ],
-    "Detail, fabricate and deliver steel": [
-      {
-        "resource": "Steel Erection Contractor Management",
-        "x": 1.8875,
-        "tau": 0.0257,
-        "cost_delta": 4346.22,
-        "duration_saved": 21.62
-      },
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.8157,
-        "tau": 0.3433,
-        "cost_delta": 4248.77,
-        "duration_saved": 21.63
-      }
-    ],
-    "Install temporary power": [
-      {
-        "resource": "Electric Contractor",
-        "x": 1.7805,
-        "tau": 0.0,
-        "cost_delta": 196.5,
-        "duration_saved": 0.66
-      }
-    ],
-    "Install temporary water service": [
-      {
-        "resource": "Plumbing Contractor",
-        "x": 1.7544,
-        "tau": 0.1174,
-        "cost_delta": 205.38,
-        "duration_saved": 0.66
-      }
-    ],
-    "Set up site office": [
-      {
-        "resource": "G.C. Superintendent",
-        "x": 1.7519,
-        "tau": 0.0,
-        "cost_delta": 373.71,
-        "duration_saved": 0.97
-      },
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.7246,
-        "tau": 0.1275,
-        "cost_delta": 13.86,
-        "duration_saved": 0.97
-      }
-    ],
-    "Set line and grade benchmarks": [
-      {
-        "resource": "G.C. Survey Crew",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 360.58,
-        "duration_saved": 1.15
-      }
-    ],
-    "Prepare site - lay down yard and temporary fencing": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 1.5251,
-        "tau": 0.9965,
-        "cost_delta": 269.67,
-        "duration_saved": 0.63
-      },
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.7117,
-        "tau": 0.0157,
-        "cost_delta": 8.49,
-        "duration_saved": 0.63
-      }
-    ],
-    "Clear and grub site": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 2.0,
-        "tau": 0.1086,
-        "cost_delta": 410.61,
-        "duration_saved": 1.17
-      }
-    ],
-    "Stone site access and temporary parking area": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 258.88,
-        "duration_saved": 0.77
-      }
-    ],
-    "Rough grade site (cut and fill)": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 647.2,
-        "duration_saved": 1.92
-      }
-    ],
-    "Install exterior fire line and building fire riser": [
-      {
-        "resource": "Plumbing Contractor",
-        "x": 2.0,
-        "tau": 0.1542,
-        "cost_delta": 1299.63,
-        "duration_saved": 3.93
-      }
-    ],
-    "Perform final site grading": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 2.0,
-        "tau": 0.5461,
-        "cost_delta": 1657.03,
-        "duration_saved": 4.12
-      }
-    ],
-    "Erect building batter boards and layout building": [
-      {
-        "resource": "G.C. Survey Crew",
-        "x": 2.0,
-        "tau": 0.903,
-        "cost_delta": 872.96,
-        "duration_saved": 2.14
-      }
-    ],
-    "Excavate foundations": [
-      {
-        "resource": "Site Grading Contractor",
-        "x": 2.0,
-        "tau": 2.5391,
-        "cost_delta": 1395.43,
-        "duration_saved": 4.92
-      }
-    ],
-    "Form column piers and spread foundations": [
-      {
-        "resource": "G.C. Rough Carpenter Crew",
-        "x": 2.0,
-        "tau": 1.1858,
-        "cost_delta": 644.33,
-        "duration_saved": 1.76
-      }
-    ],
-    "Set reinforcing and anchor bolts": [
-      {
-        "resource": "G.C. Rough Carpenter Crew",
-        "x": 2.0,
-        "tau": 0.2763,
-        "cost_delta": 465.53,
-        "duration_saved": 1.6
-      }
-    ],
-    "Pour column piers and foundations": [
-      {
-        "resource": "G.C. Concrete Crew",
-        "x": 2.0,
-        "tau": 1.2002,
-        "cost_delta": 882.28,
-        "duration_saved": 2.21
-      }
-    ],
-    "Cure piers and foundations": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.8382,
-        "tau": 3.7148,
-        "cost_delta": 93.96,
-        "duration_saved": 3.5
-      }
-    ],
-    "Strip wall forms": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.0,
-        "tau": 0.0,
-        "cost_delta": 0.0,
-        "duration_saved": 0.0
-      }
-    ],
-    "Strip column piers and foundation forms": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.9998,
-        "tau": 2.7681,
-        "cost_delta": 373.6,
-        "duration_saved": 1.5
-      }
-    ],
-    "Erect steel columns, beams and joist - 1st and 2nd floors": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.9751,
-        "tau": 2.902,
-        "cost_delta": 3149.99,
-        "duration_saved": 5.0
-      }
-    ],
-    "Erect steel columns, beams and joist - 3rd floor and roof": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.8149,
-        "tau": 3.865,
-        "cost_delta": 3390.63,
-        "duration_saved": 5.0
-      }
-    ],
-    "Install miscellaneous iron and bracing - 3rd floor and roof": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.9889,
-        "tau": 2.8273,
-        "cost_delta": 2347.28,
-        "duration_saved": 5.0
-      }
-    ],
-    "Install stairs and miscellaneous iron railing": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 2.0,
-        "tau": 2.7672,
-        "cost_delta": 1556.55,
-        "duration_saved": 5.0
-      }
-    ],
-    "Touch-up paint on steel": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 1.7946,
-        "tau": 3.9996,
-        "cost_delta": 342.12,
-        "duration_saved": 2.5
-      }
-    ],
-    "Form 2nd floor including all floor openings": [
-      {
-        "resource": "G.C. Rough Carpenter Crew",
-        "x": 1.848,
-        "tau": 3.6085,
-        "cost_delta": 1217.27,
-        "duration_saved": 2.49
-      },
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.7878,
-        "tau": 3.9997,
-        "cost_delta": 136.42,
-        "duration_saved": 2.49
-      }
-    ],
     "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)": [
       {
         "resource": "G.C. Labor Crew",
-        "x": 1.7393,
-        "tau": 2.8231,
-        "cost_delta": 182.66,
-        "duration_saved": 2.25
+        "x": 1.5771,
+        "tau": 1.6452,
+        "cost_delta": 125.15,
+        "duration_saved": 1.81
       },
       {
         "resource": "Plumbing Contractor",
-        "x": 1.9781,
-        "tau": 1.5154,
-        "cost_delta": 339.4,
-        "duration_saved": 2.25
+        "x": 1.6015,
+        "tau": 1.4983,
+        "cost_delta": 264.48,
+        "duration_saved": 1.81
       },
       {
         "resource": "Electric Contractor",
-        "x": 1.7677,
-        "tau": 2.6482,
-        "cost_delta": 388.99,
-        "duration_saved": 2.25
-      },
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.5783,
-        "tau": 1.7024,
-        "cost_delta": 127.38,
-        "duration_saved": 1.83
-      },
-      {
-        "resource": "Plumbing Contractor",
-        "x": 1.4736,
-        "tau": 2.3919,
-        "cost_delta": 304.5,
-        "duration_saved": 1.83
-      },
-      {
-        "resource": "Electric Contractor",
-        "x": 1.4393,
-        "tau": 2.64,
-        "cost_delta": 313.86,
-        "duration_saved": 1.83
-      }
-    ],
-    "Pour 2nd floor slab": [
-      {
-        "resource": "G.C. Concrete Crew",
-        "x": 1.817,
-        "tau": 3.8515,
-        "cost_delta": 1084.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Cure 2nd floor slab": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.9625,
-        "tau": 2.9731,
-        "cost_delta": 88.74,
-        "duration_saved": 3.5
-      }
-    ],
-    "Form 3rd floor including all floor openings": [
-      {
-        "resource": "G.C. Rough Carpenter Crew",
-        "x": 1.7451,
-        "tau": 2.7856,
-        "cost_delta": 505.52,
-        "duration_saved": 2.25
-      },
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.8501,
-        "tau": 2.1742,
-        "cost_delta": 103.38,
-        "duration_saved": 2.25
-      }
-    ],
-    "Pour 3rd floor slab": [
-      {
-        "resource": "G.C. Concrete Crew",
-        "x": 1.9504,
-        "tau": 3.0408,
-        "cost_delta": 1019.95,
-        "duration_saved": 2.0
+        "x": 1.6528,
+        "tau": 1.2032,
+        "cost_delta": 250.43,
+        "duration_saved": 1.81
       }
     ],
     "Cure 3rd floor slab": [
       {
         "resource": "G.C. Labor Crew",
-        "x": 1.9683,
-        "tau": 2.9406,
-        "cost_delta": 88.5,
+        "x": 1.7961,
+        "tau": 3.9892,
+        "cost_delta": 95.73,
         "duration_saved": 3.5
       }
     ],
     "Form roof slab including all floor openings": [
       {
         "resource": "G.C. Rough Carpenter Crew",
-        "x": 1.5997,
-        "tau": 1.5728,
-        "cost_delta": 692.72,
-        "duration_saved": 1.83
+        "x": 1.7735,
+        "tau": 0.577,
+        "cost_delta": 557.49,
+        "duration_saved": 1.81
       },
       {
         "resource": "G.C. Labor Crew",
-        "x": 1.8055,
-        "tau": 0.4821,
-        "cost_delta": 59.91,
-        "duration_saved": 1.83
+        "x": 1.6185,
+        "tau": 1.3988,
+        "cost_delta": 72.69,
+        "duration_saved": 1.81
       }
     ],
     "Pour roof slab": [
       {
         "resource": "G.C. Concrete Crew",
-        "x": 1.9987,
-        "tau": 2.7743,
-        "cost_delta": 996.82,
+        "x": 1.875,
+        "tau": 3.4844,
+        "cost_delta": 1056.12,
         "duration_saved": 2.0
       }
     ],
     "Cure roof slab": [
       {
         "resource": "G.C. Labor Crew",
-        "x": 1.8927,
-        "tau": 3.3772,
-        "cost_delta": 91.67,
+        "x": 1.8536,
+        "tau": 3.6174,
+        "cost_delta": 93.31,
         "duration_saved": 3.5
       }
     ],
     "Strip forms from roof slab": [
       {
         "resource": "G.C. Labor Crew",
-        "x": 2.0,
-        "tau": 2.767,
-        "cost_delta": 249.04,
+        "x": 1.7993,
+        "tau": 3.968,
+        "cost_delta": 273.13,
         "duration_saved": 1.0
       }
     ],
     "Install exterior sheathing and metal studs": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.896,
-        "tau": 3.3576,
-        "cost_delta": 3269.05,
+        "x": 1.8441,
+        "tau": 3.6774,
+        "cost_delta": 3346.9,
         "duration_saved": 7.5
       }
     ],
     "Install exterior masonry work": [
       {
         "resource": "Masonry Contractor",
-        "x": 1.9268,
-        "tau": 3.1761,
-        "cost_delta": 5908.58,
+        "x": 1.815,
+        "tau": 3.8645,
+        "cost_delta": 6216.04,
         "duration_saved": 12.5
       }
     ],
@@ -441,188 +106,188 @@
       {
         "resource": "Window Contractor",
         "x": 1.9717,
-        "tau": 2.9218,
-        "cost_delta": 5259.28,
+        "tau": 2.9214,
+        "cost_delta": 5258.95,
         "duration_saved": 12.5
       }
     ],
     "Install interior stud walls and drywall": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.9835,
-        "tau": 2.851,
-        "cost_delta": 5224.58,
-        "duration_saved": 12.5
+        "x": 1.9998,
+        "tau": 2.7562,
+        "cost_delta": 5178.21,
+        "duration_saved": 12.49
       }
     ],
     "Install interior doors and hardware": [
       {
         "resource": "G.C. Finish Carpenter Crew",
-        "x": 1.2014,
-        "tau": 0.3822,
-        "cost_delta": 460.45,
-        "duration_saved": 1.49
+        "x": 1.3231,
+        "tau": 0.0277,
+        "cost_delta": 434.98,
+        "duration_saved": 1.8
       }
     ],
     "Install millwork and wood trim": [
       {
         "resource": "G.C. Finish Carpenter Crew",
-        "x": 1.8699,
-        "tau": 1.6117,
-        "cost_delta": 2748.53,
-        "duration_saved": 6.49
+        "x": 1.8466,
+        "tau": 2.2649,
+        "cost_delta": 3155.61,
+        "duration_saved": 6.8
       }
     ],
     "Paint walls and woodwork": [
       {
         "resource": "Painting Contractor",
-        "x": 1.9378,
-        "tau": 3.0293,
-        "cost_delta": 3796.37,
-        "duration_saved": 9.95
+        "x": 1.9265,
+        "tau": 3.0813,
+        "cost_delta": 3809.02,
+        "duration_saved": 9.94
       }
     ],
     "Install conduit at ceiling plenum space": [
       {
         "resource": "Electric Contractor",
-        "x": 1.4276,
-        "tau": 0.0028,
-        "cost_delta": 881.63,
-        "duration_saved": 3.31
+        "x": 1.2561,
+        "tau": 0.2826,
+        "cost_delta": 783.56,
+        "duration_saved": 2.52
       }
     ],
     "Install duct in ceiling plenum space": [
       {
         "resource": "HVAC Contractor",
-        "x": 1.3028,
+        "x": 1.2113,
         "tau": 0.0,
-        "cost_delta": 644.16,
-        "duration_saved": 2.54
+        "cost_delta": 461.66,
+        "duration_saved": 1.88
       }
     ],
     "Install ceiling grid": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.079,
-        "tau": 0.311,
-        "cost_delta": 216.87,
-        "duration_saved": 0.77
+        "x": 1.4285,
+        "tau": 1.4831,
+        "cost_delta": 1051.05,
+        "duration_saved": 3.08
       }
     ],
     "Install ceiling tile": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.2153,
-        "tau": 0.0,
-        "cost_delta": 240.92,
-        "duration_saved": 1.28
+        "x": 1.0151,
+        "tau": 0.0001,
+        "cost_delta": 18.03,
+        "duration_saved": 0.1
       }
     ],
     "Hang wallpaper": [
       {
         "resource": "Painting Contractor",
-        "x": 1.1858,
-        "tau": 0.199,
-        "cost_delta": 263.14,
-        "duration_saved": 1.28
+        "x": 1.0148,
+        "tau": 0.002,
+        "cost_delta": 16.67,
+        "duration_saved": 0.1
       }
     ],
     "Install building carpet": [
       {
         "resource": "Carpet Contractor",
-        "x": 1.9218,
-        "tau": 0.7862,
-        "cost_delta": 2211.67,
-        "duration_saved": 8.14
+        "x": 1.9929,
+        "tau": 0.6691,
+        "cost_delta": 2220.85,
+        "duration_saved": 8.33
       }
     ],
     "Install hardware and accessories": [
       {
         "resource": "G.C. Finish Carpenter Crew",
-        "x": 1.3995,
+        "x": 1.4318,
         "tau": 0.0,
-        "cost_delta": 763.87,
-        "duration_saved": 3.14
+        "cost_delta": 818.64,
+        "duration_saved": 3.33
       }
     ],
     "Complete interior and exterior sod and plantings": [
       {
         "resource": "Landscape Contractor",
-        "x": 1.2761,
-        "tau": 0.5448,
-        "cost_delta": 476.4,
-        "duration_saved": 1.95
+        "x": 1.6742,
+        "tau": 0.0483,
+        "cost_delta": 622.14,
+        "duration_saved": 3.06
       }
     ],
     "Pave, curb, and stripe parking lot": [
       {
         "resource": "Paving Contractor",
-        "x": 1.4967,
-        "tau": 0.0905,
-        "cost_delta": 666.05,
-        "duration_saved": 2.52
+        "x": 1.2448,
+        "tau": 0.2764,
+        "cost_delta": 464.88,
+        "duration_saved": 1.62
       }
     ],
     "Rough-in plumbing in drywall walls": [
       {
         "resource": "Plumbing Contractor",
-        "x": 1.0445,
-        "tau": 0.0,
-        "cost_delta": 136.88,
-        "duration_saved": 0.6
+        "x": 1.0322,
+        "tau": 0.0006,
+        "cost_delta": 100.03,
+        "duration_saved": 0.44
       }
     ],
     "Set plumbing fixtures and trim": [
       {
         "resource": "Plumbing Contractor",
-        "x": 1.0991,
-        "tau": 0.0108,
-        "cost_delta": 233.03,
-        "duration_saved": 0.97
+        "x": 1.1832,
+        "tau": 0.0018,
+        "cost_delta": 405.27,
+        "duration_saved": 1.67
       }
     ],
     "Flush, test, and clean piping and fixtures": [
       {
         "resource": "Plumbing Contractor",
-        "x": 1.0722,
-        "tau": 0.0281,
-        "cost_delta": 124.83,
-        "duration_saved": 0.5
+        "x": 1.0683,
+        "tau": 0.0006,
+        "cost_delta": 104.45,
+        "duration_saved": 0.45
       }
     ],
     "Pull wire in conduit and set area transformers": [
       {
         "resource": "Electric Contractor",
-        "x": 1.7265,
-        "tau": 0.0113,
-        "cost_delta": 1398.89,
-        "duration_saved": 4.78
+        "x": 1.4897,
+        "tau": 0.0242,
+        "cost_delta": 1011.9,
+        "duration_saved": 3.68
       }
     ],
     "Install and terminate electrical devices": [
       {
         "resource": "Electric Contractor",
-        "x": 1.1597,
-        "tau": 0.0017,
-        "cost_delta": 355.94,
-        "duration_saved": 1.48
+        "x": 1.6071,
+        "tau": 0.0,
+        "cost_delta": 1193.13,
+        "duration_saved": 4.24
       }
     ],
     "Install light fixtures - test and clean": [
       {
         "resource": "Electric Contractor",
-        "x": 1.5068,
-        "tau": 0.0191,
-        "cost_delta": 691.81,
-        "duration_saved": 2.51
+        "x": 1.4073,
+        "tau": 0.0,
+        "cost_delta": 561.25,
+        "duration_saved": 2.13
       }
     ],
     "Remove debris from building and do final clean-up": [
       {
         "resource": "G.C. Labor Crew",
         "x": 2.0,
-        "tau": 2.7475,
-        "cost_delta": 496.41,
+        "tau": 2.7669,
+        "cost_delta": 498.07,
         "duration_saved": 2.0
       }
     ],
@@ -630,163 +295,154 @@
       {
         "resource": "Elevator Contractor",
         "x": 2.0,
-        "tau": 1.2061,
-        "cost_delta": 706.98,
-        "duration_saved": 1.33
+        "tau": 1.3775,
+        "cost_delta": 741.28,
+        "duration_saved": 1.35
       }
     ],
     "Perform architect's inspection": [
       {
         "resource": "G.C. Superintendent",
-        "x": 1.7506,
-        "tau": 2.0485,
-        "cost_delta": 134.56,
-        "duration_saved": 0.42
+        "x": 1.8799,
+        "tau": 2.9059,
+        "cost_delta": 170.99,
+        "duration_saved": 0.48
       },
       {
         "resource": "G.C. Project Management",
-        "x": 1.6783,
-        "tau": 2.4816,
-        "cost_delta": 158.31,
-        "duration_saved": 0.42
+        "x": 1.9948,
+        "tau": 2.2778,
+        "cost_delta": 179.81,
+        "duration_saved": 0.48
       }
     ],
     "Perform local building agency inspection": [
       {
         "resource": "G.C. Project Management",
-        "x": 1.9949,
-        "tau": 1.5272,
-        "cost_delta": 152.11,
-        "duration_saved": 0.45
+        "x": 1.9995,
+        "tau": 0.8997,
+        "cost_delta": 127.41,
+        "duration_saved": 0.43
       },
       {
         "resource": "G.C. Superintendent",
-        "x": 2.0,
-        "tau": 1.5027,
-        "cost_delta": 135.62,
-        "duration_saved": 0.45
+        "x": 1.9507,
+        "tau": 1.1223,
+        "cost_delta": 118.74,
+        "duration_saved": 0.43
       }
     ],
     "Perform Fire Marshal's inspection": [
       {
         "resource": "G.C. Superintendent",
-        "x": 1.6452,
-        "tau": 2.1787,
-        "cost_delta": 129.76,
-        "duration_saved": 0.4
+        "x": 1.6414,
+        "tau": 2.6661,
+        "cost_delta": 143.79,
+        "duration_saved": 0.42
       },
       {
         "resource": "G.C. Project Management",
-        "x": 2.0,
-        "tau": 0.3729,
-        "cost_delta": 104.83,
-        "duration_saved": 0.4
+        "x": 1.8181,
+        "tau": 1.6293,
+        "cost_delta": 141.3,
+        "duration_saved": 0.42
       }
     ],
     "Complete punch list items from all inspections": [
       {
         "resource": "G.C. Superintendent",
-        "x": 1.6948,
-        "tau": 1.9331,
-        "cost_delta": 278.05,
-        "duration_saved": 4.06
+        "x": 1.8637,
+        "tau": 1.823,
+        "cost_delta": 299.84,
+        "duration_saved": 4.4
       },
       {
         "resource": "G.C. Labor Crew",
-        "x": 1.7013,
-        "tau": 1.8954,
-        "cost_delta": 97.63,
-        "duration_saved": 4.06
+        "x": 1.8902,
+        "tau": 1.6849,
+        "cost_delta": 103.86,
+        "duration_saved": 4.4
       },
       {
         "resource": "Plumbing Contractor",
-        "x": 1.9748,
-        "tau": 0.5247,
-        "cost_delta": 165.05,
-        "duration_saved": 4.06
+        "x": 1.5926,
+        "tau": 3.4952,
+        "cost_delta": 272.73,
+        "duration_saved": 4.4
       },
       {
         "resource": "Electric Contractor",
-        "x": 1.7662,
-        "tau": 1.5316,
-        "cost_delta": 200.49,
-        "duration_saved": 4.06
+        "x": 1.5779,
+        "tau": 3.6022,
+        "cost_delta": 275.08,
+        "duration_saved": 4.4
       },
       {
         "resource": "HVAC Contractor",
-        "x": 1.8843,
-        "tau": 0.9345,
-        "cost_delta": 180.44,
-        "duration_saved": 4.06
+        "x": 1.7291,
+        "tau": 2.5873,
+        "cost_delta": 250.85,
+        "duration_saved": 4.4
       },
       {
         "resource": "Drywall Contractor",
-        "x": 1.531,
-        "tau": 2.9961,
-        "cost_delta": 184.97,
-        "duration_saved": 4.06
+        "x": 1.6824,
+        "tau": 2.8814,
+        "cost_delta": 198.72,
+        "duration_saved": 4.4
       },
       {
         "resource": "Carpet Contractor",
-        "x": 1.6055,
-        "tau": 2.486,
-        "cost_delta": 157.72,
-        "duration_saved": 4.06
+        "x": 1.762,
+        "tau": 2.3897,
+        "cost_delta": 170.02,
+        "duration_saved": 4.4
       },
       {
         "resource": "Paving Contractor",
-        "x": 1.4036,
-        "tau": 3.9949,
-        "cost_delta": 241.96,
-        "duration_saved": 4.06
+        "x": 1.7462,
+        "tau": 2.485,
+        "cost_delta": 229.08,
+        "duration_saved": 4.4
       },
       {
         "resource": "Painting Contractor",
-        "x": 1.4031,
-        "tau": 3.9981,
-        "cost_delta": 181.51,
-        "duration_saved": 4.06
+        "x": 1.708,
+        "tau": 2.7184,
+        "cost_delta": 176.01,
+        "duration_saved": 4.4
       }
     ],
     "Obtain certificate of occupancy": [
       {
         "resource": "G.C. Project Management",
         "x": 2.0,
-        "tau": 2.1565,
-        "cost_delta": 703.65,
+        "tau": 2.149,
+        "cost_delta": 702.58,
         "duration_saved": 0.96
       }
     ],
     "Issue final request for payment": [
       {
         "resource": "G.C. Project Management",
-        "x": 1.6539,
-        "tau": 3.5697,
-        "cost_delta": 125.26,
-        "duration_saved": 0.46
+        "x": 1.9723,
+        "tau": 0.7118,
+        "cost_delta": 77.53,
+        "duration_saved": 0.41
       },
       {
         "resource": "G.C. Accounting",
-        "x": 1.8168,
-        "tau": 2.5322,
-        "cost_delta": 84.12,
-        "duration_saved": 0.46
+        "x": 1.6778,
+        "tau": 2.2409,
+        "cost_delta": 73.06,
+        "duration_saved": 0.41
       },
       {
         "resource": "G.C. General Management",
-        "x": 1.9724,
-        "tau": 1.7017,
-        "cost_delta": 130.83,
-        "duration_saved": 0.46
-      }
-    ],
-    "Submit monthly requests for payment": [
-      {
-        "resource": "G.C. Labor Crew",
-        "x": 1.9662,
-        "tau": 2.9361,
-        "cost_delta": 126.22,
-        "duration_saved": 0.5
+        "x": 1.8881,
+        "tau": 1.1004,
+        "cost_delta": 105.75,
+        "duration_saved": 0.41
       }
     ]
   },
@@ -798,18 +454,16 @@
       "baseline_finish": 3.0,
       "baseline_duration": 3.0,
       "optimized_start": 0.0,
-      "optimized_finish": 1.8467162160520663,
-      "optimized_duration": 1.8467162160520663,
-      "status": "in_progress",
-      "progress": 0.0,
+      "optimized_finish": 3.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. General Management",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 1.8467162160520663,
-          "x": 1.9999996582100623,
-          "tau": 3.867136617106617e-06
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -819,27 +473,24 @@
       "baseline_start": 3.0,
       "baseline_finish": 5.0,
       "baseline_duration": 2.0,
-      "optimized_start": 1.8467162160520663,
-      "optimized_finish": 3.8467160658382333,
-      "optimized_duration": 1.999999849786167,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999999849786167,
-          "x": 1.0000000684328505,
-          "tau": 3.109020143192828e-07
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. General Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999993606204982,
-          "x": 1.000000383550858,
-          "tau": 5.85191482624611e-07
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -849,27 +500,24 @@
       "baseline_start": 5.0,
       "baseline_finish": 7.0,
       "baseline_duration": 2.0,
-      "optimized_start": 3.8467160658382333,
-      "optimized_finish": 5.8467151719095884,
-      "optimized_duration": 1.9999991060713547,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 5.0,
+      "optimized_finish": 7.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999991060713547,
-          "x": 1.0000003360455267,
-          "tau": 2.4198014332411805e-06
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Scheduler",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999990909527667,
-          "x": 1.000000618512216,
-          "tau": 2.4646060563710644e-07
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -879,27 +527,24 @@
       "baseline_start": 7.0,
       "baseline_finish": 9.0,
       "baseline_duration": 2.0,
-      "optimized_start": 5.8467151719095884,
-      "optimized_finish": 7.846715149382865,
-      "optimized_duration": 1.999999977473276,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 7.0,
+      "optimized_finish": 9.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. General Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999997395525629,
-          "x": 1.0000008913479919,
-          "tau": 7.7519433804687e-06
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999999977473276,
-          "x": 1.000000011229336,
-          "tau": 3.8889450356083244e-08
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -909,27 +554,24 @@
       "baseline_start": 3.0,
       "baseline_finish": 7.0,
       "baseline_duration": 4.0,
-      "optimized_start": 1.8467162160520663,
-      "optimized_finish": 5.846715915620132,
-      "optimized_duration": 3.9999996995680656,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 7.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999996995680656,
-          "x": 1.0000000841079906,
-          "tau": 1.8551309550251437e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Procurement",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999992616914875,
-          "x": 1.000000250177879,
-          "tau": 1.0803030683105118e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -939,27 +581,24 @@
       "baseline_start": 7.0,
       "baseline_finish": 17.0,
       "baseline_duration": 10.0,
-      "optimized_start": 5.846715915620132,
-      "optimized_finish": 15.846715758665207,
-      "optimized_duration": 9.999999843045074,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 7.0,
+      "optimized_finish": 17.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999843045074,
-          "x": 1.0000000185631628,
-          "tau": 3.0871757737689324e-08
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Procurement",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999691404737,
-          "x": 1.0000000323189093,
-          "tau": 9.412903466632004e-08
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -969,19 +608,17 @@
       "baseline_start": 3.0,
       "baseline_finish": 4.0,
       "baseline_duration": 1.0,
-      "optimized_start": 1.8467162160520663,
-      "optimized_finish": 2.3472330072854652,
-      "optimized_duration": 0.500516791233399,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 4.0,
+      "optimized_duration": 1.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.500516791233399,
-          "x": 1.9662099058547926,
-          "tau": 2.936088935761747
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -991,19 +628,17 @@
       "baseline_start": 4.0,
       "baseline_finish": 14.0,
       "baseline_duration": 10.0,
-      "optimized_start": 2.3472330072854652,
-      "optimized_finish": 8.502960168518944,
-      "optimized_duration": 6.15572716123348,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 4.0,
+      "optimized_finish": 14.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 6.15572716123348,
-          "x": 1.9999975958981293,
-          "tau": 1.5806961216799277e-07
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1013,19 +648,17 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 15.846715758665207,
-      "optimized_finish": 25.846715461381883,
-      "optimized_duration": 9.999999702716678,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Roofing Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999702716678,
-          "x": 1.0000000421183801,
-          "tau": 2.805338929277351e-09
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1035,19 +668,17 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 15.846715758665207,
-      "optimized_finish": 25.846715544944438,
-      "optimized_duration": 9.99999978627923,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Elevator Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.99999978627923,
-          "x": 1.0000000141920602,
-          "tau": 1.3071583179769692e-07
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1057,19 +688,17 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 15.846715758665207,
-      "optimized_finish": 25.846715688702524,
-      "optimized_duration": 9.999999930037315,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999930037315,
-          "x": 1.0000000048162119,
-          "tau": 4.142765844903478e-08
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1079,19 +708,17 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 15.846715758665207,
-      "optimized_finish": 25.84671551922903,
-      "optimized_duration": 9.99999976056382,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Electric Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.99999976056382,
-          "x": 1.0000000214773768,
-          "tau": 1.0182234093273589e-07
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1101,19 +728,17 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 15.846715758665207,
-      "optimized_finish": 25.846715652083738,
-      "optimized_duration": 9.999999893418531,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "HVAC Contractor Management",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999893418531,
-          "x": 1.0000000039845873,
-          "tau": 8.993069491627874e-08
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1123,27 +748,24 @@
       "baseline_start": 14.0,
       "baseline_finish": 74.0,
       "baseline_duration": 60.0,
-      "optimized_start": 8.502960168518944,
-      "optimized_finish": 46.87829905327305,
-      "optimized_duration": 38.3753388847541,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 14.0,
+      "optimized_finish": 74.0,
+      "optimized_duration": 60.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor Management",
           "baseline_duration": 60.0,
-          "effective_baseline_duration": 60.0,
-          "optimized_duration": 38.3753388847541,
-          "x": 1.8875309339703834,
-          "tau": 0.02565031204146343
+          "optimized_duration": 60.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 60.0,
-          "effective_baseline_duration": 60.0,
-          "optimized_duration": 38.37468065415578,
-          "x": 1.8157051876541865,
-          "tau": 0.3433337828965469
+          "optimized_duration": 60.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1153,19 +775,17 @@
       "baseline_start": 3.0,
       "baseline_finish": 5.0,
       "baseline_duration": 2.0,
-      "optimized_start": 1.8467162160520663,
-      "optimized_finish": 3.1822527728919803,
-      "optimized_duration": 1.335536556839914,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.335536556839914,
-          "x": 1.780469527288686,
-          "tau": 8.913250489497192e-07
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1175,19 +795,17 @@
       "baseline_start": 3.0,
       "baseline_finish": 5.0,
       "baseline_duration": 2.0,
-      "optimized_start": 1.8467162160520663,
-      "optimized_finish": 3.1824073053150155,
-      "optimized_duration": 1.3356910892629492,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.3356910892629492,
-          "x": 1.7544395398778057,
-          "tau": 0.11735221274651653
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1197,27 +815,24 @@
       "baseline_start": 5.0,
       "baseline_finish": 8.0,
       "baseline_duration": 3.0,
-      "optimized_start": 3.1824073053150155,
-      "optimized_finish": 5.208505306037232,
-      "optimized_duration": 2.026098000722216,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 5.0,
+      "optimized_finish": 8.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 2.026098000722216,
-          "x": 1.7519241915285968,
-          "tau": 2.3674114745745402e-06
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Labor Crew",
-          "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 2.025970798284175,
-          "x": 1.724604864819776,
-          "tau": 0.1274586904230559
+          "baseline_duration": 2.9999999999999996,
+          "optimized_duration": 2.9999999999999996,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1227,19 +842,17 @@
       "baseline_start": 8.0,
       "baseline_finish": 11.0,
       "baseline_duration": 3.0,
-      "optimized_start": 5.208505306037232,
-      "optimized_finish": 7.055226249066331,
-      "optimized_duration": 1.8467209430290992,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 8.0,
+      "optimized_finish": 11.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Survey Crew",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 1.8467209430290992,
-          "x": 1.999993102254119,
-          "tau": 8.377166885002017e-07
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1249,27 +862,24 @@
       "baseline_start": 11.0,
       "baseline_finish": 13.0,
       "baseline_duration": 2.0,
-      "optimized_start": 7.055226249066331,
-      "optimized_finish": 8.426233567257658,
-      "optimized_duration": 1.3710073181913267,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 11.0,
+      "optimized_finish": 13.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.3710073181913267,
-          "x": 1.5250565730318575,
-          "tau": 0.9965454689963308
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.3709875552330584,
-          "x": 1.7117081307791089,
-          "tau": 0.01569093331801083
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1279,19 +889,17 @@
       "baseline_start": 13.0,
       "baseline_finish": 16.0,
       "baseline_duration": 3.0,
-      "optimized_start": 8.426233567257658,
-      "optimized_finish": 10.2556010496979,
-      "optimized_duration": 1.829367482440242,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 13.0,
+      "optimized_finish": 16.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 1.829367482440242,
-          "x": 1.9999999903858479,
-          "tau": 0.10860482964683014
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1301,19 +909,17 @@
       "baseline_start": 16.0,
       "baseline_finish": 18.0,
       "baseline_duration": 2.0,
-      "optimized_start": 10.2556010496979,
-      "optimized_finish": 11.48674579886234,
-      "optimized_duration": 1.231144749164441,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 16.0,
+      "optimized_finish": 18.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.231144749164441,
-          "x": 1.999998232875519,
-          "tau": 3.951128577213601e-06
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1323,19 +929,17 @@
       "baseline_start": 18.0,
       "baseline_finish": 23.0,
       "baseline_duration": 5.0,
-      "optimized_start": 11.48674579886234,
-      "optimized_finish": 14.564607161284382,
-      "optimized_duration": 3.077861362422041,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 18.0,
+      "optimized_finish": 23.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 3.077861362422041,
-          "x": 1.999999682043668,
-          "tau": 4.9976029483193614e-08
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1345,19 +949,17 @@
       "baseline_start": 23.0,
       "baseline_finish": 33.0,
       "baseline_duration": 10.0,
-      "optimized_start": 14.564607161284382,
-      "optimized_finish": 24.56460707091134,
-      "optimized_duration": 9.999999909626958,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 23.0,
+      "optimized_finish": 33.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999909626958,
-          "x": 1.0000000106276619,
-          "tau": 1.826218209033412e-08
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1367,19 +969,17 @@
       "baseline_start": 23.0,
       "baseline_finish": 33.0,
       "baseline_duration": 10.0,
-      "optimized_start": 14.564607161284382,
-      "optimized_finish": 20.638592324495477,
-      "optimized_duration": 6.073985163211095,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 23.0,
+      "optimized_finish": 33.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 6.073985163211095,
-          "x": 1.999999857847757,
-          "tau": 0.15423586956361648
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1389,19 +989,17 @@
       "baseline_start": 33.0,
       "baseline_finish": 43.0,
       "baseline_duration": 10.0,
-      "optimized_start": 20.638592324495477,
-      "optimized_finish": 26.516255189505305,
-      "optimized_duration": 5.877662865009827,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 33.0,
+      "optimized_finish": 43.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.877662865009827,
-          "x": 1.999999550441636,
-          "tau": 0.5460946915183346
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1411,19 +1009,17 @@
       "baseline_start": 43.0,
       "baseline_finish": 48.0,
       "baseline_duration": 5.0,
-      "optimized_start": 26.516255189505305,
-      "optimized_finish": 29.372115399362873,
-      "optimized_duration": 2.8558602098575663,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 43.0,
+      "optimized_finish": 48.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Survey Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.8558602098575663,
-          "x": 1.9999988305997367,
-          "tau": 0.9029932380853914
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1433,19 +1029,17 @@
       "baseline_start": 48.0,
       "baseline_finish": 58.0,
       "baseline_duration": 10.0,
-      "optimized_start": 29.372115399362873,
-      "optimized_finish": 34.447635228768334,
-      "optimized_duration": 5.075519829405465,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 48.0,
+      "optimized_finish": 58.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.075519829405465,
-          "x": 1.9999998758932727,
-          "tau": 2.539065894960993
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1455,19 +1049,17 @@
       "baseline_start": 48.0,
       "baseline_finish": 50.0,
       "baseline_duration": 2.0,
-      "optimized_start": 29.372115399362873,
-      "optimized_finish": 31.372114637134604,
-      "optimized_duration": 1.999999237771731,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 48.0,
+      "optimized_finish": 50.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Site Grading Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999999237771731,
-          "x": 1.0000003700295332,
-          "tau": 1.3953553402224279e-06
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1477,19 +1069,17 @@
       "baseline_start": 58.0,
       "baseline_finish": 62.0,
       "baseline_duration": 4.0,
-      "optimized_start": 34.447635228768334,
-      "optimized_finish": 36.68285709815304,
-      "optimized_duration": 2.2352218693847092,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 58.0,
+      "optimized_finish": 62.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.2352218693847092,
-          "x": 1.999999987097837,
-          "tau": 1.1857836687079244
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1499,27 +1089,24 @@
       "baseline_start": 50.0,
       "baseline_finish": 54.0,
       "baseline_duration": 4.0,
-      "optimized_start": 31.372114637134604,
-      "optimized_finish": 35.37211457107422,
-      "optimized_duration": 3.999999933939613,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 50.0,
+      "optimized_finish": 54.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999998466056925,
-          "x": 1.000000042402101,
-          "tau": 9.905265806876572e-08
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.999999933939613,
-          "x": 1.0000000023871367,
-          "tau": 1.6964687285105336e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1529,19 +1116,17 @@
       "baseline_start": 54.0,
       "baseline_finish": 58.0,
       "baseline_duration": 4.0,
-      "optimized_start": 35.37211457107422,
-      "optimized_finish": 39.37211452946748,
-      "optimized_duration": 3.9999999583932633,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 54.0,
+      "optimized_finish": 58.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999999583932633,
-          "x": 1.0000000133876865,
-          "tau": 1.1774899131023717e-08
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1551,19 +1136,17 @@
       "baseline_start": 62.0,
       "baseline_finish": 66.0,
       "baseline_duration": 4.0,
-      "optimized_start": 36.68285709815304,
-      "optimized_finish": 39.08731932652155,
-      "optimized_duration": 2.404462228368506,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 62.0,
+      "optimized_finish": 66.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.404462228368506,
-          "x": 1.9999999313401837,
-          "tau": 0.276264045619692
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1573,19 +1156,17 @@
       "baseline_start": 66.0,
       "baseline_finish": 71.0,
       "baseline_duration": 5.0,
-      "optimized_start": 39.08731932652155,
-      "optimized_finish": 41.878279969290396,
-      "optimized_duration": 2.790960642768843,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 66.0,
+      "optimized_finish": 71.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.790960642768843,
-          "x": 1.999995542320492,
-          "tau": 1.2002265014588145
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1595,19 +1176,17 @@
       "baseline_start": 58.0,
       "baseline_finish": 59.0,
       "baseline_duration": 1.0,
-      "optimized_start": 39.37211452946748,
-      "optimized_finish": 40.37211411319189,
-      "optimized_duration": 0.9999995837244104,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 58.0,
+      "optimized_finish": 59.0,
+      "optimized_duration": 1.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.9999995837244104,
-          "x": 1.0000005316988394,
-          "tau": 5.038467313073173e-07
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1617,19 +1196,17 @@
       "baseline_start": 59.0,
       "baseline_finish": 66.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 40.37211411319189,
-      "optimized_finish": 47.37210619395421,
-      "optimized_duration": 6.999992080762318,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 59.0,
+      "optimized_finish": 66.0,
+      "optimized_duration": 6.999999999999999,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 6.999992080762318,
-          "x": 1.0000015512478952,
-          "tau": 5.194014368238684e-07
+          "optimized_duration": 6.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1639,19 +1216,17 @@
       "baseline_start": 71.0,
       "baseline_finish": 78.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 41.878279969290396,
-      "optimized_finish": 45.37829092757748,
-      "optimized_duration": 3.5000109582870884,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 71.0,
+      "optimized_finish": 78.0,
+      "optimized_duration": 6.999999999999999,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 3.5000109582870884,
-          "x": 1.8382065995432293,
-          "tau": 3.7148457466084808
+          "optimized_duration": 6.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1661,19 +1236,17 @@
       "baseline_start": 66.0,
       "baseline_finish": 67.0,
       "baseline_duration": 1.0,
-      "optimized_start": 47.37210619395421,
-      "optimized_finish": 48.37209781984673,
-      "optimized_duration": 0.999991625892519,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 66.0,
+      "optimized_finish": 67.0,
+      "optimized_duration": 1.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.999991625892519,
-          "x": 1.000008607727684,
-          "tau": 2.684300615076641e-05
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1683,19 +1256,17 @@
       "baseline_start": 78.0,
       "baseline_finish": 81.0,
       "baseline_duration": 3.0,
-      "optimized_start": 45.37829092757748,
-      "optimized_finish": 46.87829901559728,
-      "optimized_duration": 1.5000080880197935,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 78.0,
+      "optimized_finish": 81.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 1.5000080880197935,
-          "x": 1.9998084836114751,
-          "tau": 2.768149741758429
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1705,19 +1276,17 @@
       "baseline_start": 67.0,
       "baseline_finish": 70.0,
       "baseline_duration": 3.0,
-      "optimized_start": 48.37209781984673,
-      "optimized_finish": 51.37209756817832,
-      "optimized_duration": 2.9999997483315917,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 67.0,
+      "optimized_finish": 70.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 2.9999997483315917,
-          "x": 1.0000000821422848,
-          "tau": 3.015985875353611e-07
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1727,19 +1296,17 @@
       "baseline_start": 70.0,
       "baseline_finish": 71.0,
       "baseline_duration": 1.0,
-      "optimized_start": 51.37209756817832,
-      "optimized_finish": 52.372096920294446,
-      "optimized_duration": 0.9999993521161284,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 70.0,
+      "optimized_finish": 71.0,
+      "optimized_duration": 1.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.9999993521161284,
-          "x": 1.0000005026535828,
-          "tau": 3.383162566090917e-06
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1749,19 +1316,17 @@
       "baseline_start": 81.0,
       "baseline_finish": 91.0,
       "baseline_duration": 10.0,
-      "optimized_start": 46.87829905327305,
-      "optimized_finish": 51.87855580648647,
-      "optimized_duration": 5.000256753213419,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 81.0,
+      "optimized_finish": 91.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.000256753213419,
-          "x": 1.9751258663381432,
-          "tau": 2.9020006398284037
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1771,19 +1336,17 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 51.87855580648647,
-      "optimized_finish": 56.878617058986855,
-      "optimized_duration": 5.00006125250039,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 101.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.00006125250039,
-          "x": 1.81491790839843,
-          "tau": 3.865013905388341
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1793,19 +1356,17 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 51.87855580648647,
-      "optimized_finish": 61.87855516773385,
-      "optimized_duration": 9.999999361247383,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 101.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999361247383,
-          "x": 1.0000000578432502,
-          "tau": 2.672570303740502e-07
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1815,19 +1376,17 @@
       "baseline_start": 101.0,
       "baseline_finish": 111.0,
       "baseline_duration": 10.0,
-      "optimized_start": 56.878617058986855,
-      "optimized_finish": 61.87865566435359,
-      "optimized_duration": 5.000038605366734,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 101.0,
+      "optimized_finish": 111.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.000038605366734,
-          "x": 1.9888837410596631,
-          "tau": 2.827262103389205
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1837,19 +1396,17 @@
       "baseline_start": 111.0,
       "baseline_finish": 121.0,
       "baseline_duration": 10.0,
-      "optimized_start": 61.87865566435359,
-      "optimized_finish": 66.87865573811412,
-      "optimized_duration": 5.000000073760537,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 111.0,
+      "optimized_finish": 121.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.000000073760537,
-          "x": 1.9999998504852357,
-          "tau": 2.7672021190739637
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1859,19 +1416,17 @@
       "baseline_start": 121.0,
       "baseline_finish": 126.0,
       "baseline_duration": 5.0,
-      "optimized_start": 66.87865573811412,
-      "optimized_finish": 69.37865605501872,
-      "optimized_duration": 2.5000003169046017,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 121.0,
+      "optimized_finish": 126.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.5000003169046017,
-          "x": 1.7945894635648032,
-          "tau": 3.99962421472854
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1881,27 +1436,24 @@
       "baseline_start": 126.0,
       "baseline_finish": 131.0,
       "baseline_duration": 5.0,
-      "optimized_start": 69.37865605501872,
-      "optimized_finish": 71.88535199392763,
-      "optimized_duration": 2.5066959389089076,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 126.0,
+      "optimized_finish": 131.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.5066959389089076,
-          "x": 1.847975076211261,
-          "tau": 3.608530055935688
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.5066574192206112,
-          "x": 1.7877708844197442,
-          "tau": 3.9997172683690576
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1911,35 +1463,31 @@
       "baseline_start": 91.0,
       "baseline_finish": 96.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 51.87855580648647,
-      "optimized_finish": 56.87855530179399,
-      "optimized_duration": 4.999999495307519,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 91.0,
+      "optimized_finish": 96.0,
+      "optimized_duration": 4.999999999999999,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 4.999998206229599,
-          "x": 1.000000081075595,
-          "tau": 3.4514433740424182e-06
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 4.9999990458744,
-          "x": 1.0000002225544888,
-          "tau": 4.0042301801613267e-07
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 4.999999495307519,
-          "x": 1.0000000888363463,
-          "tau": 4.428921451713699e-07
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1949,19 +1497,17 @@
       "baseline_start": 131.0,
       "baseline_finish": 135.0,
       "baseline_duration": 4.0,
-      "optimized_start": 71.88535199392763,
-      "optimized_finish": 73.88538513430203,
-      "optimized_duration": 2.0000331403743967,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 135.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.0000331403743967,
-          "x": 1.816978261534184,
-          "tau": 3.8514864995405373
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1971,19 +1517,17 @@
       "baseline_start": 135.0,
       "baseline_finish": 142.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 73.88538513430203,
-      "optimized_finish": 77.38538812532285,
-      "optimized_duration": 3.5000029910208186,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 135.0,
+      "optimized_finish": 142.0,
+      "optimized_duration": 6.999999999999999,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 3.5000029910208186,
-          "x": 1.962475829161439,
-          "tau": 2.97306599776707
+          "optimized_duration": 6.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1993,19 +1537,17 @@
       "baseline_start": 142.0,
       "baseline_finish": 144.0,
       "baseline_duration": 2.0,
-      "optimized_start": 77.38538812532285,
-      "optimized_finish": 79.38538737284439,
-      "optimized_duration": 1.9999992475215413,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 144.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999992475215413,
-          "x": 1.0000004026996865,
-          "tau": 1.0782809449002444e-06
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2015,27 +1557,24 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 5.0,
-      "optimized_start": 77.38538812532285,
-      "optimized_finish": 80.1323965715055,
-      "optimized_duration": 2.747008446182643,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 147.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.747008446182643,
-          "x": 1.745141546144716,
-          "tau": 2.785618561764911
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 2.74696559827684,
-          "x": 1.8500628153470198,
-          "tau": 2.1741683163484775
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2045,35 +1584,31 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 77.38538812532285,
-      "optimized_finish": 80.13239641468833,
-      "optimized_duration": 2.747008289365476,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 142.0,
+      "optimized_finish": 147.0,
+      "optimized_duration": 4.999999999999999,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 2.7468167595364243,
-          "x": 1.7392698514458924,
-          "tau": 2.8231092074211857
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 2.747008289365476,
-          "x": 1.9781009932171196,
-          "tau": 1.5154052561308937
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 2.747001913035717,
-          "x": 1.7676713649796787,
-          "tau": 2.6481868609900494
+          "optimized_duration": 4.999999999999999,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2083,19 +1618,17 @@
       "baseline_start": 147.0,
       "baseline_finish": 151.0,
       "baseline_duration": 4.0,
-      "optimized_start": 80.1323965715055,
-      "optimized_finish": 82.13243723040377,
-      "optimized_duration": 2.0000406588982687,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 147.0,
+      "optimized_finish": 151.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.0000406588982687,
-          "x": 1.9503903869083576,
-          "tau": 3.0407525787922496
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2105,19 +1638,17 @@
       "baseline_start": 151.0,
       "baseline_finish": 158.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 82.13243723040377,
-      "optimized_finish": 85.63244044405992,
-      "optimized_duration": 3.5000032136561594,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 156.0,
+      "optimized_finish": 159.5000048855247,
+      "optimized_duration": 3.5000048855247003,
+      "status": "in_progress",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 3.5000032136561594,
-          "x": 1.968291939601957,
-          "tau": 2.940640665279166
+          "optimized_duration": 3.5000048855247003,
+          "x": 1.7961414786687067,
+          "tau": 3.9892338083394754
         }
       ]
     },
@@ -2127,19 +1658,17 @@
       "baseline_start": 158.0,
       "baseline_finish": 160.0,
       "baseline_duration": 2.0,
-      "optimized_start": 85.63244044405992,
-      "optimized_finish": 87.63243963662944,
-      "optimized_duration": 1.999999192569522,
+      "optimized_start": 159.5000048855247,
+      "optimized_finish": 161.50000437148591,
+      "optimized_duration": 1.999999485961199,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999999192569522,
-          "x": 1.000000575496355,
-          "tau": 9.919862077612039e-09
+          "optimized_duration": 1.999999485961199,
+          "x": 1.0000000339223636,
+          "tau": 2.665986494060439e-06
         }
       ]
     },
@@ -2149,27 +1678,24 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 5.0,
-      "optimized_start": 85.63244044405992,
-      "optimized_finish": 88.8062211181464,
-      "optimized_duration": 3.173780674086479,
+      "optimized_start": 159.5000048855247,
+      "optimized_finish": 162.68873946631567,
+      "optimized_duration": 3.1887345807909506,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 3.173780674086479,
-          "x": 1.59971237747478,
-          "tau": 1.5727830127002587
+          "optimized_duration": 3.1887345807909506,
+          "x": 1.7734805849922162,
+          "tau": 0.577037514938401
         },
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 3.1736324288284683,
-          "x": 1.8055396116024967,
-          "tau": 0.4820744330895048
+          "optimized_duration": 3.1886216632022313,
+          "x": 1.6185021808970472,
+          "tau": 1.3988004604954505
         }
       ]
     },
@@ -2179,35 +1705,31 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 85.63244044405992,
-      "optimized_finish": 88.80622029507371,
-      "optimized_duration": 3.173779851013789,
+      "optimized_start": 159.5000048855247,
+      "optimized_finish": 162.68873945168437,
+      "optimized_duration": 3.1887345661596718,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 3.173779851013789,
-          "x": 1.5783348920565907,
-          "tau": 1.7024435199200154
+          "optimized_duration": 3.1887337631157546,
+          "x": 1.5770702652569832,
+          "tau": 1.6452361171333043
         },
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 3.1737768107333055,
-          "x": 1.4736182804420863,
-          "tau": 2.3919219145713084
+          "optimized_duration": 3.1887263907758725,
+          "x": 1.6014699512564152,
+          "tau": 1.4983145392803296
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 4.999999999999999,
-          "effective_baseline_duration": 4.999999999999999,
-          "optimized_duration": 3.1737702107611607,
-          "x": 1.43925767078957,
-          "tau": 2.640048621293461
+          "optimized_duration": 3.1887345661596718,
+          "x": 1.6528228600763626,
+          "tau": 1.2031699080555236
         }
       ]
     },
@@ -2217,19 +1739,17 @@
       "baseline_start": 163.0,
       "baseline_finish": 167.0,
       "baseline_duration": 4.0,
-      "optimized_start": 88.8062211181464,
-      "optimized_finish": 90.80623391703915,
-      "optimized_duration": 2.000012798892758,
+      "optimized_start": 162.68873946631567,
+      "optimized_finish": 164.6887874271418,
+      "optimized_duration": 2.0000479608261337,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.000012798892758,
-          "x": 1.99865813144069,
-          "tau": 2.77433197601697
+          "optimized_duration": 2.0000479608261337,
+          "x": 1.8750286123133104,
+          "tau": 3.4844462865031507
         }
       ]
     },
@@ -2239,19 +1759,17 @@
       "baseline_start": 167.0,
       "baseline_finish": 174.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 90.80623391703915,
-      "optimized_finish": 94.30628857778395,
-      "optimized_duration": 3.5000546607447944,
+      "optimized_start": 164.6887874271418,
+      "optimized_finish": 168.1887874640266,
+      "optimized_duration": 3.5000000368848263,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 3.5000546607447944,
-          "x": 1.8927330591761744,
-          "tau": 3.377157778988381
+          "optimized_duration": 3.5000000368848263,
+          "x": 1.8536309808128058,
+          "tau": 3.6174162931145464
         }
       ]
     },
@@ -2261,19 +1779,17 @@
       "baseline_start": 174.0,
       "baseline_finish": 176.0,
       "baseline_duration": 2.0,
-      "optimized_start": 94.30628857778395,
-      "optimized_finish": 95.30630245371502,
-      "optimized_duration": 1.0000138759310746,
+      "optimized_start": 168.1887874640266,
+      "optimized_finish": 169.18879341014758,
+      "optimized_duration": 1.00000594612098,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.0000138759310746,
-          "x": 1.9999999677678508,
-          "tau": 2.766988282538844
+          "optimized_duration": 1.00000594612098,
+          "x": 1.7993184457022942,
+          "tau": 3.967987218593299
         }
       ]
     },
@@ -2283,19 +1799,17 @@
       "baseline_start": 144.0,
       "baseline_finish": 148.0,
       "baseline_duration": 4.0,
-      "optimized_start": 79.38538737284439,
-      "optimized_finish": 83.38538653503662,
-      "optimized_duration": 3.99999916219223,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 148.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Rough Carpenter Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.99999916219223,
-          "x": 1.0000002234378456,
-          "tau": 6.062341960435928e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2305,19 +1819,17 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 79.38538737284439,
-      "optimized_finish": 84.3853869314686,
-      "optimized_duration": 4.99999955862421,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 149.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.99999955862421,
-          "x": 1.0000001150906839,
-          "tau": 8.81335747763988e-08
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2327,19 +1839,17 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 79.38538737284439,
-      "optimized_finish": 84.3853861825592,
-      "optimized_duration": 4.999998809714806,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 149.0,
+      "optimized_duration": 5.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.999998809714806,
-          "x": 1.0000002399250636,
-          "tau": 8.012519566704367e-07
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2349,35 +1859,31 @@
       "baseline_start": 144.0,
       "baseline_finish": 148.0,
       "baseline_duration": 4.0,
-      "optimized_start": 79.38538737284439,
-      "optimized_finish": 83.38538697661673,
-      "optimized_duration": 3.9999996037723435,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 148.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.999997827087708,
-          "x": 1.0000005468174826,
-          "tau": 1.8337840657342592e-06
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999996037723435,
-          "x": 1.000000060108377,
-          "tau": 6.512121010215554e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.999998872006143,
-          "x": 1.0000003728609925,
-          "tau": 2.3995266457815086e-07
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2387,19 +1893,17 @@
       "baseline_start": 149.0,
       "baseline_finish": 153.0,
       "baseline_duration": 4.0,
-      "optimized_start": 84.3853869314686,
-      "optimized_finish": 88.38538662053313,
-      "optimized_duration": 3.999999689064527,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 149.0,
+      "optimized_finish": 153.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "G.C. Concrete Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.999999689064527,
-          "x": 1.0000000991495213,
-          "tau": 9.519096928768355e-08
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2409,19 +1913,17 @@
       "baseline_start": 153.0,
       "baseline_finish": 160.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 88.38538662053313,
-      "optimized_finish": 95.38538158309795,
-      "optimized_duration": 6.999994962564832,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 156.0,
+      "optimized_finish": 162.99999933821584,
+      "optimized_duration": 6.999999338215854,
+      "status": "in_progress",
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 6.999999999999999,
-          "effective_baseline_duration": 6.999999999999999,
-          "optimized_duration": 6.999994962564832,
-          "x": 1.0000004253069281,
-          "tau": 4.821933655227178e-06
+          "optimized_duration": 6.999999338215854,
+          "x": 1.0000001222959936,
+          "tau": 1.0209607170142318e-07
         }
       ]
     },
@@ -2431,19 +1933,17 @@
       "baseline_start": 160.0,
       "baseline_finish": 162.0,
       "baseline_duration": 2.0,
-      "optimized_start": 95.38538158309795,
-      "optimized_finish": 97.38538056073214,
-      "optimized_duration": 1.9999989776341927,
+      "optimized_start": 162.99999933821584,
+      "optimized_finish": 164.9999992944075,
+      "optimized_duration": 1.999999956191657,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999989776341927,
-          "x": 1.0000001963679812,
-          "tau": 4.271149265269519e-06
+          "optimized_duration": 1.999999956191657,
+          "x": 1.0000000027954483,
+          "tau": 2.2796980656701127e-07
         }
       ]
     },
@@ -2453,19 +1953,17 @@
       "baseline_start": 176.0,
       "baseline_finish": 191.0,
       "baseline_duration": 15.0,
-      "optimized_start": 95.30630245371502,
-      "optimized_finish": 102.80630507335746,
-      "optimized_duration": 7.5000026196424505,
+      "optimized_start": 169.18879341014758,
+      "optimized_finish": 176.6888399653987,
+      "optimized_duration": 7.5000465552511155,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 7.5000026196424505,
-          "x": 1.8960352017009443,
-          "tau": 3.357590997032985
+          "optimized_duration": 7.5000465552511155,
+          "x": 1.8441000770965763,
+          "tau": 3.6773554706143665
         }
       ]
     },
@@ -2475,19 +1973,17 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 97.38538056073214,
-      "optimized_finish": 117.38538027470992,
-      "optimized_duration": 19.999999713977765,
+      "optimized_start": 164.9999992944075,
+      "optimized_finish": 184.9999991461489,
+      "optimized_duration": 19.999999851741393,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.999999713977765,
-          "x": 1.0000000151172133,
-          "tau": 4.2503572491421554e-08
+          "optimized_duration": 19.999999851741393,
+          "x": 1.000000009701365,
+          "tau": 7.108284493993445e-09
         }
       ]
     },
@@ -2497,19 +1993,17 @@
       "baseline_start": 111.0,
       "baseline_finish": 131.0,
       "baseline_duration": 20.0,
-      "optimized_start": 61.87865566435359,
-      "optimized_finish": 81.87865543308504,
-      "optimized_duration": 19.999999768731463,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 111.0,
+      "optimized_finish": 131.0,
+      "optimized_duration": 20.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Masonry Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.999999768731463,
-          "x": 1.0000000047394901,
-          "tau": 9.423753052851832e-08
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2519,19 +2013,17 @@
       "baseline_start": 191.0,
       "baseline_finish": 216.0,
       "baseline_duration": 25.0,
-      "optimized_start": 102.80630507335746,
-      "optimized_finish": 115.30632946156186,
-      "optimized_duration": 12.500024388204388,
+      "optimized_start": 176.6888399653987,
+      "optimized_finish": 189.1888422566808,
+      "optimized_duration": 12.500002291282108,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Masonry Contractor",
           "baseline_duration": 25.0,
-          "effective_baseline_duration": 25.0,
-          "optimized_duration": 12.500024388204388,
-          "x": 1.9268170149610795,
-          "tau": 3.1761225346578095
+          "optimized_duration": 12.500002291282108,
+          "x": 1.8150206865833187,
+          "tau": 3.8645465598742264
         }
       ]
     },
@@ -2541,19 +2033,17 @@
       "baseline_start": 216.0,
       "baseline_finish": 218.0,
       "baseline_duration": 2.0,
-      "optimized_start": 115.30632946156186,
-      "optimized_finish": 117.30632913771699,
-      "optimized_duration": 1.9999996761551282,
+      "optimized_start": 189.1888422566808,
+      "optimized_finish": 191.18884224354406,
+      "optimized_duration": 1.9999999868632592,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Roofing Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999996761551282,
-          "x": 1.0000001218731633,
-          "tau": 8.755570757082461e-07
+          "optimized_duration": 1.9999999868632592,
+          "x": 1.0000000055776126,
+          "tau": 3.044618871505078e-08
         }
       ]
     },
@@ -2563,19 +2053,17 @@
       "baseline_start": 182.0,
       "baseline_finish": 192.0,
       "baseline_duration": 10.0,
-      "optimized_start": 117.38538027470992,
-      "optimized_finish": 127.38538014684725,
-      "optimized_duration": 9.999999872137336,
+      "optimized_start": 184.9999991461489,
+      "optimized_finish": 194.99999906460116,
+      "optimized_duration": 9.99999991845225,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Tile Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999872137336,
-          "x": 1.0000000100350792,
-          "tau": 6.584812872378132e-08
+          "optimized_duration": 9.99999991845225,
+          "x": 1.0000000024962434,
+          "tau": 7.322748071776246e-08
         }
       ]
     },
@@ -2585,19 +2073,17 @@
       "baseline_start": 216.0,
       "baseline_finish": 221.0,
       "baseline_duration": 5.0,
-      "optimized_start": 115.30632946156186,
-      "optimized_finish": 120.30632882008825,
-      "optimized_duration": 4.999999358526399,
+      "optimized_start": 189.1888422566808,
+      "optimized_finish": 194.18884190719857,
+      "optimized_duration": 4.999999650517754,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Masonry Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.999999358526399,
-          "x": 1.0000001539217767,
-          "tau": 2.3485135313546661e-07
+          "optimized_duration": 4.999999650517754,
+          "x": 1.0000000899139183,
+          "tau": 7.950527451126407e-08
         }
       ]
     },
@@ -2607,19 +2093,17 @@
       "baseline_start": 192.0,
       "baseline_finish": 197.0,
       "baseline_duration": 5.0,
-      "optimized_start": 127.38538014684725,
-      "optimized_finish": 132.38537915914904,
-      "optimized_duration": 4.999999012301796,
+      "optimized_start": 194.99999906460116,
+      "optimized_finish": 199.99999883954084,
+      "optimized_duration": 4.999999774939677,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Tile Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.999999012301796,
-          "x": 1.0000002639121925,
-          "tau": 1.4629885825353347e-07
+          "optimized_duration": 4.999999774939677,
+          "x": 1.0000000105861873,
+          "tau": 4.2973412156746034e-07
         }
       ]
     },
@@ -2629,19 +2113,17 @@
       "baseline_start": 216.0,
       "baseline_finish": 220.0,
       "baseline_duration": 4.0,
-      "optimized_start": 115.30632946156186,
-      "optimized_finish": 119.30632922631233,
-      "optimized_duration": 3.9999997647504677,
+      "optimized_start": 189.1888422566808,
+      "optimized_finish": 193.18884188046195,
+      "optimized_duration": 3.9999996237811626,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Roofing Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999997647504677,
-          "x": 1.0000000331270351,
-          "tau": 4.071252738086419e-07
+          "optimized_duration": 3.9999996237811626,
+          "x": 1.0000001006695582,
+          "tau": 2.6955459430334644e-07
         }
       ]
     },
@@ -2651,19 +2133,17 @@
       "baseline_start": 220.0,
       "baseline_finish": 222.0,
       "baseline_duration": 2.0,
-      "optimized_start": 119.30632922631233,
-      "optimized_finish": 121.30632855111848,
-      "optimized_duration": 1.999999324806158,
+      "optimized_start": 193.18884188046195,
+      "optimized_finish": 195.18884181086878,
+      "optimized_duration": 1.9999999304068214,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Roofing Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.999999324806158,
-          "x": 1.0000004714727417,
-          "tau": 8.64701323223726e-08
+          "optimized_duration": 1.9999999304068214,
+          "x": 1.0000000001706044,
+          "tau": 3.963104868836047e-07
         }
       ]
     },
@@ -2673,19 +2153,17 @@
       "baseline_start": 227.0,
       "baseline_finish": 232.0,
       "baseline_duration": 5.0,
-      "optimized_start": 126.30632855111848,
-      "optimized_finish": 131.30632836071004,
-      "optimized_duration": 4.999999809591564,
+      "optimized_start": 200.18884181086878,
+      "optimized_finish": 205.1888415183462,
+      "optimized_duration": 4.999999707477437,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Roofing Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.999999809591564,
-          "x": 1.0000000087655274,
-          "tau": 3.650950814763715e-07
+          "optimized_duration": 4.999999707477437,
+          "x": 1.0000000498310402,
+          "tau": 2.6997471316656635e-07
         }
       ]
     },
@@ -2695,19 +2173,17 @@
       "baseline_start": 232.0,
       "baseline_finish": 237.0,
       "baseline_duration": 5.0,
-      "optimized_start": 131.30632836071004,
-      "optimized_finish": 136.30632585899886,
-      "optimized_duration": 4.99999749828883,
+      "optimized_start": 205.1888415183462,
+      "optimized_finish": 210.1888413881587,
+      "optimized_duration": 4.999999869812496,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Roofing Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.99999749828883,
-          "x": 1.0000007080940927,
-          "tau": 5.344765377265041e-08
+          "optimized_duration": 4.999999869812496,
+          "x": 1.000000036777826,
+          "tau": 3.3488419802519513e-09
         }
       ]
     },
@@ -2717,19 +2193,17 @@
       "baseline_start": 237.0,
       "baseline_finish": 247.0,
       "baseline_duration": 10.0,
-      "optimized_start": 136.30632585899886,
-      "optimized_finish": 146.30632532279984,
-      "optimized_duration": 9.999999463800979,
+      "optimized_start": 210.1888413881587,
+      "optimized_finish": 220.18884134048076,
+      "optimized_duration": 9.999999952322083,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999463800979,
-          "x": 1.0000000578537471,
-          "tau": 1.49968933470567e-07
+          "optimized_duration": 9.999999952322083,
+          "x": 1.0000000041794401,
+          "tau": 2.105352774519982e-08
         }
       ]
     },
@@ -2739,19 +2213,17 @@
       "baseline_start": 216.0,
       "baseline_finish": 241.0,
       "baseline_duration": 25.0,
-      "optimized_start": 115.30632946156186,
-      "optimized_finish": 127.80635945038904,
-      "optimized_duration": 12.500029988827183,
+      "optimized_start": 189.1888422566808,
+      "optimized_finish": 201.68914029854915,
+      "optimized_duration": 12.50029804186836,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Window Contractor",
           "baseline_duration": 25.0,
-          "effective_baseline_duration": 25.0,
-          "optimized_duration": 12.500029988827183,
-          "x": 1.9716759297854833,
-          "tau": 2.9218401220395394
+          "optimized_duration": 12.50029804186836,
+          "x": 1.9716912706285605,
+          "tau": 2.9214205696645026
         }
       ]
     },
@@ -2761,19 +2233,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 266.0,
       "baseline_duration": 25.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 140.31121354927268,
-      "optimized_duration": 12.504854098883637,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 214.1990713006443,
+      "optimized_duration": 12.509931002095156,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 25.0,
-          "effective_baseline_duration": 25.0,
-          "optimized_duration": 12.504854098883637,
-          "x": 1.9834556697359897,
-          "tau": 2.850992407610185
+          "optimized_duration": 12.509931002095156,
+          "x": 1.9997809410926906,
+          "tau": 2.756170968603289
         }
       ]
     },
@@ -2783,19 +2253,17 @@
       "baseline_start": 266.0,
       "baseline_finish": 276.0,
       "baseline_duration": 10.0,
-      "optimized_start": 140.31121354927268,
-      "optimized_finish": 148.8229819713485,
-      "optimized_duration": 8.511768422075807,
+      "optimized_start": 214.1990713006443,
+      "optimized_finish": 222.39956430805148,
+      "optimized_duration": 8.200493007407161,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 8.511768422075807,
-          "x": 1.2014414403315965,
-          "tau": 0.38222076080656786
+          "optimized_duration": 8.200493007407161,
+          "x": 1.323076901088536,
+          "tau": 0.02769136811389257
         }
       ]
     },
@@ -2805,19 +2273,17 @@
       "baseline_start": 216.0,
       "baseline_finish": 231.0,
       "baseline_duration": 15.0,
-      "optimized_start": 115.30632946156186,
-      "optimized_finish": 130.3063289591134,
-      "optimized_duration": 14.999999497551528,
+      "optimized_start": 189.1888422566808,
+      "optimized_finish": 204.1888420170968,
+      "optimized_duration": 14.99999976041598,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Window Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 14.999999497551528,
-          "x": 1.0000000225904082,
-          "tau": 2.0209462989614957e-07
+          "optimized_duration": 14.99999976041598,
+          "x": 1.0000000089755667,
+          "tau": 1.1073567499550859e-07
         }
       ]
     },
@@ -2827,19 +2293,17 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 140.31121354927268,
-      "optimized_finish": 148.82290226544498,
-      "optimized_duration": 8.511688716172293,
+      "optimized_start": 214.1990713006443,
+      "optimized_finish": 222.3995639062494,
+      "optimized_duration": 8.200492605605094,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 8.511688716172293,
-          "x": 1.869933207144447,
-          "tau": 1.6117033692946048
+          "optimized_duration": 8.200492605605094,
+          "x": 1.846625059133555,
+          "tau": 2.264930229777724
         }
       ]
     },
@@ -2849,19 +2313,17 @@
       "baseline_start": 281.0,
       "baseline_finish": 301.0,
       "baseline_duration": 20.0,
-      "optimized_start": 148.8229819713485,
-      "optimized_finish": 158.87590632998376,
-      "optimized_duration": 10.052924358635256,
+      "optimized_start": 222.39956430805148,
+      "optimized_finish": 232.4605941229569,
+      "optimized_duration": 10.061029814905414,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Painting Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 10.052924358635256,
-          "x": 1.9378034568964013,
-          "tau": 3.0293072003583137
+          "optimized_duration": 10.061029814905414,
+          "x": 1.926491275561033,
+          "tau": 3.081304344542802
         }
       ]
     },
@@ -2871,19 +2333,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 139.49472774113795,
-      "optimized_duration": 11.68836829074891,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 214.16958934209083,
+      "optimized_duration": 12.480449043541672,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 11.68836829074891,
-          "x": 1.4276266217875324,
-          "tau": 0.002819522066023134
+          "optimized_duration": 12.480449043541672,
+          "x": 1.2560607659112328,
+          "tau": 0.28259732150814654
         }
       ]
     },
@@ -2893,19 +2353,17 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 140.31121354927268,
-      "optimized_finish": 152.77587290509007,
-      "optimized_duration": 12.464659355817389,
+      "optimized_start": 214.1990713006443,
+      "optimized_finish": 227.3156968718236,
+      "optimized_duration": 13.116625571179297,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 12.464659355817389,
-          "x": 1.3027846557038605,
-          "tau": 1.2156103750480566e-08
+          "optimized_duration": 13.116625571179297,
+          "x": 1.2112718343771158,
+          "tau": 1.225290156472502e-07
         }
       ]
     },
@@ -2915,19 +2373,17 @@
       "baseline_start": 281.0,
       "baseline_finish": 291.0,
       "baseline_duration": 10.0,
-      "optimized_start": 152.77587290509007,
-      "optimized_finish": 162.0075947177671,
-      "optimized_duration": 9.23172181267702,
+      "optimized_start": 227.3156968718236,
+      "optimized_finish": 234.23205409616705,
+      "optimized_duration": 6.916357224343451,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.23172181267702,
-          "x": 1.079021924956037,
-          "tau": 0.3110490915872937
+          "optimized_duration": 6.916357224343451,
+          "x": 1.428524875461024,
+          "tau": 1.4830650145712436
         }
       ]
     },
@@ -2937,19 +2393,17 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 162.0075947177671,
-      "optimized_finish": 170.73196170809612,
-      "optimized_duration": 8.72436699032902,
+      "optimized_start": 234.23205409616705,
+      "optimized_finish": 244.12776687856544,
+      "optimized_duration": 9.895712782398391,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 8.72436699032902,
-          "x": 1.2152504832902626,
-          "tau": 3.2625502454742057e-07
+          "optimized_duration": 9.895712782398391,
+          "x": 1.0150799440431308,
+          "tau": 7.224642182137018e-05
         }
       ]
     },
@@ -2959,19 +2413,17 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 162.0075947177671,
-      "optimized_finish": 170.7319348908429,
-      "optimized_duration": 8.724340173075808,
+      "optimized_start": 234.23205409616705,
+      "optimized_finish": 244.1277669624853,
+      "optimized_duration": 9.895712866318263,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Painting Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 8.724340173075808,
-          "x": 1.1857638936712953,
-          "tau": 0.19897367935509175
+          "optimized_duration": 9.895712866318263,
+          "x": 1.014831700675464,
+          "tau": 0.0020290896039136617
         }
       ]
     },
@@ -2981,19 +2433,17 @@
       "baseline_start": 301.0,
       "baseline_finish": 321.0,
       "baseline_duration": 20.0,
-      "optimized_start": 158.87590632998376,
-      "optimized_finish": 170.7318162921624,
-      "optimized_duration": 11.85590996217863,
+      "optimized_start": 232.4605941229569,
+      "optimized_finish": 244.12775310342346,
+      "optimized_duration": 11.66715898046654,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Carpet Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 11.85590996217863,
-          "x": 1.9218196831905932,
-          "tau": 0.7861563218117273
+          "optimized_duration": 11.66715898046654,
+          "x": 1.9929460180157135,
+          "tau": 0.6690768225743586
         }
       ]
     },
@@ -3003,19 +2453,17 @@
       "baseline_start": 301.0,
       "baseline_finish": 316.0,
       "baseline_duration": 15.0,
-      "optimized_start": 158.87590632998376,
-      "optimized_finish": 170.73116583583018,
-      "optimized_duration": 11.855259505846423,
+      "optimized_start": 232.4605941229569,
+      "optimized_finish": 244.12776703849602,
+      "optimized_duration": 11.667172915539108,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 11.855259505846423,
-          "x": 1.3994961400748447,
-          "tau": 1.7217823728172065e-08
+          "optimized_duration": 11.667172915539108,
+          "x": 1.4318375419407583,
+          "tau": 7.82369536073795e-08
         }
       ]
     },
@@ -3025,19 +2473,17 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 158.87590632998376,
-      "optimized_finish": 166.92711276697307,
-      "optimized_duration": 8.051206436989311,
+      "optimized_start": 232.4605941229569,
+      "optimized_finish": 239.4028267852375,
+      "optimized_duration": 6.942232662280577,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Landscape Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 8.051206436989311,
-          "x": 1.276061198547933,
-          "tau": 0.5448181266203289
+          "optimized_duration": 6.942232662280577,
+          "x": 1.6742344310043245,
+          "tau": 0.04828751995062955
         }
       ]
     },
@@ -3047,19 +2493,17 @@
       "baseline_start": 311.0,
       "baseline_finish": 321.0,
       "baseline_duration": 10.0,
-      "optimized_start": 166.92711276697307,
-      "optimized_finish": 174.40839677156512,
-      "optimized_duration": 7.481284004592066,
+      "optimized_start": 239.4028267852375,
+      "optimized_finish": 247.78015345233314,
+      "optimized_duration": 8.377326667095634,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Paving Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 7.481284004592066,
-          "x": 1.4967470361080686,
-          "tau": 0.09050561047209138
+          "optimized_duration": 8.377326667095634,
+          "x": 1.2447930061563657,
+          "tau": 0.2764139397095304
         }
       ]
     },
@@ -3069,19 +2513,17 @@
       "baseline_start": 131.0,
       "baseline_finish": 151.0,
       "baseline_duration": 20.0,
-      "optimized_start": 81.87865543308504,
-      "optimized_finish": 101.87865527703022,
-      "optimized_duration": 19.99999984394517,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 151.0,
+      "optimized_duration": 20.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.99999984394517,
-          "x": 1.000000007795135,
-          "tau": 2.681311035045006e-08
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -3091,19 +2533,17 @@
       "baseline_start": 151.0,
       "baseline_finish": 161.0,
       "baseline_duration": 10.0,
-      "optimized_start": 101.87865527703022,
-      "optimized_finish": 111.87865515296353,
-      "optimized_duration": 9.999999875933312,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 156.0,
+      "optimized_finish": 165.99999993751132,
+      "optimized_duration": 9.999999937511314,
+      "status": "in_progress",
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999875933312,
-          "x": 1.0000000110318767,
-          "tau": 5.3535487517497356e-08
+          "optimized_duration": 9.999999937511314,
+          "x": 1.0000000069779371,
+          "tau": 1.559214451803972e-08
         }
       ]
     },
@@ -3113,19 +2553,17 @@
       "baseline_start": 161.0,
       "baseline_finish": 171.0,
       "baseline_duration": 10.0,
-      "optimized_start": 111.87865515296353,
-      "optimized_finish": 121.87865495635393,
-      "optimized_duration": 9.999999803390391,
+      "optimized_start": 165.99999993751132,
+      "optimized_finish": 175.99999990419343,
+      "optimized_duration": 9.999999966682111,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999803390391,
-          "x": 1.0000000210197815,
-          "tau": 5.6538447209893567e-08
+          "optimized_duration": 9.999999966682111,
+          "x": 1.0000000027509905,
+          "tau": 1.6069663146691634e-08
         }
       ]
     },
@@ -3135,19 +2573,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 147.20538021259577,
-      "optimized_duration": 19.39902076220674,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 221.2490335941966,
+      "optimized_duration": 19.55989329564743,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.39902076220674,
-          "x": 1.044549020440651,
-          "tau": 2.5047639956467146e-07
+          "optimized_duration": 19.55989329564743,
+          "x": 1.032223075510594,
+          "tau": 0.0005794803720344864
         }
       ]
     },
@@ -3157,19 +2593,17 @@
       "baseline_start": 221.0,
       "baseline_finish": 231.0,
       "baseline_duration": 10.0,
-      "optimized_start": 120.30632882008825,
-      "optimized_finish": 130.3063287007754,
-      "optimized_duration": 9.999999880687136,
+      "optimized_start": 194.18884190719857,
+      "optimized_finish": 204.18884174891033,
+      "optimized_duration": 9.99999984171177,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999880687136,
-          "x": 1.0000000095117698,
-          "tau": 6.026340315830853e-08
+          "optimized_duration": 9.99999984171177,
+          "x": 1.0000000025366012,
+          "tau": 1.6060802933632333e-07
         }
       ]
     },
@@ -3179,19 +2613,17 @@
       "baseline_start": 261.0,
       "baseline_finish": 276.0,
       "baseline_duration": 15.0,
-      "optimized_start": 147.20538021259577,
-      "optimized_finish": 161.23169760677152,
-      "optimized_duration": 14.026317394175743,
+      "optimized_start": 221.2490335941966,
+      "optimized_finish": 234.58034032671878,
+      "optimized_duration": 13.331306732522208,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 14.026317394175743,
-          "x": 1.0991390068488207,
-          "tau": 0.010816627777403139
+          "optimized_duration": 13.331306732522208,
+          "x": 1.1832431503544676,
+          "tau": 0.0017564397238130599
         }
       ]
     },
@@ -3201,19 +2633,17 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 161.23169760677152,
-      "optimized_finish": 170.7319569624163,
-      "optimized_duration": 9.500259355644765,
+      "optimized_start": 234.58034032671878,
+      "optimized_finish": 244.12776707957255,
+      "optimized_duration": 9.547426752853758,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.500259355644765,
-          "x": 1.072215134043236,
-          "tau": 0.02813260770102484
+          "optimized_duration": 9.547426752853758,
+          "x": 1.0683185907652015,
+          "tau": 0.0006082901310609636
         }
       ]
     },
@@ -3223,19 +2653,17 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 97.38538056073214,
-      "optimized_finish": 117.38538024525403,
-      "optimized_duration": 19.999999684521875,
+      "optimized_start": 164.9999992944075,
+      "optimized_finish": 184.99999928259996,
+      "optimized_duration": 19.999999988192446,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.999999684521875,
-          "x": 1.000000014823745,
-          "tau": 6.168325757470423e-08
+          "optimized_duration": 19.999999988192446,
+          "x": 1.0000000002797123,
+          "tau": 4.509475259002974e-09
         }
       ]
     },
@@ -3245,19 +2673,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 147.8063593115286,
-      "optimized_duration": 19.999999861139564,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 221.68914022312828,
+      "optimized_duration": 19.999999924579136,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.999999861139564,
-          "x": 1.0000000017517534,
-          "tau": 6.533479576904437e-08
+          "optimized_duration": 19.999999924579136,
+          "x": 1.0000000048533146,
+          "tau": 4.271120359902823e-09
         }
       ]
     },
@@ -3267,19 +2693,17 @@
       "baseline_start": 256.0,
       "baseline_finish": 271.0,
       "baseline_duration": 15.0,
-      "optimized_start": 139.49472774113795,
-      "optimized_finish": 149.71919920976217,
-      "optimized_duration": 10.224471468624207,
+      "optimized_start": 214.16958934209083,
+      "optimized_finish": 225.4938087798691,
+      "optimized_duration": 11.324219437778275,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 10.224471468624207,
-          "x": 1.7265373090682923,
-          "tau": 0.011250160473765864
+          "optimized_duration": 11.324219437778275,
+          "x": 1.4896816970097915,
+          "tau": 0.024181917162663567
         }
       ]
     },
@@ -3289,19 +2713,17 @@
       "baseline_start": 271.0,
       "baseline_finish": 286.0,
       "baseline_duration": 15.0,
-      "optimized_start": 149.71919920976217,
-      "optimized_finish": 163.23931638161235,
-      "optimized_duration": 13.520117171850176,
+      "optimized_start": 225.4938087798691,
+      "optimized_finish": 236.25483579977725,
+      "optimized_duration": 10.761027019908143,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 13.520117171850176,
-          "x": 1.1597161258798205,
-          "tau": 0.001700577265985024
+          "optimized_duration": 10.761027019908143,
+          "x": 1.6071396760683847,
+          "tau": 3.195466339137564e-08
         }
       ]
     },
@@ -3311,19 +2733,17 @@
       "baseline_start": 271.0,
       "baseline_finish": 273.0,
       "baseline_duration": 2.0,
-      "optimized_start": 149.71919920976217,
-      "optimized_finish": 151.7191990544329,
-      "optimized_duration": 1.9999998446707203,
+      "optimized_start": 225.4938087798691,
+      "optimized_finish": 227.49380848589357,
+      "optimized_duration": 1.999999706024454,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.9999998446707203,
-          "x": 1.0000001009196489,
-          "tau": 8.023876789447236e-08
+          "optimized_duration": 1.999999706024454,
+          "x": 1.0000001723062373,
+          "tau": 3.014106125056751e-07
         }
       ]
     },
@@ -3333,19 +2753,17 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 163.23931638161235,
-      "optimized_finish": 170.73196171542486,
-      "optimized_duration": 7.492645333812496,
+      "optimized_start": 236.25483579977725,
+      "optimized_finish": 244.12776711712797,
+      "optimized_duration": 7.872931317350734,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 7.492645333812496,
-          "x": 1.5068008996889444,
-          "tau": 0.01912018380793499
+          "optimized_duration": 7.872931317350734,
+          "x": 1.4072663975785968,
+          "tau": 3.0216656894878217e-06
         }
       ]
     },
@@ -3355,19 +2773,17 @@
       "baseline_start": 131.0,
       "baseline_finish": 141.0,
       "baseline_duration": 10.0,
-      "optimized_start": 81.87865543308504,
-      "optimized_finish": 91.87865492616787,
-      "optimized_duration": 9.999999493082829,
-      "status": "not_started",
-      "progress": 0.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 141.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999999493082829,
-          "x": 1.0000000718812705,
-          "tau": 4.283781169080053e-09
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -3377,19 +2793,17 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 97.38538056073214,
-      "optimized_finish": 117.38537995705644,
-      "optimized_duration": 19.9999993963243,
+      "optimized_start": 164.9999992944075,
+      "optimized_finish": 184.99999915214806,
+      "optimized_duration": 19.99999985774057,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.9999993963243,
-          "x": 1.000000019782095,
-          "tau": 1.8670079157200805e-07
+          "optimized_duration": 19.99999985774057,
+          "x": 1.000000008800347,
+          "tau": 1.0888327884575862e-08
         }
       ]
     },
@@ -3399,19 +2813,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 251.0,
       "baseline_duration": 10.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 137.8063582666878,
-      "optimized_duration": 9.999998816298765,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 211.68914025997336,
+      "optimized_duration": 9.999999961424207,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 9.999998816298765,
-          "x": 1.0000001681039374,
-          "tau": 7.970106705703202e-09
+          "optimized_duration": 9.999999961424207,
+          "x": 1.000000002612018,
+          "tau": 2.319047791483981e-08
         }
       ]
     },
@@ -3421,19 +2833,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 127.80635945038904,
-      "optimized_finish": 142.80635915979178,
-      "optimized_duration": 14.999999709402731,
+      "optimized_start": 201.68914029854915,
+      "optimized_finish": 216.68914006468776,
+      "optimized_duration": 14.9999997661386,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 15.0,
-          "effective_baseline_duration": 15.0,
-          "optimized_duration": 14.999999709402731,
-          "x": 1.0000000236878082,
-          "tau": 3.190498131143649e-08
+          "optimized_duration": 14.9999997661386,
+          "x": 1.0000000216031601,
+          "tau": 5.354834935602955e-09
         }
       ]
     },
@@ -3443,19 +2853,17 @@
       "baseline_start": 291.0,
       "baseline_finish": 311.0,
       "baseline_duration": 20.0,
-      "optimized_start": 162.0075947177671,
-      "optimized_finish": 182.00759449788646,
-      "optimized_duration": 19.999999780119364,
+      "optimized_start": 234.23205409616705,
+      "optimized_finish": 254.23205398908166,
+      "optimized_duration": 19.999999892914605,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 20.0,
-          "effective_baseline_duration": 20.0,
-          "optimized_duration": 19.999999780119364,
-          "x": 1.0000000134312594,
-          "tau": 1.8196003618694025e-08
+          "optimized_duration": 19.999999892914605,
+          "x": 1.0000000013551198,
+          "tau": 5.035069653594149e-08
         }
       ]
     },
@@ -3465,19 +2873,17 @@
       "baseline_start": 266.0,
       "baseline_finish": 271.0,
       "baseline_duration": 5.0,
-      "optimized_start": 140.31121354927268,
-      "optimized_finish": 145.3112132286967,
-      "optimized_duration": 4.999999679424018,
+      "optimized_start": 214.1990713006443,
+      "optimized_finish": 219.19907115682622,
+      "optimized_duration": 4.999999856181908,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Tile Contractor",
           "baseline_duration": 5.0,
-          "effective_baseline_duration": 5.0,
-          "optimized_duration": 4.999999679424018,
-          "x": 1.0000000311000097,
-          "tau": 4.839450679877181e-07
+          "optimized_duration": 4.999999856181908,
+          "x": 1.000000040266952,
+          "tau": 6.591461509076305e-09
         }
       ]
     },
@@ -3487,19 +2893,17 @@
       "baseline_start": 271.0,
       "baseline_finish": 275.0,
       "baseline_duration": 4.0,
-      "optimized_start": 145.3112132286967,
-      "optimized_finish": 149.31121197511857,
-      "optimized_duration": 3.9999987464218756,
+      "optimized_start": 219.19907115682622,
+      "optimized_finish": 223.19907068624454,
+      "optimized_duration": 3.99999952941831,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Tile Contractor",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 3.9999987464218756,
-          "x": 1.0000003916722946,
-          "tau": 4.4827461439262633e-07
+          "optimized_duration": 3.99999952941831,
+          "x": 1.0000001487748718,
+          "tau": 1.5432030926759124e-07
         }
       ]
     },
@@ -3509,19 +2913,17 @@
       "baseline_start": 321.0,
       "baseline_finish": 325.0,
       "baseline_duration": 4.0,
-      "optimized_start": 170.73196171542486,
-      "optimized_finish": 172.73453869418864,
-      "optimized_duration": 2.0025769787637957,
+      "optimized_start": 244.12776711712797,
+      "optimized_finish": 246.127806073561,
+      "optimized_duration": 2.0000389564330434,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 4.0,
-          "effective_baseline_duration": 4.0,
-          "optimized_duration": 2.0025769787637957,
-          "x": 1.9999876956274276,
-          "tau": 2.7474794465603583
+          "optimized_duration": 2.0000389564330434,
+          "x": 1.999999967701348,
+          "tau": 2.7669021136190635
         }
       ]
     },
@@ -3531,19 +2933,17 @@
       "baseline_start": 325.0,
       "baseline_finish": 326.0,
       "baseline_duration": 1.0,
-      "optimized_start": 172.73453869418864,
-      "optimized_finish": 173.7345382382041,
-      "optimized_duration": 0.9999995440154464,
+      "optimized_start": 246.127806073561,
+      "optimized_finish": 247.12780598713294,
+      "optimized_duration": 0.9999999135719349,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.9999995440154464,
-          "x": 1.0000005812947599,
-          "tau": 5.608965221796305e-07
+          "optimized_duration": 0.9999999135719349,
+          "x": 1.0000000651489882,
+          "tau": 4.6655748508935536e-07
         }
       ]
     },
@@ -3553,19 +2953,17 @@
       "baseline_start": 325.0,
       "baseline_finish": 328.0,
       "baseline_duration": 3.0,
-      "optimized_start": 172.73453869418864,
-      "optimized_finish": 174.4083968478968,
-      "optimized_duration": 1.6738581537081512,
+      "optimized_start": 246.127806073561,
+      "optimized_finish": 247.78015338043036,
+      "optimized_duration": 1.6523473068693597,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 3.0,
-          "effective_baseline_duration": 3.0,
-          "optimized_duration": 1.6738581537081512,
-          "x": 1.9999512000332338,
-          "tau": 1.206070706777478
+          "optimized_duration": 1.6523473068693597,
+          "x": 1.9999999950910674,
+          "tau": 1.377529658444688
         }
       ]
     },
@@ -3575,27 +2973,24 @@
       "baseline_start": 328.0,
       "baseline_finish": 329.0,
       "baseline_duration": 1.0,
-      "optimized_start": 174.4083968478968,
-      "optimized_finish": 174.98444635492396,
-      "optimized_duration": 0.5760495070271574,
+      "optimized_start": 247.78015345233314,
+      "optimized_finish": 248.29764414810555,
+      "optimized_duration": 0.5174906957723965,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5760470664174931,
-          "x": 1.7506230223809551,
-          "tau": 2.0484772239395976
+          "optimized_duration": 0.5174906957723965,
+          "x": 1.8799175189530333,
+          "tau": 2.9059082766213904
         },
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5760495070271574,
-          "x": 1.6782713305008317,
-          "tau": 2.481612107053178
+          "optimized_duration": 0.5174903713458968,
+          "x": 1.9948002324859921,
+          "tau": 2.277834370224669
         }
       ]
     },
@@ -3605,27 +3000,24 @@
       "baseline_start": 329.0,
       "baseline_finish": 330.0,
       "baseline_duration": 1.0,
-      "optimized_start": 174.98444635492396,
-      "optimized_finish": 175.530139626861,
-      "optimized_duration": 0.5456932719370532,
+      "optimized_start": 248.29764414810555,
+      "optimized_finish": 248.86906698413907,
+      "optimized_duration": 0.5714228360335291,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5456932719370532,
-          "x": 1.9948616462942592,
-          "tau": 1.5271920931026006
+          "optimized_duration": 0.5714227792281646,
+          "x": 1.9994778701063969,
+          "tau": 0.8997311315762945
         },
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.545693202472881,
-          "x": 1.9999950416698964,
-          "tau": 1.502740338638556
+          "optimized_duration": 0.5714228360335291,
+          "x": 1.9506999550642363,
+          "tau": 1.1222706363214272
         }
       ]
     },
@@ -3635,27 +3027,24 @@
       "baseline_start": 330.0,
       "baseline_finish": 331.0,
       "baseline_duration": 1.0,
-      "optimized_start": 175.530139626861,
-      "optimized_finish": 176.12639300390197,
-      "optimized_duration": 0.5962533770409595,
+      "optimized_start": 248.86906698413907,
+      "optimized_finish": 249.44705207743368,
+      "optimized_duration": 0.577985093294606,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5962531253442375,
-          "x": 1.6451755383686586,
-          "tau": 2.1786709331903147
+          "optimized_duration": 0.577985058081473,
+          "x": 1.6413595391693723,
+          "tau": 2.6660935925035694
         },
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5962533770409595,
-          "x": 1.9999967159149037,
-          "tau": 0.37285891559222817
+          "optimized_duration": 0.577985093294606,
+          "x": 1.8180843767203192,
+          "tau": 1.6293071785872826
         }
       ]
     },
@@ -3665,83 +3054,73 @@
       "baseline_start": 331.0,
       "baseline_finish": 341.0,
       "baseline_duration": 10.0,
-      "optimized_start": 176.12639300390197,
-      "optimized_finish": 182.0667712020432,
-      "optimized_duration": 5.94037819814124,
+      "optimized_start": 249.44705207743368,
+      "optimized_finish": 255.04895077932733,
+      "optimized_duration": 5.601898701893658,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Superintendent",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.94037819814124,
-          "x": 1.6948330342584228,
-          "tau": 1.933122407319269
+          "optimized_duration": 5.601898365975837,
+          "x": 1.8636555175414298,
+          "tau": 1.823029636965839
         },
         {
           "resource_name": "G.C. Labor Crew",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940350983033598,
-          "x": 1.7013038777119556,
-          "tau": 1.8954069243088765
+          "optimized_duration": 5.60189657259799,
+          "x": 1.8902289212862502,
+          "tau": 1.6849389765149827
         },
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940377661522832,
-          "x": 1.9748426025563677,
-          "tau": 0.5247230032393182
+          "optimized_duration": 5.601898701893658,
+          "x": 1.592554822962506,
+          "tau": 3.495203524369634
         },
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.94037629816486,
-          "x": 1.7662362644543972,
-          "tau": 1.5315626908096132
+          "optimized_duration": 5.6018983921974135,
+          "x": 1.5778705833937308,
+          "tau": 3.602183000404335
         },
         {
           "resource_name": "HVAC Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940376767743869,
-          "x": 1.884261704934302,
-          "tau": 0.9345284342523965
+          "optimized_duration": 5.6018874450428955,
+          "x": 1.7291257288580917,
+          "tau": 2.587312455610084
         },
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940371954000553,
-          "x": 1.5310050258048946,
-          "tau": 2.9960509503988173
+          "optimized_duration": 5.6018853730734754,
+          "x": 1.6823923475629265,
+          "tau": 2.881411857361145
         },
         {
           "resource_name": "Carpet Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940252201880596,
-          "x": 1.6055167936944919,
-          "tau": 2.4860280327972695
+          "optimized_duration": 5.601879839485651,
+          "x": 1.7620182999610048,
+          "tau": 2.389693383813875
         },
         {
           "resource_name": "Paving Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.94022760731083,
-          "x": 1.4035644803776275,
-          "tau": 3.9948843956902187
+          "optimized_duration": 5.601471444350832,
+          "x": 1.7461786890208346,
+          "tau": 2.485030407953873
         },
         {
           "resource_name": "Painting Contractor",
           "baseline_duration": 10.0,
-          "effective_baseline_duration": 10.0,
-          "optimized_duration": 5.940372774417095,
-          "x": 1.4031433166088354,
-          "tau": 3.998065877006234
+          "optimized_duration": 5.601897584707918,
+          "x": 1.7079736935429954,
+          "tau": 2.7184010494230355
         }
       ]
     },
@@ -3751,19 +3130,17 @@
       "baseline_start": 341.0,
       "baseline_finish": 343.0,
       "baseline_duration": 2.0,
-      "optimized_start": 182.0667712020432,
-      "optimized_finish": 183.108494557257,
-      "optimized_duration": 1.0417233552137763,
+      "optimized_start": 255.04895077932733,
+      "optimized_finish": 256.0912121860013,
+      "optimized_duration": 1.0422614066739995,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 2.0,
-          "effective_baseline_duration": 2.0,
-          "optimized_duration": 1.0417233552137763,
-          "x": 1.999999796633702,
-          "tau": 2.1564588553646886
+          "optimized_duration": 1.0422614066739995,
+          "x": 1.9999999437664953,
+          "tau": 2.148968771601061
         }
       ]
     },
@@ -3773,19 +3150,17 @@
       "baseline_start": 341.0,
       "baseline_finish": 342.0,
       "baseline_duration": 1.0,
-      "optimized_start": 182.0667712020432,
-      "optimized_finish": 183.0667709937833,
-      "optimized_duration": 0.9999997917400945,
+      "optimized_start": 255.04895077932733,
+      "optimized_finish": 256.0489507141048,
+      "optimized_duration": 0.9999999347774792,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.9999997917400945,
-          "x": 1.0000002232397056,
-          "tau": 5.941960318531924e-07
+          "optimized_duration": 0.9999999347774792,
+          "x": 1.0000000795607245,
+          "tau": 1.089144931028372e-07
         }
       ]
     },
@@ -3795,263 +3170,33 @@
       "baseline_start": 343.0,
       "baseline_finish": 344.0,
       "baseline_duration": 1.0,
-      "optimized_start": 183.108494557257,
-      "optimized_finish": 183.6515958181712,
-      "optimized_duration": 0.5431012609141855,
+      "optimized_start": 256.0912121860013,
+      "optimized_finish": 256.67682262057497,
+      "optimized_duration": 0.5856104345736493,
       "status": "not_started",
-      "progress": 0.0,
       "assignments": [
         {
           "resource_name": "G.C. Project Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5431012129394226,
-          "x": 1.653894833386765,
-          "tau": 3.569746668483675
+          "optimized_duration": 0.5856104345736493,
+          "x": 1.9722840078676136,
+          "tau": 0.7118011310376523
         },
         {
           "resource_name": "G.C. Accounting",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5430984955242848,
-          "x": 1.8168325334886353,
-          "tau": 2.532220588530484
+          "optimized_duration": 0.585610394439232,
+          "x": 1.6777968388972309,
+          "tau": 2.2408988587678813
         },
         {
           "resource_name": "G.C. General Management",
           "baseline_duration": 1.0,
-          "effective_baseline_duration": 1.0,
-          "optimized_duration": 0.5431012609141855,
-          "x": 1.9723573909274492,
-          "tau": 1.7016605164477763
+          "optimized_duration": 0.5856103077363896,
+          "x": 1.8880609399346802,
+          "tau": 1.1004220274063106
         }
       ]
-    }
-  ],
-  "resource_constraint_report": [
-    {
-      "resource_id": 1,
-      "resource_name": "G.C. General Management",
-      "U_max": 2.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 2,
-      "resource_name": "G.C. Project Management",
-      "U_max": 3.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 3,
-      "resource_name": "G.C. Procurement",
-      "U_max": 1.0,
-      "peak_usage": 0.5,
-      "violated": false
-    },
-    {
-      "resource_id": 4,
-      "resource_name": "G.C. Scheduler",
-      "U_max": 1.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 5,
-      "resource_name": "G.C. Accounting",
-      "U_max": 1.0,
-      "peak_usage": 0.33000000000000007,
-      "violated": false
-    },
-    {
-      "resource_id": 6,
-      "resource_name": "G.C. Superintendent",
-      "U_max": 3.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 7,
-      "resource_name": "G.C. Survey Crew",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 8,
-      "resource_name": "G.C. Rough Carpenter Crew",
-      "U_max": 8.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 9,
-      "resource_name": "G.C. Labor Crew",
-      "U_max": 10.0,
-      "peak_usage": 1.5299999999999994,
-      "violated": false
-    },
-    {
-      "resource_id": 10,
-      "resource_name": "G.C. Concrete Crew",
-      "U_max": 4.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 11,
-      "resource_name": "G.C. Finish Carpenter Crew",
-      "U_max": 4.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 12,
-      "resource_name": "Site Grading Contractor",
-      "U_max": 6.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 13,
-      "resource_name": "Plumbing Contractor",
-      "U_max": 2.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 14,
-      "resource_name": "Plumbing Contractor Management",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 15,
-      "resource_name": "Electric Contractor",
-      "U_max": 3.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 16,
-      "resource_name": "Electric Contractor Management",
-      "U_max": 4.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 17,
-      "resource_name": "HVAC Contractor",
-      "U_max": 4.0,
-      "peak_usage": 3.0,
-      "violated": false
-    },
-    {
-      "resource_id": 18,
-      "resource_name": "HVAC Contractor Management",
-      "U_max": 3.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 19,
-      "resource_name": "Elevator Contractor",
-      "U_max": 1.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 20,
-      "resource_name": "Elevator Contractor Management",
-      "U_max": 8.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 21,
-      "resource_name": "Steel Erection Contractor",
-      "U_max": 3.0,
-      "peak_usage": 1.75,
-      "violated": false
-    },
-    {
-      "resource_id": 22,
-      "resource_name": "Steel Erection Contractor Management",
-      "U_max": 8.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 23,
-      "resource_name": "Drywall Contractor",
-      "U_max": 10.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 24,
-      "resource_name": "Masonry Contractor",
-      "U_max": 4.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 25,
-      "resource_name": "Tile Contractor",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 26,
-      "resource_name": "Roofing Contractor",
-      "U_max": 3.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 27,
-      "resource_name": "Roofing Contractor Management",
-      "U_max": 4.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 28,
-      "resource_name": "Window Contractor",
-      "U_max": 3.0,
-      "peak_usage": 2.0,
-      "violated": false
-    },
-    {
-      "resource_id": 29,
-      "resource_name": "Carpet Contractor",
-      "U_max": 5.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 30,
-      "resource_name": "Landscape Contractor",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 31,
-      "resource_name": "Paving Contractor",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
-    },
-    {
-      "resource_id": 32,
-      "resource_name": "Painting Contractor",
-      "U_max": 6.0,
-      "peak_usage": 1.0,
-      "violated": false
     }
   ]
 }

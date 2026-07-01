@@ -50,8 +50,8 @@ C_LATE         = 5000.0   # USD penalty per late day
 C_EARLY        = 2000.0   # USD bonus per early day
 
 # Scenario A — GA
-GA_POP_SIZE    = 100     # increase for better quality (e.g. 500)
-GA_MAX_GEN     = 500     # increase for more convergence (e.g. 2000)
+GA_POP_SIZE    = 1000     # increase for better quality (e.g. 500)
+GA_MAX_GEN     = 5000     # increase for more convergence (e.g. 2000)
 GA_TOL         = 0.0001   # convergence tolerance (relative change in objective)
 GA_PERIOD      = 20       # number of consecutive generations under tol before stopping
 GA_SEED        = 42
@@ -100,11 +100,10 @@ def run_scenario_A():
     )
     import numpy as np
 
-    tasks, precedence, resources, N, K_i, resource_master = load_data(
+    tasks, precedence, resources, N, K_i = load_data(
         path_tasks=data_path("data_tasks.csv"),
         path_precedence=data_path("data_precedence.csv"),
         path_assignments=data_path("data_assignments.csv"),
-        path_resources=data_path("data_resources.csv"),
     )
 
     problem = ResourceBasedScheduling(
@@ -209,11 +208,10 @@ def run_scenario_B():
     from solver_milp import solve_milp_cobb_douglas
     import numpy as np, shutil
 
-    tasks, precedence, resources, N, K_i, resource_master = load_data(
+    tasks, precedence, resources, N, K_i = load_data(
         path_tasks=data_path("data_tasks.csv"),
         path_precedence=data_path("data_precedence.csv"),
         path_assignments=data_path("data_assignments.csv"),
-        path_resources=data_path("data_resources.csv"),
     )
 
     # Baseline only for display

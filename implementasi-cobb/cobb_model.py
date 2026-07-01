@@ -8,28 +8,14 @@ Fitur utama:
   - current_day : hari ke berapa proyek saat ini berjalan (input pengguna).
                   Task yang sudah selesai sebelum current_day dikunci ke baseline.
                   Crashing hanya diterapkan pada task yang belum selesai.
-  - Status task terhadap current_day mengikuti 3 kategori sesuai slide Skenario 2:
-      • Selesai (I0)         : f_baseline <= current_day → s_i & x_i,k=1, tau_i,k=0 dikunci.
-      • Berjalan (I0^C ∩ I1^C): s_baseline <= current_day < f_baseline → s_i dikunci ke
-                                 s_baseline, namun x_i,k & tau_i,k tetap bisa dioptimasi
-                                 atas SISA usaha kerja W_i,k * (1 - p_i).
-      • Belum Mulai (I1)     : s_baseline > current_day → s_i >= current_day, W_i,k penuh.
-    p_i (proporsi progress) diestimasi linear dari baseline schedule karena tidak
-    tersedia data progress aktual:
-        p_i = clip((current_day - s_baseline_i) / D_baseline_i, 0, 1)
   - s_i untuk task yang belum selesai dihitung deterministik via CPM forward pass
     dengan lower bound max(current_day, hasil_precedence).
-  - Variabel keputusan GA: x_{i,k} dan tau_{i,k} untuk semua task selain yang sudah
-    selesai (termasuk task yang sedang berjalan, dioptimasi atas sisa effort).
+  - Variabel keputusan GA: hanya x_{i,k} dan tau_{i,k} untuk task belum selesai.
     Task yang sudah selesai dikunci ke x=1, tau=0 (tidak di-crash).
   - x_max ditentukan via diminishing returns relatif: berhenti saat marginal
     benefit < 50% dari manfaat pekerja tambahan pertama (threshold = 0.5 * delta_0).
   - tau_min = 0.0 sesuai slide (0 ≤ τ ≤ τ_max).
   - D_min_ratio: durasi crash tidak boleh < D_min_ratio × D_base per pasangan (i,k).
-  - Resource (labor crew) constraint: total alokasi pekerja harian U_i,k untuk setiap
-    jenis sumber daya k tidak boleh melebihi resource_availability (U_k^max) pada
-    setiap titik waktu mulai aktivitas s_j, dievaluasi pada level alokasi pekerja
-    (window [s_i, s_i + d_i,k)) sesuai slide Skenario 2.
 """
 
 import os
@@ -65,7 +51,7 @@ def data_path(filename):
 # Data Loader
 # ===========================================================================
 
-def load_data(path_tasks, path_precedence, path_assignments, path_resources=None):
+def load_data(path_tasks, path_precedence, path_assignments):
     tasks      = pd.read_csv(path_tasks)
     precedence = pd.read_csv(path_precedence)
     resources  = pd.read_csv(path_assignments)
@@ -90,30 +76,11 @@ def load_data(path_tasks, path_precedence, path_assignments, path_resources=None
                  .astype({"i": int})
                  .reset_index(drop=True))
 
-    # ── Muat resource_availability (U_k^max) dari data_resources.csv ──────────
-    # Di-join via resource_id agar tiap pasangan (i,k) tahu kapasitas maksimum
-    # dari jenis sumber daya k yang digunakannya (untuk resource constraint).
-    if path_resources is not None:
-        resource_master = pd.read_csv(path_resources)
-        resources = resources.merge(
-            resource_master[["resource_id", "resource_availability"]],
-            on="resource_id", how="left",
-        )
-        if resources["resource_availability"].isna().any():
-            missing = resources.loc[
-                resources["resource_availability"].isna(), "resource_id"
-            ].unique()
-            raise ValueError(
-                f"resource_id berikut tidak ditemukan di data_resources.csv: {missing}"
-            )
-    else:
-        resource_master = None
-
     K_i = {}
     for row_idx, row in resources.iterrows():
         K_i.setdefault(int(row["i"]), []).append(row_idx)
 
-    return tasks, precedence, resources, N, K_i, resource_master
+    return tasks, precedence, resources, N, K_i
 
 
 # ===========================================================================
@@ -155,24 +122,14 @@ class ResourceBasedScheduling(ElementwiseProblem):
       x_{i,k} dan tau_{i,k} dikunci ke 1 dan 0 di dalam _evaluate,
       sehingga D_ik = D_base_ik (tidak di-crash).
 
-    Untuk task yang sedang berjalan (s_baseline <= current_day < f_baseline):
-      s_i dikunci ke s_baseline (tidak bergeser), namun x_{i,k} & tau_{i,k} tetap
-      menjadi variabel keputusan GA. D_base_ik efektif yang dipakai pada Cobb-Douglas
-      di-scale oleh (1 - p_i) untuk merepresentasikan SISA usaha kerja
-      W_i,k * (1 - p_i), bukan W_i,k penuh.
-
     Jadwal (s_i) selalu dihitung deterministik via CPM forward pass:
-      s_i = max(current_day, hasil_precedence)  ← untuk task belum mulai
-      s_i = s_baseline[i]                       ← untuk task sudah selesai / berjalan
+      s_i = max(current_day, hasil_precedence)  ← untuk task belum selesai
+      s_i = s_baseline[i]                       ← untuk task sudah selesai
 
-    Kendala (n_ieq_constr = P + R)
+    Kendala (n_ieq_constr = P)
     ---------------------------
-    G[0:P]  = D_min_ik[p] - D_ik[p] ≤ 0   untuk setiap pasangan (i,k)
-              → Hanya aktif untuk task yang belum selesai.
-    G[P:P+R]= resource constraint per jenis sumber daya k, dievaluasi di setiap
-              titik waktu mulai aktivitas s_j:
-              Σ_i U_i,k · 1{s_i ≤ s_j < s_i + d_i,k} − U_k^max ≤ 0
-              ∀k ∈ K, ∀j ∈ I  (lihat _evaluate_resource_constraints)
+    G[p] = D_min_ik[p] - D_ik[p] ≤ 0   untuk setiap pasangan (i,k)
+    → Hanya aktif untuk task yang belum selesai.
 
     Fungsi Objektif
     ---------------
@@ -181,14 +138,11 @@ class ResourceBasedScheduling(ElementwiseProblem):
             − c_early · max(0, T_max − T_finish)
 
     Durasi Crash (Cobb-Douglas) — sesuai slide:
-    D_{i,k} = D_base_ik_eff · (1/x_{i,k})^α · (8/(8+τ_{i,k}))^β
+    D_{i,k} = D_base_ik · (1/x_{i,k})^α · (8/(8+τ_{i,k}))^β
     D_i     = max_{k ∈ K_i} D_{i,k}
-    (D_base_ik_eff = D_base_ik kecuali untuk task berjalan, di mana
-     D_base_ik_eff = D_base_ik * (1 - p_i) merepresentasikan sisa effort.)
     """
 
     def __init__(self, tasks, precedence, resources, N, K_i,
-                 resource_master=None,
                  alpha=0.7, beta=0.7,
                  x_min=1.0, x_max=None,
                  tau_min=0.0,
@@ -201,7 +155,6 @@ class ResourceBasedScheduling(ElementwiseProblem):
                  hours_per_day=8,
                  mode="bonus_penalty",
                  budget_limit=None,
-                 enforce_resource_constraint=True,
                  **kwargs):
 
         self.tasks         = tasks
@@ -210,8 +163,6 @@ class ResourceBasedScheduling(ElementwiseProblem):
         self.N             = N
         self.K_i           = K_i
         self.P             = len(resources)
-        self.resource_master = resource_master
-        self.enforce_resource_constraint = enforce_resource_constraint
 
         self.alpha         = alpha
         self.beta          = beta
@@ -238,39 +189,8 @@ class ResourceBasedScheduling(ElementwiseProblem):
         self.W_ik         = resources["W_ik"].values
         self.U_ik         = resources["U_ik"].values
         self.D_base_ik    = resources["D_base_ik"].values
-        # NB: self.D_min_ik dihitung ulang di bawah dari D_base_ik_eff
-        # (durasi baseline efektif, memperhitungkan partial-progress).
+        self.D_min_ik     = D_min_ratio * self.D_base_ik
         self.res_task_idx = resources["i"].values
-
-        # ── Setup untuk Resource Constraint (per jenis sumber daya k) ──────
-        # Group pasangan (i,k) berdasarkan resource_id (bukan resource_name,
-        # karena resource_id adalah primary key yang konsisten dengan
-        # data_resources.csv). R = jumlah jenis sumber daya yang dipakai.
-        if "resource_id" in resources.columns and resource_master is not None:
-            self.resource_ids   = resources["resource_id"].values
-            unique_resource_ids = np.unique(self.resource_ids)
-            self.unique_resource_ids = unique_resource_ids
-            self.R = len(unique_resource_ids)
-
-            # Map resource_id -> indeks pasangan (i,k) yang menggunakannya
-            self.pairs_by_resource = {
-                rid: np.where(self.resource_ids == rid)[0]
-                for rid in unique_resource_ids
-            }
-
-            # U_k^max per jenis sumber daya (dari data_resources.csv)
-            avail_map = resource_master.set_index("resource_id")["resource_availability"]
-            self.U_max_k = np.array([
-                float(avail_map.loc[rid]) for rid in unique_resource_ids
-            ])
-        else:
-            # Tidak ada data resource_availability → resource constraint dilewati
-            self.resource_ids        = None
-            self.unique_resource_ids = np.array([])
-            self.R                   = 0
-            self.pairs_by_resource   = {}
-            self.U_max_k             = np.array([])
-            self.enforce_resource_constraint = False
 
         # Precompute precedence sebagai numpy array
         self.prec_i    = precedence["i"].values.astype(int)
@@ -289,54 +209,17 @@ class ResourceBasedScheduling(ElementwiseProblem):
         self.f_baseline = f_bl
         self.D_base_i   = D_base_i
 
-        # ── Klasifikasi status task terhadap current_day ────────────────────
-        # Sesuai slide Skenario 2, ada 3 kategori:
-        #   Selesai (I0)          : f_baseline <= current_day
-        #   Berjalan (I0^C ∩ I1^C): s_baseline <= current_day < f_baseline
-        #   Belum Mulai (I1)      : s_baseline > current_day
+        # ── Identifikasi task selesai sebelum current_day ──────────────────
+        # Task selesai: f_baseline <= current_day  DAN  memiliki durasi > 0
         self.completed_tasks = set(
             i for i in range(N)
             if f_bl[i] <= current_day and D_base_i[i] > 1e-9
         )
-        self.in_progress_tasks = set(
-            i for i in range(N)
-            if i not in self.completed_tasks
-            and s_bl[i] <= current_day < f_bl[i]
-            and D_base_i[i] > 1e-9
-        )
-        # (sisanya = belum mulai, tidak perlu set eksplisit)
-
-        # ── Proporsi progress p_i untuk task berjalan ───────────────────────
-        # Tidak ada data progress aktual, sehingga diestimasi linear dari
-        # baseline schedule: p_i = (current_day - s_baseline_i) / D_baseline_i.
-        self.p_i = np.zeros(N)
-        for i in self.in_progress_tasks:
-            self.p_i[i] = np.clip(
-                (current_day - s_bl[i]) / D_base_i[i], 0.0, 1.0
-            )
-
-        # Pasangan (i,k) yang task-nya sudah selesai / sedang berjalan
+        # Pasangan (i,k) yang task-nya sudah selesai
         self.completed_pairs = set(
             p for p in range(self.P)
             if int(resources.loc[p, "i"]) in self.completed_tasks
         )
-        self.in_progress_pairs = set(
-            p for p in range(self.P)
-            if int(resources.loc[p, "i"]) in self.in_progress_tasks
-        )
-
-        # ── Durasi baseline efektif per pasangan (i,k) ──────────────────────
-        # Untuk task berjalan, hanya SISA usaha kerja yang relevan untuk
-        # mekanisme crashing: W_i,k_eff = W_i,k * (1 - p_i)  →  D_base_ik_eff
-        # ikut menyusut proporsional (D ∝ W pada rumus durasi dasar slide 21).
-        # Untuk task selesai/belum mulai, D_base_ik_eff = D_base_ik (tidak berubah).
-        self.D_base_ik_eff = self.D_base_ik.copy()
-        for p in self.in_progress_pairs:
-            i = int(resources.loc[p, "i"])
-            self.D_base_ik_eff[p] = self.D_base_ik[p] * (1.0 - self.p_i[i])
-        # D_min tetap dihitung dari rasio terhadap durasi baseline EFEKTIF,
-        # supaya batas crash-minimum task berjalan proporsional dgn sisa kerjanya.
-        self.D_min_ik = D_min_ratio * self.D_base_ik_eff
 
         # ── Bounds variabel keputusan ───────────────────────────────────────
         # Semua P pasangan tetap masuk sebagai variabel agar indeks konsisten,
@@ -353,11 +236,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
             xl_tau[p] = xu_tau[p] = 0.0   # tau_ik dikunci ke 0 (tidak lembur)
 
         n_obj = 2 if self.mode == "multiobjective" else 1
-        n_dmin_constr = P
-        n_res_constr  = self.R if self.enforce_resource_constraint else 0
-        self.n_dmin_constr = n_dmin_constr
-        self.n_res_constr  = n_res_constr
-        n_constr = n_dmin_constr + n_res_constr
+        n_constr = P
         if self.mode == "cost_with_deadline":
             n_constr += 1
         elif self.mode == "time_with_budget":
@@ -366,8 +245,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
         super().__init__(
             n_var=2 * P,
             n_obj=n_obj,
-            n_ieq_constr=n_constr,   # D_min per pasangan (i,k) + resource constraint per k
-                                     # + possible deadline/budget constr
+            n_ieq_constr=n_constr,   # D_min per pasangan (i,k) + possible deadline/budget constr
             xl=np.concatenate([xl_x, xl_tau]),
             xu=np.concatenate([xu_x, xu_tau]),
             **kwargs,
@@ -398,15 +276,9 @@ class ResourceBasedScheduling(ElementwiseProblem):
         return max(x, x_min + 1.0)
 
     def crash_duration(self, x_ik, tau_ik, D_base=None):
-        """
-        D_{i,k} = D_base_ik_eff · (1/x)^α · (8/(8+τ))^β  [vectorized]
-
-        D_base_ik_eff (bukan D_base_ik mentah) dipakai sebagai default agar
-        task yang sedang berjalan (partial-progress) hanya di-crash atas
-        SISA durasi kerja (D_base_ik * (1 - p_i)), bukan durasi penuhnya.
-        """
+        """D_{i,k} = D_base_ik · (1/x)^α · (8/(8+τ))^β  [vectorized]"""
         if D_base is None:
-            D_base = self.D_base_ik_eff
+            D_base = self.D_base_ik
         return D_base * (1.0 / x_ik) ** self.alpha * (8.0 / (8.0 + tau_ik)) ** self.beta
 
     def compute_durations(self, x_vec):
@@ -447,19 +319,15 @@ class ResourceBasedScheduling(ElementwiseProblem):
         """
         CPM Forward Pass dengan mempertimbangkan current_day.
 
-        Aturan (3 kategori status, sesuai slide Skenario 2):
-          - Selesai (completed_tasks)      : s_i = s_baseline[i]  (dikunci).
-          - Berjalan (in_progress_tasks)   : s_i = s_baseline[i]  (dikunci;
-            hanya x_i,k & tau_i,k yang dioptimasi atas sisa effort, s_i sendiri
-            tidak bergeser karena task ini secara historis sudah dimulai).
-          - Belum Mulai (sisanya)          : s_i = max(current_day, hasil_precedence)
+        Aturan:
+          - Task sudah selesai : s_i = s_baseline[i]  (dikunci, tidak berubah)
+          - Task belum selesai : s_i = max(current_day, hasil_precedence)
             → Task tidak bisa dimulai sebelum hari crashing dimulai.
         """
         s = np.zeros(self.N)
-        locked_tasks = self.completed_tasks | self.in_progress_tasks
 
-        # Inisialisasi: task selesai/berjalan dikunci ke s_baseline
-        for i in locked_tasks:
+        # Inisialisasi: task selesai dikunci ke s_baseline
+        for i in self.completed_tasks:
             s[i] = self.s_baseline[i]
 
         for _ in range(self.N):
@@ -473,67 +341,19 @@ class ResourceBasedScheduling(ElementwiseProblem):
                 else: continue
                 if cand > s[i]: s[i] = cand
 
-            # Terapkan lower bound current_day hanya untuk task belum mulai
+            # Terapkan lower bound current_day hanya untuk task yang belum selesai
             for i in range(self.N):
-                if i not in locked_tasks:
+                if i not in self.completed_tasks:
                     s[i] = max(s[i], self.current_day)
 
-            # Kembalikan task selesai/berjalan ke s_baseline (tidak boleh bergeser)
-            for i in locked_tasks:
+            # Kembalikan task selesai ke s_baseline (tidak boleh bergeser)
+            for i in self.completed_tasks:
                 s[i] = self.s_baseline[i]
 
             if np.allclose(s, s_prev, atol=1e-8):
                 break
 
         return s, s + D_i
-
-    def _evaluate_resource_constraints(self, s, D_ik):
-        """
-        Hitung kendala kapasitas sumber daya (slide 27, Skenario 2):
-
-            Σ_{i∈I} U_{i,k} · 1{s_i ≤ s_j < s_i + d_{i,k}} ≤ U_k^max
-            ∀k ∈ K, ∀j ∈ I
-
-        Dievaluasi pada level alokasi pekerja (window [s_i, s_i + d_i,k)),
-        dan dicek hanya di setiap titik waktu mulai aktivitas s_j (bukan
-        kontinu) untuk efisiensi komputasi, sesuai penjelasan pada slide.
-
-        Returns
-        -------
-        G_res : np.ndarray, shape (R,)
-            G_res[k] = max_j ( used_k(s_j) ) - U_max_k[k]   ≤ 0 jika feasible.
-            Mengambil max atas semua checkpoint j sehingga satu nilai per
-            resource type k cukup untuk merepresentasikan kendala "berlaku
-            di semua j" (constraint aktif jika overload terjadi di titik
-            manapun).
-        """
-        R = self.R
-        if R == 0:
-            return np.zeros(0)
-
-        checkpoints = s  # s_j untuk semua j ∈ I (lower bound start times)
-        G_res = np.empty(R)
-
-        for k_idx, rid in enumerate(self.unique_resource_ids):
-            pair_idx = self.pairs_by_resource[rid]
-            if len(pair_idx) == 0:
-                G_res[k_idx] = -self.U_max_k[k_idx]
-                continue
-
-            s_i_k = s[self.res_task_idx[pair_idx]]          # start hari pasangan
-            d_i_k = D_ik[pair_idx]                            # durasi aktual (crashed)
-            U_i_k = self.U_ik[pair_idx]                       # alokasi pekerja/hari
-
-            # active[p, j] = True jika pasangan p aktif pada saat checkpoint j dimulai
-            # s_i_k[:,None] <= s_j[None,:] < (s_i_k + d_i_k)[:,None]
-            start_le = s_i_k[:, None] <= checkpoints[None, :]
-            end_gt   = checkpoints[None, :] < (s_i_k + d_i_k)[:, None]
-            active   = start_le & end_gt                      # shape (len(pair_idx), N)
-
-            used_at_j = (U_i_k[:, None] * active).sum(axis=0)  # shape (N,)
-            G_res[k_idx] = float(np.max(used_at_j)) - self.U_max_k[k_idx]
-
-        return G_res
 
     def _evaluate(self, x, out, *args, **kwargs):
         P = self.P
@@ -542,9 +362,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
         tau_ik = x[P:2 * P].copy()
 
         # Task selesai: kunci ke baseline (tidak di-crash)
-        # Bounds sudah mengunci ini, tapi copy eksplisit untuk keamanan.
-        # Task berjalan (in_progress_pairs) TIDAK dikunci di sini — x_ik & tau_ik
-        # tetap bebas dioptimasi atas SISA effort (D_base_ik_eff).
+        # Bounds sudah mengunci ini, tapi copy eksplisit untuk keamanan
         for p in self.completed_pairs:
             x_ik[p]   = 1.0
             tau_ik[p] = 0.0
@@ -556,9 +374,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
             for p in self.K_i.get(i, []):
                 D_i[i] = max(D_i[i], D_ik[p])
 
-        # Task selesai: pastikan D_i tetap = D_base_i (durasi penuh, tidak di-crash).
-        # Task berjalan TIDAK di-override di sini — D_i-nya mengikuti hasil
-        # crash_duration() atas sisa effort (sudah benar dari D_base_ik_eff).
+        # Task selesai: pastikan D_i tetap = D_base_i
         for i in self.completed_tasks:
             D_i[i] = self.D_base_i[i]
 
@@ -586,12 +402,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
         G = self.D_min_ik - D_ik
         for p in self.completed_pairs:
             G[p] = 0.0   # task selesai selalu feasible, tidak dihitung
-
-        # Kendala resource (kapasitas sumber daya per jenis k)
-        if self.enforce_resource_constraint and self.n_res_constr > 0:
-            G_res = self._evaluate_resource_constraints(s, D_ik)
-            G = np.concatenate([G, G_res])
-
+            
         if self.mode == "cost_with_deadline":
             G = np.append(G, T_finish - self.T_max)
         elif self.mode == "time_with_budget":
@@ -849,21 +660,15 @@ def save_solution_json(
     for i in range(N):
         task_id = int(tasks.iloc[i]["task_id"])
         task_name = tasks.iloc[i]["task_name"]
-
-        if i in problem.completed_tasks:
-            status = "completed"
-        elif i in problem.in_progress_tasks:
-            status = "in_progress"
-        else:
-            status = "not_started"
-
+        
+        status = "completed" if f_opt[i] <= current_day else ("in_progress" if s_opt[i] <= current_day < f_opt[i] else "not_started")
+        
         assignments = []
         for p in problem.K_i.get(i, []):
             res_name = resources.loc[p, "resource_name"] if "resource_name" in resources else f"Resource_{resources.loc[p, 'resource_id']}"
             assignments.append({
                 "resource_name": res_name,
                 "baseline_duration": float(problem.D_base_ik[p]),
-                "effective_baseline_duration": float(problem.D_base_ik_eff[p]),
                 "optimized_duration": float(D_ik_opt[p]),
                 "x": float(x_ik_opt[p]),
                 "tau": float(tau_ik_opt[p]),
@@ -879,24 +684,9 @@ def save_solution_json(
             "optimized_finish": float(f_opt[i]),
             "optimized_duration": float(D_i_opt[i]),
             "status": status,
-            "progress": round(float(problem.p_i[i]), 4),
             "assignments": assignments
         })
-
-    # ── Diagnostik kendala kapasitas sumber daya (untuk transparansi) ───────
-    resource_constraint_report = []
-    if problem.R > 0:
-        G_res_opt = problem._evaluate_resource_constraints(s_opt, D_ik_opt)
-        for k_idx, rid in enumerate(problem.unique_resource_ids):
-            row = resources.loc[resources["resource_id"] == rid].iloc[0]
-            resource_constraint_report.append({
-                "resource_id": int(rid),
-                "resource_name": row["resource_name"] if "resource_name" in row else f"Resource_{rid}",
-                "U_max": float(problem.U_max_k[k_idx]),
-                "peak_usage": float(problem.U_max_k[k_idx] + G_res_opt[k_idx]),
-                "violated": bool(G_res_opt[k_idx] > 1e-6),
-            })
-
+        
     result_data = {
         "success": True,
         "solver": "pymoo_GA",
@@ -908,8 +698,7 @@ def save_solution_json(
         "labor_cost": float(labor_cost),
         "total_project_cost": float(total_project_cost),
         "crash_plan": crash_plan,
-        "schedule": schedule,
-        "resource_constraint_report": resource_constraint_report,
+        "schedule": schedule
     }
     
     os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
@@ -1061,14 +850,9 @@ def parse_args():
         help="Path to assignments CSV"
     )
     parser.add_argument(
-        "--path-resources",
-        default=data_path("data_resources.csv"),
-        help="Path to resources CSV (resource_availability / U_k^max)"
-    )
-    parser.add_argument(
         "--current-day",
         type=int,
-        default=0,
+        default=156,
         help="Current execution day"
     )
     parser.add_argument(
@@ -1105,11 +889,10 @@ if __name__ == "__main__":
     args = parse_args()
 
     # ---- 1. Muat data ----
-    tasks, precedence, resources, N, K_i, resource_master = load_data(
+    tasks, precedence, resources, N, K_i = load_data(
         path_tasks=args.path_tasks,
         path_precedence=args.path_precedence,
         path_assignments=args.path_assignments,
-        path_resources=args.path_resources,
     )
 
     CURRENT_DAY = args.current_day
@@ -1121,7 +904,6 @@ if __name__ == "__main__":
         resources=resources,
         N=N,
         K_i=K_i,
-        resource_master=resource_master,
         alpha=0.7,
         beta=0.7,
         x_min=1.0,
@@ -1134,31 +916,24 @@ if __name__ == "__main__":
         current_day=CURRENT_DAY,
         overtime_mult=1.5,
         hours_per_day=8,
-        enforce_resource_constraint=True,
     )
 
     # ---- 4. Info problem ----
     P = problem.P
-    n_done      = len(problem.completed_tasks)
-    n_progress  = len(problem.in_progress_tasks)
-    n_remain    = N - n_done - n_progress
-    p_done      = len(problem.completed_pairs)
-    p_progress  = len(problem.in_progress_pairs)
-    p_remain    = P - p_done
+    n_done    = len(problem.completed_tasks)
+    n_remain  = N - n_done
+    p_done    = len(problem.completed_pairs)
+    p_remain  = P - p_done
 
     print(f"Tasks             : N = {N}")
     print(f"  Sudah selesai   : {n_done}  task  (sebelum hari ke-{CURRENT_DAY})")
-    print(f"  Sedang berjalan : {n_progress}  task  (partial-progress, sisa effort di-crash)")
-    print(f"  Belum mulai     : {n_remain} task  (akan di-crash penuh)")
+    print(f"  Belum selesai   : {n_remain} task  (akan di-crash)")
     print(f"Resource pairs    : P = {P}")
     print(f"  Pasangan selesai: {p_done}  (dikunci, tidak dioptimasi)")
-    print(f"  Pasangan berjalan: {p_progress}  (dioptimasi atas sisa effort)")
     print(f"  Pasangan aktif  : {p_remain} (dioptimasi GA)")
     print(f"Precedence        : {len(precedence)}")
     print(f"n_var             : {problem.n_var}  = x_ik:{P} + tau_ik:{P}")
-    print(f"n_ieq_constr      : {problem.n_ieq_constr}  "
-          f"(D_min:{problem.n_dmin_constr} + resource:{problem.n_res_constr})")
-    print(f"Jenis resource (R): {problem.R}")
+    print(f"n_ieq_constr      : {problem.n_ieq_constr}  (D_min per pasangan i,k)")
     print(f"x_max             : {problem.x_max:.2f}")
 
     # ---- 5. Solve ----

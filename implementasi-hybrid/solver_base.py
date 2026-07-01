@@ -536,7 +536,6 @@ def build_model_and_solve(
 
     schedule_rows = []
     total_crash_cost_unscaled = Decimal("0")
-    total_base_cost_unscaled = Decimal("0")
     total_crash_days = 0
     crashed_activities = []
 
@@ -552,10 +551,6 @@ def build_model_and_solve(
         if states[a]["status"] != "completed":
             total_crash_cost_unscaled += row_cost
 
-        # Z_i^base: base (non-crash) cost of the activity, summed over all i in I.
-        base_cost_i = Decimal(str(activity_data[a].get("activity_base_cost", 0.0)))
-        total_base_cost_unscaled += base_cost_i
-
         total_crash_days += crash_days
 
         row = {
@@ -569,7 +564,6 @@ def build_model_and_solve(
             "crash_days": crash_days,
             "crash_cost_per_day": float(crash_cost_day),
             "crash_cost": float(row_cost),
-            "activity_base_cost": float(base_cost_i),
         }
         schedule_rows.append(row)
 
@@ -579,46 +573,19 @@ def build_model_and_solve(
     schedule_rows.sort(key=lambda x: (x["start"], x["end"], x["activity"]))
     crashed_activities.sort(key=lambda x: (-x["crash_cost"], x["activity"]))
 
-    # Determine the solver objective value for this mode.
-    if mode == "cost_with_deadline":
-        solver_objective_value = float(total_crash_cost_unscaled)
-    elif mode == "bonus_penalty":
-        target = cfg.target_end_date
-        makespan_val = int(solver.Value(Cmax))
-        late_days_val = max(0, makespan_val - target)
-        early_days_val = max(0, target - makespan_val)
-        penalty_unscaled = Decimal(str(cfg.c_late)) * Decimal(late_days_val)
-        bonus_unscaled = Decimal(str(cfg.c_early)) * Decimal(early_days_val)
-        net_cost_unscaled = total_crash_cost_unscaled + penalty_unscaled - bonus_unscaled
-        solver_objective_value = float(net_cost_unscaled)
-    elif mode == "time_with_budget" or mode == "min_makespan":
-        solver_objective_value = int(solver.Value(Cmax))
-    else:
-        solver_objective_value = int(solver.Value(Cmax))
-
     result.update(
         {
-            "objective_value": solver_objective_value,
+            "objective_value": float(total_crash_cost_unscaled)
+            if mode == "cost_with_deadline"
+            else int(solver.Value(Cmax)),
             "makespan": int(solver.Value(Cmax)),
             "total_crash_cost": float(total_crash_cost_unscaled),
             "total_crash_days": int(total_crash_days),
             "num_crashed_activities": len(crashed_activities),
             "crashed_activities": crashed_activities,
             "schedule": schedule_rows,
-            # Σ_{i in I} Z_i^base : sum of base (non-crash) cost over all activities.
-            "total_base_cost": float(total_base_cost_unscaled),
-            # Total Comparable Cost = Solver Objective Value + Σ Z_i^base
-            "total_comparable_cost": float(
-                Decimal(str(solver_objective_value)) + total_base_cost_unscaled
-            ),
         }
     )
-
-    if mode == "bonus_penalty":
-        result["penalty"] = float(penalty_unscaled)
-        result["bonus"] = float(bonus_unscaled)
-        result["net_cost"] = float(net_cost_unscaled)
-
 
     return result
 
@@ -866,7 +833,6 @@ def write_schedule_csv(path: Optional[str], schedule: List[Dict[str, Any]]) -> N
         "crash_days",
         "crash_cost_per_day",
         "crash_cost",
-        "activity_base_cost",
     ]
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
@@ -1142,4 +1108,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-    
