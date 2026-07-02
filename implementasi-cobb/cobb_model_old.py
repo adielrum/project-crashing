@@ -8,19 +8,17 @@ Fitur utama:
   - current_day : hari ke berapa proyek saat ini berjalan (input pengguna).
                   Task yang sudah selesai sebelum current_day dikunci ke baseline.
                   Crashing hanya diterapkan pada task yang belum selesai.
-  - s_i untuk task yang belum dikunci adalah variabel keputusan BEBAS, dibangun
-    oleh Serial Schedule Generation Scheme (SSS, Hartmann 1998) berdasarkan
-    priority list yang dipilih GA -- lihat ResourceBasedScheduling._serial_schedule.
-  - Variabel keputusan GA: x_{i,k}, tau_{i,k}, dan priority_i untuk task belum
-    selesai. Task yang sudah selesai dikunci ke x=1, tau=0 (tidak di-crash).
+  - s_i untuk task yang belum selesai dihitung deterministik via CPM forward pass
+    dengan lower bound max(current_day, hasil_precedence).
+  - Variabel keputusan GA: hanya x_{i,k} dan tau_{i,k} untuk task belum selesai.
+    Task yang sudah selesai dikunci ke x=1, tau=0 (tidak di-crash).
   - x_max ditentukan via diminishing returns relatif: berhenti saat marginal
     benefit < 50% dari manfaat pekerja tambahan pertama (threshold = 0.5 * delta_0).
   - tau_min = 0.0 sesuai slide (0 ≤ τ ≤ τ_max).
   - D_min_ratio: durasi crash tidak boleh < D_min_ratio × D_base per pasangan (i,k).
-  - Kapasitas resource (U_max_k, dari data_resources.csv) ditegakkan SECARA
-    STRUKTURAL oleh SSS: task ditempatkan pada waktu paling awal yang tidak
-    melanggar kapasitas resource manapun yang dipakainya (Eq. 11), bukan lewat
-    kendala G atau penalti biaya.
+  - Kapasitas resource (U_max_k, dari data_resources.csv) ditegakkan sebagai
+    kendala ketidaksetaraan: total pemakaian resource_id tertentu yang aktif
+    secara simultan tidak boleh melebihi ketersediaannya per hari.
   - completion_fraction (opsional): task yang sedang berjalan pada current_day
     dapat dikunci start-nya ke baseline namun sisa workload-nya tetap
     di-crash, alih-alih hanya dua kategori selesai/belum-selesai.
@@ -148,36 +146,28 @@ class CombinedTermination(Termination):
 
 class ResourceBasedScheduling(ElementwiseProblem):
     """
-    Variabel Keputusan (n_var = 2P + N)
-    -------------------------------------
-    x[0:P]      = x_{i,k}     : crowding factor (pengali buruh)
-    x[P:2P]     = tau_{i,k}   : lembur harian (jam/hari)
-    x[2P:2P+N]  = priority_i  : activity-list priority per task, ∈ [0,1]
+    Variabel Keputusan (n_var = 2P)
+    ---------------------------------
+    x[0:P]   = x_{i,k}   : crowding factor (pengali buruh)
+    x[P:2P]  = tau_{i,k} : lembur harian (jam/hari)
 
     Untuk task yang sudah selesai sebelum current_day:
       x_{i,k} dan tau_{i,k} dikunci ke 1 dan 0 di dalam _evaluate,
       sehingga D_ik = D_base_ik (tidak di-crash).
 
-    Jadwal (s_i) dibangun oleh Serial Schedule Generation Scheme (SSS,
-    Hartmann 1998 -- lihat §2.1.2/2.2.2 di paper) di _serial_schedule():
-    priority_i menentukan urutan penjadwalan di antara task yang "ready"
-    (semua predecessor-nya sudah terjadwal); tiap task ditempatkan pada
-    waktu paling awal yang menghormati precedence (Eq. 9) DAN kapasitas
-    resource (Eq. 11) terhadap task-task yang sudah ditempatkan sebelumnya.
-    Dengan ini s_i benar-benar variabel keputusan bebas -- GA bisa
-    menggeser start suatu task untuk menghindari bentrok resource, alih-alih
-    s_i dihitung murni deterministik dari precedence saja.
+    Jadwal (s_i) selalu dihitung deterministik via CPM forward pass:
+      s_i = max(current_day, hasil_precedence)  ← untuk task belum selesai
+      s_i = s_baseline[i]                       ← untuk task sudah selesai
 
-    Kendala (n_ieq_constr = P [+1 jika deadline/budget])
+    Kendala (n_ieq_constr = P + n_capacity_constr [+1 jika deadline/budget])
     --------------------------------------------------------------------------
     G[p] = D_min_ik[p] - D_ik[p] ≤ 0   untuk setiap pasangan (i,k)
     → Hanya aktif untuk task yang belum selesai.
 
-    Kapasitas resource (Eq. 11/27) TIDAK lagi berupa kendala G terpisah --
-    ia sudah "built-in" pada cara SSS membangun s_i, sehingga setiap
-    individu GA yang dievaluasi otomatis resource-feasible (kecuali ada
-    pasangan (i,k) yang kebutuhan minimalnya sendirian sudah melebihi
-    U_max_k, kasus data yang di-warn saat __init__).
+    G_cap = (Σ pemakaian resource_id k yang aktif pada event) − U_max_k ≤ 0
+    → Kendala kapasitas resource (Eq. 11/27 di paper), satu per
+      (resource_id, task-event). Dinonaktifkan otomatis jika data_resources.csv
+      tidak tersedia (U_max_k = inf).
 
     Fungsi Objektif
     ---------------
@@ -191,6 +181,14 @@ class ResourceBasedScheduling(ElementwiseProblem):
     """
 
     def __init__(self, tasks, precedence, resources, N, K_i,
+                 # resource_penalty: None -> enforce resource capacity (Eq. 11)
+                 # as a HARD inequality constraint (may be infeasible, since s_i
+                 # here is computed from precedence and is not itself a free
+                 # decision variable -- there is no way for the optimizer to
+                 # delay a task to resolve a resource clash). A float value
+                 # instead treats capacity as a SOFT constraint: any excess
+                 # usage is charged at resource_penalty $/unit-day and added
+                 # to the cost objective, which keeps the problem feasible.
                  alpha=0.7, beta=0.7,
                  x_min=1.0, x_max=None,
                  tau_min=0.0,
@@ -204,6 +202,7 @@ class ResourceBasedScheduling(ElementwiseProblem):
                  mode="bonus_penalty",
                  budget_limit=None,
                  completion_fraction=None,
+                 resource_penalty=None,
                  **kwargs):
 
         self.tasks         = tasks
@@ -324,80 +323,80 @@ class ResourceBasedScheduling(ElementwiseProblem):
         xl_tau = np.full(P, tau_min)
         xu_tau = np.full(P, tau_max)
 
-        # Kapasitas resource membatasi x_ik juga: bila x_ik * U_ik saja sudah
-        # melebihi U_max_k, tidak ada penjadwalan (penggeseran s_i) yang bisa
-        # menolong -- jadi batasi x_ik supaya SATU pasangan sendirian tidak
-        # pernah melebihi kapasitas resource-nya.
-        U_max_k_per_pair = resources["U_max_k"].values
-        with np.errstate(divide="ignore", invalid="ignore"):
-            x_cap_bound = np.where(self.U_ik > 1e-12, U_max_k_per_pair / self.U_ik, np.inf)
-        xu_x = np.minimum(xu_x, x_cap_bound)
-        xu_x = np.maximum(xu_x, xl_x)  # safety: never let xu drop below xl
-
         for p in self.completed_pairs:
             xl_x[p]   = xu_x[p]   = 1.0   # x_ik dikunci ke 1 (tidak di-crash)
             xl_tau[p] = xu_tau[p] = 0.0   # tau_ik dikunci ke 0 (tidak lembur)
 
-        # Priority list (Eq. bebas, Hartmann 1998 / §2.1.2 & 2.2.2 di paper):
-        # N variabel tambahan yang menentukan urutan penjadwalan pada Serial
-        # Schedule Generation Scheme (SSS) di bawah. Berbeda dari x_ik/tau_ik,
-        # priority TIDAK mempunyai arti fisik -- hanya dipakai untuk memilih
-        # task mana yang dijadwalkan lebih dulu di antara task-task yang
-        # "ready" (semua predecessor-nya sudah terjadwal) pada suatu iterasi.
-        xl_prio = np.zeros(N)
-        xu_prio = np.ones(N)
+        # ── Kapasitas resource (Eq. 11 / Eq. 27) ─────────────────────────────
+        # Kelompokkan pasangan (i,k) berdasarkan resource_id, lalu bangun
+        # daftar "event" pengecekan kapasitas yang TETAP (fixed di init time,
+        # sesuai kebutuhan pymoo n_ieq_constr). Untuk setiap resource_id,
+        # kita cek total pemakaian pada saat mulainya setiap task yang
+        # menggunakan resource tersebut — ini cukup karena profil pemakaian
+        # berbentuk step function, sehingga nilai maksimumnya selalu tercapai
+        # tepat setelah salah satu step (mulainya sebuah task).
+        resource_ids = resources["resource_id"].values
+        self.resource_groups = {}
+        for p, rid in enumerate(resource_ids):
+            self.resource_groups.setdefault(int(rid), []).append(p)
 
-        # ── Struktur graf precedence untuk SSS ───────────────────────────────
-        # pred_edges[i]  = daftar (j, lag, type) dengan i sebagai successor
-        # successors[j]  = daftar i dengan j sebagai predecessor
-        # in_degree[i]   = banyak edge precedence yang menunjuk ke i
-        self.pred_edges = {i: [] for i in range(N)}
-        self.successors = {j: [] for j in range(N)}
-        self.in_degree  = np.zeros(N, dtype=int)
-        for idx in range(len(self.prec_i)):
-            i, j = int(self.prec_i[idx]), int(self.prec_j[idx])
-            lag, ptype = float(self.prec_lag[idx]), self.prec_type[idx]
-            self.pred_edges[i].append((j, lag, ptype))
-            self.successors[j].append(i)
-            self.in_degree[i] += 1
+        self.capacity_events = []  # list of (capacity, group_pairs, event_task_idx)
+        for rid, pairs in self.resource_groups.items():
+            cap = float(resources.loc[pairs[0], "U_max_k"])
+            if not np.isfinite(cap):
+                continue  # tidak ada data kapasitas -> perlakukan sebagai unconstrained
+            event_tasks = sorted(set(int(resources.loc[p, "i"]) for p in pairs))
+            for i_event in event_tasks:
+                self.capacity_events.append((cap, pairs, i_event))
+        self.n_capacity_constr = len(self.capacity_events)
+        self.resource_penalty = resource_penalty  # None -> hard constraint, float -> soft $/unit-day
 
-        # ── Kapasitas resource (Eq. 11 / 27) ─────────────────────────────────
-        # Dipakai oleh SSS (_serial_schedule) untuk mencari slot waktu paling
-        # awal yang tidak melanggar kapasitas -- bukan lagi kendala G atau
-        # penalti biaya, karena s_i sekarang benar-benar variabel bebas yang
-        # bisa "digeser" SSS untuk menghindari bentrok resource.
-        self.resource_id_of_pair = resources["resource_id"].values.astype(int)
-        self.capacity_by_resource = {}
-        for rid in np.unique(self.resource_id_of_pair):
-            rows = resources.loc[resources["resource_id"] == rid, "U_max_k"]
-            self.capacity_by_resource[int(rid)] = float(rows.iloc[0])
-
-        # Diagnostic murni: satu-satunya kasus yang TIDAK bisa diselesaikan
-        # SSS (menggeser start tidak menolong) adalah bila kebutuhan minimum
-        # SATU pasangan (i,k) sendirian (x=x_min) sudah melebihi kapasitas
-        # resource-nya. Ini adalah masalah data, bukan penjadwalan.
-        for p in range(self.P):
-            rid = int(self.resource_id_of_pair[p])
-            cap = self.capacity_by_resource.get(rid, np.inf)
-            if np.isfinite(cap) and self.U_ik[p] * x_min > cap + 1e-9:
-                print(f"[ResourceBasedScheduling] WARNING: pasangan (task_idx={self.res_task_idx[p]}, "
-                      f"resource_id={rid}) butuh U_ik*x_min={self.U_ik[p]*x_min:.3f} sendirian, "
-                      f"melebihi U_max_k={cap:.3f}. Tidak ada penjadwalan yang bisa memenuhi ini "
-                      f"-- periksa data_resources.csv / data_assignments.csv.")
+        # Diagnostic: check whether the *uncrashed* earliest-start baseline
+        # schedule is already resource-infeasible. If it is, a hard capacity
+        # constraint will make some/all solutions infeasible, because this
+        # model cannot delay a task's start beyond its precedence-earliest
+        # time to resolve a resource clash (s_i is not a free decision here).
+        if self.n_capacity_constr > 0:
+            n_violated_baseline = 0
+            for cap, pairs, i_event in self.capacity_events:
+                t_event = self.s_baseline[i_event]
+                usage = sum(
+                    self.U_ik[p] for p in pairs
+                    if self.s_baseline[self.res_task_idx[p]] <= t_event
+                    < self.s_baseline[self.res_task_idx[p]] + self.D_base_ik[p]
+                )
+                if usage - cap > 1e-6:
+                    n_violated_baseline += 1
+            if n_violated_baseline > 0:
+                msg = (
+                    f"[ResourceBasedScheduling] {n_violated_baseline}/{self.n_capacity_constr} "
+                    f"resource-capacity checks are already violated by the earliest-start "
+                    f"(uncrashed) baseline schedule -- s_i is computed from precedence, not "
+                    f"chosen freely, so nothing in (x_ik, tau_ik) can delay a task to resolve "
+                    f"a resource clash."
+                )
+                if resource_penalty is None:
+                    print(msg + " Hard capacity constraints (mode='hard') may therefore make "
+                          "this problem infeasible; consider resource_penalty=<$/unit-day> for "
+                          "a soft constraint instead, or re-check data_resources.csv availability.")
+                else:
+                    print(msg + f" Running with resource_penalty={resource_penalty} "
+                          "(soft constraint) so this remains solvable.")
 
         n_obj = 2 if self.mode == "multiobjective" else 1
-        n_constr = P
+        n_constr = P + (self.n_capacity_constr if resource_penalty is None else 0)
         if self.mode == "cost_with_deadline":
             n_constr += 1
         elif self.mode == "time_with_budget":
             n_constr += 1
             
         super().__init__(
-            n_var=2 * P + N,
+            n_var=2 * P,
             n_obj=n_obj,
-            n_ieq_constr=n_constr,   # D_min per pasangan (i,k) + possible deadline/budget constr
-            xl=np.concatenate([xl_x, xl_tau, xl_prio]),
-            xu=np.concatenate([xu_x, xu_tau, xu_prio]),
+            # D_min per pasangan (i,k) + kapasitas resource per event + possible deadline/budget constr
+            n_ieq_constr=n_constr,
+            xl=np.concatenate([xl_x, xl_tau]),
+            xu=np.concatenate([xu_x, xu_tau]),
             **kwargs,
         )
 
@@ -470,149 +469,52 @@ class ResourceBasedScheduling(ElementwiseProblem):
                 break
         return s, s + D_i
 
-    def _find_feasible_start(self, i, lb, D_ik, x_ik, resource_intervals):
+    def forward_pass(self, D_i):
         """
-        Cari waktu mulai paling awal ≥ lb untuk task i yang tidak melanggar
-        kapasitas resource manapun yang dipakainya, terhadap interval-interval
-        yang SUDAH ditempatkan di resource_intervals. Standar "insertion"
-        step dari serial SGS: coba lb, dan bila bentrok, loncat ke waktu
-        selesainya interval yang bentrok, ulangi.
+        CPM Forward Pass dengan mempertimbangkan current_day.
+
+        Aturan:
+          - Task sudah selesai atau sebagian selesai (Eq. 13/14): s_i = s_baseline[i]
+            (dikunci, tidak berubah — pekerjaan sudah dimulai).
+          - Task belum dimulai (Eq. 12) : s_i = max(current_day, hasil_precedence)
+            → Task tidak bisa dimulai sebelum hari crashing dimulai.
         """
-        pairs = self.K_i.get(i, [])
-        if not pairs:
-            return lb
+        s = np.zeros(self.N)
 
-        # Defensive guard: if a pair's own demand ALREADY exceeds its
-        # resource's capacity regardless of any other scheduled task (should
-        # be structurally impossible given the x_ik upper bound derived from
-        # capacity in __init__, but we don't want a bounds edge-case to ever
-        # turn into a runaway search below), just skip enforcing that pair's
-        # capacity rather than loop toward a meaningless huge start time.
-        unenforceable = set()
-        for p in pairs:
-            rid = int(self.resource_id_of_pair[p])
-            cap = self.capacity_by_resource.get(rid, np.inf)
-            if np.isfinite(cap) and x_ik[p] * self.U_ik[p] > cap + 1e-6:
-                unenforceable.add(p)
-                print(f"[ResourceBasedScheduling] WARNING: task_idx={i} pair={p} "
-                      f"demand={x_ik[p]*self.U_ik[p]:.3f} alone exceeds U_max_k={cap:.3f} "
-                      f"for resource_id={rid}; ignoring capacity for this pair.")
+        # Inisialisasi: task selesai/sebagian selesai dikunci ke s_baseline
+        for i in self.locked_start_tasks:
+            s[i] = self.s_baseline[i]
 
-        s_candidate = lb
-        max_iter = len(pairs) * 200 + 200  # generous, dijamin berhenti (lihat komentar di bawah)
-        for _ in range(max_iter):
-            next_jump = None
-            feasible = True
-            for p in pairs:
-                if p in unenforceable:
-                    continue
-                rid = int(self.resource_id_of_pair[p])
-                cap = self.capacity_by_resource.get(rid, np.inf)
-                if not np.isfinite(cap):
-                    continue
-                dur = D_ik[p]
-                demand = x_ik[p] * self.U_ik[p]
-                end_candidate = s_candidate + dur
-                intervals = resource_intervals.get(rid, [])
-
-                # Titik kritis: s_candidate sendiri + setiap start interval lain
-                # yang jatuh di dalam (s_candidate, end_candidate) -- pemakaian
-                # step-function hanya berubah di titik-titik ini.
-                instants = [s_candidate] + [
-                    ivs for (ivs, ive, ivd) in intervals if s_candidate < ivs < end_candidate
-                ]
-                for t in instants:
-                    usage = demand + sum(
-                        ivd for (ivs, ive, ivd) in intervals if ivs <= t < ive
-                    )
-                    if usage - cap > 1e-6:
-                        feasible = False
-                        # Loncat ke waktu selesai paling awal dari interval yang
-                        # menyebabkan bentrok di titik t.
-                        ends_here = [ive for (ivs, ive, ivd) in intervals if ivs <= t < ive]
-                        candidate_jump = min(ends_here) if ends_here else end_candidate
-                        if next_jump is None or candidate_jump < next_jump:
-                            next_jump = candidate_jump
-            if feasible:
-                return s_candidate
-            # next_jump selalu > s_candidate (waktu selesai suatu interval yang
-            # sedang aktif di s_candidate), sehingga loop ini pasti maju dan
-            # berhenti dalam paling banyak O(jumlah interval) iterasi.
-            s_candidate = next_jump if next_jump is not None else s_candidate + 1.0
-
-        return s_candidate  # fallback, praktis tidak pernah tercapai
-
-    def _serial_schedule(self, D_i, D_ik, x_ik, priority):
-        """
-        Serial Schedule Generation Scheme (SSS, Hartmann 1998; lihat §2.1.2
-        dan §2.2.2 paper). GA memilih `priority` (Eq. bebas per task); SSS
-        membangun jadwal dengan menjadwalkan task satu per satu -- dipilih
-        dari himpunan task yang "ready" (semua predecessor sudah terjadwal)
-        berdasarkan priority tertinggi -- pada waktu paling awal yang
-        menghormati precedence (Eq. 9) DAN kapasitas resource (Eq. 11)
-        terhadap task-task yang sudah ditempatkan.
-
-        Task yang selesai/sebagian selesai (locked_start_tasks) ditempatkan
-        lebih dulu pada s_baseline-nya (fakta historis, tidak bisa berubah),
-        diurutkan berdasarkan s_baseline agar konsisten secara precedence.
-        """
-        N = self.N
-        s = np.empty(N)
-        f = np.empty(N)
-        scheduled = np.zeros(N, dtype=bool)
-        remaining_indeg = self.in_degree.copy()
-        resource_intervals = {rid: [] for rid in self.capacity_by_resource.keys()}
-
-        def _place(i, s_i):
-            s[i] = s_i
-            f[i] = s_i + D_i[i]
-            scheduled[i] = True
-            for p in self.K_i.get(i, []):
-                rid = int(self.resource_id_of_pair[p])
-                resource_intervals.setdefault(rid, []).append(
-                    (s_i, s_i + D_ik[p], x_ik[p] * self.U_ik[p])
-                )
-            for succ in self.successors[i]:
-                remaining_indeg[succ] -= 1
-
-        # Fase 1: task yang start-nya terkunci (selesai/sebagian selesai),
-        # ditempatkan dulu pada s_baseline, dalam urutan waktu historisnya.
-        for i in sorted(self.locked_start_tasks, key=lambda t: (self.s_baseline[t], t)):
-            _place(i, self.s_baseline[i])
-
-        # Fase 2: SSS berbasis priority untuk task yang belum dikunci.
-        ready = set(
-            i for i in range(N)
-            if not scheduled[i] and remaining_indeg[i] == 0
-        )
-        while ready:
-            i = max(ready, key=lambda t: priority[t])
-            ready.remove(i)
-
-            lb = float(self.current_day)
-            for (j, lag, ptype) in self.pred_edges[i]:
-                if ptype == "FS":   cand = f[j] + lag
-                elif ptype == "FF": cand = f[j] + lag - D_i[i]
-                elif ptype == "SS": cand = s[j] + lag
+        for _ in range(self.N):
+            s_prev = s.copy()
+            for idx in range(len(self.prec_i)):
+                i, j  = self.prec_i[idx], self.prec_j[idx]
+                lag, t = self.prec_lag[idx], self.prec_type[idx]
+                if t == "FS":   cand = s[j] + D_i[j] + lag
+                elif t == "FF": cand = s[j] + D_i[j] + lag - D_i[i]
+                elif t == "SS": cand = s[j] + lag
                 else: continue
-                if cand > lb:
-                    lb = cand
+                if cand > s[i]: s[i] = cand
 
-            s_i = self._find_feasible_start(i, lb, D_ik, x_ik, resource_intervals)
-            _place(i, s_i)
+            # Terapkan lower bound current_day hanya untuk task yang belum dimulai
+            for i in range(self.N):
+                if i not in self.locked_start_tasks:
+                    s[i] = max(s[i], self.current_day)
 
-            for succ in self.successors[i]:
-                if remaining_indeg[succ] == 0 and not scheduled[succ]:
-                    ready.add(succ)
+            # Kembalikan task selesai/sebagian selesai ke s_baseline (tidak boleh bergeser)
+            for i in self.locked_start_tasks:
+                s[i] = self.s_baseline[i]
 
-        return s, f
+            if np.allclose(s, s_prev, atol=1e-8):
+                break
+
+        return s, s + D_i
 
     def _evaluate(self, x, out, *args, **kwargs):
-        P, N = self.P, self.N
+        P = self.P
 
-        x_ik     = x[0:P].copy()
-        tau_ik   = x[P:2 * P].copy()
-        priority = x[2 * P:2 * P + N]
+        x_ik   = x[0:P].copy()
+        tau_ik = x[P:2 * P].copy()
 
         # Task selesai: kunci ke baseline (tidak di-crash)
         # Bounds sudah mengunci ini, tapi copy eksplisit untuk keamanan
@@ -631,13 +533,34 @@ class ResourceBasedScheduling(ElementwiseProblem):
         for i in self.completed_tasks:
             D_i[i] = self.D_base_i[i]
 
-        s, f = self._serial_schedule(D_i, D_ik, x_ik, priority)
+        s, f = self.forward_pass(D_i)
         T_finish = float(np.max(f))
 
         labor_cost = float(np.sum(
             D_ik * x_ik * self.U_ik
             * (self.hours_per_day * self.r_k + tau_ik * self.r_k_ot)
         ))
+
+        # Kendala kapasitas resource (Eq. 11 / 27): pada setiap event
+        # (mulainya suatu task i_event yang memakai resource_id tertentu),
+        # total pemakaian x_{i,k}·U_{i,k} dari task-task yang AKTIF pada
+        # saat itu dibandingkan dengan U_max_k.
+        excess = None
+        if self.n_capacity_constr > 0:
+            excess = np.empty(self.n_capacity_constr)
+            for idx, (cap, pairs, i_event) in enumerate(self.capacity_events):
+                t_event = s[i_event]
+                usage = 0.0
+                for p in pairs:
+                    i_p = self.res_task_idx[p]
+                    if s[i_p] <= t_event < s[i_p] + D_ik[p]:
+                        usage += x_ik[p] * self.U_ik[p]
+                excess[idx] = usage - cap
+
+            if self.resource_penalty is not None:
+                # Soft mode: charge overallocation as extra cost instead of a
+                # hard constraint (s_i can't be delayed to avoid it here).
+                labor_cost += self.resource_penalty * float(np.sum(np.maximum(0.0, excess)))
 
         penalty = self.c_late  * max(0.0, T_finish - self.T_max)
         bonus   = self.c_early * max(0.0, self.T_max - T_finish)
@@ -651,12 +574,16 @@ class ResourceBasedScheduling(ElementwiseProblem):
         elif self.mode == "multiobjective":
             out["F"] = [T_finish, labor_cost]
 
-        # Kendala D_min: aktif hanya untuk task belum selesai. Kapasitas
-        # resource (Eq. 11) TIDAK lagi berupa kendala G -- sudah ditegakkan
-        # secara struktural oleh _serial_schedule di atas.
+        # Kendala D_min: aktif hanya untuk task belum selesai
         G = self.D_min_ik - D_ik
         for p in self.completed_pairs:
             G[p] = 0.0   # task selesai selalu feasible, tidak dihitung
+
+        # Kendala kapasitas resource: hanya ditambahkan sebagai kendala keras
+        # jika resource_penalty is None (mode "hard"); jika tidak, sudah
+        # dimasukkan sebagai penalti biaya di labor_cost di atas (mode "soft").
+        if excess is not None and self.resource_penalty is None:
+            G = np.concatenate([G, excess])
 
         if self.mode == "cost_with_deadline":
             G = np.append(G, T_finish - self.T_max)
@@ -973,10 +900,9 @@ def extract_solution(problem, x_vec):
     Returns a dict with keys: x_ik, tau_ik, D_ik, D_i, s, f,
     makespan, labor_cost, penalty, bonus, total_cost.
     """
-    P, N = problem.P, problem.N
+    P = problem.P
     x_ik = x_vec[0:P].copy()
     tau_ik = x_vec[P:2 * P].copy()
-    priority = x_vec[2 * P:2 * P + N]
 
     for p in problem.completed_pairs:
         x_ik[p] = 1.0
@@ -986,7 +912,7 @@ def extract_solution(problem, x_vec):
     for i in problem.completed_tasks:
         D_i[i] = problem.D_base_i[i]
 
-    s, f = problem._serial_schedule(D_i, D_ik, x_ik, priority)
+    s, f = problem.forward_pass(D_i)
     makespan = float(np.max(f))
 
     labor_cost = float(np.sum(
@@ -1152,6 +1078,13 @@ if __name__ == "__main__":
     )
 
     CURRENT_DAY = args.current_day
+    # Sama seperti run_*.py: s_i di sini dihitung deterministik dari precedence
+    # (bukan variabel keputusan bebas), sehingga GA TIDAK BISA menggeser jadwal
+    # untuk menghindari bentrok kapasitas resource. Mode "hard" (resource_penalty
+    # =None) karena itu bisa membuat cv_min tidak pernah mencapai 0 -- yang
+    # tampak di pymoo sebagai f_min/f_avg selalu "-" karena tidak ada individu
+    # feasible yang pernah ditemukan. Mode "soft" di bawah menghindari ini.
+    RESOURCE_PENALTY = 1000.0  # $/unit-day kelebihan pemakaian resource
 
     # ---- 3. Buat instance problem ----
     problem = ResourceBasedScheduling(
@@ -1172,6 +1105,7 @@ if __name__ == "__main__":
         current_day=CURRENT_DAY,
         overtime_mult=1.5,
         hours_per_day=8,
+        resource_penalty=RESOURCE_PENALTY,
     )
 
     # ---- 4. Info problem ----
@@ -1188,7 +1122,7 @@ if __name__ == "__main__":
     print(f"  Pasangan selesai: {p_done}  (dikunci, tidak dioptimasi)")
     print(f"  Pasangan aktif  : {p_remain} (dioptimasi GA)")
     print(f"Precedence        : {len(precedence)}")
-    print(f"n_var             : {problem.n_var}  = x_ik:{P} + tau_ik:{P} + priority:{N}")
+    print(f"n_var             : {problem.n_var}  = x_ik:{P} + tau_ik:{P}")
     print(f"n_ieq_constr      : {problem.n_ieq_constr}  (D_min per pasangan i,k)")
     print(f"x_max             : {problem.x_max:.2f}")
 

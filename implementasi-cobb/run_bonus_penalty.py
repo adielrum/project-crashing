@@ -21,7 +21,7 @@ def run_bonus_penalty():
         mode="bonus_penalty", c_late=5000.0, c_early=2000.0,
     )
 
-    solution = solve(problem, pop_size=200, seed=42, verbose=False)
+    solution = solve(problem, pop_size=200, seed=42, verbose=True)
 
     if solution is not None:
         base_dir = os.path.dirname(os.path.abspath(__file__))

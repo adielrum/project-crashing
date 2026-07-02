@@ -90,8 +90,8 @@
       "baseline_start": 7.0,
       "baseline_finish": 9.0,
       "baseline_duration": 2.0,
-      "optimized_start": 207.0,
-      "optimized_finish": 209.0,
+      "optimized_start": 204.0,
+      "optimized_finish": 206.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -211,8 +211,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 127.0,
-      "optimized_finish": 137.0,
+      "optimized_start": 126.0,
+      "optimized_finish": 136.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -392,7 +392,7 @@
         },
         {
           "resource_name": "G.C. Labor Crew",
-          "baseline_duration": 2.9999999999999996,
+          "baseline_duration": 3.0,
           "optimized_duration": 3.0,
           "x": 1.0,
           "tau": 0.0
@@ -1696,8 +1696,8 @@
       "baseline_start": 220.0,
       "baseline_finish": 222.0,
       "baseline_duration": 2.0,
-      "optimized_start": 273.0,
-      "optimized_finish": 275.0,
+      "optimized_start": 275.0,
+      "optimized_finish": 277.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1716,8 +1716,8 @@
       "baseline_start": 227.0,
       "baseline_finish": 232.0,
       "baseline_duration": 5.0,
-      "optimized_start": 280.0,
-      "optimized_finish": 285.0,
+      "optimized_start": 282.0,
+      "optimized_finish": 287.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1736,8 +1736,8 @@
       "baseline_start": 232.0,
       "baseline_finish": 237.0,
       "baseline_duration": 5.0,
-      "optimized_start": 285.0,
-      "optimized_finish": 290.0,
+      "optimized_start": 287.0,
+      "optimized_finish": 292.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [

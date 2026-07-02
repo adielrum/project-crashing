@@ -4,24 +4,16 @@ import argparse
 import numpy as np
 import pandas as pd
 from ortools.sat.python import cp_model
-from cobb_model import load_data, data_path, save_solution_json, ResourceBasedScheduling
+from cobb_model import load_data, data_path, save_solution_json
 
 def solve_milp_cobb_douglas(
     tasks, precedence, resources, N, K_i, 
-    alpha=0.7, beta=0.7, x_min=1.0, x_max=None, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
+    alpha=0.7, beta=0.7, x_min=1.0, x_max=2.0, tau_min=0.0, tau_max=4.0, D_min_ratio=0.5,
     T_max=344, current_day=0, overtime_mult=1.5, hours_per_day=8, mode="cost_with_deadline",
-    budget_limit=None, c_late=5000.0, c_early=2000.0, time_limit=60.0,
-    completion_fraction=None, enforce_resource_capacity=True,
+    budget_limit=None, c_late=5000.0, c_early=2000.0, time_limit=60.0
 ):
     model = cp_model.CpModel()
-
-    # x_max: reuse the GA's diminishing-returns heuristic by default so the
-    # MILP and GA solvers optimize over the same crowding domain instead of
-    # silently disagreeing (MILP used to hardcode x_max=2.0 regardless of
-    # alpha, while the GA derived it from alpha via _compute_x_max).
-    if x_max is None:
-        x_max = ResourceBasedScheduling._compute_x_max(alpha, x_min)
-
+    
     # Pre-calculate discrete options
     x_options = np.arange(x_min, x_max + 0.1, 0.25)
     tau_options = np.arange(tau_min, tau_max + 0.1, 1.0)
@@ -36,6 +28,7 @@ def solve_milp_cobb_douglas(
     r_k_ot = r_k * overtime_mult
     U_ik = resources["U_ik"].values
     D_base_ik = resources["D_base_ik"].values
+    D_min_ik = D_min_ratio * D_base_ik
     
     # Calculate initial baseline
     s_baseline = np.zeros(N)
@@ -65,44 +58,6 @@ def solve_milp_cobb_douglas(
     completed_tasks = set(i for i in range(N) if f_baseline[i] <= current_day and D_base_i[i] > 1e-9)
     completed_pairs = set(p for p in range(P) if int(resources.loc[p, "i"]) in completed_tasks)
 
-    # ── Partial completion (Eq. 14/30) ──────────────────────────────────
-    # completion_fraction: optional {task_id: p_i in (0,1)} for tasks that
-    # are in progress at current_day. Their start is fixed to the baseline
-    # start (already begun), but the *remaining* (1-p_i) workload can still
-    # be crashed like a not-yet-started task.
-    completion_fraction = completion_fraction or {}
-    task_id_to_idx = {tid: idx for idx, tid in enumerate(tasks["task_id"])}
-    partial_tasks = set()
-    partial_frac_by_idx = {}
-    for tid, p_i in completion_fraction.items():
-        if not (0.0 < p_i < 1.0):
-            raise ValueError(f"completion_fraction for task_id={tid} must be in (0,1), got {p_i}")
-        idx = task_id_to_idx.get(tid)
-        if idx is None:
-            raise ValueError(f"completion_fraction references unknown task_id={tid}")
-        if idx in completed_tasks:
-            continue
-        partial_tasks.add(idx)
-        partial_frac_by_idx[idx] = p_i
-    partial_pairs = set(p for p in range(P) if int(resources.loc[p, "i"]) in partial_tasks)
-    locked_start_tasks = completed_tasks | partial_tasks
-
-    # Effective baseline duration used for crashing math: full for
-    # not-yet-started pairs, reduced by (1 - p_i) for partial pairs.
-    D_base_ik_eff = D_base_ik.copy()
-    for p in partial_pairs:
-        i_task = int(resources.loc[p, "i"])
-        D_base_ik_eff[p] = D_base_ik[p] * (1.0 - partial_frac_by_idx[i_task])
-    D_min_ik = D_min_ratio * D_base_ik_eff
-
-    # ── Resource capacity (Eq. 11/27) ───────────────────────────────────
-    # Unlike the GA (where s_i is computed deterministically from
-    # precedence), s_i here is a genuine free decision variable, so the
-    # solver CAN delay a task's start to resolve a resource clash -- a hard
-    # cumulative constraint is legitimately solvable in this formulation.
-    have_capacity_data = enforce_resource_capacity and ("U_max_k" in resources.columns)
-    DEMAND_SCALE = 100
-
     s = {}
     e = {}
     d_i = {}
@@ -122,37 +77,26 @@ def solve_milp_cobb_douglas(
     b = {}            # b[p] = index variable  (int, not dict-of-bools)
     d_ik = {}
     cost_ik = {}
-    demand_ik = {}    # demand_ik[p] = scaled resource usage (x_ik * U_ik * DEMAND_SCALE) as IntVar
-    pair_options = {} # pair_options[p] = list of {x, tau, dur_int, cost_int, demand_int}
-    resource_intervals = {}  # resource_id -> list of IntervalVar
-    resource_demands = {}    # resource_id -> list of IntVar (parallel to resource_intervals)
+    pair_options = {} # pair_options[p] = list of {x, tau, dur_int, cost_int}
     
     total_labor_cost_scaled = 0
     
     for i in range(N):
         # Tighter domain bounds for start/end using baseline knowledge
-        s_lb = 0 if i not in locked_start_tasks else int(s_baseline[i])
+        s_lb = 0 if i not in completed_tasks else int(s_baseline[i])
         s_ub = horizon
         
         s[i] = model.NewIntVar(s_lb, s_ub, f"s_{i}")
         e[i] = model.NewIntVar(s_lb, s_ub, f"e_{i}")
         
-        # Duration upper bound: full baseline for not-yet-started/completed
-        # tasks, but only the *remaining* baseline for partially-completed
-        # tasks (their crashable workload has already shrunk per Eq. 14).
-        if i in partial_tasks:
-            d_cap = max((D_base_ik_eff[p] for p in K_i.get(i, [])), default=0.0)
-        else:
-            d_cap = D_base_i[i]
-        d_max_i = int(np.ceil(d_cap)) if d_cap > 0 else 0
+        # Duration: at most the baseline (no crashing makes it longer), at least 0
+        d_max_i = int(np.ceil(D_base_i[i])) if D_base_i[i] > 0 else 0
         d_i[i] = model.NewIntVar(0, max(d_max_i, 1), f"d_i_{i}")
         model.Add(e[i] == s[i] + d_i[i])
         
         if i in completed_tasks:
             model.Add(s[i] == int(s_baseline[i]))
             model.Add(d_i[i] == int(np.ceil(D_base_i[i])))
-        elif i in partial_tasks:
-            model.Add(s[i] == int(s_baseline[i]))  # already started -> can't move
         else:
             model.Add(s[i] >= int(np.ceil(current_day)))
             
@@ -160,28 +104,24 @@ def solve_milp_cobb_douglas(
             if p in completed_pairs:
                 dur_fixed = int(np.ceil(D_base_ik[p]))
                 cost_fixed = int(D_base_ik[p] * U_ik[p] * (hours_per_day * r_k[p]) * scale)
-                demand_fixed = int(np.ceil(1.0 * U_ik[p] * DEMAND_SCALE))
                 d_ik[p] = model.NewIntVar(dur_fixed, dur_fixed, f"d_ik_{p}")
                 cost_ik[p] = model.NewIntVar(cost_fixed, cost_fixed, f"cost_ik_{p}")
-                demand_ik[p] = model.NewIntVar(demand_fixed, demand_fixed, f"demand_ik_{p}")
             else:
                 # ── Build feasible options, deduplicate ──────────────
-                d_base_p = D_base_ik_eff[p]
                 feasible = []
                 for opt in raw_options:
                     x_val = opt["x"]
                     tau_val = opt["tau"]
-                    dur = d_base_p * (1.0 / x_val)**alpha * (8.0 / (8.0 + tau_val))**beta
+                    dur = D_base_ik[p] * (1.0 / x_val)**alpha * (8.0 / (8.0 + tau_val))**beta
                     # Enforce D_min constraint: skip infeasible options entirely
                     if dur < D_min_ik[p] - 1e-5:
                         continue
                     dur_int = int(np.ceil(dur))
                     cost_val = dur * x_val * U_ik[p] * (hours_per_day * r_k[p] + tau_val * r_k_ot[p])
                     cost_int = int(cost_val * scale)
-                    demand_int = int(np.ceil(x_val * U_ik[p] * DEMAND_SCALE))
                     feasible.append({
                         "x": x_val, "tau": tau_val,
-                        "dur_int": dur_int, "cost_int": cost_int, "demand_int": demand_int,
+                        "dur_int": dur_int, "cost_int": cost_int,
                     })
                 
                 # Deduplicate: for options with same dur_int, keep cheapest
@@ -193,18 +133,15 @@ def solve_milp_cobb_douglas(
                 deduped = sorted(best_by_dur.values(), key=lambda f: f["dur_int"])
                 
                 # Further prune dominated options:
-                # An option is dominated if another has lower-or-equal
-                # duration, cost, AND overmanning multiplier x (the paper's
-                # §2.2.2 pruning rule) -- the x condition matters because a
-                # smaller x also means less simultaneous resource demand.
+                # An option is dominated if another has both lower-or-equal
+                # duration AND lower-or-equal cost.
                 pruned = []
                 for f in deduped:
                     dominated = False
                     for g in deduped:
                         if g is f:
                             continue
-                        if (g["dur_int"] <= f["dur_int"] and g["cost_int"] <= f["cost_int"]
-                                and g["x"] <= f["x"]):
+                        if g["dur_int"] <= f["dur_int"] and g["cost_int"] <= f["cost_int"]:
                             dominated = True
                             break
                     if not dominated:
@@ -212,10 +149,9 @@ def solve_milp_cobb_douglas(
                 
                 if not pruned:
                     # Fallback: use baseline (no crash)
-                    dur_int = int(np.ceil(d_base_p))
-                    cost_int = int(d_base_p * U_ik[p] * (hours_per_day * r_k[p]) * scale)
-                    demand_int = int(np.ceil(1.0 * U_ik[p] * DEMAND_SCALE))
-                    pruned = [{"x": 1.0, "tau": 0.0, "dur_int": dur_int, "cost_int": cost_int, "demand_int": demand_int}]
+                    dur_int = int(np.ceil(D_base_ik[p]))
+                    cost_int = int(D_base_ik[p] * U_ik[p] * (hours_per_day * r_k[p]) * scale)
+                    pruned = [{"x": 1.0, "tau": 0.0, "dur_int": dur_int, "cost_int": cost_int}]
                 
                 pair_options[p] = pruned
                 n_opts = len(pruned)
@@ -224,12 +160,10 @@ def solve_milp_cobb_douglas(
                     # Only one feasible option — fix the values directly
                     d_ik[p] = model.NewIntVar(pruned[0]["dur_int"], pruned[0]["dur_int"], f"d_ik_{p}")
                     cost_ik[p] = model.NewIntVar(pruned[0]["cost_int"], pruned[0]["cost_int"], f"cost_ik_{p}")
-                    demand_ik[p] = model.NewIntVar(pruned[0]["demand_int"], pruned[0]["demand_int"], f"demand_ik_{p}")
                 else:
                     # Use AddElement: idx selects from precomputed tables
                     dur_table = [f["dur_int"] for f in pruned]
                     cost_table = [f["cost_int"] for f in pruned]
-                    demand_table = [f["demand_int"] for f in pruned]
                     
                     idx_var = model.NewIntVar(0, n_opts - 1, f"idx_{p}")
                     b[p] = idx_var
@@ -238,43 +172,15 @@ def solve_milp_cobb_douglas(
                     d_max_p = max(dur_table)
                     c_min_p = min(cost_table)
                     c_max_p = max(cost_table)
-                    dem_min_p = min(demand_table)
-                    dem_max_p = max(demand_table)
                     
                     d_ik[p] = model.NewIntVar(d_min_p, d_max_p, f"d_ik_{p}")
                     cost_ik[p] = model.NewIntVar(c_min_p, c_max_p, f"cost_ik_{p}")
-                    demand_ik[p] = model.NewIntVar(dem_min_p, dem_max_p, f"demand_ik_{p}")
                     
                     model.AddElement(idx_var, dur_table, d_ik[p])
                     model.AddElement(idx_var, cost_table, cost_ik[p])
-                    model.AddElement(idx_var, demand_table, demand_ik[p])
             
             total_labor_cost_scaled += cost_ik[p]
             model.Add(d_i[i] >= d_ik[p])
-
-            if have_capacity_data:
-                # Interval spans [s_i, s_i + d_ik] per Eq. 27 (uses s_i + d_i,k,
-                # not the task's overall end e_i, since a resource may finish
-                # its share of the work before/after the task's driving pair).
-                end_r = model.NewIntVar(0, horizon, f"end_r_{p}")
-                model.Add(end_r == s[i] + d_ik[p])
-                resource_intervals.setdefault(int(resources.loc[p, "resource_id"]), []).append(
-                    model.NewIntervalVar(s[i], d_ik[p], end_r, f"ivl_{p}")
-                )
-                resource_demands.setdefault(int(resources.loc[p, "resource_id"]), []).append(demand_ik[p])
-
-    # ── Resource capacity constraints (Eq. 11/27) ───────────────────────
-    # One cumulative constraint per resource_id: total simultaneous demand
-    # across all (task, resource) pairs sharing that resource type must
-    # never exceed its scaled daily availability.
-    if have_capacity_data:
-        for rid, intervals in resource_intervals.items():
-            cap_rows = resources.loc[resources["resource_id"] == rid, "U_max_k"]
-            cap_val = float(cap_rows.iloc[0])
-            if not np.isfinite(cap_val):
-                continue  # no capacity data for this resource_id -> unconstrained
-            capacity_int = int(np.floor(cap_val * DEMAND_SCALE))  # conservative: round capacity down
-            model.AddCumulative(intervals, resource_demands[rid], capacity_int)
 
     # Precedence
     for idx in range(len(prec_i)):
@@ -409,4 +315,4 @@ if __name__ == "__main__":
         path_precedence=data_path("data_precedence.csv"),
         path_assignments=data_path("data_assignments.csv"),
     )
-    solve_milp_cobb_douglas(tasks, precedence, resources, N, K_i, mode="bonus_penalty")
+    solve_milp_cobb_douglas(tasks, precedence, resources, N, K_i, mode="cost_with_deadline")

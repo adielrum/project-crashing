@@ -4,10 +4,10 @@
   "current_day": 0,
   "target_day": 310,
   "baseline_makespan": 344.0,
-  "makespan": 208.0,
-  "makespan_reduction": 136.0,
-  "labor_cost": 571329.947,
-  "total_project_cost": 571329.947,
+  "makespan": 251.0,
+  "makespan_reduction": 93.0,
+  "labor_cost": 549783.674,
+  "total_project_cost": 549783.674,
   "crash_plan": {
     "Receive notice to proceed and sign contract": [
       {
@@ -21,26 +21,26 @@
     "Submit shop drawings and order long lead items - steel": [
       {
         "resource": "Steel Erection Contractor Management",
-        "x": 1.25,
+        "x": 1.5,
         "tau": 0.0,
-        "cost_delta": 850.0,
-        "duration_saved": 1.0
+        "cost_delta": 1360.0,
+        "duration_saved": 2.0
       }
     ],
     "Detail, fabricate and deliver steel": [
       {
         "resource": "Steel Erection Contractor Management",
-        "x": 1.75,
+        "x": 1.5,
         "tau": 0.0,
-        "cost_delta": 3995.0,
-        "duration_saved": 19.0
+        "cost_delta": 3060.0,
+        "duration_saved": 14.0
       },
       {
         "resource": "Steel Erection Contractor",
-        "x": 1.75,
+        "x": 1.5,
         "tau": 0.0,
-        "cost_delta": 3525.0,
-        "duration_saved": 19.0
+        "cost_delta": 2700.0,
+        "duration_saved": 14.0
       }
     ],
     "Set up site office": [
@@ -84,15 +84,6 @@
         "tau": 1.0,
         "cost_delta": 1190.0,
         "duration_saved": 2.0
-      }
-    ],
-    "Install exterior fire line and building fire riser": [
-      {
-        "resource": "Plumbing Contractor",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 2210.0,
-        "duration_saved": 4.0
       }
     ],
     "Perform final site grading": [
@@ -167,31 +158,13 @@
         "duration_saved": 1.0
       }
     ],
-    "Erect steel columns, beams and joist - 1st and 2nd floors": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 2550.0,
-        "duration_saved": 4.0
-      }
-    ],
-    "Erect steel columns, beams and joist - 3rd floor and roof": [
-      {
-        "resource": "Steel Erection Contractor",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 2550.0,
-        "duration_saved": 4.0
-      }
-    ],
     "Install miscellaneous iron and bracing - 3rd floor and roof": [
       {
         "resource": "Steel Erection Contractor",
-        "x": 2.0,
-        "tau": 1.0,
-        "cost_delta": 1912.5,
-        "duration_saved": 4.0
+        "x": 1.25,
+        "tau": 0.0,
+        "cost_delta": 562.5,
+        "duration_saved": 1.0
       }
     ],
     "Install stairs and miscellaneous iron railing": [
@@ -388,109 +361,55 @@
     "Install interior stud walls and drywall": [
       {
         "resource": "Drywall Contractor",
-        "x": 1.75,
-        "tau": 4.0,
-        "cost_delta": 5925.0,
-        "duration_saved": 12.0
-      }
-    ],
-    "Install interior doors and hardware": [
-      {
-        "resource": "G.C. Finish Carpenter Crew",
-        "x": 1.5,
+        "x": 1.25,
         "tau": 0.0,
-        "cost_delta": 960.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Install millwork and wood trim": [
-      {
-        "resource": "G.C. Finish Carpenter Crew",
-        "x": 2.0,
-        "tau": 2.0,
-        "cost_delta": 3360.0,
-        "duration_saved": 7.0
+        "cost_delta": 1000.0,
+        "duration_saved": 3.0
       }
     ],
     "Paint walls and woodwork": [
       {
         "resource": "Painting Contractor",
-        "x": 2.0,
-        "tau": 2.0,
-        "cost_delta": 3690.0,
-        "duration_saved": 9.0
+        "x": 1.75,
+        "tau": 0.0,
+        "cost_delta": 1620.0,
+        "duration_saved": 6.0
       }
     ],
     "Install conduit at ceiling plenum space": [
       {
         "resource": "Electric Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 1560.0,
+        "x": 1.0,
+        "tau": 1.0,
+        "cost_delta": 845.0,
+        "duration_saved": 1.0
+      }
+    ],
+    "Rough-in electrical in drywall walls": [
+      {
+        "resource": "Electric Contractor",
+        "x": 1.0,
+        "tau": 3.0,
+        "cost_delta": 3412.5,
         "duration_saved": 3.0
-      }
-    ],
-    "Install ceiling grid": [
-      {
-        "resource": "Drywall Contractor",
-        "x": 1.75,
-        "tau": 0.0,
-        "cost_delta": 900.0,
-        "duration_saved": 3.0
-      }
-    ],
-    "Install building carpet": [
-      {
-        "resource": "Carpet Contractor",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 2160.0,
-        "duration_saved": 7.0
-      }
-    ],
-    "Install hardware and accessories": [
-      {
-        "resource": "G.C. Finish Carpenter Crew",
-        "x": 1.25,
-        "tau": 0.0,
-        "cost_delta": 600.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Complete interior and exterior sod and plantings": [
-      {
-        "resource": "Landscape Contractor",
-        "x": 1.5,
-        "tau": 0.0,
-        "cost_delta": 720.0,
-        "duration_saved": 2.0
       }
     ],
     "Pull wire in conduit and set area transformers": [
       {
         "resource": "Electric Contractor",
-        "x": 1.25,
-        "tau": 0.0,
-        "cost_delta": 650.0,
-        "duration_saved": 2.0
+        "x": 1.0,
+        "tau": 1.0,
+        "cost_delta": 845.0,
+        "duration_saved": 1.0
       }
     ],
     "Install and terminate electrical devices": [
       {
         "resource": "Electric Contractor",
-        "x": 1.25,
-        "tau": 0.0,
-        "cost_delta": 650.0,
-        "duration_saved": 2.0
-      }
-    ],
-    "Install light fixtures - test and clean": [
-      {
-        "resource": "Electric Contractor",
-        "x": 1.75,
-        "tau": 0.0,
-        "cost_delta": 1170.0,
-        "duration_saved": 3.0
+        "x": 1.0,
+        "tau": 1.0,
+        "cost_delta": 845.0,
+        "duration_saved": 1.0
       }
     ],
     "Remove debris from building and do final clean-up": [
@@ -499,15 +418,6 @@
         "x": 1.75,
         "tau": 0.0,
         "cost_delta": 300.0,
-        "duration_saved": 1.0
-      }
-    ],
-    "Complete elevator inspection and certification": [
-      {
-        "resource": "Elevator Contractor",
-        "x": 2.0,
-        "tau": 0.0,
-        "cost_delta": 640.0,
         "duration_saved": 1.0
       }
     ],
@@ -604,8 +514,8 @@
       "baseline_start": 3.0,
       "baseline_finish": 5.0,
       "baseline_duration": 2.0,
-      "optimized_start": 3.0,
-      "optimized_finish": 5.0,
+      "optimized_start": 16.0,
+      "optimized_finish": 18.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -631,8 +541,8 @@
       "baseline_start": 5.0,
       "baseline_finish": 7.0,
       "baseline_duration": 2.0,
-      "optimized_start": 202.0,
-      "optimized_finish": 204.0,
+      "optimized_start": 18.0,
+      "optimized_finish": 20.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -658,8 +568,8 @@
       "baseline_start": 7.0,
       "baseline_finish": 9.0,
       "baseline_duration": 2.0,
-      "optimized_start": 204.0,
-      "optimized_finish": 206.0,
+      "optimized_start": 20.0,
+      "optimized_finish": 22.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -712,8 +622,8 @@
       "baseline_start": 7.0,
       "baseline_finish": 17.0,
       "baseline_duration": 10.0,
-      "optimized_start": 60.0,
-      "optimized_finish": 70.0,
+      "optimized_start": 6.0,
+      "optimized_finish": 16.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -760,15 +670,15 @@
       "baseline_finish": 14.0,
       "baseline_duration": 10.0,
       "optimized_start": 3.0,
-      "optimized_finish": 12.0,
-      "optimized_duration": 9.0,
+      "optimized_finish": 11.0,
+      "optimized_duration": 8.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor Management",
           "baseline_duration": 10.0,
-          "optimized_duration": 9.0,
-          "x": 1.25,
+          "optimized_duration": 8.0,
+          "x": 1.5,
           "tau": 0.0
         }
       ]
@@ -779,8 +689,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 126.0,
-      "optimized_finish": 136.0,
+      "optimized_start": 144.0,
+      "optimized_finish": 154.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -799,8 +709,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 72.0,
-      "optimized_finish": 82.0,
+      "optimized_start": 87.0,
+      "optimized_finish": 97.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -819,8 +729,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 70.0,
-      "optimized_finish": 80.0,
+      "optimized_start": 85.0,
+      "optimized_finish": 95.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -839,8 +749,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 70.0,
-      "optimized_finish": 80.0,
+      "optimized_start": 85.0,
+      "optimized_finish": 95.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -859,8 +769,8 @@
       "baseline_start": 17.0,
       "baseline_finish": 27.0,
       "baseline_duration": 10.0,
-      "optimized_start": 70.0,
-      "optimized_finish": 80.0,
+      "optimized_start": 85.0,
+      "optimized_finish": 95.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -879,23 +789,23 @@
       "baseline_start": 14.0,
       "baseline_finish": 74.0,
       "baseline_duration": 60.0,
-      "optimized_start": 12.0,
-      "optimized_finish": 53.0,
-      "optimized_duration": 41.0,
+      "optimized_start": 11.0,
+      "optimized_finish": 57.0,
+      "optimized_duration": 46.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor Management",
           "baseline_duration": 60.0,
-          "optimized_duration": 41.0,
-          "x": 1.75,
+          "optimized_duration": 46.0,
+          "x": 1.5,
           "tau": 0.0
         },
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 60.0,
-          "optimized_duration": 41.0,
-          "x": 1.75,
+          "optimized_duration": 46.0,
+          "x": 1.5,
           "tau": 0.0
         }
       ]
@@ -1080,8 +990,8 @@
       "baseline_start": 23.0,
       "baseline_finish": 33.0,
       "baseline_duration": 10.0,
-      "optimized_start": 18.0,
-      "optimized_finish": 28.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1101,16 +1011,16 @@
       "baseline_finish": 33.0,
       "baseline_duration": 10.0,
       "optimized_start": 17.0,
-      "optimized_finish": 23.0,
-      "optimized_duration": 6.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Plumbing Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 6.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1120,8 +1030,8 @@
       "baseline_start": 33.0,
       "baseline_finish": 43.0,
       "baseline_duration": 10.0,
-      "optimized_start": 23.0,
-      "optimized_finish": 29.0,
+      "optimized_start": 27.0,
+      "optimized_finish": 33.0,
       "optimized_duration": 6.0,
       "status": "not_started",
       "assignments": [
@@ -1140,8 +1050,8 @@
       "baseline_start": 43.0,
       "baseline_finish": 48.0,
       "baseline_duration": 5.0,
-      "optimized_start": 29.0,
-      "optimized_finish": 32.0,
+      "optimized_start": 33.0,
+      "optimized_finish": 36.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1160,8 +1070,8 @@
       "baseline_start": 48.0,
       "baseline_finish": 58.0,
       "baseline_duration": 10.0,
-      "optimized_start": 32.0,
-      "optimized_finish": 38.0,
+      "optimized_start": 36.0,
+      "optimized_finish": 42.0,
       "optimized_duration": 6.0,
       "status": "not_started",
       "assignments": [
@@ -1180,8 +1090,8 @@
       "baseline_start": 48.0,
       "baseline_finish": 50.0,
       "baseline_duration": 2.0,
-      "optimized_start": 59.0,
-      "optimized_finish": 61.0,
+      "optimized_start": 36.0,
+      "optimized_finish": 38.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1200,8 +1110,8 @@
       "baseline_start": 58.0,
       "baseline_finish": 62.0,
       "baseline_duration": 4.0,
-      "optimized_start": 38.0,
-      "optimized_finish": 41.0,
+      "optimized_start": 42.0,
+      "optimized_finish": 45.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1220,8 +1130,8 @@
       "baseline_start": 50.0,
       "baseline_finish": 54.0,
       "baseline_duration": 4.0,
-      "optimized_start": 61.0,
-      "optimized_finish": 65.0,
+      "optimized_start": 38.0,
+      "optimized_finish": 42.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1247,8 +1157,8 @@
       "baseline_start": 54.0,
       "baseline_finish": 58.0,
       "baseline_duration": 4.0,
-      "optimized_start": 65.0,
-      "optimized_finish": 69.0,
+      "optimized_start": 42.0,
+      "optimized_finish": 46.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1267,8 +1177,8 @@
       "baseline_start": 62.0,
       "baseline_finish": 66.0,
       "baseline_duration": 4.0,
-      "optimized_start": 41.0,
-      "optimized_finish": 44.0,
+      "optimized_start": 45.0,
+      "optimized_finish": 48.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1287,8 +1197,8 @@
       "baseline_start": 66.0,
       "baseline_finish": 71.0,
       "baseline_duration": 5.0,
-      "optimized_start": 44.0,
-      "optimized_finish": 47.0,
+      "optimized_start": 48.0,
+      "optimized_finish": 51.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1307,8 +1217,8 @@
       "baseline_start": 58.0,
       "baseline_finish": 59.0,
       "baseline_duration": 1.0,
-      "optimized_start": 69.0,
-      "optimized_finish": 70.0,
+      "optimized_start": 46.0,
+      "optimized_finish": 47.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -1327,8 +1237,8 @@
       "baseline_start": 59.0,
       "baseline_finish": 66.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 70.0,
-      "optimized_finish": 77.0,
+      "optimized_start": 47.0,
+      "optimized_finish": 54.0,
       "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
@@ -1347,8 +1257,8 @@
       "baseline_start": 71.0,
       "baseline_finish": 78.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 47.0,
-      "optimized_finish": 51.0,
+      "optimized_start": 51.0,
+      "optimized_finish": 55.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1367,8 +1277,8 @@
       "baseline_start": 66.0,
       "baseline_finish": 67.0,
       "baseline_duration": 1.0,
-      "optimized_start": 77.0,
-      "optimized_finish": 78.0,
+      "optimized_start": 54.0,
+      "optimized_finish": 55.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -1387,8 +1297,8 @@
       "baseline_start": 78.0,
       "baseline_finish": 81.0,
       "baseline_duration": 3.0,
-      "optimized_start": 51.0,
-      "optimized_finish": 53.0,
+      "optimized_start": 55.0,
+      "optimized_finish": 57.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1407,8 +1317,8 @@
       "baseline_start": 67.0,
       "baseline_finish": 70.0,
       "baseline_duration": 3.0,
-      "optimized_start": 78.0,
-      "optimized_finish": 81.0,
+      "optimized_start": 55.0,
+      "optimized_finish": 58.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1427,8 +1337,8 @@
       "baseline_start": 70.0,
       "baseline_finish": 71.0,
       "baseline_duration": 1.0,
-      "optimized_start": 81.0,
-      "optimized_finish": 82.0,
+      "optimized_start": 58.0,
+      "optimized_finish": 59.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -1447,17 +1357,17 @@
       "baseline_start": 81.0,
       "baseline_finish": 91.0,
       "baseline_duration": 10.0,
-      "optimized_start": 53.0,
-      "optimized_finish": 59.0,
-      "optimized_duration": 6.0,
+      "optimized_start": 57.0,
+      "optimized_finish": 67.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 6.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1467,17 +1377,17 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 59.0,
-      "optimized_finish": 65.0,
-      "optimized_duration": 6.0,
+      "optimized_start": 67.0,
+      "optimized_finish": 77.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 6.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -1487,8 +1397,8 @@
       "baseline_start": 91.0,
       "baseline_finish": 101.0,
       "baseline_duration": 10.0,
-      "optimized_start": 61.0,
-      "optimized_finish": 71.0,
+      "optimized_start": 95.0,
+      "optimized_finish": 105.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -1507,17 +1417,17 @@
       "baseline_start": 101.0,
       "baseline_finish": 111.0,
       "baseline_duration": 10.0,
-      "optimized_start": 65.0,
-      "optimized_finish": 71.0,
-      "optimized_duration": 6.0,
+      "optimized_start": 77.0,
+      "optimized_finish": 86.0,
+      "optimized_duration": 9.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Steel Erection Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 6.0,
-          "x": 2.0,
-          "tau": 1.0
+          "optimized_duration": 9.0,
+          "x": 1.25,
+          "tau": 0.0
         }
       ]
     },
@@ -1527,8 +1437,8 @@
       "baseline_start": 111.0,
       "baseline_finish": 121.0,
       "baseline_duration": 10.0,
-      "optimized_start": 71.0,
-      "optimized_finish": 77.0,
+      "optimized_start": 86.0,
+      "optimized_finish": 92.0,
       "optimized_duration": 6.0,
       "status": "not_started",
       "assignments": [
@@ -1547,8 +1457,8 @@
       "baseline_start": 121.0,
       "baseline_finish": 126.0,
       "baseline_duration": 5.0,
-      "optimized_start": 77.0,
-      "optimized_finish": 80.0,
+      "optimized_start": 92.0,
+      "optimized_finish": 95.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1567,8 +1477,8 @@
       "baseline_start": 126.0,
       "baseline_finish": 131.0,
       "baseline_duration": 5.0,
-      "optimized_start": 80.0,
-      "optimized_finish": 83.0,
+      "optimized_start": 95.0,
+      "optimized_finish": 98.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1594,8 +1504,8 @@
       "baseline_start": 91.0,
       "baseline_finish": 96.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 78.0,
-      "optimized_finish": 83.0,
+      "optimized_start": 67.0,
+      "optimized_finish": 72.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1628,8 +1538,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 135.0,
       "baseline_duration": 4.0,
-      "optimized_start": 83.0,
-      "optimized_finish": 86.0,
+      "optimized_start": 98.0,
+      "optimized_finish": 101.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1648,8 +1558,8 @@
       "baseline_start": 135.0,
       "baseline_finish": 142.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 86.0,
-      "optimized_finish": 90.0,
+      "optimized_start": 101.0,
+      "optimized_finish": 105.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1668,8 +1578,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 144.0,
       "baseline_duration": 2.0,
-      "optimized_start": 90.0,
-      "optimized_finish": 92.0,
+      "optimized_start": 107.0,
+      "optimized_finish": 109.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1688,8 +1598,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 5.0,
-      "optimized_start": 90.0,
-      "optimized_finish": 93.0,
+      "optimized_start": 105.0,
+      "optimized_finish": 108.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1715,8 +1625,8 @@
       "baseline_start": 142.0,
       "baseline_finish": 147.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 90.0,
-      "optimized_finish": 93.0,
+      "optimized_start": 105.0,
+      "optimized_finish": 108.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1749,8 +1659,8 @@
       "baseline_start": 147.0,
       "baseline_finish": 151.0,
       "baseline_duration": 4.0,
-      "optimized_start": 93.0,
-      "optimized_finish": 96.0,
+      "optimized_start": 108.0,
+      "optimized_finish": 111.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1769,8 +1679,8 @@
       "baseline_start": 151.0,
       "baseline_finish": 158.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 96.0,
-      "optimized_finish": 100.0,
+      "optimized_start": 111.0,
+      "optimized_finish": 115.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1789,8 +1699,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 160.0,
       "baseline_duration": 2.0,
-      "optimized_start": 110.0,
-      "optimized_finish": 112.0,
+      "optimized_start": 115.0,
+      "optimized_finish": 117.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1809,8 +1719,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 5.0,
-      "optimized_start": 100.0,
-      "optimized_finish": 103.0,
+      "optimized_start": 115.0,
+      "optimized_finish": 118.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1836,8 +1746,8 @@
       "baseline_start": 158.0,
       "baseline_finish": 163.0,
       "baseline_duration": 4.999999999999999,
-      "optimized_start": 100.0,
-      "optimized_finish": 103.0,
+      "optimized_start": 115.0,
+      "optimized_finish": 118.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1870,8 +1780,8 @@
       "baseline_start": 163.0,
       "baseline_finish": 167.0,
       "baseline_duration": 4.0,
-      "optimized_start": 103.0,
-      "optimized_finish": 106.0,
+      "optimized_start": 118.0,
+      "optimized_finish": 121.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -1890,8 +1800,8 @@
       "baseline_start": 167.0,
       "baseline_finish": 174.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 106.0,
-      "optimized_finish": 110.0,
+      "optimized_start": 121.0,
+      "optimized_finish": 125.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -1910,8 +1820,8 @@
       "baseline_start": 174.0,
       "baseline_finish": 176.0,
       "baseline_duration": 2.0,
-      "optimized_start": 110.0,
-      "optimized_finish": 112.0,
+      "optimized_start": 125.0,
+      "optimized_finish": 127.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -1950,8 +1860,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 92.0,
-      "optimized_finish": 97.0,
+      "optimized_start": 109.0,
+      "optimized_finish": 114.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1970,8 +1880,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 149.0,
       "baseline_duration": 5.0,
-      "optimized_start": 108.0,
-      "optimized_finish": 113.0,
+      "optimized_start": 109.0,
+      "optimized_finish": 114.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -1990,8 +1900,8 @@
       "baseline_start": 144.0,
       "baseline_finish": 148.0,
       "baseline_duration": 4.0,
-      "optimized_start": 92.0,
-      "optimized_finish": 96.0,
+      "optimized_start": 114.0,
+      "optimized_finish": 118.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -2024,8 +1934,8 @@
       "baseline_start": 149.0,
       "baseline_finish": 153.0,
       "baseline_duration": 4.0,
-      "optimized_start": 113.0,
-      "optimized_finish": 117.0,
+      "optimized_start": 118.0,
+      "optimized_finish": 122.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -2044,8 +1954,8 @@
       "baseline_start": 153.0,
       "baseline_finish": 160.0,
       "baseline_duration": 6.999999999999999,
-      "optimized_start": 117.0,
-      "optimized_finish": 124.0,
+      "optimized_start": 122.0,
+      "optimized_finish": 129.0,
       "optimized_duration": 7.0,
       "status": "not_started",
       "assignments": [
@@ -2064,8 +1974,8 @@
       "baseline_start": 160.0,
       "baseline_finish": 162.0,
       "baseline_duration": 2.0,
-      "optimized_start": 124.0,
-      "optimized_finish": 126.0,
+      "optimized_start": 129.0,
+      "optimized_finish": 131.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2084,8 +1994,8 @@
       "baseline_start": 176.0,
       "baseline_finish": 191.0,
       "baseline_duration": 15.0,
-      "optimized_start": 112.0,
-      "optimized_finish": 120.0,
+      "optimized_start": 127.0,
+      "optimized_finish": 135.0,
       "optimized_duration": 8.0,
       "status": "not_started",
       "assignments": [
@@ -2104,8 +2014,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 126.0,
-      "optimized_finish": 146.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 151.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2124,8 +2034,8 @@
       "baseline_start": 111.0,
       "baseline_finish": 131.0,
       "baseline_duration": 20.0,
-      "optimized_start": 71.0,
-      "optimized_finish": 91.0,
+      "optimized_start": 132.0,
+      "optimized_finish": 152.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2144,8 +2054,8 @@
       "baseline_start": 191.0,
       "baseline_finish": 216.0,
       "baseline_duration": 25.0,
-      "optimized_start": 120.0,
-      "optimized_finish": 133.0,
+      "optimized_start": 135.0,
+      "optimized_finish": 148.0,
       "optimized_duration": 13.0,
       "status": "not_started",
       "assignments": [
@@ -2164,8 +2074,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 218.0,
       "baseline_duration": 2.0,
-      "optimized_start": 155.0,
-      "optimized_finish": 157.0,
+      "optimized_start": 148.0,
+      "optimized_finish": 150.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2184,8 +2094,8 @@
       "baseline_start": 182.0,
       "baseline_finish": 192.0,
       "baseline_duration": 10.0,
-      "optimized_start": 146.0,
-      "optimized_finish": 156.0,
+      "optimized_start": 186.0,
+      "optimized_finish": 196.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2204,8 +2114,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 221.0,
       "baseline_duration": 5.0,
-      "optimized_start": 163.0,
-      "optimized_finish": 168.0,
+      "optimized_start": 148.0,
+      "optimized_finish": 153.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2224,8 +2134,8 @@
       "baseline_start": 192.0,
       "baseline_finish": 197.0,
       "baseline_duration": 5.0,
-      "optimized_start": 156.0,
-      "optimized_finish": 161.0,
+      "optimized_start": 196.0,
+      "optimized_finish": 201.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2244,8 +2154,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 220.0,
       "baseline_duration": 4.0,
-      "optimized_start": 153.0,
-      "optimized_finish": 157.0,
+      "optimized_start": 150.0,
+      "optimized_finish": 154.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -2264,8 +2174,8 @@
       "baseline_start": 220.0,
       "baseline_finish": 222.0,
       "baseline_duration": 2.0,
-      "optimized_start": 157.0,
-      "optimized_finish": 159.0,
+      "optimized_start": 154.0,
+      "optimized_finish": 156.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2284,8 +2194,8 @@
       "baseline_start": 227.0,
       "baseline_finish": 232.0,
       "baseline_duration": 5.0,
-      "optimized_start": 164.0,
-      "optimized_finish": 169.0,
+      "optimized_start": 161.0,
+      "optimized_finish": 166.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2304,8 +2214,8 @@
       "baseline_start": 232.0,
       "baseline_finish": 237.0,
       "baseline_duration": 5.0,
-      "optimized_start": 169.0,
-      "optimized_finish": 174.0,
+      "optimized_start": 166.0,
+      "optimized_finish": 171.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -2324,8 +2234,8 @@
       "baseline_start": 237.0,
       "baseline_finish": 247.0,
       "baseline_duration": 10.0,
-      "optimized_start": 174.0,
-      "optimized_finish": 184.0,
+      "optimized_start": 172.0,
+      "optimized_finish": 182.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2344,8 +2254,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 241.0,
       "baseline_duration": 25.0,
-      "optimized_start": 133.0,
-      "optimized_finish": 146.0,
+      "optimized_start": 148.0,
+      "optimized_finish": 161.0,
       "optimized_duration": 13.0,
       "status": "not_started",
       "assignments": [
@@ -2364,17 +2274,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 266.0,
       "baseline_duration": 25.0,
-      "optimized_start": 146.0,
-      "optimized_finish": 159.0,
-      "optimized_duration": 13.0,
+      "optimized_start": 161.0,
+      "optimized_finish": 183.0,
+      "optimized_duration": 22.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 25.0,
-          "optimized_duration": 13.0,
-          "x": 1.75,
-          "tau": 4.0
+          "optimized_duration": 22.0,
+          "x": 1.25,
+          "tau": 0.0
         }
       ]
     },
@@ -2384,16 +2294,16 @@
       "baseline_start": 266.0,
       "baseline_finish": 276.0,
       "baseline_duration": 10.0,
-      "optimized_start": 159.0,
-      "optimized_finish": 167.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 183.0,
+      "optimized_finish": 193.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2404,8 +2314,8 @@
       "baseline_start": 216.0,
       "baseline_finish": 231.0,
       "baseline_duration": 15.0,
-      "optimized_start": 144.0,
-      "optimized_finish": 159.0,
+      "optimized_start": 148.0,
+      "optimized_finish": 163.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2424,17 +2334,17 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 159.0,
-      "optimized_finish": 167.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 183.0,
+      "optimized_finish": 198.0,
+      "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 15.0,
-          "optimized_duration": 8.0,
-          "x": 2.0,
-          "tau": 2.0
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
         }
       ]
     },
@@ -2444,17 +2354,17 @@
       "baseline_start": 281.0,
       "baseline_finish": 301.0,
       "baseline_duration": 20.0,
-      "optimized_start": 167.0,
-      "optimized_finish": 178.0,
-      "optimized_duration": 11.0,
+      "optimized_start": 198.0,
+      "optimized_finish": 212.0,
+      "optimized_duration": 14.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Painting Contractor",
           "baseline_duration": 20.0,
-          "optimized_duration": 11.0,
-          "x": 2.0,
-          "tau": 2.0
+          "optimized_duration": 14.0,
+          "x": 1.75,
+          "tau": 0.0
         }
       ]
     },
@@ -2464,17 +2374,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 146.0,
-      "optimized_finish": 158.0,
-      "optimized_duration": 12.0,
+      "optimized_start": 161.0,
+      "optimized_finish": 175.0,
+      "optimized_duration": 14.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "optimized_duration": 12.0,
-          "x": 1.5,
-          "tau": 0.0
+          "optimized_duration": 14.0,
+          "x": 1.0,
+          "tau": 1.0
         }
       ]
     },
@@ -2484,8 +2394,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 281.0,
       "baseline_duration": 15.0,
-      "optimized_start": 159.0,
-      "optimized_finish": 174.0,
+      "optimized_start": 187.0,
+      "optimized_finish": 202.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2504,16 +2414,16 @@
       "baseline_start": 281.0,
       "baseline_finish": 291.0,
       "baseline_duration": 10.0,
-      "optimized_start": 174.0,
-      "optimized_finish": 181.0,
-      "optimized_duration": 7.0,
+      "optimized_start": 202.0,
+      "optimized_finish": 212.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Drywall Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 7.0,
-          "x": 1.75,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2524,8 +2434,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 181.0,
-      "optimized_finish": 191.0,
+      "optimized_start": 222.0,
+      "optimized_finish": 232.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2544,8 +2454,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 181.0,
-      "optimized_finish": 191.0,
+      "optimized_start": 222.0,
+      "optimized_finish": 232.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2564,16 +2474,16 @@
       "baseline_start": 301.0,
       "baseline_finish": 321.0,
       "baseline_duration": 20.0,
-      "optimized_start": 178.0,
-      "optimized_finish": 191.0,
-      "optimized_duration": 13.0,
+      "optimized_start": 212.0,
+      "optimized_finish": 232.0,
+      "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Carpet Contractor",
           "baseline_duration": 20.0,
-          "optimized_duration": 13.0,
-          "x": 2.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2584,16 +2494,16 @@
       "baseline_start": 301.0,
       "baseline_finish": 316.0,
       "baseline_duration": 15.0,
-      "optimized_start": 178.0,
-      "optimized_finish": 191.0,
-      "optimized_duration": 13.0,
+      "optimized_start": 217.0,
+      "optimized_finish": 232.0,
+      "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "G.C. Finish Carpenter Crew",
           "baseline_duration": 15.0,
-          "optimized_duration": 13.0,
-          "x": 1.25,
+          "optimized_duration": 15.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2604,16 +2514,16 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 178.0,
-      "optimized_finish": 186.0,
-      "optimized_duration": 8.0,
+      "optimized_start": 218.0,
+      "optimized_finish": 228.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Landscape Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 8.0,
-          "x": 1.5,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2624,8 +2534,8 @@
       "baseline_start": 311.0,
       "baseline_finish": 321.0,
       "baseline_duration": 10.0,
-      "optimized_start": 186.0,
-      "optimized_finish": 196.0,
+      "optimized_start": 228.0,
+      "optimized_finish": 238.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2644,8 +2554,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 151.0,
       "baseline_duration": 20.0,
-      "optimized_start": 152.0,
-      "optimized_finish": 172.0,
+      "optimized_start": 195.0,
+      "optimized_finish": 215.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2664,8 +2574,8 @@
       "baseline_start": 151.0,
       "baseline_finish": 161.0,
       "baseline_duration": 10.0,
-      "optimized_start": 172.0,
-      "optimized_finish": 182.0,
+      "optimized_start": 215.0,
+      "optimized_finish": 225.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2684,8 +2594,8 @@
       "baseline_start": 161.0,
       "baseline_finish": 171.0,
       "baseline_duration": 10.0,
-      "optimized_start": 182.0,
-      "optimized_finish": 192.0,
+      "optimized_start": 225.0,
+      "optimized_finish": 235.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2704,8 +2614,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 146.0,
-      "optimized_finish": 166.0,
+      "optimized_start": 181.0,
+      "optimized_finish": 201.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2724,8 +2634,8 @@
       "baseline_start": 221.0,
       "baseline_finish": 231.0,
       "baseline_duration": 10.0,
-      "optimized_start": 168.0,
-      "optimized_finish": 178.0,
+      "optimized_start": 153.0,
+      "optimized_finish": 163.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2744,8 +2654,8 @@
       "baseline_start": 261.0,
       "baseline_finish": 276.0,
       "baseline_duration": 15.0,
-      "optimized_start": 166.0,
-      "optimized_finish": 181.0,
+      "optimized_start": 201.0,
+      "optimized_finish": 216.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2764,8 +2674,8 @@
       "baseline_start": 301.0,
       "baseline_finish": 311.0,
       "baseline_duration": 10.0,
-      "optimized_start": 181.0,
-      "optimized_finish": 191.0,
+      "optimized_start": 221.0,
+      "optimized_finish": 231.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2784,8 +2694,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 134.0,
-      "optimized_finish": 154.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 151.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2804,17 +2714,17 @@
       "baseline_start": 241.0,
       "baseline_finish": 261.0,
       "baseline_duration": 20.0,
-      "optimized_start": 151.0,
-      "optimized_finish": 171.0,
-      "optimized_duration": 20.0,
+      "optimized_start": 191.0,
+      "optimized_finish": 208.0,
+      "optimized_duration": 17.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 20.0,
-          "optimized_duration": 20.0,
+          "optimized_duration": 17.0,
           "x": 1.0,
-          "tau": 0.0
+          "tau": 3.0
         }
       ]
     },
@@ -2824,17 +2734,17 @@
       "baseline_start": 256.0,
       "baseline_finish": 271.0,
       "baseline_duration": 15.0,
-      "optimized_start": 158.0,
-      "optimized_finish": 171.0,
-      "optimized_duration": 13.0,
+      "optimized_start": 175.0,
+      "optimized_finish": 189.0,
+      "optimized_duration": 14.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "optimized_duration": 13.0,
-          "x": 1.25,
-          "tau": 0.0
+          "optimized_duration": 14.0,
+          "x": 1.0,
+          "tau": 1.0
         }
       ]
     },
@@ -2844,17 +2754,17 @@
       "baseline_start": 271.0,
       "baseline_finish": 286.0,
       "baseline_duration": 15.0,
-      "optimized_start": 171.0,
-      "optimized_finish": 184.0,
-      "optimized_duration": 13.0,
+      "optimized_start": 208.0,
+      "optimized_finish": 222.0,
+      "optimized_duration": 14.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 15.0,
-          "optimized_duration": 13.0,
-          "x": 1.25,
-          "tau": 0.0
+          "optimized_duration": 14.0,
+          "x": 1.0,
+          "tau": 1.0
         }
       ]
     },
@@ -2864,8 +2774,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 273.0,
       "baseline_duration": 2.0,
-      "optimized_start": 184.0,
-      "optimized_finish": 186.0,
+      "optimized_start": 189.0,
+      "optimized_finish": 191.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -2884,16 +2794,16 @@
       "baseline_start": 291.0,
       "baseline_finish": 301.0,
       "baseline_duration": 10.0,
-      "optimized_start": 184.0,
-      "optimized_finish": 191.0,
-      "optimized_duration": 7.0,
+      "optimized_start": 222.0,
+      "optimized_finish": 232.0,
+      "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Electric Contractor",
           "baseline_duration": 10.0,
-          "optimized_duration": 7.0,
-          "x": 1.75,
+          "optimized_duration": 10.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -2904,8 +2814,8 @@
       "baseline_start": 131.0,
       "baseline_finish": 141.0,
       "baseline_duration": 10.0,
-      "optimized_start": 136.0,
-      "optimized_finish": 146.0,
+      "optimized_start": 152.0,
+      "optimized_finish": 162.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2924,8 +2834,8 @@
       "baseline_start": 162.0,
       "baseline_finish": 182.0,
       "baseline_duration": 20.0,
-      "optimized_start": 126.0,
-      "optimized_finish": 146.0,
+      "optimized_start": 131.0,
+      "optimized_finish": 151.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -2944,8 +2854,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 251.0,
       "baseline_duration": 10.0,
-      "optimized_start": 196.0,
-      "optimized_finish": 206.0,
+      "optimized_start": 162.0,
+      "optimized_finish": 172.0,
       "optimized_duration": 10.0,
       "status": "not_started",
       "assignments": [
@@ -2964,8 +2874,8 @@
       "baseline_start": 241.0,
       "baseline_finish": 256.0,
       "baseline_duration": 15.0,
-      "optimized_start": 146.0,
-      "optimized_finish": 161.0,
+      "optimized_start": 206.0,
+      "optimized_finish": 221.0,
       "optimized_duration": 15.0,
       "status": "not_started",
       "assignments": [
@@ -2984,8 +2894,8 @@
       "baseline_start": 291.0,
       "baseline_finish": 311.0,
       "baseline_duration": 20.0,
-      "optimized_start": 188.0,
-      "optimized_finish": 208.0,
+      "optimized_start": 221.0,
+      "optimized_finish": 241.0,
       "optimized_duration": 20.0,
       "status": "not_started",
       "assignments": [
@@ -3004,8 +2914,8 @@
       "baseline_start": 266.0,
       "baseline_finish": 271.0,
       "baseline_duration": 5.0,
-      "optimized_start": 180.0,
-      "optimized_finish": 185.0,
+      "optimized_start": 204.0,
+      "optimized_finish": 209.0,
       "optimized_duration": 5.0,
       "status": "not_started",
       "assignments": [
@@ -3024,8 +2934,8 @@
       "baseline_start": 271.0,
       "baseline_finish": 275.0,
       "baseline_duration": 4.0,
-      "optimized_start": 185.0,
-      "optimized_finish": 189.0,
+      "optimized_start": 209.0,
+      "optimized_finish": 213.0,
       "optimized_duration": 4.0,
       "status": "not_started",
       "assignments": [
@@ -3044,8 +2954,8 @@
       "baseline_start": 321.0,
       "baseline_finish": 325.0,
       "baseline_duration": 4.0,
-      "optimized_start": 191.0,
-      "optimized_finish": 194.0,
+      "optimized_start": 232.0,
+      "optimized_finish": 235.0,
       "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
@@ -3064,8 +2974,8 @@
       "baseline_start": 325.0,
       "baseline_finish": 326.0,
       "baseline_duration": 1.0,
-      "optimized_start": 205.0,
-      "optimized_finish": 206.0,
+      "optimized_start": 239.0,
+      "optimized_finish": 240.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3084,16 +2994,16 @@
       "baseline_start": 325.0,
       "baseline_finish": 328.0,
       "baseline_duration": 3.0,
-      "optimized_start": 194.0,
-      "optimized_finish": 196.0,
-      "optimized_duration": 2.0,
+      "optimized_start": 235.0,
+      "optimized_finish": 238.0,
+      "optimized_duration": 3.0,
       "status": "not_started",
       "assignments": [
         {
           "resource_name": "Elevator Contractor",
           "baseline_duration": 3.0,
-          "optimized_duration": 2.0,
-          "x": 2.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
           "tau": 0.0
         }
       ]
@@ -3104,8 +3014,8 @@
       "baseline_start": 328.0,
       "baseline_finish": 329.0,
       "baseline_duration": 1.0,
-      "optimized_start": 196.0,
-      "optimized_finish": 197.0,
+      "optimized_start": 238.0,
+      "optimized_finish": 239.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3131,8 +3041,8 @@
       "baseline_start": 329.0,
       "baseline_finish": 330.0,
       "baseline_duration": 1.0,
-      "optimized_start": 197.0,
-      "optimized_finish": 198.0,
+      "optimized_start": 239.0,
+      "optimized_finish": 240.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3158,8 +3068,8 @@
       "baseline_start": 330.0,
       "baseline_finish": 331.0,
       "baseline_duration": 1.0,
-      "optimized_start": 198.0,
-      "optimized_finish": 199.0,
+      "optimized_start": 240.0,
+      "optimized_finish": 241.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3185,8 +3095,8 @@
       "baseline_start": 331.0,
       "baseline_finish": 341.0,
       "baseline_duration": 10.0,
-      "optimized_start": 199.0,
-      "optimized_finish": 205.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 247.0,
       "optimized_duration": 6.0,
       "status": "not_started",
       "assignments": [
@@ -3261,8 +3171,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 343.0,
       "baseline_duration": 2.0,
-      "optimized_start": 205.0,
-      "optimized_finish": 207.0,
+      "optimized_start": 247.0,
+      "optimized_finish": 249.0,
       "optimized_duration": 2.0,
       "status": "not_started",
       "assignments": [
@@ -3281,8 +3191,8 @@
       "baseline_start": 341.0,
       "baseline_finish": 342.0,
       "baseline_duration": 1.0,
-      "optimized_start": 206.0,
-      "optimized_finish": 207.0,
+      "optimized_start": 249.0,
+      "optimized_finish": 250.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
@@ -3301,8 +3211,8 @@
       "baseline_start": 343.0,
       "baseline_finish": 344.0,
       "baseline_duration": 1.0,
-      "optimized_start": 207.0,
-      "optimized_finish": 208.0,
+      "optimized_start": 250.0,
+      "optimized_finish": 251.0,
       "optimized_duration": 1.0,
       "status": "not_started",
       "assignments": [
