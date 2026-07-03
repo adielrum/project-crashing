@@ -1,413 +1,890 @@
 {
   "2": {
-    "1": 1
+    "G.C. General Management": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "3": {
-    "2": 1,
-    "1": 1
+    "G.C. Project Management": {
+      "base": 1.0,
+      "slope": 1.0
+    },
+    "G.C. General Management": {
+      "base": 0.25,
+      "slope": 0.25
+    }
   },
   "4": {
-    "2": 1,
-    "4": 1
+    "G.C. Project Management": {
+      "base": 0.25,
+      "slope": 0.25
+    },
+    "G.C. Scheduler": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "5": {
-    "1": 1,
-    "2": 1
+    "G.C. General Management": {
+      "base": 0.1,
+      "slope": 0.1
+    },
+    "G.C. Project Management": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "6": {
-    "2": 1,
-    "3": 1
+    "G.C. Project Management": {
+      "base": 0.5,
+      "slope": 0.25
+    },
+    "G.C. Procurement": {
+      "base": 0.5,
+      "slope": 0.25
+    }
   },
   "7": {
-    "2": 1,
-    "3": 1
+    "G.C. Project Management": {
+      "base": 0.5,
+      "slope": 0.1
+    },
+    "G.C. Procurement": {
+      "base": 0.5,
+      "slope": 0.1
+    }
   },
   "8": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 2.0
+    }
   },
   "10": {
-    "22": 1
+    "Steel Erection Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "11": {
-    "27": 1
+    "Roofing Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "12": {
-    "20": 1
+    "Elevator Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "13": {
-    "14": 1
+    "Plumbing Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "14": {
-    "16": 1
+    "Electric Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "15": {
-    "18": 1
+    "HVAC Contractor Management": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "16": {
-    "22": 1,
-    "21": 1
+    "Steel Erection Contractor Management": {
+      "base": 0.5,
+      "slope": 0.016666666666666666
+    },
+    "Steel Erection Contractor": {
+      "base": 0.5,
+      "slope": 0.016666666666666666
+    }
   },
   "18": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "19": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "20": {
-    "6": 1,
-    "9": 1
+    "G.C. Superintendent": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    },
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.06666666666666667
+    }
   },
   "21": {
-    "7": 1
+    "G.C. Survey Crew": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "22": {
-    "12": 1,
-    "9": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    },
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.1
+    }
   },
   "24": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "25": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "26": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "27": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "28": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "29": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "30": {
-    "7": 1
+    "G.C. Survey Crew": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "32": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 0.5,
+      "slope": 0.1
+    }
   },
   "33": {
-    "12": 1
+    "Site Grading Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "34": {
-    "8": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "35": {
-    "13": 1,
-    "15": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.5
+    },
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "36": {
-    "8": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "37": {
-    "8": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "38": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "39": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 2.0
+    }
   },
   "40": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "41": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "42": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.2
+    }
   },
   "43": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "44": {
-    "19": 1
+    "Elevator Contractor": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "45": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 2.0
+    }
   },
   "47": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "48": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "49": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 0.75,
+      "slope": 0.15
+    }
   },
   "50": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 0.75,
+      "slope": 0.15
+    }
   },
   "51": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 0.5,
+      "slope": 0.1
+    }
   },
   "52": {
-    "21": 1
+    "Steel Erection Contractor": {
+      "base": 0.2,
+      "slope": 0.08
+    }
   },
   "54": {
-    "8": 1,
-    "9": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.4
+    },
+    "G.C. Labor Crew": {
+      "base": 0.2,
+      "slope": 0.08
+    }
   },
   "55": {
-    "9": 1,
-    "13": 1,
-    "15": 1
+    "G.C. Labor Crew": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Plumbing Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Electric Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    }
   },
   "56": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "57": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "58": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "59": {
-    "8": 1,
-    "9": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 0.5,
+      "slope": 0.2
+    },
+    "G.C. Labor Crew": {
+      "base": 0.2,
+      "slope": 0.08
+    }
   },
   "60": {
-    "9": 1,
-    "13": 1,
-    "15": 1
+    "G.C. Labor Crew": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Plumbing Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Electric Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    }
   },
   "61": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "62": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "63": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "64": {
-    "8": 1,
-    "9": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.4
+    },
+    "G.C. Labor Crew": {
+      "base": 0.2,
+      "slope": 0.08
+    }
   },
   "65": {
-    "9": 1,
-    "13": 1,
-    "15": 1
+    "G.C. Labor Crew": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Plumbing Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    },
+    "Electric Contractor": {
+      "base": 0.33,
+      "slope": 0.13200000000000003
+    }
   },
   "66": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "67": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "68": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "69": {
-    "8": 1
+    "G.C. Rough Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "70": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "71": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "72": {
-    "9": 1,
-    "13": 1,
-    "15": 1
+    "G.C. Labor Crew": {
+      "base": 0.33,
+      "slope": 0.165
+    },
+    "Plumbing Contractor": {
+      "base": 0.33,
+      "slope": 0.165
+    },
+    "Electric Contractor": {
+      "base": 0.33,
+      "slope": 0.165
+    }
   },
   "73": {
-    "10": 1
+    "G.C. Concrete Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "74": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 0.1,
+      "slope": 0.028571428571428577
+    }
   },
   "75": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "77": {
-    "23": 1
+    "Drywall Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "79": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "80": {
-    "24": 1
+    "Masonry Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "81": {
-    "24": 1
+    "Masonry Contractor": {
+      "base": 1.0,
+      "slope": 0.08
+    }
   },
   "82": {
-    "26": 1
+    "Roofing Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "83": {
-    "25": 1
+    "Tile Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "84": {
-    "24": 1
+    "Masonry Contractor": {
+      "base": 0.5,
+      "slope": 0.2
+    }
   },
   "85": {
-    "25": 1
+    "Tile Contractor": {
+      "base": 0.5,
+      "slope": 0.2
+    }
   },
   "87": {
-    "26": 1
+    "Roofing Contractor": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "88": {
-    "26": 1
+    "Roofing Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "89": {
-    "26": 1
+    "Roofing Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "90": {
-    "26": 1
+    "Roofing Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "91": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "93": {
-    "28": 1
+    "Window Contractor": {
+      "base": 1.0,
+      "slope": 0.08
+    }
   },
   "94": {
-    "23": 1
+    "Drywall Contractor": {
+      "base": 1.0,
+      "slope": 0.08
+    }
   },
   "95": {
-    "11": 1
+    "G.C. Finish Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "96": {
-    "28": 1
+    "Window Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "98": {
-    "11": 1
+    "G.C. Finish Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "99": {
-    "32": 1
+    "Painting Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "100": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "101": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "102": {
-    "23": 1
+    "Drywall Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "103": {
-    "23": 1
+    "Drywall Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "104": {
-    "32": 1
+    "Painting Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "105": {
-    "29": 1
+    "Carpet Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "106": {
-    "11": 1
+    "G.C. Finish Carpenter Crew": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "107": {
-    "30": 1
+    "Landscape Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "108": {
-    "31": 1
+    "Paving Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "110": {
-    "19": 1
+    "Elevator Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "111": {
-    "19": 1
+    "Elevator Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "112": {
-    "19": 1
+    "Elevator Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "114": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "115": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "116": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "117": {
-    "13": 1
+    "Plumbing Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "119": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "120": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "121": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "122": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "123": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "124": {
-    "15": 1
+    "Electric Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "126": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "127": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "128": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.2
+    }
   },
   "129": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.13333333333333333
+    }
   },
   "130": {
-    "17": 1
+    "HVAC Contractor": {
+      "base": 1.0,
+      "slope": 0.1
+    }
   },
   "132": {
-    "25": 1
+    "Tile Contractor": {
+      "base": 1.0,
+      "slope": 0.4
+    }
   },
   "133": {
-    "25": 1
+    "Tile Contractor": {
+      "base": 0.5,
+      "slope": 0.25
+    }
   },
   "134": {
-    "9": 1
+    "G.C. Labor Crew": {
+      "base": 1.0,
+      "slope": 0.5
+    }
   },
   "135": {
-    "6": 1
+    "G.C. Superintendent": {
+      "base": 1.0,
+      "slope": 2.0
+    }
   },
   "137": {
-    "19": 1
+    "Elevator Contractor": {
+      "base": 1.0,
+      "slope": 0.6666666666666666
+    }
   },
   "138": {
-    "6": 1,
-    "2": 1
+    "G.C. Superintendent": {
+      "base": 0.5,
+      "slope": 1.0
+    },
+    "G.C. Project Management": {
+      "base": 0.5,
+      "slope": 1.0
+    }
   },
   "139": {
-    "2": 1,
-    "6": 1
+    "G.C. Project Management": {
+      "base": 0.5,
+      "slope": 1.0
+    },
+    "G.C. Superintendent": {
+      "base": 0.5,
+      "slope": 1.0
+    }
   },
   "140": {
-    "6": 1,
-    "2": 1
+    "G.C. Superintendent": {
+      "base": 0.5,
+      "slope": 1.0
+    },
+    "G.C. Project Management": {
+      "base": 0.5,
+      "slope": 1.0
+    }
   },
   "141": {
-    "6": 1,
-    "9": 1,
-    "13": 1,
-    "15": 1,
-    "17": 1,
-    "23": 1,
-    "29": 1,
-    "31": 1,
-    "32": 1
+    "G.C. Superintendent": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "G.C. Labor Crew": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Plumbing Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Electric Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "HVAC Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Drywall Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Carpet Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Paving Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    },
+    "Painting Contractor": {
+      "base": 0.11,
+      "slope": 0.022
+    }
   },
   "142": {
-    "2": 1
+    "G.C. Project Management": {
+      "base": 1.0,
+      "slope": 1.0
+    }
   },
   "143": {
-    "2": 1
+    "G.C. Project Management": {
+      "base": 1.0,
+      "slope": 2.0
+    }
   },
   "144": {
-    "2": 1,
-    "5": 1,
-    "1": 1
+    "G.C. Project Management": {
+      "base": 0.33,
+      "slope": 0.66
+    },
+    "G.C. Accounting": {
+      "base": 0.33,
+      "slope": 0.66
+    },
+    "G.C. General Management": {
+      "base": 0.33,
+      "slope": 0.66
+    }
   }
 }

@@ -26,6 +26,11 @@ from typing import Dict, List, Optional, Tuple, Any
 
 from ortools.sat.python import cp_model
 
+# Scale factor for resource demands so that fractional worker counts (e.g. 1.5)
+# can be represented as exact integers inside CP-SAT (e.g. 150).
+# Matches the scaling used in solver_milp.py.
+DEMAND_SCALE = 100
+
 
 @dataclass
 class SolveConfig:
@@ -225,15 +230,24 @@ def build_reference_no_crash_schedule(
         for p in predecessors[a]:
             model.Add(s[a] >= e[p])
 
+    # Resource constraints for the no-crash reference schedule.
+    # resource_requirements values may be plain numbers (legacy) or dicts with
+    # {"base": u_ik^(0), "slope": V_ik}. In the baseline there is no crashing so
+    # we always use the base demand only, scaled by DEMAND_SCALE.
     for r, cap in resource_capacity.items():
         ivs = []
         demands = []
         for a in activities:
-            dem = int(resource_requirements.get(a, {}).get(r, 0))
-            if dem > 0:
+            req_entry = resource_requirements.get(a, {}).get(r, 0)
+            if isinstance(req_entry, dict):
+                base_dem = req_entry.get("base", 0.0)
+            else:
+                base_dem = float(req_entry)
+            dem_int = int(round(base_dem * DEMAND_SCALE))
+            if dem_int > 0:
                 ivs.append(intervals[a])
-                demands.append(dem)
-        model.AddCumulative(ivs, demands, int(cap))
+                demands.append(dem_int)
+        model.AddCumulative(ivs, demands, int(round(cap * DEMAND_SCALE)))
 
     Cmax = model.NewIntVar(0, horizon, "Cmax_ref")
     for a in activities:
@@ -403,16 +417,50 @@ def build_model_and_solve(
                 raise ValueError(f"Activity '{a}' has unknown predecessor '{p}'.")
             model.Add(s[a] >= e[p])
 
-    # Resource capacities via cumulative constraints
+    # Resource capacities via cumulative constraints.
+    # Per laporan.typ §2.3 Eq. <eq:resource-function>:
+    #   u_{i,k}(d_i) = V_{i,k} * (d_i^(0) - d_i) + u_{i,k}^(0)
+    #                = V_{i,k} * c[a]             + u_{i,k}^(0)
+    # where c[a] = NT[a] - d[a] is the number of days crashed.
+    # When slope V_{i,k} > 0, demand is a CP-SAT IntVar that grows as the
+    # activity is compressed, enforcing that extra workers are accounted for.
+    # All demands and capacities are scaled by DEMAND_SCALE (=100) so that
+    # fractional worker counts are represented as exact integers.
     for r, cap in resource_capacity.items():
         ivs = []
         demands = []
         for a in activities:
-            dem = int(resource_requirements.get(a, {}).get(r, 0))
-            if dem > 0:
+            req_entry = resource_requirements.get(a, {}).get(r, 0)
+            if isinstance(req_entry, dict):
+                base_dem = req_entry.get("base", 0.0)
+                slope    = req_entry.get("slope", 0.0)
+            else:
+                base_dem = float(req_entry)
+                slope    = 0.0
+
+            base_int = int(round(base_dem * DEMAND_SCALE))
+            if base_int == 0 and slope == 0.0:
+                continue  # activity does not use this resource
+
+            crashable = (NT[a] > MT[a]) and (states[a]["status"] != "completed")
+            slope_int = int(round(slope * DEMAND_SCALE))
+
+            if slope_int > 0 and crashable:
+                # Dynamic demand: increases linearly with crash days c[a]
+                # u_{i,k} = base_int + slope_int * c[a]  (all scaled by DEMAND_SCALE)
+                max_crash = NT[a] - MT[a]
+                max_dem_int = base_int + slope_int * max_crash
+                dem_var = model.NewIntVar(base_int, max_dem_int, f"dem[{a}][{r}]")
+                model.Add(dem_var == base_int + slope_int * c[a])
                 ivs.append(intervals[a])
-                demands.append(dem)
-        model.AddCumulative(ivs, demands, int(cap))
+                demands.append(dem_var)
+            else:
+                # Static demand (no crashing benefit or slope is negligible)
+                if base_int > 0:
+                    ivs.append(intervals[a])
+                    demands.append(base_int)
+
+        model.AddCumulative(ivs, demands, int(round(cap * DEMAND_SCALE)))
 
     # Dynamic state/current_day constraints
     for a in activities:
