@@ -11,7 +11,7 @@ Usage
 -----
     python compare_scenarios.py
 
-All outputs are written to ./outputs/  next to this script.
+All outputs are written to ./outputs/comparison/single/ next to this script.
 
 Configuration
 -------------
@@ -21,6 +21,8 @@ GA population/generations, and solver time limits.
 
 import os
 import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import time
 import json
 import warnings
@@ -34,7 +36,7 @@ COBB_DIR    = os.path.join(ROOT_DIR, "implementasi-cobb")        # cobb_model.py
 BASE_DIR    = os.path.join(ROOT_DIR, "implementasi-base")        # solver_base.py
 HYBRID_DIR  = os.path.join(ROOT_DIR, "implementasi-hybrid")      # preprocessing.py
 HYBRID_DATA = os.path.join(HYBRID_DIR, "data")                  # activity_data.json etc.
-OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs", "comparison")
+OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs", "comparison", "single")
 os.makedirs(OUTPUTS_DIR, exist_ok=True)
 
 sys.path.insert(0, COBB_DIR)
@@ -87,6 +89,41 @@ def _section(title):
     _hline("═")
     print(f"  {title}")
     _hline("═")
+
+def _compute_cpm_baseline(act: dict, preds: dict) -> float:
+    """Pure CPM forward pass (precedence-only, no resource constraints).
+
+    Mirrors the logic of ``ResourceBasedScheduling._forward_pass_raw`` so that
+    Scenario C reports the same baseline makespan as Scenarios A & B (344 days),
+    instead of the resource-constrained CP-SAT baseline (345 days).
+
+    Parameters
+    ----------
+    act   : activity_data dict  (keys = activity id strings)
+    preds : predecessors dict produced by build_predecessors()
+
+    Returns
+    -------
+    float – CPM makespan (max finish time across all activities)
+    """
+    durations = {a: int(act[a].get("activity_normal_time", 0)) for a in act}
+    finish    = {a: 0.0 for a in act}
+
+    # Topological relaxation: iterate until stable
+    for _ in range(len(act) + 1):
+        changed = False
+        for a in act:
+            earliest_start = 0.0
+            for p in preds.get(a, []):
+                earliest_start = max(earliest_start, finish[p])
+            new_finish = earliest_start + durations[a]
+            if new_finish > finish[a] + 1e-9:
+                finish[a] = new_finish
+                changed = True
+        if not changed:
+            break
+
+    return float(max(finish.values())) if finish else 0.0
 
 # ════════════════════════════════════════════════════════════════════════════
 # SCENARIO A  —  Original CSV + GA (Cobb-Douglas, pymoo)
@@ -257,8 +294,8 @@ def run_scenario_B():
     out_gantt = os.path.join(OUTPUTS_DIR, "B_milp_cobb_gantt.png")
     out_html  = os.path.join(OUTPUTS_DIR, "B_milp_cobb_gantt.html")
 
-    # solver_milp writes its own JSON to COBB_DIR/../outputs — copy to our outputs dir
-    default_path = os.path.join(COBB_DIR, "../outputs/milp_cobb_bonus_penalty.json")
+    # solver_milp writes its own JSON to COBB_DIR/../outputs/milp — copy to our outputs dir
+    default_path = os.path.join(COBB_DIR, "../outputs/milp/milp_cobb_bonus_penalty.json")
     try:
         if os.path.exists(default_path):
             shutil.copy(default_path, out_json)
@@ -327,12 +364,21 @@ def run_scenario_C():
         SolveConfig, build_model_and_solve,
         build_reference_no_crash_schedule,
         generate_gantt_comparison_plot,
+        generate_interactive_gantt_html,
         write_json, write_schedule_csv,
     )
+    from preprocessing import preprocess
 
-    act = read_json(os.path.join(HYBRID_DATA, "activity_data.json"))
-    rc  = read_json(os.path.join(HYBRID_DATA, "resource_capacity.json"))
-    rr  = read_json(os.path.join(HYBRID_DATA, "resource_requirements.json"))
+    # ── Fix 1: dynamically preprocess from the same CSVs using live parameters ──
+    # This ensures Scenario C's linear crash-cost slopes are always computed from
+    # the identical x_max, tau_max, alpha, beta, overtime_mult as Scenarios A & B,
+    # rather than whatever was frozen in the static JSON files on disk.
+    print("  Running preprocessing with live model parameters …")
+    act, rr, rc = preprocess(
+        alpha=ALPHA, beta=BETA,
+        x_max=X_MAX, tau_max=TAU_MAX,
+        overtime_mult=OVERTIME_MULT, hours_per_day=HOURS_PER_DAY,
+    )
 
     preds, cycle_logs = build_predecessors(act, [], True)
     for log in cycle_logs:
@@ -344,9 +390,15 @@ def run_scenario_C():
     for log in state_logs:
         print(f"  [state] {log[:100]}")
 
+    # ── Fix 2: use CPM-only baseline makespan (precedence-only, same as A & B) ──
+    # build_reference_no_crash_schedule applies resource constraints too, giving
+    # 345 days vs the CPM-only 344 days from Scenarios A & B.  We compute the
+    # pure CPM baseline directly from activity_normal_time to align the table.
+    cpm_makespan = _compute_cpm_baseline(act, preds)
+
     baseline_sched    = build_reference_no_crash_schedule(act, rr, rc, preds, CURRENT_DAY, CPSAT_TIME_LIMIT, 1)
-    baseline_makespan = max(v["end"] for v in baseline_sched.values())
-    print(f"  Baseline makespan : {baseline_makespan} days")
+    baseline_makespan = cpm_makespan   # ← use CPM value for consistent display
+    print(f"  Baseline makespan : {baseline_makespan:.1f} days  (CPM, same method as A & B)")
     print(f"  CP-SAT time limit : {CPSAT_TIME_LIMIT} s")
     print("  Solving …")
 
@@ -390,12 +442,10 @@ def run_scenario_C():
     result["total_cost"]             = total_cost
 
     out_json  = os.path.join(OUTPUTS_DIR, "C_cpsat.json")
-    out_csv   = os.path.join(OUTPUTS_DIR, "C_cpsat_schedule.csv")
     out_gantt = os.path.join(OUTPUTS_DIR, "C_cpsat_gantt.png")
+    out_html  = os.path.join(OUTPUTS_DIR, "C_cpsat_gantt.html")
 
     write_json(out_json, result)
-    if "schedule" in result:
-        write_schedule_csv(out_csv, result["schedule"])
     try:
         generate_gantt_comparison_plot(
             baseline_schedule=baseline_sched,
@@ -403,8 +453,16 @@ def run_scenario_C():
             current_day=CURRENT_DAY,
             output_path=out_gantt,
         )
+        generate_interactive_gantt_html(
+            baseline_schedule=baseline_sched,
+            optimized_schedule=result.get("schedule", []),
+            current_day=CURRENT_DAY,
+            target_end_date=T_MAX,
+            output_path=out_html,
+            activity_data=act,
+        )
     except Exception as ex:
-        print(f"  [warn] Gantt PNG: {ex}")
+        print(f"  [warn] Gantt plots: {ex}")
 
     print(f"  ✓  Status          : {status}")
     print(f"     Makespan        : {makespan} days  (saved {baseline_makespan - makespan} d)")
@@ -430,8 +488,8 @@ def run_scenario_C():
         "total_cost": total_cost,
         "solve_time_s": round(elapsed, 2),
         "output_json": out_json,
-        "output_csv": out_csv,
         "output_gantt_png": out_gantt,
+        "output_gantt_html": out_html,
     }
 
 

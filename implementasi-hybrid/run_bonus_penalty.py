@@ -82,7 +82,7 @@ def run_hybrid_bonus_penalty():
         result["total_normal_cost"] = total_normal_cost
         result["total_comparable_cost"] = total_comparable_cost
         
-    out_dir = os.path.join(base_dir, "../outputs")
+    out_dir = os.path.join(base_dir, "../outputs/hybrid")
     os.makedirs(out_dir, exist_ok=True)
     write_json(os.path.join(out_dir, "hybrid_bonus_penalty.json"), result)
     if "schedule" in result:

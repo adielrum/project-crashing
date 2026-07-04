@@ -25,9 +25,9 @@ def run_bonus_penalty():
 
     if solution is not None:
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        out_json = os.path.join(base_dir, "../outputs/cobb_bonus_penalty.json")
-        out_gantt = os.path.join(base_dir, "../outputs/cobb_bonus_penalty_gantt.png")
-        out_html = os.path.join(base_dir, "../outputs/cobb_bonus_penalty_gantt.html")
+        out_json = os.path.join(base_dir, "../outputs/cobb/cobb_bonus_penalty.json")
+        out_gantt = os.path.join(base_dir, "../outputs/cobb/cobb_bonus_penalty_gantt.png")
+        out_html = os.path.join(base_dir, "../outputs/cobb/cobb_bonus_penalty_gantt.html")
 
         save_solution_json(
             tasks, resources, precedence, problem,

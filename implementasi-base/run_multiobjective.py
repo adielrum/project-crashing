@@ -92,7 +92,7 @@ def run_multiobjective():
         plt.title('Time-Cost Pareto Front (Base Model)')
         plt.grid(True)
         
-        out_dir = os.path.join(base_dir, "../outputs")
+        out_dir = os.path.join(base_dir, "../outputs/base")
         os.makedirs(out_dir, exist_ok=True)
         plt.savefig(os.path.join(out_dir, "base_pareto_front.png"))
         print(f"Saved Pareto front plot to {os.path.join(out_dir, 'base_pareto_front.png')}")

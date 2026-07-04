@@ -1039,17 +1039,17 @@ def parse_args():
     )
     parser.add_argument(
         "--output-json",
-        default=os.path.join(BASE_DIR, "../outputs/cobb_solution.json"),
+        default=os.path.join(BASE_DIR, "../outputs/cobb/cobb_solution.json"),
         help="Path to output solution JSON"
     )
     parser.add_argument(
         "--output-gantt",
-        default=os.path.join(BASE_DIR, "../outputs/cobb_gantt.png"),
+        default=os.path.join(BASE_DIR, "../outputs/cobb/cobb_gantt.png"),
         help="Path to output Gantt chart PNG"
     )
     parser.add_argument(
         "--output-gantt-html",
-        default=os.path.join(BASE_DIR, "../outputs/cobb_gantt.html"),
+        default=os.path.join(BASE_DIR, "../outputs/cobb/cobb_gantt.html"),
         help="Path to output interactive Gantt chart HTML"
     )
     parser.add_argument(

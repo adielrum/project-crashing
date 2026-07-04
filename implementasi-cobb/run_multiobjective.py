@@ -34,7 +34,7 @@ def run_multiobjective():
         plt.title('Time-Cost Pareto Front (Cobb-Douglas NSGA-II)')
         plt.grid(True)
 
-        out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../outputs")
+        out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../outputs/cobb")
         os.makedirs(out_dir, exist_ok=True)
         plt.savefig(os.path.join(out_dir, "cobb_pareto_front.png"))
         print(f"Saved Pareto front plot to {os.path.join(out_dir, 'cobb_pareto_front.png')}")

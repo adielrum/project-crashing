@@ -57,7 +57,7 @@ def run_hybrid_cost_driven():
     if "total_crash_cost" in result:
         print("Total crash cost:", result["total_crash_cost"])
         
-    out_dir = os.path.join(base_dir, "../outputs")
+    out_dir = os.path.join(base_dir, "../outputs/hybrid")
     os.makedirs(out_dir, exist_ok=True)
     write_json(os.path.join(out_dir, "hybrid_cost_driven.json"), result)
     if "schedule" in result:

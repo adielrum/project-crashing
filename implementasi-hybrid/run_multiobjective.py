@@ -80,7 +80,7 @@ def run_hybrid_multiobjective():
         plt.title('Time-Cost Pareto Front (Hybrid Model)')
         plt.grid(True)
         
-        out_dir = os.path.join(base_dir, "../outputs")
+        out_dir = os.path.join(base_dir, "../outputs/hybrid")
         os.makedirs(out_dir, exist_ok=True)
         plt.savefig(os.path.join(out_dir, "hybrid_pareto_front.png"))
         print(f"Saved Pareto front plot to {os.path.join(out_dir, 'hybrid_pareto_front.png')}")

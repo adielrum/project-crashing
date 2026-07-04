@@ -25,9 +25,9 @@ def run_cost_driven():
 
     if solution is not None:
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        out_json = os.path.join(base_dir, "../outputs/cobb_cost_driven.json")
-        out_gantt = os.path.join(base_dir, "../outputs/cobb_cost_driven_gantt.png")
-        out_html = os.path.join(base_dir, "../outputs/cobb_cost_driven_gantt.html")
+        out_json = os.path.join(base_dir, "../outputs/cobb/cobb_cost_driven.json")
+        out_gantt = os.path.join(base_dir, "../outputs/cobb/cobb_cost_driven_gantt.png")
+        out_html = os.path.join(base_dir, "../outputs/cobb/cobb_cost_driven_gantt.html")
 
         save_solution_json(
             tasks, resources, precedence, problem,

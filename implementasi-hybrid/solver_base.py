@@ -764,6 +764,90 @@ def generate_gantt_comparison_plot(
     plt.close()
 
 
+def generate_interactive_gantt_html(
+    baseline_schedule: Dict[str, Dict[str, int]],
+    optimized_schedule: List[Dict[str, Any]],
+    current_day: int,
+    target_end_date: int,
+    output_path: str,
+    activity_data: Optional[Dict[str, Any]] = None,
+) -> None:
+    import plotly.graph_objects as go
+
+    baseline_order = sorted(
+        baseline_schedule.keys(),
+        key=lambda a: (baseline_schedule[a]["start"], baseline_schedule[a]["end"], a)
+    )
+    opt_map = {row["activity"]: row for row in optimized_schedule}
+
+    fig = go.Figure()
+    legend_shown = set()
+
+    for a in baseline_order:
+        b_info = baseline_schedule[a]
+        opt_info = opt_map.get(a, {"start": b_info["start"], "end": b_info["end"], "duration": b_info["duration"], "crash_days": 0, "crash_cost": 0.0})
+        sv, fv = opt_info["start"], opt_info["end"]
+
+        act_name = activity_data[a].get("activity_name", f"Activity {a}") if activity_data and a in activity_data else f"Activity {a}"
+        label = f"{a}: {act_name}"
+
+        is_done = fv <= current_day
+        is_crashed = opt_info.get("crash_days", 0) > 0
+
+        if is_done:
+            group, color = "Completed", "#95a5a6"
+        elif is_crashed:
+            group, color = "Crashed", "#ef4444"
+        else:
+            group, color = "Active (normal)", "#3b82f6"
+
+        info = [
+            f"<b>{label}</b>",
+            f"Day {sv} &rarr; Day {fv} (Duration: {fv - sv}d)",
+            f"Baseline: Day {b_info['start']} &rarr; Day {b_info['end']} (Duration: {b_info['duration']}d)"
+        ]
+        if is_crashed:
+            info.append(f"<br><b>CP-SAT Crashing:</b>")
+            info.append(f"&nbsp;&nbsp;Crashed by {opt_info['crash_days']}d (Cost: ${opt_info.get('crash_cost', 0.0):,.2f})")
+
+        text = "<br>".join(info)
+
+        fig.add_trace(go.Scatter(
+            x=[sv, fv], y=[label, label],
+            mode='lines',
+            line=dict(color=color, width=14),
+            name=group,
+            legendgroup=group,
+            showlegend=(group not in legend_shown),
+            hovertemplate=text + "<extra></extra>"
+        ))
+        legend_shown.add(group)
+
+    fig.add_shape(type="line", x0=current_day, x1=current_day, y0=0, y1=1, yref="paper",
+                  line=dict(color="black", width=2, dash="dash"))
+    fig.add_shape(type="line", x0=target_end_date, x1=target_end_date, y0=0, y1=1, yref="paper",
+                  line=dict(color="blue", width=2, dash="dot"))
+
+    fig.add_annotation(x=current_day, y=1.02, yref="paper", showarrow=False,
+                       text=f"Current Day {current_day}", font=dict(color="black"))
+    fig.add_annotation(x=target_end_date, y=-0.05, yref="paper", showarrow=False,
+                       text=f"Target Deadline Day {target_end_date}", font=dict(color="blue"))
+
+    max_end = max((opt_map.get(a, {"end": 0})["end"] for a in baseline_order), default=target_end_date)
+    fig.update_layout(
+        title=f"CP-SAT Optimized Gantt Chart (Current Day: {current_day}, Makespan: {max_end}d)",
+        xaxis_title="Project Day",
+        yaxis_title="Task",
+        height=max(600, 18 * len(baseline_order)),
+        hovermode="closest",
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=200, r=50, t=80, b=50),
+        yaxis=dict(autorange="reversed")
+    )
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    fig.write_html(output_path)
+
+
 def generate_resource_usage_plot(
     baseline_schedule: Dict[str, Dict[str, int]],
     optimized_schedule: List[Dict[str, Any]],
@@ -939,22 +1023,22 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-json",
-        default="./outputs/solution.json",
+        default="./outputs/hybrid/solution.json",
         help="Path to output solution JSON",
     )
     parser.add_argument(
         "--output-csv",
-        default="./outputs/schedule.csv",
+        default="./outputs/hybrid/schedule.csv",
         help="Path to output schedule CSV",
     )
     parser.add_argument(
         "--output-gantt",
-        default="./outputs/gantt_comparison.png",
+        default="./outputs/hybrid/gantt_comparison.png",
         help="Path to output Gantt chart comparison plot (original vs crashed)",
     )
     parser.add_argument(
         "--output-resources",
-        default="./outputs/resource_usage.png",
+        default="./outputs/hybrid/resource_usage.png",
         help="Path to output resource usage plot across time",
     )
     parser.add_argument(

@@ -46,7 +46,7 @@
   ),
   
   abstract: [
-    Project crashing is a project management technique involving the compression of project schedules to meet deadline requirements, mathematically modelled as a _Resource--Constrained Time--Cost Tradeoff Problem_ (#sans("RC-TCTP")). Often, #sans("TCTP")s operate under the idealistic assumption that crash costs are predetermined. This paper explores optimization models that relax this assumption. In particular, we develop a novel resource--based model that implicitly calculates costs through the _Cobb--Douglas production function_ based on labor overtime and overmanning. While our original non--linear continuous formulation utilized _genetic algorithms_ (GA), we also introduce two simplifications: a discretized mode--based version employing _mixed--integer linear programming_ (MILP) as well as a linearized time--based version that exploited the Cobb--Douglas objective to estimate a crash slope. Both variants are solved with modern _constrained programming_ (CP--SAT) techniques, which proved greater computational tractibility without compromising on solution quality. Sensitivity analysis on real dataset also demonstrated the robustness of these various novel Cobb--Douglas approach, highlighting its ability to balance efficiency and realism. 
+    Project crashing is a project management technique involving the compression of project schedules to meet deadline requirements, mathematically modelled as a _Resource--Constrained Time--Cost Tradeoff Problem_ (#sans("RC-TCTP")). Often, #sans("TCTP")s operate under the idealistic assumption that crash costs are predetermined. This paper explores optimization models that relax this assumption. In particular, we develop a novel resource--based model that implicitly calculates costs through the _Cobb--Douglas production function_ based on labor overtime and overmanning. While our original non--linear continuous formulation utilized _genetic algorithms_ (GA), we also introduce two simplifications: a discretized mode--based version employing _mixed--integer linear programming_ (MILP) as well as a linearized time--based version that exploited the Cobb--Douglas objective to estimate a crash slope. Both variants are solved with modern _constrained programming_ (CP--SAT) techniques, which proved greater computational tractability without compromising on solution quality. Sensitivity analysis on a real dataset also demonstrated the robustness of these various novel Cobb--Douglas approaches, highlighting its ability to balance efficiency and realism. 
   ],
   
   keywords: (
@@ -70,15 +70,15 @@ In this paper, we focus on a specific subset of project scheduling known as _pro
 
 == Resource-Constrained Project Scheduling Problems
 
-Resource-constrained project scheduling problems (#sans("RCPSP")s) are a _class_ of optimizations problems for finding optimal schedules for an activities list under two integral constraints: resource limitations and dependency relations. Hence, it is the de-facto standard mathematical model for real--world scheduling matters in literature, especially project scheduling. 
+Resource-constrained project scheduling problems (#sans("RCPSP")s) are a _class_ of optimization problems for finding optimal schedules for an activities list under two integral constraints: resource limitations and dependency relations. Hence, it is the de-facto standard mathematical model for real--world scheduling matters in literature, especially project scheduling. 
 
 We detail a formalization of #sans("RCPSP")s adapted from that of Artigues et al. @Artigues2008, @Artigues2026 as well as Hartmann and Briskorn @Hartmann2010, @Hartmann2022 as follows. A _project_ is a graph network $(I,cal(E))$ of activity indices $I$ and dependency relations $cal(E)$ between activities. Here, an arc $(i,j) in E$ is a precedence relation between the predecessor $i$ and successor $j$. On the other hand, a _resource set_ is a set $cal(K)$ of resource indices, which may represent renewable or non-renewable resources, equipped with an assignment $R_k >= 0$ of constant per-time available resource. To this, a _resource requirement_ associates to each activity index $i$ and resource index $k$ a constant value $r_(i,k) >= 0$, which intuitively represents how much of resource $k$ activity $i$ requires. 
 
-Furthermore, a _schedule_ is an assignment of project start times $s_i >= 0$ and completion times $e_i >= 0$ to each activity index $i$. In particular, we consider only _feasible_ schedules that satisfy both the dependency relation $cal(E)$ (which typically translates to simple finish-to-start relations) and resource constraints (for examples, the form $sum_i r_(i,k) <= R_k$ at each time step $t$ is common in continuous formulations). Often, fictitious assignments, like $s_0$ and $s_(n+1)$ of start times for instance, is done to represent global project start and completion times. Hence, an #sans("RCPSP") is the problem of finding a feasible schedule that minimizes some _project objective_ $cal(G)(s_(n+1))$. 
+Furthermore, a _schedule_ is an assignment of project start times $s_i >= 0$ and completion times $e_i >= 0$ to each activity index $i$. In particular, we consider only _feasible_ schedules that satisfy both the dependency relation $cal(E)$ (which typically translates to simple finish-to-start relations) and resource constraints (for examples, the form $sum_i r_(i,k) <= R_k$ at each time step $t$ is common in continuous formulations). Often, fictitious assignments, like $s_0$ and $s_(n+1)$ of start times for instance, are done to represent global project start and completion times. Hence, an #sans("RCPSP") is the problem of finding a feasible schedule that minimizes some _project objective_ $cal(G)(s_(n+1))$. 
 
 == Problem Classifications
 
-To understand the taxonomy of #sans("RCPSP")s, Brucker et al. @Brucker1999 introduced the $alpha | beta | gamma$ notation scheme to create a generalized classification of #sans("RCPSP")s. Here, $alpha$ represents the _resource environment_ which specifies the resource details of the project, which may include renewable resources (such as labor, machinery, etc.) or non-renewable resources (such as raw materials, budget, etc.). Then, $beta$ denotes _activity characteristics_ which detail the dependency relation $cal(E)$ as simply being finish-to-start precedence relations (denoted #sans("prec")), containing time lags (denoted #sans("temp")), or otherwise. Finally, $gamma$ specifies the _objective function_, the measure for an optimal schedule. Classically, this is makespan minimization (purely completion time), but recent formulations have tend towards time-cost tradeoffs (see Section 1.3).
+To understand the taxonomy of #sans("RCPSP")s, Brucker et al. @Brucker1999 introduced the $alpha | beta | gamma$ notation scheme to create a generalized classification of #sans("RCPSP")s. Here, $alpha$ represents the _resource environment_ which specifies the resource details of the project, which may include renewable resources (such as labor, machinery, etc.) or non-renewable resources (such as raw materials, budget, etc.). Then, $beta$ denotes _activity characteristics_ which detail the dependency relation $cal(E)$ as simply being finish-to-start precedence relations (denoted #sans("prec")), containing time lags (denoted #sans("temp")), or otherwise. Finally, $gamma$ specifies the _objective function_, the measure for an optimal schedule. Classically, this is makespan minimization (purely completion time), but recent formulations have tended towards time-cost tradeoffs (see Section 1.3).
 
 Despite its shortcomings as a pure classification scheme @Herroelen2001, Brucker's notation correctly highlights the three main constituents of an #sans("RCPSP"). In fact, diversity in the choice of resource constraints ($alpha$), temporal constraints ($beta$), and objective functions ($gamma$) becomes the differentiating features between #sans("RCPSP") models. For an extensive survey on the various #sans("RCPSP") models, based on those three components, that have been developed throughout literature over the past 50 years, we refer the readers to @Artigues2026 and @Hartmann2022. 
 
@@ -86,11 +86,11 @@ Now, one often defines the objective $gamma$ from the choice of _decision variab
 
 Next, one has mode--based decisions, which correspond to _multi-mode_ resource--constrained project scheduling problems, denoted #sans("MRCPSP")s. Here, the decision variables are binary selectors of alternative options called "modes" through which activity execution can be implemented @Brucker1999. This approach seems to be preferred in modern literature @Hosseinpour2023, likely due to its computational appeal (see Section 1.4) and flexibility. 
 
-Finally, resource--based decision variables directly determine the resource allotments that affect activity execution, such as binary assignments of workers or dynamic continuous allocations of resources. Problems of this sort are sometimes referred to as _resource investment problems_ (#sans("RIP")s) or traditionally as _resource availability cost problems_ (#sans("RACP")s) @Hartmann2022 @Artigues2026. Unlike problems using time--based objectives, #sans("RIP")s do not assume known crash costs. However, they are generally more computationally tasking. We remark that the choice of decision variables determines the project objective $gamma$, and is thus one of the most important aspect of #sans("RCPSP")s.  
+Finally, resource--based decision variables directly determine the resource allotments that affect activity execution, such as binary assignments of workers or dynamic continuous allocations of resources. Problems of this sort are sometimes referred to as _resource investment problems_ (#sans("RIP")s) or traditionally as _resource availability cost problems_ (#sans("RACP")s) @Hartmann2022 @Artigues2026. Unlike problems using time--based objectives, #sans("RIP")s do not assume known crash costs. However, they are generally more computationally tasking. We remark that the choice of decision variables determines the project objective $gamma$, and is thus one of the most important aspects of #sans("RCPSP")s.  
 
 == Time--Cost Tradeoff Problems
 
-Classical #sans("RCPSP")s simply minimize makespan as their objective @Brucker1999. However, as the issue of project crashing glaringly points out, more modern applications often demand consideration of project _costs_ as well. _Resource--constrained time--cost tradeoff problems_ (#sans("RC-TCTP")s) are a class of #sans("RCPSP")s that reduce project costs while minimizing makespan. In general #sans("TCTP")s, regardless of resource--constraints, one often deals with both _direct costs_, such as labor and materials, and _indirect costs_, such as lease holds, penalties and bonuses, or organization @Hosseinpour2023 @Agarwal2013. 
+Classical #sans("RCPSP")s simply minimize makespan as their objective @Brucker1999. However, as the issue of project crashing glaringly points out, more modern applications often demand consideration of project _costs_ as well. _Resource--constrained time--cost tradeoff problems_ (#sans("RC-TCTP")s) are a class of #sans("RCPSP")s that reduce project costs while minimizing makespan. In general #sans("TCTP")s, regardless of resource--constraints, one often deals with both _direct costs_, such as labor and materials, and _indirect costs_, such as leaseholds, penalties and bonuses, or organizational overheads @Hosseinpour2023 @Agarwal2013. 
 
 #v(1em)
 #figure(
@@ -180,15 +180,15 @@ Classical #sans("RCPSP")s simply minimize makespan as their objective @Brucker19
 ) <fig:time-cost>
 #v(1em)
 
-The interplay between both cost types yields a nontrivial time--cost tradeoff (see @fig:time-cost). Hence, #sans("TCTP")s most naturally employs _multi-objective_ functions @Agarwal2013. However, scalarization into a single--objective is also common @orm2018, due to its computational friendliness and practical explainability. Finally, we comment that though #sans("TCTP")s consider only time and cost, some models extend this to other objectives. Most notable examples include quality (#sans("TCQTP")s), safety (#sans("TCQSTP")s), and energy--environment (#sans("TCQEETP")s) @Herroelen2001 @orm2018. 
+The interplay between both cost types yields a nontrivial time--cost tradeoff (see @fig:time-cost). Hence, #sans("TCTP")s most naturally employ _multi-objective_ functions @Agarwal2013. However, scalarization into a single--objective is also common @orm2018, due to its computational friendliness and practical explainability. Finally, we comment that though #sans("TCTP")s consider only time and cost, some models extend this to other objectives. Most notable examples include quality (#sans("TCQTP")s), safety (#sans("TCQSTP")s), and energy--environment (#sans("TCQEETP")s) @Herroelen2001 @orm2018. 
 
 == Optimization Methods
 
 Naive project scheduling traditionally uses critical path methods (CPM) to attain a solution in polynomial time @kelley1961. Unfortunately, it is well known that the resource--constraints of #sans("RCPSP")s make it an NP--hard problem, as shown in @blazewicz1983. Thus, the selection of optimization method is an essential part of project scheduling modelling. In this section, we will give a brief overview of the most popular methods for #sans("RCPSP")s that will be relevant to us later. 
 
-First, we consider some exact methods. As identified in @Artigues2026, mixed--integer linear programming (MILP) and constraint programming (CP) are the most prominent modern formulations of #sans("RCPSP")s. The former is most suitable for mode--based decisions, while the latter seems to be more flexible. _Branch and bound_ techniques (B&B) and its extensions have proven to be one of the most widely--used exact method, as it is very applicable for both MILPs and CPs. Common branching techniques are based on precedence trees, delay alternatives, schedule schemes, and more @Brucker1999. On the other hand, we also highlight the utility of boolean satisfiability (SAT) solvers for CP formulations, as CP/SAT approaches currently yield state--of--the--art results in many problems @Artigues2026. 
+First, we consider some exact methods. As identified in @Artigues2026, mixed--integer linear programming (MILP) and constraint programming (CP) are the most prominent modern formulations of #sans("RCPSP")s. The former is most suitable for mode--based decisions, while the latter seems to be more flexible. _Branch and bound_ techniques (B&B) and their extensions have proven to be one of the most widely--used exact methods, as it is very applicable for both MILPs and CPs. Common branching techniques are based on precedence trees, delay alternatives, schedule schemes, and more @Brucker1999. On the other hand, we also highlight the utility of boolean satisfiability (SAT) solvers for CP formulations, as CP/SAT approaches currently yield state--of--the--art results in many problems @Artigues2026. 
 
-Next, we study some non--exact methods. Early heuristic methods are often simple priority rules that, though easy to implement, are not very reliable @Brucker1999. Hence, non--exact methods have only been widely adopted in #sans("RCPSP")s relatively recently in the 1990s. Genetic algorithms (GA) are the most notable metaheuristic methods for #sans("RCPSP")s @Artigues2026, though particle swarm optimization (PSO) and ant colony optimization (ACO) are also popular @merkle2002 @zhang2005. Otherwise, machine learning has also been attempted #sans("RCPSP")s. 
+Next, we study some non--exact methods. Early heuristic methods are often simple priority rules that, though easy to implement, are not very reliable @Brucker1999. Hence, non--exact methods have only been widely adopted in #sans("RCPSP")s relatively recently in the 1990s. Genetic algorithms (GA) are the most notable metaheuristic methods for #sans("RCPSP")s @Artigues2026, though particle swarm optimization (PSO) and ant colony optimization (ACO) are also popular @merkle2002 @zhang2005. Otherwise, machine learning has also been attempted in #sans("RCPSP")s with various success, albeit with the computational expense of training @Artigues2026. 
 
 = Models
 
@@ -196,15 +196,15 @@ To motivate our #sans("RC-TCTP") formulations, we shall begin with a novel model
 
 == Resource--Based Model
 
-The development of #sans("TCTP") models that do not rely on the assumption of known crash costs is relatively recent. In particular, we focus on those with resource--based decisions (see Section 1.2), as it is most natural to rigorously estimate crash costs from resource allocation when costs are unknown. Binary selection of fixed indivisible crews is a popular approach, as applied in Tomczak and Jaśkowski @tomczak2024 for general project scheduling or Jaśkowski et al. @jaskowski2025 for project crashing specifically. This is often embellished with clever lag or reordering variables for more dynamic results despite being discrete. On the other hand, there are also continuous formulations. For instance, the landmark model by Naber & Kolisch @naber2014 was among the first to use continuous knobs for daily allocation of resources  . However, we find the works of Jeunet et al. @jeunet2020 to be most pertinent, as it specifically uses the number of workers and number of overtime as continuous decision variables. Our model shall take a similar approach in the use of overmanning and overtime decisions. However, while Jeunet et al. @jeunet2020 simulate inefficiencies using a productivity multiplier, we will employ the Cobb--Douglas production function. 
+The development of #sans("TCTP") models that do not rely on the assumption of known crash costs is relatively recent. In particular, we focus on those with resource--based decisions (see Section 1.2), as it is most natural to rigorously estimate crash costs from resource allocation when costs are unknown. Binary selection of fixed indivisible crews is a popular approach, as applied in Tomczak and Jaśkowski @tomczak2024 for general project scheduling or Jaśkowski et al. @jaskowski2025 for project crashing specifically. This is often embellished with clever lag or reordering variables for more dynamic results despite being discrete. On the other hand, there are also continuous formulations. For instance, the landmark model by Naber & Kolisch @naber2014 was among the first to use continuous knobs for daily allocation of resources  . However, we find the work of Jeunet et al. @jeunet2020 to be most pertinent, as it specifically uses the number of workers and number of overtime as continuous decision variables. Our model shall take a similar approach in the use of overmanning and overtime decisions. However, while Jeunet et al. @jeunet2020 simulate inefficiencies using a productivity multiplier, we will employ the Cobb--Douglas production function. 
 
-The Cobb--Douglas production function was first engineered by Cobb and Douglas in 1928 @cobb1928 to measure the large--scale affect of labor and capital on the volume of US manufactured goods. A modern formulation of the Cobb--Douglas function can be written as 
+The Cobb--Douglas production function was first engineered by Cobb and Douglas in 1928 @cobb1928 to measure the large--scale effect of labor and capital on the volume of US manufactured goods. A modern formulation of the Cobb--Douglas function can be written as 
 
 $ Y(L,K) = A L^alpha K^beta, $ <eq:cobb-douglas>
 
 #noindent where $Y$ is production output, $L$ is labor, $K$ is capital, and $A$ is the productivity factor. Here, $alpha$ and $beta$ are parameters called labor and capital elasticity respectively, such that the Cobb--Douglas function is homogeneous of degree $alpha + beta$, which determines the type of _returns to scale_ @jacques2018. Hence, we see that it is originally a macroeconomic model. However, it has also been utilized in modelling smaller scale outputs too such as efficiencies of individual banks @hasan2012, crop output of individual farms @kloss2019, or even treated patients of individual hospitals @reyessantias2020 with great success. 
 
-In fact, we spotlight the use of the Cobb--Douglas function in project crashing done by Shen et al. @shen2016, which we later discovered to be very similar in spirit to our model. Their model employed crew labor and project equipment as $L$ and $K$ variables, such that the construction rate follows the Cobb--Douglas formulation and the objective is their weighted average. Here, the workload $W$ of a task is fixed, such that the construction rate $Q$ required to attain a crashed duration $t$ is $Q = W\/t$. It is summarized in the following optimization problem:
+In fact, we spotlight the use of the Cobb--Douglas function in project crashing done by Shen et al. @shen2016, which we later discovered to be very similar in spirit to our model. Their model employed crew labor and project equipment as $L$ and $K$ variables, such that the construction rate follows the Cobb--Douglas formulation and the objective is their weighted sum. Here, the workload $W$ of a task is fixed, such that the construction rate $Q$ required to attain a crashed duration $t$ is $Q = W\/t$. It is summarized in the following optimization problem:
 
 $ 
 min_(L,K)  quad & c_1 L + c_2 K, \
@@ -212,7 +212,7 @@ min_(L,K)  quad & c_1 L + c_2 K, \
              quad & L, K >= 0.
 $
 
-#noindent Note that the above can be solved analytically with the method of Lagrangian Multipliers. Yet as we will see, though our model uses a similar application of the Cobb--Douglas production function, it notably differs in its objective, which presents new computational challenges. 
+#noindent Note that the above can be solved analytically with the method of _Lagrange multipliers_. Yet as we will see, though our model uses a similar application of the Cobb--Douglas production function, it notably differs in its objective, which presents new computational challenges. 
 
 === Model Formulation
 
@@ -318,7 +318,7 @@ $ z_(i,k)^((0)) := d_(i,k)^((0)) dot U_(i,k) dot 8 dot r_k = W_(i,k)^((0)) dot r
   #v(1em)
 ]
 
-We now turn to the question of _crashing_ the given baseline project schedule. This builds our main model First, notice that the duration formula of @eq:duration-original provides two natural ways to perform resource--based crashing: increasing the daily work hours and increasing the allocated units. In physical terms, this might correspond to _overtime_ and _overmanning_. A naive way of doing this would be to write 
+We now turn to the question of _crashing_ the given baseline project schedule. This builds our primary model. First, notice that the duration formula of @eq:duration-original provides two natural ways to perform resource--based crashing: increasing the daily work hours and increasing the allocated units. In physical terms, this might correspond to _overtime_ and _overmanning_. A naive way of doing this would be to write 
 
 $ d_(i,k) (x_(i,k), tau_(i,k)) = W_(i,k) / ((8 + tau_(i,k))(x_(i,k) U_(i,k))), $
 
@@ -438,7 +438,7 @@ $ sum_(i in I) x_(i,k) U_(i,k) dot bb(1) \{ s_i <= s_j < s_i + d_(i,k) \} <= U_k
   ) $ <eq:completed-constraint>
 ]
 
-#noindent Finally, activities $i in I$ that have only been partially finished, say up to a proprtion $p_i in [0,1]$, can only be crashed proportionally as follows:
+#noindent Finally, activities $i in I$ that have only been partially finished, say up to a proportion $p_i in [0,1]$, can only be crashed proportionally as follows:
 
 #align(center)[
   $ #grid(
@@ -476,7 +476,9 @@ $ <eq:single-objective-1>
 
 === Optimization Method 
 
-To solve the proposed #sans("RC-TCTP"), we first observe the highly non--linear nature of the model, exemplified by the use of power functions and binary indicators. This classifies the problem as _mixed--integer non--linear programming_ (MINLP). Thus, metaheuristic approaches are much more appealing than exact methods. In particular, we present the use of a Genetic Algorithm (GA) and its extension to multi--objectives like _Non--dominated Sorted Genetic Algorithm II_ (NSGA--II). A similar GA approach has been applied to for much simpler Cobb--Douglas objectives in @dinc2025, which showed its competetiveness with exact Lagrangian methods in this non--linear scenario. On the other hand, the landmark use of GA in the #sans("RCPSP") setting was done by Hartmann in 1998 @hartmann1998, where GA was used to determine the order of tasks while a _Serial Scheduling Scheme_ (SSS) builds the schedule out of said order. We shall employ an analogous approach for our case. 
+To solve the proposed #sans("RC-TCTP"), we first observe the highly non--linear nature of the model, exemplified by the use of power functions and binary indicators. This classifies the problem as _mixed--integer non--linear programming_ (MINLP). Thus, metaheuristic approaches are much more appealing than exact methods. In particular, we present the use of a Genetic Algorithm (GA) and its extension to multi--objectives like _Non--dominated Sorted Genetic Algorithm II_ (NSGA--II). A similar GA approach has been applied to for much simpler Cobb--Douglas objectives in @dinc2025, which showed its competitiveness with exact Lagrangian methods in this non--linear scenario. On the other hand, the landmark use of GA in the #sans("RCPSP") setting was done by Hartmann in 1998 @hartmann1998, where GA was used to determine the order of tasks while a _Serial Scheduling Scheme_ (SSS) builds the schedule out of said order. We shall employ an analogous approach for our case. 
+
+
 
 In particular, we apply a genetic algorithm to determine overmanning multipliers, overtime addends, and activity order priority. Mathematically, this is achieved with chromosomes consisting of $2|I|dot|K|+|I|$ genes, with genes $1$ to $|I|dot|K|$ representing the overmanning multipliers, genes $|I|dot|K|+1$ to $2|I|dot|K|+1$ representing overtime addends, and remaining genes representing activity order priority. We note that activity order priority is a continuous variable in $[0,1]$ for each activity. Furthermore, in practice, activity---resource pairs $(i,k)$ with $U_(i,k)=0$ are also omitted to simplify the chromosome. Uniform initialization between appropriate upper and lower bounds of each gene is used. Then, evolution operates under standard tournament selection, simulated binary crossover, and polynomial mutation. These strategies are implemented in `pymoo`, a Python framework used for optimization. 
 
@@ -710,7 +712,7 @@ Consequently, the objective function @eq:multi-objective-2 and @eq:single-object
 
 === Optimization Method 
 
-As aforementioned, unlike the original resource--based approach, the objective of this mode--based model is linearized. Along with the binary modes but continuous start times, this classifies the established #sans("MRCPSP") as a _Mixed--Integer Linear Program_ (MILP). Standard optimization methods for MILPs often involve branch and bound techniques. Here we present a much more effective alternative based on _constraint programming_ (CP). The historical landmark introduction of CP techinques in #sans("RCPSP")s was done by Baptsiste et al. in 2001 @baptiste2001. However, the _Constraint Programming Optimizer_ (CPO) by IBM ILOG was arguably more revolutionary, as its scheduling engine established an expressive interval--based modeling language for CPs for scheduling problems. In particular, it popularized the concept of _interval variables_ and _global constraints_ @laborie2009. Interval variables represent activities in our schedule, which have attributes like `start`, `end`, `size` (duration), and `presence` (execution). Global constraints are extremely specialized constraints that manages complex relations between arbitrary variables equipped with a specialized filtering algorithm. For our case, we shall reformulate our model in this expressive language, from which we can then employ CP algorithms. 
+As aforementioned, unlike the original resource--based approach, the objective of this mode--based model is linearized. Along with the binary modes but continuous start times, this classifies the established #sans("MRCPSP") as a _Mixed--Integer Linear Program_ (MILP). Standard optimization methods for MILPs often involve branch and bound techniques. Here we present a much more effective alternative based on _constraint programming_ (CP). The historical landmark introduction of CP techniques in #sans("RCPSP")s was done by Baptiste et al. in 2001 @baptiste2001. However, the _Constraint Programming Optimizer_ (CPO) by IBM ILOG was arguably more revolutionary, as its scheduling engine established an expressive interval--based modeling language for CPs for scheduling problems. In particular, it popularized the concept of _interval variables_ and _global constraints_ @laborie2009. Interval variables represent activities in our schedule, which have attributes like `start`, `end`, `size` (duration), and `presence` (execution). Global constraints are extremely specialized constraints that manage complex relations between arbitrary variables equipped with a specialized filtering algorithm. For our case, we shall reformulate our model in this expressive language, from which we can then employ CP algorithms. 
 
 To begin, we prepare our model with some search space pruning. First, observe that in the duration precomputation of @eq:duration-mode, some might violate the lower bound in @eq:duration-constraint-mode. Second, for a fixed $i in I, k in K$, if a mode $(m,n) in cal(M)$ is such that there exists another mode $(m',n') in cal(M)$ satisfying
 
@@ -726,7 +728,7 @@ $
 
 #noindent then the selection of the mode $(m,n)$ for the activity--resource pair will not yield the optimal solution, which we state without proof. Both methods allow us to prune the mode set $cal(M)$ during precomputation into a smaller subset $cal(M)'$. We shall use this pruned subset in implementation. 
 
-With this, we are ready to rewrite our mode--based model in terms of the CPO interval--based language. Adopting the interval variable notation of @laborie2009 and global constraint notation of @gccat2014, one can view the decision $xi_(i,k)^((m,n))$ as an interval variable with  `start`, `end`, `size`, and `presence` attributes. Then, we will make use of the `cumulative` and `exactly` global constraints for our resource and uniqueness constraints respectively (see @gccat2014 more information). This yields the constraint programming problem:
+With this, we are ready to rewrite our mode--based model in terms of the CPO interval--based language. Adopting the interval variable notation of @laborie2009 and global constraint notation of @gccat2014, one can view the decision $xi_(i,k)^((m,n))$ as an interval variable with  `start`, `end`, `size`, and `presence` attributes. Then, we will make use of the `cumulative` and `exactly` global constraints for our resource and uniqueness constraints respectively (see @gccat2014 for more information). This yields the constraint programming problem:
 
 #[
   #set text(size: 9pt)
@@ -810,21 +812,22 @@ With this, we are ready to rewrite our mode--based model in terms of the CPO int
 
 #noindent The formulation for the scalarized single--objective is the same. Regardless, this CP formulation shall be solved using a method developed by Google called _constraint programming satisfiability_ (CP-SAT). As commented in @Artigues2026, CP--SAT techniques can achieve state--of--the--art results in many #sans("RCPSP")s. This method is a hybrid of classical CP methods (like _constraint propagation_ and backtracking) and modern boolean satisfiability methods (like _conflict--driven clause learning_), bridged using a technique called _Lazy Clause Generation_ (LCG). For further explanation, we invite readers to @krupke2026. 
 
-However, CP--SAT strictly requires integer domains, whether in its parameters or decision variables. To satisfy this, we will discretize or scale some of variables. Time representative variables are discretized by rounding @eq:duration-mode into
+However, CP--SAT strictly requires integer domains, whether in its parameters or decision variables. To satisfy this, we will discretize certain variables by scaling and rounding. Variables get scaled before rounding to preserve floating point information. For instance, time representative variables are discretized by a scaling of $10^(ell_1)$ and an up--rounding of @eq:duration-mode, which yields
 
 $ 
   d_(i,k)^((m,n)) = ceil(
+    10^(ell_1) dot
     W_(i,k) / (8 U_(i,k)) dot
     (1 / x_(i,k)^((m)))^alpha dot
     (8 / (8 + tau_(i,k)^((n))))^beta
-  ),
+  ).
 $ 
 
-#noindent from which start $s_i$ and end $e_i$ times follow. Thus, all our decision variables are integers now. The up--rounding above is preferred to remain conservative (as longer durations are undesirable). Cost representative variables get scaled before rounding to maintain its floating point information. For instance, @eq:cost-mode can be implemented as
+#noindent The up--rounding above is preferred to remain conservative (as longer durations are undesirable). Meanwhile, the $10^(ell_1)$ scaling maintains $ell_1$ decimal points of accuracy, from which the duration variables in the project objective must simply be scaled back down by $10^(ell_1)$ to recover the original scale. Other time variables such as start times $s_i$, end $e_i$ times, project review day $T_0$, and project deadline $T_max$ are treated with the same scaling. Thus, all decision variables have become integers. Cost representative variables are similarly discretized, with @eq:cost-mode being implemented as 
 
 $ 
   z_(i,k)^((m,n)) &= floor( 
-    10^ell dot
+    10^(ell_2) dot
     W_(i,k) r_k dot 
     (x_(i,k)^((m)))^(1-alpha) dot 
     ((8 + tau_(i,k)^((n))) / 8)^(1-beta) dot 
@@ -832,11 +835,11 @@ $
   )
 $ 
 
-#noindent to maintain $ell$ decimal points of accuracy, from which the final reported cost must simply be scaled back down by $10^(-ell)$ to recover the original scale. Here, down--rounding is the conservative decision (as higher costs are undesirable). 
+#noindent Here, down--rounding is the conservative decision (as higher costs are undesirable). Analogously, we maintain $ell_2$ decimal points of accuracy, from which the total cost of the project objective must simply be scaled back down by $10^(ell_2)$ . 
 
 == Time--Based Model 
 
-Another simplification of the original #sans("RC-TCTP") formulation is a time--based approach. Recall that the first #sans("RCPSP") by @kelley1961 utilized duration as their decision variable, which required a known _crash slope_ (crash costs per unit of time crashed). Here, we propose a similar time--based model where costs are linear relative duration and the crash slope can be inferred from our Cobb--Douglas formulations. In fact, it is common to estimate cost functions by interpolation of the normal (minimum) and crashed (maximum) costs, as was done in @hu2024 and @kantianis2023 for quadratic and linear costs in #sans("RCPSP")s. In our case, these maximum and minimum sample points for interpolation will be obtained from the Cobb--Douglas production function. 
+Another simplification of the original #sans("RC-TCTP") formulation is a time--based approach. Recall that the first #sans("RCPSP") by @kelley1961 utilized duration as their decision variable, which required a known _crash slope_ (crash costs per unit of time crashed). Here, we propose a similar time--based model where costs are linearly related to reduced duration and the crash slope can be inferred from our Cobb--Douglas formulations. In fact, it is common to estimate cost functions by interpolation of the normal (minimum) and crashed (maximum) costs, as was done in @hu2024 and @kantianis2023 for quadratic and linear costs in #sans("RCPSP")s. In our case, these maximum and minimum sample points for interpolation will be obtained from the Cobb--Douglas production function. 
 
 === Model Formulation
 
@@ -869,12 +872,7 @@ $ <eq:duration-crashed>
 $ 
   z_i^(("crash")) 
   &= sum_(k in K) z_(i,k) (x_max, tau_max) \
-  &= sum_(k in K) (
-    W_(i,k) r_k dot 
-    (x_max)^(1-alpha) dot 
-    ((8 + tau_max) / 8)^(1-beta) dot 
-    (8 + r'_k / r_k tau_max) / (8 + tau_max)
-  ).
+  &= max(d_(i,k) (x_max, tau_max), gamma dot d_(i,k)^((0))) dot x_(i,k) U_(i,k) dot (8 r_k + tau_(i,k) r'_k).
 $ <eq:cost-crashed>
 
 #noindent With the extremal values of cost and duration obtained, we now estimate the crash slope by dividing the extra cost associated with the crash limit by the total time saved:
@@ -1012,7 +1010,7 @@ $ <eq:resource-slope>
 
 $ u_(i,k) (d_i) = V_(i,k) (d_i^((0)) - d_i) + u_(i,k)^((0)). $ <eq:resource-function>
 
-#noindent Though this assumption that resource requirements scale linearly with duration reduction might feel contradictive of the Cobb--Douglas relationship in @eq:duration-new, it is justified by the already committed assumption that this holds for costs. Regardless, we can rewrite the resource constraint of @eq:resource-constraint as 
+#noindent Though this assumption that resource requirements scale linearly with duration reduction might feel contradictory to the Cobb--Douglas relationship in @eq:duration-new, it is justified by the already committed assumption that this holds for costs. Regardless, we can rewrite the resource constraint of @eq:resource-constraint as 
 
 $ sum_(i in I) u_(i,k) (d_i) dot bb(1) \{ s_i <= s_j < e_i \} <= U_k^((max)), quad forall k in K, forall j in I. $ <eq:resource-linear>
 
@@ -1079,7 +1077,7 @@ In summary, the time--based objectives @eq:multi-objective-3 and @eq:single-obje
 
 === Optimization Method 
 
-The linear simplification in this #sans("RC-TCTP") formulation almost makes it a pure linear program. However, the resource constraint @eq:resource-linear remains a non--linear complication. The classical solution is to have either time--indexed or event--indexed binary variables so that the resource constraint can be written as knapsack inequalities at every time step or event start respectively @kone2011. In this paper, we shall take the MILP approach of the mode--based model: discretize the variables and perform constraint programming. This way, we discard the need for explicitly defined binary variables and hide the multiple knapsack inequalities into a simple `cumulative` global constraint as was done previously. 
+The linear simplification in this #sans("RC-TCTP") formulation almost makes it a pure linear program. However, the resource constraint @eq:resource-linear remains a non--linear complication. The classical solution is to have either time--indexed or event--indexed binary variables so that the resource constraint can be written as knapsack inequalities at every time step or event start respectively @kone2011. In this paper, we shall take the CP--SAT approach of the mode--based model: discretize the variables and perform constraint programming. This way, we discard the need for explicitly defined binary variables and hide the multiple knapsack inequalities into a simple `cumulative` global constraint as was done previously. 
 
 Discretization of variables is first performed using rounding and scaling tricks. Duration variables @eq:duration-baseline and @eq:duration-crashed will be rounded up to the nearest integer, while cost variables @eq:cost-baseline, @eq:cost-crashed will be scaled by some factor $10^(-ell)$ to maintain floating point accuracy and rounded down just as previously done. Next, we shall again borrow the interval variable notation of @laborie2009 and global constraint notation of @gccat2014. Then in this case, $d_i$ becomes the interval variable with `start`, `end`, and `size` attributes. Therefore, our linear model can be rewritten as the following constraint program: 
 

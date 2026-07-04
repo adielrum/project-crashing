@@ -285,7 +285,7 @@ def solve_milp_cobb_douglas(
                 self.f_baseline = f_baseline
                 self.D_base_i = D_base_i
         
-        out_json = os.path.join(os.path.dirname(__file__), f"../outputs/milp_cobb_{mode}.json")
+        out_json = os.path.join(os.path.dirname(__file__), f"../outputs/milp/milp_cobb_{mode}.json")
         save_solution_json(
             tasks, resources, precedence, FakeProblem(),
             np.concatenate([x_opt, tau_opt]), x_opt, tau_opt, D_ik_opt, D_i_opt, s_opt, f_opt,

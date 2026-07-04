@@ -64,7 +64,7 @@ def run_bonus_penalty(c_late=1000.0, c_early=500.0):
     if "total_crash_cost" in result:
         print("Total crash cost:", result["total_crash_cost"])
         
-    out_dir = os.path.join(base_dir, "../outputs")
+    out_dir = os.path.join(base_dir, "../outputs/base")
     os.makedirs(out_dir, exist_ok=True)
     write_json(os.path.join(out_dir, "base_bonus_penalty.json"), result)
     if "schedule" in result:

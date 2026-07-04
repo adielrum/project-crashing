@@ -3,7 +3,24 @@ import json
 import numpy as np
 import pandas as pd
 
-def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_capacity=None, alpha=0.7, beta=0.7):
+def preprocess(
+    tasks_df=None, precedence_df=None, resources_df=None, resource_capacity=None,
+    alpha=0.7, beta=0.7,
+    x_max=2.0, tau_max=4.0, overtime_mult=1.5, hours_per_day=8,
+):
+    """Preprocess CSV data into activity_data / resource_requirements / resource_capacity dicts.
+
+    Parameters
+    ----------
+    x_max, tau_max, overtime_mult, hours_per_day :
+        Must match the Cobb-Douglas model parameters used in Scenarios A & B so
+        that the linear crash-cost slopes derived here are comparable.
+
+    Returns
+    -------
+    (activity_data, resource_requirements, resource_capacity) — the three dicts.
+    They are also written to ``implementasi-hybrid/data/`` as JSON files.
+    """
     base_dir = os.path.dirname(os.path.abspath(__file__))
     data_dir = os.path.join(base_dir, "../implementasi-cobb")
     out_dir = os.path.join(base_dir, "data")
@@ -12,11 +29,6 @@ def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_ca
     tasks = tasks_df if tasks_df is not None else pd.read_csv(os.path.join(data_dir, "data_tasks.csv"))
     precedence = precedence_df if precedence_df is not None else pd.read_csv(os.path.join(data_dir, "data_precedence.csv"))
     resources = resources_df if resources_df is not None else pd.read_csv(os.path.join(data_dir, "data_assignments.csv"))
-    
-    x_max = 2.0      # maximum overmanning factor
-    tau_max = 4.0    # maximum daily overtime hours
-    overtime_mult = 1.5
-    hours_per_day = 8
     
     activity_data = {}
     if resource_capacity is None:
@@ -142,6 +154,8 @@ def preprocess(tasks_df=None, precedence_df=None, resources_df=None, resource_ca
         
     print(f"Preprocessing completed. Files saved to {out_dir}")
     print("  resource_requirements.json now uses resource NAMES as keys and includes resource slopes (V_ik).")
+
+    return activity_data, resource_requirements, resource_capacity
 
 if __name__ == "__main__":
     preprocess()
