@@ -34,7 +34,7 @@ COBB_DIR    = os.path.join(ROOT_DIR, "implementasi-cobb")        # cobb_model.py
 BASE_DIR    = os.path.join(ROOT_DIR, "implementasi-base")        # solver_base.py
 HYBRID_DIR  = os.path.join(ROOT_DIR, "implementasi-hybrid")      # preprocessing.py
 HYBRID_DATA = os.path.join(HYBRID_DIR, "data")                  # activity_data.json etc.
-OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs")
+OUTPUTS_DIR = os.path.join(ROOT_DIR, "outputs", "comparison")
 os.makedirs(OUTPUTS_DIR, exist_ok=True)
 
 sys.path.insert(0, COBB_DIR)
@@ -44,23 +44,25 @@ sys.path.insert(0, HYBRID_DIR)
 # ════════════════════════════════════════════════════════════════════════════
 # SETTINGS  ← edit here
 # ════════════════════════════════════════════════════════════════════════════
+PARALLEL_EXECUTION = True  # Run Scenarios A, B, C in parallel across CPU cores
+
 T_MAX          = 310      # target finish day
 CURRENT_DAY    = 0        # day crashing starts from
 C_LATE         = 5000.0   # USD penalty per late day
 C_EARLY        = 2000.0   # USD bonus per early day
 
 # Scenario A — GA
-GA_POP_SIZE    = 1000     # increase for better quality (e.g. 500)
-GA_MAX_GEN     = 5000     # increase for more convergence (e.g. 2000)
-GA_TOL         = 0.0001   # convergence tolerance (relative change in objective)
+GA_POP_SIZE    = 1000      # population size
+GA_MAX_GEN     = 500      # max generations
+GA_TOL         = 0.0005   # convergence tolerance (relative change in objective)
 GA_PERIOD      = 20       # number of consecutive generations under tol before stopping
 GA_SEED        = 42
 
 # Scenario B — MILP (CP-SAT discretized)
-MILP_TIME_LIMIT  = 120.0  # seconds
+MILP_TIME_LIMIT  = 300.0  # seconds
 
 # Scenario C — CP-SAT linear
-CPSAT_TIME_LIMIT = 120.0  # seconds
+CPSAT_TIME_LIMIT = 300.0  # seconds
 
 # Cobb-Douglas model parameters (used in A & B)
 ALPHA         = 0.7
@@ -237,6 +239,7 @@ def run_scenario_B():
         mode="bonus_penalty",
         c_late=C_LATE, c_early=C_EARLY,
         time_limit=MILP_TIME_LIMIT,
+        time_scale=100, dx=0.1, dtau=0.1,
     )
     elapsed = time.perf_counter() - t0
 
@@ -595,6 +598,23 @@ def _make_comparison_chart(results):
 # MAIN
 # ════════════════════════════════════════════════════════════════════════════
 
+def _run_worker(runner_func):
+    import io, sys
+    buf = io.StringIO()
+    old_out, old_err = sys.stdout, sys.stderr
+    try:
+        sys.stdout = buf
+        sys.stderr = buf
+        res = runner_func()
+        return res, buf.getvalue(), None
+    except Exception as ex:
+        import traceback
+        return None, buf.getvalue(), traceback.format_exc()
+    finally:
+        sys.stdout = old_out
+        sys.stderr = old_err
+
+
 def main():
     print()
     print("╔══════════════════════════════════════════════════════════════════════╗")
@@ -604,15 +624,30 @@ def main():
           f"c_late=${C_LATE:,.0f}  c_early=${C_EARLY:,.0f}        ║")
     print("╚══════════════════════════════════════════════════════════════════════╝")
 
-    results = []
-    for label, runner in [("A", run_scenario_A), ("B", run_scenario_B), ("C", run_scenario_C)]:
-        try:
-            results.append(runner())
-        except Exception as ex:
-            import traceback
-            print(f"\n  ✗  Scenario {label} failed: {ex}")
-            traceback.print_exc()
-            results.append(None)
+    scenarios = [("A", run_scenario_A), ("B", run_scenario_B), ("C", run_scenario_C)]
+    results = [None, None, None]
+
+    if PARALLEL_EXECUTION:
+        import concurrent.futures
+        print("\n  ⚡ [PARALLEL MODE] Launching Scenarios A, B, and C simultaneously across CPU cores...")
+        t_start = time.perf_counter()
+        with concurrent.futures.ProcessPoolExecutor(max_workers=3) as executor:
+            futures = [executor.submit(_run_worker, runner) for label, runner in scenarios]
+            for idx, (label, runner) in enumerate(scenarios):
+                res, out_text, err_text = futures[idx].result()
+                print(out_text)
+                if err_text:
+                    print(f"\n  ✗  Scenario {label} failed:\n{err_text}")
+                results[idx] = res
+        print(f"  ⚡ All 3 scenarios finished solving in {time.perf_counter() - t_start:.1f}s wall-clock time!")
+    else:
+        for idx, (label, runner) in enumerate(scenarios):
+            try:
+                results[idx] = runner()
+            except Exception as ex:
+                import traceback
+                print(f"\n  ✗  Scenario {label} failed: {ex}")
+                traceback.print_exc()
 
     print_comparison(results)
     print()
