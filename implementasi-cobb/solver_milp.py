@@ -51,11 +51,11 @@ def solve_milp_cobb_douglas(
             lag = prec_lag[idx]
             t = prec_type[idx]
             if t == "FS":
-                s_baseline[j] = max(s_baseline[j], s_baseline[i] + D_base_i[i] + lag)
+                s_baseline[i] = max(s_baseline[i], s_baseline[j] + D_base_i[j] + lag)
             elif t == "FF":
-                s_baseline[j] = max(s_baseline[j], s_baseline[i] + D_base_i[i] + lag - D_base_i[j])
+                s_baseline[i] = max(s_baseline[i], s_baseline[j] + D_base_i[j] + lag - D_base_i[i])
             elif t == "SS":
-                s_baseline[j] = max(s_baseline[j], s_baseline[i] + lag)
+                s_baseline[i] = max(s_baseline[i], s_baseline[j] + lag)
                 
     f_baseline = s_baseline + D_base_i
 
@@ -69,6 +69,16 @@ def solve_milp_cobb_douglas(
             elif p_i > 1e-6:
                 partial_tasks.add(idx)
                 partial_frac_by_idx[idx] = p_i
+    else:
+        # Infer locking from baseline schedule + current_day,
+        # matching cobb_model.py (Model A) behavior.
+        for i in range(N):
+            if f_baseline[i] <= current_day and D_base_i[i] > 1e-9:
+                completed_tasks.add(i)
+            elif s_baseline[i] < current_day < f_baseline[i] and D_base_i[i] > 1e-9:
+                partial_tasks.add(i)
+                elapsed = current_day - s_baseline[i]
+                partial_frac_by_idx[i] = elapsed / D_base_i[i]
     completed_pairs = set(p for p in range(P) if int(resources.loc[p, "i"]) in completed_tasks)
     locked_start_tasks = completed_tasks | partial_tasks
 
@@ -115,7 +125,11 @@ def solve_milp_cobb_douglas(
             d_cap = D_base_i[i]
         d_max_i = int(np.ceil(d_cap * time_scale)) if d_cap > 0 else 0
         d_i[i] = model.NewIntVar(0, max(d_max_i, 1), f"d_i_{i}")
-        model.Add(e[i] == s[i] + d_i[i])
+        if i in partial_tasks:
+            elapsed_int = int(round((current_day - s_baseline[i]) * time_scale))
+            model.Add(e[i] == s[i] + elapsed_int + d_i[i])
+        else:
+            model.Add(e[i] == s[i] + d_i[i])
         
         if i in completed_tasks:
             model.Add(s[i] == int(round(s_baseline[i] * time_scale)))
@@ -203,11 +217,15 @@ def solve_milp_cobb_douglas(
             total_labor_cost_scaled += cost_ik[p]
             model.Add(d_i[i] >= d_ik[p])
 
-            if have_capacity_data:
+            if have_capacity_data and i not in completed_tasks:
+                if i in partial_tasks:
+                    start_r = int(round(current_day * time_scale))
+                else:
+                    start_r = s[i]
                 end_r = model.NewIntVar(0, horizon, f"end_r_{p}")
-                model.Add(end_r == s[i] + d_ik[p])
+                model.Add(end_r == start_r + d_ik[p])
                 resource_intervals.setdefault(int(resources.loc[p, "resource_id"]), []).append(
-                    model.NewIntervalVar(s[i], d_ik[p], end_r, f"ivl_{p}")
+                    model.NewIntervalVar(start_r, d_ik[p], end_r, f"ivl_{p}")
                 )
                 resource_demands.setdefault(int(resources.loc[p, "resource_id"]), []).append(demand_ik[p])
 
@@ -295,14 +313,20 @@ def solve_milp_cobb_douglas(
         
         D_ik_opt = np.zeros(P)
         for p in range(P):
-            D_ik_opt[p] = solver.Value(d_ik[p]) / float(time_scale)
+            i_task = int(resources.loc[p, "i"])
+            val = solver.Value(d_ik[p]) / float(time_scale)
+            if i_task in partial_tasks:
+                elapsed = current_day - s_baseline[i_task]
+                D_ik_opt[p] = val + elapsed
+            else:
+                D_ik_opt[p] = val
         D_i_opt = np.zeros(N)
         s_opt = np.zeros(N)
         f_opt = np.zeros(N)
         for i in range(N):
-            D_i_opt[i] = solver.Value(d_i[i]) / float(time_scale)
             s_opt[i] = solver.Value(s[i]) / float(time_scale)
             f_opt[i] = solver.Value(e[i]) / float(time_scale)
+            D_i_opt[i] = f_opt[i] - s_opt[i]
             
         class FakeProblem:
             def __init__(self):

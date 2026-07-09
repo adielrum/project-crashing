@@ -283,18 +283,25 @@ class ResourceBasedScheduling(ElementwiseProblem):
 
         self.partial_tasks = set()
         partial_frac_by_idx = {}
-        for tid, p_i in completion_fraction.items():
-            if not (0.0 < p_i < 1.0):
-                raise ValueError(
-                    f"completion_fraction untuk task_id={tid} harus di (0,1), didapat {p_i}"
-                )
-            idx = task_id_to_idx.get(tid)
-            if idx is None:
-                raise ValueError(f"completion_fraction mereferensikan task_id={tid} yang tidak dikenal")
-            if idx in self.completed_tasks:
-                continue  # sudah selesai penuh menurut baseline; abaikan
-            self.partial_tasks.add(idx)
-            partial_frac_by_idx[idx] = p_i
+        if completion_fraction:
+            for tid, p_i in completion_fraction.items():
+                if not (0.0 < p_i < 1.0):
+                    raise ValueError(
+                        f"completion_fraction untuk task_id={tid} harus di (0,1), didapat {p_i}"
+                    )
+                idx = task_id_to_idx.get(tid)
+                if idx is None:
+                    raise ValueError(f"completion_fraction mereferensikan task_id={tid} yang tidak dikenal")
+                if idx in self.completed_tasks:
+                    continue  # sudah selesai penuh menurut baseline; abaikan
+                self.partial_tasks.add(idx)
+                partial_frac_by_idx[idx] = p_i
+        elif current_day > 0:
+            for i in range(N):
+                if s_bl[i] < current_day < f_bl[i] and D_base_i[i] > 1e-9:
+                    self.partial_tasks.add(i)
+                    elapsed = current_day - s_bl[i]
+                    partial_frac_by_idx[i] = elapsed / D_base_i[i]
         self.partial_completion = partial_frac_by_idx
 
         self.partial_pairs = set(
@@ -324,16 +331,30 @@ class ResourceBasedScheduling(ElementwiseProblem):
         xl_tau = np.full(P, tau_min)
         xu_tau = np.full(P, tau_max)
 
+        # ── Kapasitas resource (Eq. 11 / 27) ─────────────────────────────────
+        # Dipakai oleh SSS (_serial_schedule) untuk mencari slot waktu paling
+        # awal yang tidak melanggar kapasitas -- bukan lagi kendala G atau
+        # penalti biaya, karena s_i sekarang benar-benar variabel bebas yang
+        # bisa "digeser" SSS untuk menghindari bentrok resource.
+        self.resource_id_of_pair = resources["resource_id"].values.astype(int)
+        self.capacity_by_resource = {}
+        for rid in np.unique(self.resource_id_of_pair):
+            rows = resources.loc[resources["resource_id"] == rid, "U_max_k"]
+            self.capacity_by_resource[int(rid)] = float(rows.iloc[0])
+
         # Kapasitas resource membatasi x_ik juga: bila x_ik * U_ik saja sudah
         # melebihi U_max_k, tidak ada penjadwalan (penggeseran s_i) yang bisa
         # menolong -- jadi batasi x_ik supaya SATU pasangan sendirian tidak
         # pernah melebihi kapasitas resource-nya.
-        U_max_k_per_pair = resources["U_max_k"].values
-        with np.errstate(divide="ignore", invalid="ignore"):
-            x_cap_bound = np.where(self.U_ik > 1e-12, U_max_k_per_pair / self.U_ik, np.inf)
-        xu_x = np.minimum(xu_x, x_cap_bound)
-        xu_x = np.maximum(xu_x, xl_x)  # safety: never let xu drop below xl
+        for p in range(P):
+            rid = int(self.resource_id_of_pair[p])
+            cap = self.capacity_by_resource.get(rid, np.inf)
+            if np.isfinite(cap) and self.U_ik[p] > 1e-9:
+                max_feasible_x = cap / self.U_ik[p]
+                if max_feasible_x < xu_x[p]:
+                    xu_x[p] = max(max_feasible_x, xl_x[p])
 
+        # Task yang sudah selesai KUNCI agar tidak diubah GA
         for p in self.completed_pairs:
             xl_x[p]   = xu_x[p]   = 1.0   # x_ik dikunci ke 1 (tidak di-crash)
             xl_tau[p] = xu_tau[p] = 0.0   # tau_ik dikunci ke 0 (tidak lembur)
@@ -360,17 +381,6 @@ class ResourceBasedScheduling(ElementwiseProblem):
             self.pred_edges[i].append((j, lag, ptype))
             self.successors[j].append(i)
             self.in_degree[i] += 1
-
-        # ── Kapasitas resource (Eq. 11 / 27) ─────────────────────────────────
-        # Dipakai oleh SSS (_serial_schedule) untuk mencari slot waktu paling
-        # awal yang tidak melanggar kapasitas -- bukan lagi kendala G atau
-        # penalti biaya, karena s_i sekarang benar-benar variabel bebas yang
-        # bisa "digeser" SSS untuk menghindari bentrok resource.
-        self.resource_id_of_pair = resources["resource_id"].values.astype(int)
-        self.capacity_by_resource = {}
-        for rid in np.unique(self.resource_id_of_pair):
-            rows = resources.loc[resources["resource_id"] == rid, "U_max_k"]
-            self.capacity_by_resource[int(rid)] = float(rows.iloc[0])
 
         # Diagnostic murni: satu-satunya kasus yang TIDAK bisa diselesaikan
         # SSS (menggeser start tidak menolong) adalah bila kebutuhan minimum
@@ -565,12 +575,20 @@ class ResourceBasedScheduling(ElementwiseProblem):
 
         def _place(i, s_i):
             s[i] = s_i
-            f[i] = s_i + D_i[i]
+            if i in self.partial_tasks:
+                elapsed = self.current_day - self.s_baseline[i]
+                f[i] = s_i + elapsed + D_i[i]
+            else:
+                f[i] = s_i + D_i[i]
             scheduled[i] = True
             for p in self.K_i.get(i, []):
                 rid = int(self.resource_id_of_pair[p])
+                if i in self.partial_tasks:
+                    start_r = float(self.current_day)
+                else:
+                    start_r = s_i
                 resource_intervals.setdefault(rid, []).append(
-                    (s_i, s_i + D_ik[p], x_ik[p] * self.U_ik[p])
+                    (start_r, start_r + D_ik[p], x_ik[p] * self.U_ik[p])
                 )
             for succ in self.successors[i]:
                 remaining_indeg[succ] -= 1
@@ -664,6 +682,64 @@ class ResourceBasedScheduling(ElementwiseProblem):
             G = np.append(G, labor_cost - self.budget_limit)
             
         out["G"] = G
+
+    def extract_solution(self, x_vec):
+        return extract_solution(self, x_vec)
+
+
+def extract_solution(problem, x_vec):
+    """
+    Extract and post-process a solution vector from the optimizer.
+
+    Returns a dict with keys: x_ik, tau_ik, D_ik, D_i, s, f,
+    makespan, labor_cost, penalty, bonus, total_cost.
+    """
+    P, N = problem.P, problem.N
+    x_ik = x_vec[0:P].copy()
+    tau_ik = x_vec[P:2 * P].copy()
+    priority = x_vec[2 * P:2 * P + N]
+
+    for p in problem.completed_pairs:
+        x_ik[p] = 1.0
+        tau_ik[p] = 0.0
+
+    D_ik, D_i = problem.compute_durations(x_vec)
+    for i in problem.completed_tasks:
+        D_i[i] = problem.D_base_i[i]
+
+    s, f = problem._serial_schedule(D_i, D_ik, x_ik, priority)
+    for i in range(N):
+        D_i[i] = f[i] - s[i]
+    for p in range(P):
+        i_task = int(problem.res_task_idx[p])
+        if i_task in problem.partial_tasks:
+            elapsed = problem.current_day - problem.s_baseline[i_task]
+            D_ik[p] = D_ik[p] + elapsed
+            
+    makespan = float(np.max(f))
+
+    labor_cost = float(np.sum(
+        D_ik * x_ik * problem.U_ik
+        * (problem.hours_per_day * problem.r_k + tau_ik * problem.r_k_ot)
+    ))
+
+    penalty = problem.c_late * max(0.0, makespan - problem.T_max)
+    bonus = problem.c_early * max(0.0, problem.T_max - makespan)
+    total_cost = labor_cost + penalty - bonus
+
+    return {
+        "x_ik": x_ik,
+        "tau_ik": tau_ik,
+        "D_ik": D_ik,
+        "D_i": D_i,
+        "s": s,
+        "f": f,
+        "makespan": makespan,
+        "labor_cost": labor_cost,
+        "penalty": penalty,
+        "bonus": bonus,
+        "total_cost": total_cost,
+    }
 
 
 def generate_gantt_comparison_plot(tasks, s_bl, f_bl, s_opt, f_opt, current_day, output_path):
@@ -1065,11 +1141,13 @@ def solve(problem, pop_size=200, seed=42, verbose=True,
     if callback is None:
         callback = MyCallback()
         
-    pool = ThreadPool(processes=4)
+    n_threads = int(os.environ.get("PYMOO_THREADS", 4))
+    pool = ThreadPool(processes=n_threads) if n_threads > 1 else None
+    starmap_arg = pool.starmap if pool is not None else None
 
     res = minimize(
         problem, algorithm, termination,
-        seed=seed, callback=callback, verbose=verbose, starmap=pool.starmap,
+        seed=seed, callback=callback, verbose=verbose, starmap=starmap_arg,
     )
 
     if is_moo:

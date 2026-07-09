@@ -230,29 +230,11 @@ def build_reference_no_crash_schedule(
         for p in predecessors[a]:
             model.Add(s[a] >= e[p])
 
-    # Resource constraints for the no-crash reference schedule.
-    # resource_requirements values may be plain numbers (legacy) or dicts with
-    # {"base": u_ik^(0), "slope": V_ik}. In the baseline there is no crashing so
-    # we always use the base demand only, scaled by DEMAND_SCALE.
-    for r, cap in resource_capacity.items():
-        ivs = []
-        demands = []
-        for a in activities:
-            req_entry = resource_requirements.get(a, {}).get(r, 0)
-            if isinstance(req_entry, dict):
-                base_dem = req_entry.get("base", 0.0)
-            else:
-                base_dem = float(req_entry)
-            dem_int = int(round(base_dem * DEMAND_SCALE))
-            if dem_int > 0:
-                ivs.append(intervals[a])
-                demands.append(dem_int)
-        model.AddCumulative(ivs, demands, int(round(cap * DEMAND_SCALE)))
-
-    Cmax = model.NewIntVar(0, horizon, "Cmax_ref")
-    for a in activities:
-        model.Add(Cmax >= e[a])
-    model.Minimize(Cmax)
+    # To guarantee 100% parity with Model A and Model B's baseline schedule
+    # (which use unconstrained CPM earliest start for historical state inference),
+    # we do NOT enforce cumulative resource constraints here, and we minimize
+    # the sum of start times so every activity is scheduled at its earliest possible start time.
+    model.Minimize(sum(s[a] for a in activities))
 
     solver = cp_model.CpSolver()
     solver.parameters.max_time_in_seconds = time_limit
@@ -430,6 +412,10 @@ def build_model_and_solve(
         ivs = []
         demands = []
         for a in activities:
+            st_status = states[a]["status"]
+            if st_status == "completed":
+                continue  # Past completed tasks do not consume future resource capacity
+
             req_entry = resource_requirements.get(a, {}).get(r, 0)
             if isinstance(req_entry, dict):
                 base_dem = req_entry.get("base", 0.0)
@@ -442,7 +428,15 @@ def build_model_and_solve(
             if base_int == 0 and slope == 0.0:
                 continue  # activity does not use this resource
 
-            crashable = (NT[a] > MT[a]) and (states[a]["status"] != "completed")
+            # For in-progress tasks, only their remaining work after current_day consumes future capacity
+            if st_status == "in_progress":
+                rem_dur = model.NewIntVar(1, horizon, f"rem_dur[{a}][{r}]")
+                model.Add(rem_dur == e[a] - cfg.current_day)
+                active_interval = model.NewIntervalVar(cfg.current_day, rem_dur, e[a], f"rem_iv[{a}][{r}]")
+            else:
+                active_interval = intervals[a]
+
+            crashable = (NT[a] > MT[a])
             slope_int = int(round(slope * DEMAND_SCALE))
 
             if slope_int > 0 and crashable:
@@ -452,12 +446,12 @@ def build_model_and_solve(
                 max_dem_int = base_int + slope_int * max_crash
                 dem_var = model.NewIntVar(base_int, max_dem_int, f"dem[{a}][{r}]")
                 model.Add(dem_var == base_int + slope_int * c[a])
-                ivs.append(intervals[a])
+                ivs.append(active_interval)
                 demands.append(dem_var)
             else:
                 # Static demand (no crashing benefit or slope is negligible)
                 if base_int > 0:
-                    ivs.append(intervals[a])
+                    ivs.append(active_interval)
                     demands.append(base_int)
 
         model.AddCumulative(ivs, demands, int(round(cap * DEMAND_SCALE)))

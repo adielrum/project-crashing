@@ -46,10 +46,11 @@ sys.path.insert(0, HYBRID_DIR)
 # ════════════════════════════════════════════════════════════════════════════
 # SETTINGS  ← edit here
 # ════════════════════════════════════════════════════════════════════════════
-PARALLEL_EXECUTION = True  # Run Scenarios A, B, C in parallel across CPU cores
+PARALLEL_EXECUTION = False # Run Scenarios sequentially (A runs 10 seeds in parallel)
+USE_CACHED_RESULTS = True  # Load deterministic B and C from cache to save time
 
-T_MAX          = 310      # target finish day
-CURRENT_DAY    = 0        # day crashing starts from
+T_MAX          = 250      # contractual deadline (baseline=344, physical floor≈210)
+CURRENT_DAY    = 20       # project review day T_0 (tasks finishing ≤20 are locked)
 C_LATE         = 5000.0   # USD penalty per late day
 C_EARLY        = 2000.0   # USD bonus per early day
 
@@ -58,6 +59,7 @@ GA_POP_SIZE    = 1000      # population size
 GA_MAX_GEN     = 500      # max generations
 GA_TOL         = 0.0005   # convergence tolerance (relative change in objective)
 GA_PERIOD      = 20       # number of consecutive generations under tol before stopping
+GA_SEEDS       = [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]  # 10 independent runs
 GA_SEED        = 42
 
 # Scenario B — MILP (CP-SAT discretized)
@@ -129,22 +131,15 @@ def _compute_cpm_baseline(act: dict, preds: dict) -> float:
 # SCENARIO A  —  Original CSV + GA (Cobb-Douglas, pymoo)
 # ════════════════════════════════════════════════════════════════════════════
 
-def run_scenario_A():
-    _section("SCENARIO A  |  Original CSV  +  GA  (Cobb-Douglas)")
-
-    from cobb_model import (
-        load_data, data_path, ResourceBasedScheduling, solve,
-        save_solution_json, generate_gantt_comparison_plot,
-        generate_interactive_gantt_html,
-    )
-    import numpy as np
-
+def _run_scenario_A_single_seed(seed):
+    import time, os
+    os.environ["PYMOO_THREADS"] = "1"
+    from cobb_model import load_data, data_path, ResourceBasedScheduling, solve
     tasks, precedence, resources, N, K_i = load_data(
         path_tasks=data_path("data_tasks.csv"),
         path_precedence=data_path("data_precedence.csv"),
         path_assignments=data_path("data_assignments.csv"),
     )
-
     problem = ResourceBasedScheduling(
         tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
         alpha=ALPHA, beta=BETA, x_min=X_MIN, tau_min=TAU_MIN, tau_max=TAU_MAX,
@@ -152,35 +147,118 @@ def run_scenario_A():
         overtime_mult=OVERTIME_MULT, hours_per_day=HOURS_PER_DAY,
         mode="bonus_penalty", c_late=C_LATE, c_early=C_EARLY,
     )
-
-    baseline_makespan = float(np.max(problem.f_baseline))
-    print(f"  Baseline makespan : {baseline_makespan:.1f} days")
-    print(f"  Active tasks      : {N - len(problem.completed_tasks)}")
-    print(f"  GA params         : pop={GA_POP_SIZE}  max_gen={GA_MAX_GEN}  "
-          f"tol={GA_TOL}  period={GA_PERIOD}  seed={GA_SEED}")
-    print("  Solving …")
-
     t0 = time.perf_counter()
-    solution = solve(
+    sol = solve(
         problem,
         pop_size=GA_POP_SIZE,
-        seed=GA_SEED,
-        verbose=True,
+        seed=seed,
+        verbose=False,
         max_gen=GA_MAX_GEN,
         tol=GA_TOL,
         period=GA_PERIOD,
     )
     elapsed = time.perf_counter() - t0
+    if sol is None:
+        return None
+    sol.pop("pymoo_result", None)
+    sol.pop("callback", None)
+    sol["solve_time_s"] = elapsed
+    sol["seed"] = seed
+    return sol
 
-    if solution is None:
-        print("  ✗  GA found no feasible solution.")
+
+def run_scenario_A():
+    _section(f"SCENARIO A  |  Original CSV  +  GA  (Cobb-Douglas, {len(GA_SEEDS)}-Run Avg)")
+
+    import concurrent.futures
+    import numpy as np
+    from cobb_model import (
+        load_data, data_path, ResourceBasedScheduling,
+        save_solution_json, generate_gantt_comparison_plot,
+        generate_interactive_gantt_html,
+    )
+
+    tasks, precedence, resources, N, K_i = load_data(
+        path_tasks=data_path("data_tasks.csv"),
+        path_precedence=data_path("data_precedence.csv"),
+        path_assignments=data_path("data_assignments.csv"),
+    )
+    problem = ResourceBasedScheduling(
+        tasks=tasks, precedence=precedence, resources=resources, N=N, K_i=K_i,
+        alpha=ALPHA, beta=BETA, x_min=X_MIN, tau_min=TAU_MIN, tau_max=TAU_MAX,
+        D_min_ratio=D_MIN_RATIO, T_max=T_MAX, current_day=CURRENT_DAY,
+        overtime_mult=OVERTIME_MULT, hours_per_day=HOURS_PER_DAY,
+        mode="bonus_penalty", c_late=C_LATE, c_early=C_EARLY,
+    )
+    baseline_makespan = float(np.max(problem.f_baseline))
+    print(f"  Baseline makespan : {baseline_makespan:.1f} days")
+    print(f"  Active tasks      : {N - len(problem.completed_tasks)}")
+    print(f"  GA params         : pop={GA_POP_SIZE}  max_gen={GA_MAX_GEN}  "
+          f"tol={GA_TOL}  period={GA_PERIOD}  seeds={GA_SEEDS}")
+    print(f"  ⚡ Running {len(GA_SEEDS)} independent GA runs in parallel across CPU cores …\n")
+
+    runs = []
+    t0_all = time.perf_counter()
+    with concurrent.futures.ProcessPoolExecutor(max_workers=min(10, os.cpu_count() or 4)) as executor:
+        future_to_seed = {executor.submit(_run_scenario_A_single_seed, s): s for s in GA_SEEDS}
+        for future in concurrent.futures.as_completed(future_to_seed):
+            s = future_to_seed[future]
+            try:
+                sol = future.result()
+                if sol is not None:
+                    runs.append(sol)
+                    print(f"  ✓  [Seed {s:2d}] makespan={sol['makespan']:.2f}d  "
+                          f"cost=${sol['total_cost']:,.2f}  time={sol['solve_time_s']:.1f}s")
+                else:
+                    print(f"  ✗  [Seed {s:2d}] no solution found")
+            except Exception as ex:
+                print(f"  ✗  [Seed {s:2d}] raised exception: {ex}")
+
+    if not runs:
+        print("  ✗  All GA runs failed.")
         return None
 
-    makespan   = solution["makespan"]
-    labor_cost = solution["labor_cost"]
-    total_cost = solution["total_cost"]
-    penalty    = solution["penalty"]
-    bonus      = solution["bonus"]
+    runs.sort(key=lambda x: x["seed"])
+
+    makespans    = [r["makespan"] for r in runs]
+    labor_costs  = [r["labor_cost"] for r in runs]
+    penalties    = [r["penalty"] for r in runs]
+    bonuses      = [r["bonus"] for r in runs]
+    total_costs  = [r["total_cost"] for r in runs]
+    solve_times  = [r["solve_time_s"] for r in runs]
+    rescue_margins = [baseline_makespan - m for m in makespans]
+    target_margins = [T_MAX - m for m in makespans]
+
+    mean_makespan   = float(np.mean(makespans))
+    std_makespan    = float(np.std(makespans))
+    mean_labor_cost = float(np.mean(labor_costs))
+    std_labor_cost  = float(np.std(labor_costs))
+    mean_penalty    = float(np.mean(penalties))
+    std_penalty     = float(np.std(penalties))
+    mean_bonus      = float(np.mean(bonuses))
+    std_bonus       = float(np.std(bonuses))
+    mean_total_cost = float(np.mean(total_costs))
+    std_total_cost  = float(np.std(total_costs))
+    mean_solve_time = float(np.mean(solve_times))
+    std_solve_time  = float(np.std(solve_times))
+    mean_rescue_margin = float(np.mean(rescue_margins))
+    std_rescue_margin  = float(np.std(rescue_margins))
+    mean_target_margin = float(np.mean(target_margins))
+    std_target_margin  = float(np.std(target_margins))
+
+    print("\n  ── Scenario A (10-Run Average Summary) ──")
+    print(f"  Makespan        : {mean_makespan:.2f} ± {std_makespan:.2f} d")
+    print(f"  Rescue margin   : {mean_rescue_margin:.2f} ± {std_rescue_margin:.2f} d")
+    print(f"  Target margin   : {mean_target_margin:.2f} ± {std_target_margin:.2f} d")
+    print(f"  Labor cost      : ${mean_labor_cost:,.2f} ± ${std_labor_cost:,.2f}")
+    print(f"  Penalty         : ${mean_penalty:,.2f} ± ${std_penalty:,.2f}")
+    print(f"  Bonus           : ${mean_bonus:,.2f} ± ${std_bonus:,.2f}")
+    print(f"  Total cost      : ${mean_total_cost:,.2f} ± ${std_total_cost:,.2f}")
+    print(f"  Solve time (avg): {mean_solve_time:.1f} ± {std_solve_time:.1f} s")
+
+    best_idx = int(np.argmin([abs(tc - mean_total_cost) for tc in total_costs]))
+    rep_run = runs[best_idx]
+    print(f"  Representative schedule for Gantt: Seed {rep_run['seed']} (cost=${rep_run['total_cost']:,.2f}, makespan={rep_run['makespan']:.2f}d)")
 
     out_json  = os.path.join(OUTPUTS_DIR, "A_ga_cobb.json")
     out_gantt = os.path.join(OUTPUTS_DIR, "A_ga_cobb_gantt.png")
@@ -188,16 +266,16 @@ def run_scenario_A():
 
     save_solution_json(
         tasks, resources, precedence, problem,
-        solution["pymoo_result"].X,
-        solution["x_ik"], solution["tau_ik"],
-        solution["D_ik"], solution["D_i"],
-        solution["s"], solution["f"],
-        CURRENT_DAY, T_MAX, makespan, labor_cost, total_cost, out_json,
+        None,
+        rep_run["x_ik"], rep_run["tau_ik"],
+        rep_run["D_ik"], rep_run["D_i"],
+        rep_run["s"], rep_run["f"],
+        CURRENT_DAY, T_MAX, mean_makespan, mean_labor_cost, mean_total_cost, out_json,
     )
     try:
         generate_gantt_comparison_plot(
             tasks, problem.s_baseline, problem.f_baseline,
-            solution["s"], solution["f"], CURRENT_DAY, out_gantt,
+            rep_run["s"], rep_run["f"], CURRENT_DAY, out_gantt,
         )
     except Exception as ex:
         print(f"  [warn] Gantt PNG: {ex}")
@@ -205,31 +283,47 @@ def run_scenario_A():
         generate_interactive_gantt_html(
             tasks, resources,
             problem.s_baseline, problem.f_baseline,
-            solution["s"], solution["f"],
-            solution["x_ik"], solution["tau_ik"],
-            solution["D_ik"], solution["D_i"],
+            rep_run["s"], rep_run["f"],
+            rep_run["x_ik"], rep_run["tau_ik"],
+            rep_run["D_ik"], rep_run["D_i"],
             CURRENT_DAY, T_MAX, out_html,
         )
     except Exception as ex:
         print(f"  [warn] Gantt HTML: {ex}")
 
-    print(f"  ✓  Makespan        : {makespan:.2f} days  (saved {baseline_makespan - makespan:.1f} d)")
-    print(f"     Labor cost      : ${labor_cost:,.2f}")
-    print(f"     Penalty         : ${penalty:,.2f}  |  Bonus : ${bonus:,.2f}")
-    print(f"     Total cost      : ${total_cost:,.2f}")
-    print(f"     Solve time      : {elapsed:.1f} s")
-
     return {
         "scenario": "A",
-        "method": "GA (Cobb-Douglas)",
+        "method": f"GA (Cobb-Douglas, {len(runs)}-Run Avg)",
         "baseline_makespan": baseline_makespan,
-        "makespan": makespan,
-        "makespan_reduction": round(baseline_makespan - makespan, 2),
-        "labor_cost": labor_cost,
-        "penalty": penalty,
-        "bonus": bonus,
-        "total_cost": total_cost,
-        "solve_time_s": round(elapsed, 2),
+        "makespan": mean_makespan,
+        "makespan_std": std_makespan,
+        "makespan_reduction": round(mean_rescue_margin, 2),
+        "makespan_reduction_std": std_rescue_margin,
+        "rescue_margin": mean_rescue_margin,
+        "rescue_margin_std": std_rescue_margin,
+        "target_margin": mean_target_margin,
+        "target_margin_std": std_target_margin,
+        "labor_cost": mean_labor_cost,
+        "labor_cost_std": std_labor_cost,
+        "penalty": mean_penalty,
+        "penalty_std": std_penalty,
+        "bonus": mean_bonus,
+        "bonus_std": std_bonus,
+        "total_cost": mean_total_cost,
+        "total_cost_std": std_total_cost,
+        "solve_time_s": round(mean_solve_time, 2),
+        "solve_time_std": std_solve_time,
+        "all_runs": [
+            {
+                "seed": r["seed"],
+                "makespan": r["makespan"],
+                "labor_cost": r["labor_cost"],
+                "penalty": r["penalty"],
+                "bonus": r["bonus"],
+                "total_cost": r["total_cost"],
+                "solve_time_s": r["solve_time_s"]
+            } for r in runs
+        ],
         "output_json": out_json,
         "output_gantt_png": out_gantt,
         "output_gantt_html": out_html,
@@ -242,6 +336,18 @@ def run_scenario_A():
 
 def run_scenario_B():
     _section("SCENARIO B  |  Discretized CSV  +  MILP  (CP-SAT integer)")
+
+    summary_path = os.path.join(OUTPUTS_DIR, "comparison_summary.json")
+    if USE_CACHED_RESULTS and os.path.exists(summary_path):
+        try:
+            with open(summary_path, "r") as fh:
+                data = json.load(fh)
+                for r in data.get("results", []):
+                    if r.get("scenario") == "B":
+                        print("  ✓ [Cache] Loaded deterministic Scenario B results from comparison_summary.json")
+                        return r
+        except Exception as ex:
+            print(f"  [warn] Cache read failed: {ex}")
 
     from cobb_model import load_data, data_path, ResourceBasedScheduling
     from solver_milp import solve_milp_cobb_douglas
@@ -357,6 +463,18 @@ def run_scenario_B():
 
 def run_scenario_C():
     _section("SCENARIO C  |  Preprocessed JSON  +  CP-SAT  (linear crash cost)")
+
+    summary_path = os.path.join(OUTPUTS_DIR, "comparison_summary.json")
+    if USE_CACHED_RESULTS and os.path.exists(summary_path):
+        try:
+            with open(summary_path, "r") as fh:
+                data = json.load(fh)
+                for r in data.get("results", []):
+                    if r.get("scenario") == "C":
+                        print("  ✓ [Cache] Loaded deterministic Scenario C results from comparison_summary.json")
+                        return r
+        except Exception as ex:
+            print(f"  [warn] Cache read failed: {ex}")
 
     from solver_base import (
         read_json, build_predecessors,
@@ -536,7 +654,18 @@ def print_comparison(results):
                 line += f"  {tag:<{val_w}}"
             else:
                 val = r.get(key, "N/A")
-                cell = fmt.format(val) if fmt and isinstance(val, (int, float)) else str(val)
+                std_val = r.get(f"{key}_std")
+                if std_val is not None and isinstance(std_val, (int, float)) and std_val > 0.0001:
+                    val_str = fmt.format(val) if fmt and isinstance(val, (int, float)) else str(val)
+                    if fmt and fmt.startswith("$"):
+                        std_str = f"${std_val:,.2f}"
+                    elif fmt and "f" in fmt:
+                        std_str = f"{std_val:.2f}"
+                    else:
+                        std_str = f"{std_val:.2f}"
+                    cell = f"{val_str} ± {std_str}"
+                else:
+                    cell = fmt.format(val) if fmt and isinstance(val, (int, float)) else str(val)
                 line += f"  {cell:<{val_w}}"
         print(line)
 
@@ -596,8 +725,9 @@ def _make_comparison_chart(results):
         ax = axes[0]
         bl  = [r["baseline_makespan"] for r in results]
         opt = [r["makespan"] for r in results]
+        opt_err = [r.get("makespan_std", 0.0) for r in results]
         bars1 = ax.bar(x - w/2, bl,  w, label="Baseline",  color="#94a3b8")
-        bars2 = ax.bar(x + w/2, opt, w, label="Optimized", color=colors[:n])
+        bars2 = ax.bar(x + w/2, opt, w, yerr=opt_err, capsize=4, label="Optimized", color=colors[:n])
         ax.axhline(T_MAX, color="red", linestyle="--", linewidth=1.2, label=f"T_MAX={T_MAX}")
         ax.set_xticks(x); ax.set_xticklabels(scenarios)
         ax.set_title("Makespan (days)"); ax.legend(fontsize=8)
@@ -635,7 +765,8 @@ def _make_comparison_chart(results):
         # ── Right: total cost ──
         ax = axes[2]
         totals = [r["total_cost"] for r in results]
-        bars = ax.bar(x, totals, color=colors[:n], edgecolor="black", linewidth=0.5)
+        total_err = [r.get("total_cost_std", 0.0) for r in results]
+        bars = ax.bar(x, totals, yerr=total_err, capsize=4, color=colors[:n], edgecolor="black", linewidth=0.5)
         ax.set_xticks(x); ax.set_xticklabels(scenarios)
         ax.set_title("Total Cost (USD)")
         ax.set_ylabel("USD")
