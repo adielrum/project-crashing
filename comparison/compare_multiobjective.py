@@ -56,7 +56,7 @@ os.makedirs(OUTPUTS_DIR, exist_ok=True)
 # SETTINGS  ← edit here
 # ════════════════════════════════════════════════════════════════════════════
 PARALLEL_EXECUTION = True   # Run Scenarios A, B, C in parallel across CPU cores
-USE_CACHED_RESULTS = True        # Load existing exact JSON results from disk (skips solver runs)
+USE_CACHED_RESULTS = False       # Set False to re-run Scenario A with pop=1000, gen=500
 USE_CACHED_DETERMINISTIC = True  # Load exact saved JSON results for deterministic B & C to save 16m solve time
 
 # ε-constraint grid for Scenarios B & C (days, inclusive)
@@ -65,8 +65,8 @@ T_MAX_TARGET  = 344         # baseline CPM makespan (upper bound: no crashing)
 EPSILON_STEP  = 4           # step size in days (approx. 34 solver calls per scenario)
 
 # Scenario A — NSGA-II hyperparameters
-GA_POP_SIZE   = 500
-GA_MAX_GEN    = 300
+GA_POP_SIZE   = 1000
+GA_MAX_GEN    = 500
 GA_TOL        = 0.0005      # convergence: relative change in hypervolume indicator
 GA_PERIOD     = 20          # consecutive gens under tol before stopping
 GA_SEEDS      = [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]  # 10 independent runs for statistical rigor

@@ -1,0 +1,3284 @@
+{
+  "success": true,
+  "solver": "pymoo_GA",
+  "current_day": 20,
+  "target_day": 243,
+  "baseline_makespan": 344.0,
+  "makespan": 243.0,
+  "makespan_reduction": 101.0,
+  "labor_cost": 530539.888,
+  "total_project_cost": 530539.888,
+  "crash_plan": {
+    "Detail, fabricate and deliver steel": [
+      {
+        "resource": "Steel Erection Contractor Management",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 4598.5,
+        "duration_saved": 16.75
+      },
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 4057.5,
+        "duration_saved": 16.75
+      }
+    ],
+    "Rough grade site (cut and fill)": [
+      {
+        "resource": "Site Grading Contractor",
+        "x": 1.9,
+        "tau": 0.0,
+        "cost_delta": 1370.88,
+        "duration_saved": 1.08
+      }
+    ],
+    "Install exterior fire line and building fire riser": [
+      {
+        "resource": "Plumbing Contractor",
+        "x": 1.0,
+        "tau": 3.8,
+        "cost_delta": 1585.61,
+        "duration_saved": 2.38
+      }
+    ],
+    "Perform final site grading": [
+      {
+        "resource": "Site Grading Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 1299.2,
+        "duration_saved": 3.84
+      }
+    ],
+    "Erect building batter boards and layout building": [
+      {
+        "resource": "G.C. Survey Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 603.2,
+        "duration_saved": 1.92
+      }
+    ],
+    "Excavate foundations": [
+      {
+        "resource": "Site Grading Contractor",
+        "x": 2.0,
+        "tau": 1.6,
+        "cost_delta": 1145.76,
+        "duration_saved": 4.58
+      }
+    ],
+    "Form column piers and spread foundations": [
+      {
+        "resource": "G.C. Rough Carpenter Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 413.6,
+        "duration_saved": 1.53
+      }
+    ],
+    "Set reinforcing and anchor bolts": [
+      {
+        "resource": "G.C. Rough Carpenter Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 413.6,
+        "duration_saved": 1.53
+      }
+    ],
+    "Pour column piers and foundations": [
+      {
+        "resource": "G.C. Concrete Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 556.8,
+        "duration_saved": 1.92
+      }
+    ],
+    "Cure piers and foundations": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.9,
+        "tau": 3.3,
+        "cost_delta": 91.09,
+        "duration_saved": 3.49
+      }
+    ],
+    "Strip column piers and foundation forms": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 2.6,
+        "cost_delta": 365.28,
+        "duration_saved": 1.48
+      }
+    ],
+    "Erect steel columns, beams and joist - 1st and 2nd floors": [
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 1.0,
+        "tau": 3.8,
+        "cost_delta": 1829.55,
+        "duration_saved": 2.38
+      }
+    ],
+    "Erect steel columns, beams and joist - 3rd floor and roof": [
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 1.0,
+        "tau": 3.8,
+        "cost_delta": 1829.55,
+        "duration_saved": 2.38
+      }
+    ],
+    "Install miscellaneous iron and bracing - 3rd floor and roof": [
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 1.3,
+        "tau": 3.7,
+        "cost_delta": 1821.58,
+        "duration_saved": 3.62
+      }
+    ],
+    "Install stairs and miscellaneous iron railing": [
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 2.0,
+        "tau": 2.7,
+        "cost_delta": 1545.86,
+        "duration_saved": 4.97
+      }
+    ],
+    "Touch-up paint on steel": [
+      {
+        "resource": "Steel Erection Contractor",
+        "x": 2.0,
+        "tau": 2.7,
+        "cost_delta": 310.98,
+        "duration_saved": 2.48
+      }
+    ],
+    "Form 2nd floor including all floor openings": [
+      {
+        "resource": "G.C. Rough Carpenter Crew",
+        "x": 2.0,
+        "tau": 0.3,
+        "cost_delta": 588.5,
+        "duration_saved": 2.0
+      },
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 0.3,
+        "cost_delta": 64.2,
+        "duration_saved": 2.0
+      }
+    ],
+    "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 91.87,
+        "duration_saved": 1.92
+      },
+      {
+        "resource": "Plumbing Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 199.06,
+        "duration_saved": 1.92
+      },
+      {
+        "resource": "Electric Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 199.06,
+        "duration_saved": 1.92
+      },
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 68.51,
+        "duration_saved": 1.55
+      },
+      {
+        "resource": "Plumbing Contractor",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 148.43,
+        "duration_saved": 1.55
+      },
+      {
+        "resource": "Electric Contractor",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 148.43,
+        "duration_saved": 1.55
+      }
+    ],
+    "Pour 2nd floor slab": [
+      {
+        "resource": "G.C. Concrete Crew",
+        "x": 2.0,
+        "tau": 0.5,
+        "cost_delta": 558.0,
+        "duration_saved": 1.64
+      }
+    ],
+    "Cure 2nd floor slab": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.9,
+        "tau": 3.3,
+        "cost_delta": 91.09,
+        "duration_saved": 3.49
+      }
+    ],
+    "Form 3rd floor including all floor openings": [
+      {
+        "resource": "G.C. Rough Carpenter Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 255.2,
+        "duration_saved": 1.92
+      },
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 55.68,
+        "duration_saved": 1.92
+      }
+    ],
+    "Pour 3rd floor slab": [
+      {
+        "resource": "G.C. Concrete Crew",
+        "x": 2.0,
+        "tau": 0.5,
+        "cost_delta": 558.0,
+        "duration_saved": 1.64
+      }
+    ],
+    "Cure 3rd floor slab": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.9,
+        "tau": 3.3,
+        "cost_delta": 91.09,
+        "duration_saved": 3.49
+      }
+    ],
+    "Form roof slab including all floor openings": [
+      {
+        "resource": "G.C. Rough Carpenter Crew",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 380.6,
+        "duration_saved": 1.55
+      },
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.7,
+        "tau": 0.0,
+        "cost_delta": 41.52,
+        "duration_saved": 1.55
+      }
+    ],
+    "Pour roof slab": [
+      {
+        "resource": "G.C. Concrete Crew",
+        "x": 2.0,
+        "tau": 0.3,
+        "cost_delta": 513.6,
+        "duration_saved": 1.6
+      }
+    ],
+    "Cure roof slab": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 1.9,
+        "tau": 3.3,
+        "cost_delta": 91.09,
+        "duration_saved": 3.49
+      }
+    ],
+    "Strip forms from roof slab": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 2.5,
+        "cost_delta": 239.1,
+        "duration_saved": 0.98
+      }
+    ],
+    "Install exterior sheathing and metal studs": [
+      {
+        "resource": "Drywall Contractor",
+        "x": 2.0,
+        "tau": 2.2,
+        "cost_delta": 2802.7,
+        "duration_saved": 7.21
+      }
+    ],
+    "Install exterior masonry work": [
+      {
+        "resource": "Masonry Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 2543.2,
+        "duration_saved": 9.61
+      }
+    ],
+    "Install window wall aluminum and glass": [
+      {
+        "resource": "Window Contractor",
+        "x": 1.8,
+        "tau": 0.0,
+        "cost_delta": 1930.4,
+        "duration_saved": 8.43
+      }
+    ],
+    "Install interior stud walls and drywall": [
+      {
+        "resource": "Drywall Contractor",
+        "x": 1.1,
+        "tau": 0.0,
+        "cost_delta": 291.6,
+        "duration_saved": 1.61
+      }
+    ],
+    "Paint walls and woodwork": [
+      {
+        "resource": "Painting Contractor",
+        "x": 1.2,
+        "tau": 0.0,
+        "cost_delta": 407.52,
+        "duration_saved": 2.39
+      }
+    ],
+    "Install building carpet": [
+      {
+        "resource": "Carpet Contractor",
+        "x": 1.4,
+        "tau": 0.0,
+        "cost_delta": 768.24,
+        "duration_saved": 4.19
+      }
+    ],
+    "Rough-in electrical in drywall walls": [
+      {
+        "resource": "Electric Contractor",
+        "x": 1.0,
+        "tau": 3.6,
+        "cost_delta": 3030.82,
+        "duration_saved": 4.58
+      }
+    ],
+    "Make electrical terminations for HVAC equipment": [
+      {
+        "resource": "Electric Contractor",
+        "x": 1.0,
+        "tau": 1.4,
+        "cost_delta": 135.13,
+        "duration_saved": 0.21
+      }
+    ],
+    "Remove debris from building and do final clean-up": [
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 2.7,
+        "cost_delta": 493.23,
+        "duration_saved": 1.99
+      }
+    ],
+    "Complete elevator inspection and certification": [
+      {
+        "resource": "Elevator Contractor",
+        "x": 1.0,
+        "tau": 2.7,
+        "cost_delta": 441.8,
+        "duration_saved": 0.55
+      }
+    ],
+    "Perform architect's inspection": [
+      {
+        "resource": "G.C. Superintendent",
+        "x": 1.6,
+        "tau": 0.0,
+        "cost_delta": 51.68,
+        "duration_saved": 0.28
+      },
+      {
+        "resource": "G.C. Project Management",
+        "x": 1.6,
+        "tau": 0.0,
+        "cost_delta": 57.76,
+        "duration_saved": 0.28
+      }
+    ],
+    "Perform local building agency inspection": [
+      {
+        "resource": "G.C. Project Management",
+        "x": 2.0,
+        "tau": 2.0,
+        "cost_delta": 173.85,
+        "duration_saved": 0.47
+      },
+      {
+        "resource": "G.C. Superintendent",
+        "x": 2.0,
+        "tau": 2.0,
+        "cost_delta": 155.55,
+        "duration_saved": 0.47
+      }
+    ],
+    "Perform Fire Marshal's inspection": [
+      {
+        "resource": "G.C. Superintendent",
+        "x": 2.0,
+        "tau": 0.3,
+        "cost_delta": 90.95,
+        "duration_saved": 0.4
+      },
+      {
+        "resource": "G.C. Project Management",
+        "x": 2.0,
+        "tau": 0.3,
+        "cost_delta": 101.65,
+        "duration_saved": 0.4
+      }
+    ],
+    "Complete punch list items from all inspections": [
+      {
+        "resource": "G.C. Superintendent",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 173.54,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "G.C. Labor Crew",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 61.25,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "Plumbing Contractor",
+        "x": 2.0,
+        "tau": 0.1,
+        "cost_delta": 140.09,
+        "duration_saved": 3.89
+      },
+      {
+        "resource": "Electric Contractor",
+        "x": 2.0,
+        "tau": 0.1,
+        "cost_delta": 140.09,
+        "duration_saved": 3.89
+      },
+      {
+        "resource": "HVAC Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 132.7,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "Drywall Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 102.08,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "Carpet Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 91.87,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "Paving Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 122.5,
+        "duration_saved": 3.84
+      },
+      {
+        "resource": "Painting Contractor",
+        "x": 2.0,
+        "tau": 0.0,
+        "cost_delta": 91.87,
+        "duration_saved": 3.84
+      }
+    ],
+    "Obtain certificate of occupancy": [
+      {
+        "resource": "G.C. Project Management",
+        "x": 1.0,
+        "tau": 0.3,
+        "cost_delta": 45.36,
+        "duration_saved": 0.05
+      }
+    ]
+  },
+  "schedule": [
+    {
+      "task_id": 2,
+      "task_name": "Receive notice to proceed and sign contract",
+      "baseline_start": 0.0,
+      "baseline_finish": 3.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 0.0,
+      "optimized_finish": 3.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. General Management",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 3,
+      "task_name": "Submit bond and insurance documents",
+      "baseline_start": 3.0,
+      "baseline_finish": 5.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. General Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 4,
+      "task_name": "Prepare and submit project schedule",
+      "baseline_start": 5.0,
+      "baseline_finish": 7.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 5.0,
+      "optimized_finish": 7.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Scheduler",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 5,
+      "task_name": "Prepare and submit schedule of values",
+      "baseline_start": 7.0,
+      "baseline_finish": 9.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 7.0,
+      "optimized_finish": 9.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. General Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 6,
+      "task_name": "Obtain building permits",
+      "baseline_start": 3.0,
+      "baseline_finish": 7.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 7.0,
+      "optimized_duration": 4.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Procurement",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 7,
+      "task_name": "Submit preliminary shop drawings",
+      "baseline_start": 7.0,
+      "baseline_finish": 17.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 7.0,
+      "optimized_finish": 17.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Procurement",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 8,
+      "task_name": "Submit monthly requests for payment",
+      "baseline_start": 3.0,
+      "baseline_finish": 4.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 4.0,
+      "optimized_duration": 1.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 10,
+      "task_name": "Submit shop drawings and order long lead items - steel",
+      "baseline_start": 4.0,
+      "baseline_finish": 14.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 4.0,
+      "optimized_finish": 14.0,
+      "optimized_duration": 10.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 11,
+      "task_name": "Submit shop drawings and order long lead items - roofing",
+      "baseline_start": 17.0,
+      "baseline_finish": 27.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 12,
+      "task_name": "Submit shop drawings and order long lead items - elevator",
+      "baseline_start": 17.0,
+      "baseline_finish": 27.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 13,
+      "task_name": "Submit shop drawings and order long lead items - plumbing",
+      "baseline_start": 17.0,
+      "baseline_finish": 27.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 14,
+      "task_name": "Submit shop drawings and order long lead items - electric",
+      "baseline_start": 17.0,
+      "baseline_finish": 27.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 15,
+      "task_name": "Submit shop drawings and order long lead items - HVAC",
+      "baseline_start": 17.0,
+      "baseline_finish": 27.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 17.0,
+      "optimized_finish": 27.0,
+      "optimized_duration": 10.0,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor Management",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 16,
+      "task_name": "Detail, fabricate and deliver steel",
+      "baseline_start": 14.0,
+      "baseline_finish": 74.0,
+      "baseline_duration": 60.0,
+      "optimized_start": 14.0,
+      "optimized_finish": 57.25,
+      "optimized_duration": 43.25,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor Management",
+          "baseline_duration": 60.0,
+          "optimized_duration": 43.25,
+          "x": 1.7,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 60.0,
+          "optimized_duration": 43.25,
+          "x": 1.7,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 18,
+      "task_name": "Install temporary power",
+      "baseline_start": 3.0,
+      "baseline_finish": 5.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 19,
+      "task_name": "Install temporary water service",
+      "baseline_start": 3.0,
+      "baseline_finish": 5.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 3.0,
+      "optimized_finish": 5.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 20,
+      "task_name": "Set up site office",
+      "baseline_start": 5.0,
+      "baseline_finish": 8.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 5.0,
+      "optimized_finish": 8.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 21,
+      "task_name": "Set line and grade benchmarks",
+      "baseline_start": 8.0,
+      "baseline_finish": 11.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 8.0,
+      "optimized_finish": 11.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "G.C. Survey Crew",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 22,
+      "task_name": "Prepare site - lay down yard and temporary fencing",
+      "baseline_start": 11.0,
+      "baseline_finish": 13.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 11.0,
+      "optimized_finish": 13.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 24,
+      "task_name": "Clear and grub site",
+      "baseline_start": 13.0,
+      "baseline_finish": 16.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 13.0,
+      "optimized_finish": 16.0,
+      "optimized_duration": 3.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 25,
+      "task_name": "Stone site access and temporary parking area",
+      "baseline_start": 16.0,
+      "baseline_finish": 18.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 16.0,
+      "optimized_finish": 18.0,
+      "optimized_duration": 2.0,
+      "status": "completed",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 26,
+      "task_name": "Rough grade site (cut and fill)",
+      "baseline_start": 18.0,
+      "baseline_finish": 23.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 18.0,
+      "optimized_finish": 21.92,
+      "optimized_duration": 3.9200000000000017,
+      "status": "in_progress",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.92,
+          "x": 1.9,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 27,
+      "task_name": "Install storm drainage",
+      "baseline_start": 23.0,
+      "baseline_finish": 33.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 21.92,
+      "optimized_finish": 31.92,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 28,
+      "task_name": "Install exterior fire line and building fire riser",
+      "baseline_start": 23.0,
+      "baseline_finish": 33.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 21.92,
+      "optimized_finish": 29.54,
+      "optimized_duration": 7.619999999999997,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 7.62,
+          "x": 1.0,
+          "tau": 3.8
+        }
+      ]
+    },
+    {
+      "task_id": 29,
+      "task_name": "Perform final site grading",
+      "baseline_start": 33.0,
+      "baseline_finish": 43.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 29.54,
+      "optimized_finish": 35.7,
+      "optimized_duration": 6.160000000000004,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 30,
+      "task_name": "Erect building batter boards and layout building",
+      "baseline_start": 43.0,
+      "baseline_finish": 48.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 35.7,
+      "optimized_finish": 38.78,
+      "optimized_duration": 3.0799999999999983,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Survey Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 32,
+      "task_name": "Excavate foundations",
+      "baseline_start": 48.0,
+      "baseline_finish": 58.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 38.78,
+      "optimized_finish": 44.2,
+      "optimized_duration": 5.420000000000002,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 5.42,
+          "x": 2.0,
+          "tau": 1.6
+        }
+      ]
+    },
+    {
+      "task_id": 33,
+      "task_name": "Excavate elevator pit",
+      "baseline_start": 48.0,
+      "baseline_finish": 50.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 38.78,
+      "optimized_finish": 40.78,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Site Grading Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 34,
+      "task_name": "Form column piers and spread foundations",
+      "baseline_start": 58.0,
+      "baseline_finish": 62.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 44.2,
+      "optimized_finish": 46.67,
+      "optimized_duration": 2.469999999999999,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.47,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 35,
+      "task_name": "Rough-in electric and plumbing in elevator",
+      "baseline_start": 50.0,
+      "baseline_finish": 54.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 40.79,
+      "optimized_finish": 44.79,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 36,
+      "task_name": "Form elevator pit walls",
+      "baseline_start": 54.0,
+      "baseline_finish": 58.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 44.79,
+      "optimized_finish": 48.79,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 37,
+      "task_name": "Set reinforcing and anchor bolts",
+      "baseline_start": 62.0,
+      "baseline_finish": 66.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 46.67,
+      "optimized_finish": 49.14,
+      "optimized_duration": 2.469999999999999,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.47,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 38,
+      "task_name": "Pour column piers and foundations",
+      "baseline_start": 66.0,
+      "baseline_finish": 71.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 49.14,
+      "optimized_finish": 52.22,
+      "optimized_duration": 3.0799999999999983,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "task_name": "Pour concrete elevator walls",
+      "baseline_start": 58.0,
+      "baseline_finish": 59.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 48.79,
+      "optimized_finish": 49.79,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 40,
+      "task_name": "Cure elevator wall concrete",
+      "baseline_start": 59.0,
+      "baseline_finish": 66.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 49.79,
+      "optimized_finish": 56.79,
+      "optimized_duration": 7.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 41,
+      "task_name": "Cure piers and foundations",
+      "baseline_start": 71.0,
+      "baseline_finish": 78.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 52.22,
+      "optimized_finish": 55.73,
+      "optimized_duration": 3.509999999999998,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 3.51,
+          "x": 1.9,
+          "tau": 3.3
+        }
+      ]
+    },
+    {
+      "task_id": 42,
+      "task_name": "Strip wall forms",
+      "baseline_start": 66.0,
+      "baseline_finish": 67.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 56.79,
+      "optimized_finish": 57.79,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 43,
+      "task_name": "Strip column piers and foundation forms",
+      "baseline_start": 78.0,
+      "baseline_finish": 81.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 55.73,
+      "optimized_finish": 57.25,
+      "optimized_duration": 1.5200000000000031,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 3.0,
+          "optimized_duration": 1.52,
+          "x": 2.0,
+          "tau": 2.6
+        }
+      ]
+    },
+    {
+      "task_id": 44,
+      "task_name": "Install pneumatic tube in elevator pit",
+      "baseline_start": 67.0,
+      "baseline_finish": 70.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 57.79,
+      "optimized_finish": 60.79,
+      "optimized_duration": 3.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor",
+          "baseline_duration": 3.0,
+          "optimized_duration": 3.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 45,
+      "task_name": "Prepare and pour concrete floor in elevator pit",
+      "baseline_start": 70.0,
+      "baseline_finish": 71.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 60.79,
+      "optimized_finish": 61.79,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 47,
+      "task_name": "Erect steel columns, beams and joist - 1st and 2nd floors",
+      "baseline_start": 81.0,
+      "baseline_finish": 91.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 57.25,
+      "optimized_finish": 64.87,
+      "optimized_duration": 7.6200000000000045,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 7.62,
+          "x": 1.0,
+          "tau": 3.8
+        }
+      ]
+    },
+    {
+      "task_id": 48,
+      "task_name": "Erect steel columns, beams and joist - 3rd floor and roof",
+      "baseline_start": 91.0,
+      "baseline_finish": 101.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 64.87,
+      "optimized_finish": 72.49,
+      "optimized_duration": 7.61999999999999,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 7.62,
+          "x": 1.0,
+          "tau": 3.8
+        }
+      ]
+    },
+    {
+      "task_id": 49,
+      "task_name": "Install miscellaneous iron and bracing - 1st and 2nd floors",
+      "baseline_start": 91.0,
+      "baseline_finish": 101.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 86.42,
+      "optimized_finish": 96.42,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 50,
+      "task_name": "Install miscellaneous iron and bracing - 3rd floor and roof",
+      "baseline_start": 101.0,
+      "baseline_finish": 111.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 72.49,
+      "optimized_finish": 78.87,
+      "optimized_duration": 6.38000000000001,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.38,
+          "x": 1.3,
+          "tau": 3.7
+        }
+      ]
+    },
+    {
+      "task_id": 51,
+      "task_name": "Install stairs and miscellaneous iron railing",
+      "baseline_start": 111.0,
+      "baseline_finish": 121.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 78.87,
+      "optimized_finish": 83.9,
+      "optimized_duration": 5.030000000000001,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 5.03,
+          "x": 2.0,
+          "tau": 2.7
+        }
+      ]
+    },
+    {
+      "task_id": 52,
+      "task_name": "Touch-up paint on steel",
+      "baseline_start": 121.0,
+      "baseline_finish": 126.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 83.9,
+      "optimized_finish": 86.42,
+      "optimized_duration": 2.519999999999996,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Steel Erection Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 2.52,
+          "x": 2.0,
+          "tau": 2.7
+        }
+      ]
+    },
+    {
+      "task_id": 54,
+      "task_name": "Form 2nd floor including all floor openings",
+      "baseline_start": 126.0,
+      "baseline_finish": 131.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 86.42,
+      "optimized_finish": 89.42,
+      "optimized_duration": 3.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.0,
+          "x": 2.0,
+          "tau": 0.3
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.0,
+          "x": 2.0,
+          "tau": 0.3
+        }
+      ]
+    },
+    {
+      "task_id": 55,
+      "task_name": "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",
+      "baseline_start": 91.0,
+      "baseline_finish": 96.0,
+      "baseline_duration": 4.999999999999999,
+      "optimized_start": 64.87,
+      "optimized_finish": 69.87,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 56,
+      "task_name": "Pour 2nd floor slab",
+      "baseline_start": 131.0,
+      "baseline_finish": 135.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 89.42,
+      "optimized_finish": 91.78,
+      "optimized_duration": 2.3599999999999994,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.36,
+          "x": 2.0,
+          "tau": 0.5
+        }
+      ]
+    },
+    {
+      "task_id": 57,
+      "task_name": "Cure 2nd floor slab",
+      "baseline_start": 135.0,
+      "baseline_finish": 142.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 91.78,
+      "optimized_finish": 95.29,
+      "optimized_duration": 3.510000000000005,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 3.51,
+          "x": 1.9,
+          "tau": 3.3
+        }
+      ]
+    },
+    {
+      "task_id": 58,
+      "task_name": "Strip forms from 2nd floor slab",
+      "baseline_start": 142.0,
+      "baseline_finish": 144.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 95.29,
+      "optimized_finish": 97.29,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 59,
+      "task_name": "Form 3rd floor including all floor openings",
+      "baseline_start": 142.0,
+      "baseline_finish": 147.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 95.29,
+      "optimized_finish": 98.37,
+      "optimized_duration": 3.0799999999999983,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 60,
+      "task_name": "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",
+      "baseline_start": 142.0,
+      "baseline_finish": 147.0,
+      "baseline_duration": 4.999999999999999,
+      "optimized_start": 95.29,
+      "optimized_finish": 98.37,
+      "optimized_duration": 3.0799999999999983,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.08,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 61,
+      "task_name": "Pour 3rd floor slab",
+      "baseline_start": 147.0,
+      "baseline_finish": 151.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 98.37,
+      "optimized_finish": 100.73,
+      "optimized_duration": 2.3599999999999994,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.36,
+          "x": 2.0,
+          "tau": 0.5
+        }
+      ]
+    },
+    {
+      "task_id": 62,
+      "task_name": "Cure 3rd floor slab",
+      "baseline_start": 151.0,
+      "baseline_finish": 158.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 100.73,
+      "optimized_finish": 104.24,
+      "optimized_duration": 3.509999999999991,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 3.51,
+          "x": 1.9,
+          "tau": 3.3
+        }
+      ]
+    },
+    {
+      "task_id": 63,
+      "task_name": "Strip forms from 3rd floor slab",
+      "baseline_start": 158.0,
+      "baseline_finish": 160.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 104.24,
+      "optimized_finish": 106.24,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 64,
+      "task_name": "Form roof slab including all floor openings",
+      "baseline_start": 158.0,
+      "baseline_finish": 163.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 104.24,
+      "optimized_finish": 107.69,
+      "optimized_duration": 3.450000000000003,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.45,
+          "x": 1.7,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 5.0,
+          "optimized_duration": 3.45,
+          "x": 1.7,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 65,
+      "task_name": "Install rebar and in-floor utilities (including mechanical, electrical, plumbing)",
+      "baseline_start": 158.0,
+      "baseline_finish": 163.0,
+      "baseline_duration": 4.999999999999999,
+      "optimized_start": 104.24,
+      "optimized_finish": 107.69,
+      "optimized_duration": 3.450000000000003,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.45,
+          "x": 1.7,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.45,
+          "x": 1.7,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 4.999999999999999,
+          "optimized_duration": 3.45,
+          "x": 1.7,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 66,
+      "task_name": "Pour roof slab",
+      "baseline_start": 163.0,
+      "baseline_finish": 167.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 107.69,
+      "optimized_finish": 110.09,
+      "optimized_duration": 2.4000000000000057,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.4,
+          "x": 2.0,
+          "tau": 0.3
+        }
+      ]
+    },
+    {
+      "task_id": 67,
+      "task_name": "Cure roof slab",
+      "baseline_start": 167.0,
+      "baseline_finish": 174.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 110.09,
+      "optimized_finish": 113.6,
+      "optimized_duration": 3.509999999999991,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 3.51,
+          "x": 1.9,
+          "tau": 3.3
+        }
+      ]
+    },
+    {
+      "task_id": 68,
+      "task_name": "Strip forms from roof slab",
+      "baseline_start": 174.0,
+      "baseline_finish": 176.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 113.6,
+      "optimized_finish": 114.62,
+      "optimized_duration": 1.0200000000000102,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 2.0,
+          "optimized_duration": 1.02,
+          "x": 2.0,
+          "tau": 2.5
+        }
+      ]
+    },
+    {
+      "task_id": 69,
+      "task_name": "Form 1st floor",
+      "baseline_start": 144.0,
+      "baseline_finish": 148.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 97.29,
+      "optimized_finish": 101.29,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Rough Carpenter Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 70,
+      "task_name": "Install electrical underground",
+      "baseline_start": 144.0,
+      "baseline_finish": 149.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 98.37,
+      "optimized_finish": 103.37,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 71,
+      "task_name": "Install plumbing underground",
+      "baseline_start": 144.0,
+      "baseline_finish": 149.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 98.37,
+      "optimized_finish": 103.37,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 72,
+      "task_name": "Install rebar and in-floor utilities",
+      "baseline_start": 144.0,
+      "baseline_finish": 148.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 103.37,
+      "optimized_finish": 107.37,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 73,
+      "task_name": "Pour 1st floor slab",
+      "baseline_start": 149.0,
+      "baseline_finish": 153.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 107.37,
+      "optimized_finish": 111.37,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Concrete Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 74,
+      "task_name": "Cure 1st floor slab",
+      "baseline_start": 153.0,
+      "baseline_finish": 160.0,
+      "baseline_duration": 6.999999999999999,
+      "optimized_start": 111.37,
+      "optimized_finish": 118.37,
+      "optimized_duration": 7.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 6.999999999999999,
+          "optimized_duration": 7.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 75,
+      "task_name": "Strip forms from 1st floor slab",
+      "baseline_start": 160.0,
+      "baseline_finish": 162.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 118.37,
+      "optimized_finish": 120.37,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 77,
+      "task_name": "Install exterior sheathing and metal studs",
+      "baseline_start": 176.0,
+      "baseline_finish": 191.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 114.62,
+      "optimized_finish": 122.41,
+      "optimized_duration": 7.789999999999992,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Drywall Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 7.79,
+          "x": 2.0,
+          "tau": 2.2
+        }
+      ]
+    },
+    {
+      "task_id": 79,
+      "task_name": "Rough-in plumbing at toilets and masonry walls",
+      "baseline_start": 162.0,
+      "baseline_finish": 182.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 120.37,
+      "optimized_finish": 140.37,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 80,
+      "task_name": "Lay masonry at core, mechanical, and toilets",
+      "baseline_start": 111.0,
+      "baseline_finish": 131.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 96.42,
+      "optimized_finish": 116.42,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Masonry Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 81,
+      "task_name": "Install exterior masonry work",
+      "baseline_start": 191.0,
+      "baseline_finish": 216.0,
+      "baseline_duration": 25.0,
+      "optimized_start": 122.41,
+      "optimized_finish": 137.8,
+      "optimized_duration": 15.390000000000015,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Masonry Contractor",
+          "baseline_duration": 25.0,
+          "optimized_duration": 15.39,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 82,
+      "task_name": "Install roof drains",
+      "baseline_start": 216.0,
+      "baseline_finish": 218.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 141.54,
+      "optimized_finish": 143.54,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 83,
+      "task_name": "Install tile in toilet rooms",
+      "baseline_start": 182.0,
+      "baseline_finish": 192.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 140.37,
+      "optimized_finish": 150.37,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Tile Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 84,
+      "task_name": "Clean masonry",
+      "baseline_start": 216.0,
+      "baseline_finish": 221.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 137.8,
+      "optimized_finish": 142.8,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Masonry Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 85,
+      "task_name": "Clean toilet room tile",
+      "baseline_start": 192.0,
+      "baseline_finish": 197.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 150.37,
+      "optimized_finish": 155.37,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Tile Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 87,
+      "task_name": "Install flashing at parapet walls",
+      "baseline_start": 216.0,
+      "baseline_finish": 220.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 143.54,
+      "optimized_finish": 147.54,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 88,
+      "task_name": "Pour lightweight concrete roof fill",
+      "baseline_start": 220.0,
+      "baseline_finish": 222.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 147.54,
+      "optimized_finish": 149.54,
+      "optimized_duration": 2.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 2.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 89,
+      "task_name": "Install seamless roofing material",
+      "baseline_start": 227.0,
+      "baseline_finish": 232.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 154.54,
+      "optimized_finish": 159.54,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 90,
+      "task_name": "Spread stone ballast on seamless roof",
+      "baseline_start": 232.0,
+      "baseline_finish": 237.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 159.54,
+      "optimized_finish": 164.54,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Roofing Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 91,
+      "task_name": "Set rooftop equipment",
+      "baseline_start": 237.0,
+      "baseline_finish": 247.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 175.41,
+      "optimized_finish": 185.41,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 93,
+      "task_name": "Install window wall aluminum and glass",
+      "baseline_start": 216.0,
+      "baseline_finish": 241.0,
+      "baseline_duration": 25.0,
+      "optimized_start": 137.8,
+      "optimized_finish": 154.37,
+      "optimized_duration": 16.569999999999993,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Window Contractor",
+          "baseline_duration": 25.0,
+          "optimized_duration": 16.57,
+          "x": 1.8,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 94,
+      "task_name": "Install interior stud walls and drywall",
+      "baseline_start": 241.0,
+      "baseline_finish": 266.0,
+      "baseline_duration": 25.0,
+      "optimized_start": 154.37,
+      "optimized_finish": 177.76,
+      "optimized_duration": 23.389999999999986,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Drywall Contractor",
+          "baseline_duration": 25.0,
+          "optimized_duration": 23.39,
+          "x": 1.1,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 95,
+      "task_name": "Install interior doors and hardware",
+      "baseline_start": 266.0,
+      "baseline_finish": 276.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 177.76,
+      "optimized_finish": 187.76,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Finish Carpenter Crew",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 96,
+      "task_name": "Install store front doors and hardware",
+      "baseline_start": 216.0,
+      "baseline_finish": 231.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 137.8,
+      "optimized_finish": 152.8,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Window Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 98,
+      "task_name": "Install millwork and wood trim",
+      "baseline_start": 266.0,
+      "baseline_finish": 281.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 177.76,
+      "optimized_finish": 192.76,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Finish Carpenter Crew",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 99,
+      "task_name": "Paint walls and woodwork",
+      "baseline_start": 281.0,
+      "baseline_finish": 301.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 192.76,
+      "optimized_finish": 210.37,
+      "optimized_duration": 17.610000000000014,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Painting Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 17.61,
+          "x": 1.2,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 100,
+      "task_name": "Install conduit at ceiling plenum space",
+      "baseline_start": 241.0,
+      "baseline_finish": 256.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 154.37,
+      "optimized_finish": 169.37,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 101,
+      "task_name": "Install duct in ceiling plenum space",
+      "baseline_start": 266.0,
+      "baseline_finish": 281.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 185.41,
+      "optimized_finish": 200.41,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 102,
+      "task_name": "Install ceiling grid",
+      "baseline_start": 281.0,
+      "baseline_finish": 291.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 200.41,
+      "optimized_finish": 210.41,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Drywall Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 103,
+      "task_name": "Install ceiling tile",
+      "baseline_start": 291.0,
+      "baseline_finish": 301.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 210.41,
+      "optimized_finish": 220.41,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Drywall Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 104,
+      "task_name": "Hang wallpaper",
+      "baseline_start": 291.0,
+      "baseline_finish": 301.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 210.41,
+      "optimized_finish": 220.41,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Painting Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 105,
+      "task_name": "Install building carpet",
+      "baseline_start": 301.0,
+      "baseline_finish": 321.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 210.37,
+      "optimized_finish": 226.18,
+      "optimized_duration": 15.810000000000002,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Carpet Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 15.81,
+          "x": 1.4,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 106,
+      "task_name": "Install hardware and accessories",
+      "baseline_start": 301.0,
+      "baseline_finish": 316.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 210.37,
+      "optimized_finish": 225.37,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Finish Carpenter Crew",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 107,
+      "task_name": "Complete interior and exterior sod and plantings",
+      "baseline_start": 301.0,
+      "baseline_finish": 311.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 210.37,
+      "optimized_finish": 220.37,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Landscape Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 108,
+      "task_name": "Pave, curb, and stripe parking lot",
+      "baseline_start": 311.0,
+      "baseline_finish": 321.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 221.04,
+      "optimized_finish": 231.04,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Paving Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 110,
+      "task_name": "Set elevator equipment in shafts",
+      "baseline_start": 131.0,
+      "baseline_finish": 151.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 116.42,
+      "optimized_finish": 136.42,
+      "optimized_duration": 19.999999999999986,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 111,
+      "task_name": "Set equipment in mechanical room",
+      "baseline_start": 151.0,
+      "baseline_finish": 161.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 136.42,
+      "optimized_finish": 146.42,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 112,
+      "task_name": "Test and align doors and equipment",
+      "baseline_start": 161.0,
+      "baseline_finish": 171.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 146.42,
+      "optimized_finish": 156.42,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 114,
+      "task_name": "Rough-in plumbing in drywall walls",
+      "baseline_start": 241.0,
+      "baseline_finish": 261.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 154.37,
+      "optimized_finish": 174.37,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 115,
+      "task_name": "Tie-in fire line riser and set valves",
+      "baseline_start": 221.0,
+      "baseline_finish": 231.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 199.01,
+      "optimized_finish": 209.01,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 116,
+      "task_name": "Set plumbing fixtures and trim",
+      "baseline_start": 261.0,
+      "baseline_finish": 276.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 174.38,
+      "optimized_finish": 189.38,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 117,
+      "task_name": "Flush, test, and clean piping and fixtures",
+      "baseline_start": 301.0,
+      "baseline_finish": 311.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 210.37,
+      "optimized_finish": 220.37,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 119,
+      "task_name": "Rough-in electrical in masonry walls",
+      "baseline_start": 162.0,
+      "baseline_finish": 182.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 120.37,
+      "optimized_finish": 140.37,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 120,
+      "task_name": "Rough-in electrical in drywall walls",
+      "baseline_start": 241.0,
+      "baseline_finish": 261.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 184.37,
+      "optimized_finish": 199.79,
+      "optimized_duration": 15.419999999999987,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 15.42,
+          "x": 1.0,
+          "tau": 3.6
+        }
+      ]
+    },
+    {
+      "task_id": 121,
+      "task_name": "Pull wire in conduit and set area transformers",
+      "baseline_start": 256.0,
+      "baseline_finish": 271.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 169.37,
+      "optimized_finish": 184.37,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 122,
+      "task_name": "Install and terminate electrical devices",
+      "baseline_start": 271.0,
+      "baseline_finish": 286.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 201.58,
+      "optimized_finish": 216.58,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 123,
+      "task_name": "Make electrical terminations for HVAC equipment",
+      "baseline_start": 271.0,
+      "baseline_finish": 273.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 199.79,
+      "optimized_finish": 201.58,
+      "optimized_duration": 1.7900000000000205,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 2.0,
+          "optimized_duration": 1.79,
+          "x": 1.0,
+          "tau": 1.4
+        }
+      ]
+    },
+    {
+      "task_id": 124,
+      "task_name": "Install light fixtures - test and clean",
+      "baseline_start": 291.0,
+      "baseline_finish": 301.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 216.58,
+      "optimized_finish": 226.58,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 126,
+      "task_name": "Set equipment in mechanical room",
+      "baseline_start": 131.0,
+      "baseline_finish": 141.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 140.37,
+      "optimized_finish": 150.37,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 127,
+      "task_name": "Rough-in mechanical in masonry walls",
+      "baseline_start": 162.0,
+      "baseline_finish": 182.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 120.37,
+      "optimized_finish": 140.37,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 128,
+      "task_name": "Rough-in mechanical in drywall walls",
+      "baseline_start": 241.0,
+      "baseline_finish": 251.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 200.41,
+      "optimized_finish": 210.41,
+      "optimized_duration": 10.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 10.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 129,
+      "task_name": "Install duct in building chase",
+      "baseline_start": 241.0,
+      "baseline_finish": 256.0,
+      "baseline_duration": 15.0,
+      "optimized_start": 154.37,
+      "optimized_finish": 169.37,
+      "optimized_duration": 15.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 15.0,
+          "optimized_duration": 15.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 130,
+      "task_name": "Set HVAC trim and test and balance system",
+      "baseline_start": 291.0,
+      "baseline_finish": 311.0,
+      "baseline_duration": 20.0,
+      "optimized_start": 210.41,
+      "optimized_finish": 230.41,
+      "optimized_duration": 20.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 20.0,
+          "optimized_duration": 20.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 132,
+      "task_name": "Install hard tile flooring in common areas",
+      "baseline_start": 266.0,
+      "baseline_finish": 271.0,
+      "baseline_duration": 5.0,
+      "optimized_start": 177.76,
+      "optimized_finish": 182.76,
+      "optimized_duration": 5.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Tile Contractor",
+          "baseline_duration": 5.0,
+          "optimized_duration": 5.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 133,
+      "task_name": "Clean hard tile floors",
+      "baseline_start": 271.0,
+      "baseline_finish": 275.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 182.76,
+      "optimized_finish": 186.76,
+      "optimized_duration": 4.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Tile Contractor",
+          "baseline_duration": 4.0,
+          "optimized_duration": 4.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 134,
+      "task_name": "Remove debris from building and do final clean-up",
+      "baseline_start": 321.0,
+      "baseline_finish": 325.0,
+      "baseline_duration": 4.0,
+      "optimized_start": 226.58,
+      "optimized_finish": 228.59,
+      "optimized_duration": 2.009999999999991,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 4.0,
+          "optimized_duration": 2.01,
+          "x": 2.0,
+          "tau": 2.7
+        }
+      ]
+    },
+    {
+      "task_id": 135,
+      "task_name": "Substantial completion date",
+      "baseline_start": 325.0,
+      "baseline_finish": 326.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 228.81,
+      "optimized_finish": 229.81,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 137,
+      "task_name": "Complete elevator inspection and certification",
+      "baseline_start": 325.0,
+      "baseline_finish": 328.0,
+      "baseline_duration": 3.0,
+      "optimized_start": 228.59,
+      "optimized_finish": 231.04,
+      "optimized_duration": 2.4499999999999886,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "Elevator Contractor",
+          "baseline_duration": 3.0,
+          "optimized_duration": 2.45,
+          "x": 1.0,
+          "tau": 2.7
+        }
+      ]
+    },
+    {
+      "task_id": 138,
+      "task_name": "Perform architect's inspection",
+      "baseline_start": 328.0,
+      "baseline_finish": 329.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 231.04,
+      "optimized_finish": 231.76,
+      "optimized_duration": 0.7199999999999989,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.72,
+          "x": 1.6,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.72,
+          "x": 1.6,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 139,
+      "task_name": "Perform local building agency inspection",
+      "baseline_start": 329.0,
+      "baseline_finish": 330.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 231.76,
+      "optimized_finish": 232.29,
+      "optimized_duration": 0.5300000000000011,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.53,
+          "x": 2.0,
+          "tau": 2.0
+        },
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.53,
+          "x": 2.0,
+          "tau": 2.0
+        }
+      ]
+    },
+    {
+      "task_id": 140,
+      "task_name": "Perform Fire Marshal's inspection",
+      "baseline_start": 330.0,
+      "baseline_finish": 331.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 232.29,
+      "optimized_finish": 232.89,
+      "optimized_duration": 0.5999999999999943,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.6,
+          "x": 2.0,
+          "tau": 0.3
+        },
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 0.6,
+          "x": 2.0,
+          "tau": 0.3
+        }
+      ]
+    },
+    {
+      "task_id": 141,
+      "task_name": "Complete punch list items from all inspections",
+      "baseline_start": 331.0,
+      "baseline_finish": 341.0,
+      "baseline_duration": 10.0,
+      "optimized_start": 232.89,
+      "optimized_finish": 239.05,
+      "optimized_duration": 6.160000000000025,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Superintendent",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Labor Crew",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Plumbing Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.11,
+          "x": 2.0,
+          "tau": 0.1
+        },
+        {
+          "resource_name": "Electric Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.11,
+          "x": 2.0,
+          "tau": 0.1
+        },
+        {
+          "resource_name": "HVAC Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Drywall Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Carpet Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Paving Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "Painting Contractor",
+          "baseline_duration": 10.0,
+          "optimized_duration": 6.16,
+          "x": 2.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 142,
+      "task_name": "Obtain certificate of occupancy",
+      "baseline_start": 341.0,
+      "baseline_finish": 343.0,
+      "baseline_duration": 2.0,
+      "optimized_start": 239.05,
+      "optimized_finish": 241.0,
+      "optimized_duration": 1.9499999999999886,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 2.0,
+          "optimized_duration": 1.95,
+          "x": 1.0,
+          "tau": 0.3
+        }
+      ]
+    },
+    {
+      "task_id": 143,
+      "task_name": "Issue final completion documents including warranties",
+      "baseline_start": 341.0,
+      "baseline_finish": 342.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 241.0,
+      "optimized_finish": 242.0,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": 144,
+      "task_name": "Issue final request for payment",
+      "baseline_start": 343.0,
+      "baseline_finish": 344.0,
+      "baseline_duration": 1.0,
+      "optimized_start": 242.0,
+      "optimized_finish": 243.0,
+      "optimized_duration": 1.0,
+      "status": "not_started",
+      "assignments": [
+        {
+          "resource_name": "G.C. Project Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. Accounting",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        },
+        {
+          "resource_name": "G.C. General Management",
+          "baseline_duration": 1.0,
+          "optimized_duration": 1.0,
+          "x": 1.0,
+          "tau": 0.0
+        }
+      ]
+    }
+  ]
+}

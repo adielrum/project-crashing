@@ -400,8 +400,8 @@ def run_scenario_B():
     out_gantt = os.path.join(OUTPUTS_DIR, "B_milp_cobb_gantt.png")
     out_html  = os.path.join(OUTPUTS_DIR, "B_milp_cobb_gantt.html")
 
-    # solver_milp writes its own JSON to COBB_DIR/../outputs/milp — copy to our outputs dir
-    default_path = os.path.join(COBB_DIR, "../outputs/milp/milp_cobb_bonus_penalty.json")
+    # solver_milp writes its own JSON to COBB_DIR/../outputs/mode-based — copy to our outputs dir
+    default_path = os.path.join(COBB_DIR, "../outputs/mode-based/milp_cobb_bonus_penalty.json")
     try:
         if os.path.exists(default_path):
             shutil.copy(default_path, out_json)
